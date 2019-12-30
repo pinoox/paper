@@ -50,14 +50,14 @@ class MainController extends MasterConfiguration
         $this->page($page_key);
     }
 
-    public function assets()
+    public function dist()
     {
         $url = implode('/', Router::params());
-        if ($url === 'js/pinoox.js') {
+        if ($url === 'pinoox.js') {
             HelperHeader::contentType('application/javascript', 'UTF-8');
-            self::$template->view('assets/js/pinoox.js');
+            self::$template->view('dist/pinoox.js');
         } else {
-            self::_main();
+            self::error404();
         }
     }
 

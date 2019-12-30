@@ -84,7 +84,11 @@ module.exports = {
         }),
         /*new Notification(),*/
         new CopyWebpackPlugin([
-            {from:'assets/images',to:'images'}
+            {from:'assets/images',to:'images'},
+            {
+                from: './assets/js/pinoox.js',
+                flatten: true,
+            },
         ]),
         new webpack.ProvidePlugin({
             $: 'jquery',

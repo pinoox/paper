@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script type="text/javascript" src="<?php echo $_app ?>assets/js/pinoox.js"></script>
+    <script type="text/javascript" src="<?php echo $_app ?>dist/pinoox.js"></script>
     <link rel="stylesheet" href="<?php echo $_url ?>dist/main.css">
     <title><?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?></title>
     <meta property="og:title" content="<?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?>"/>
