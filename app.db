@@ -13,7 +13,7 @@ CREATE TABLE `{dbprefix}article`  (
   `image_id` int(11) NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `summary` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `content` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `insert_date` datetime(0) NULL DEFAULT NULL,
   `feature` tinyint(1) NULL DEFAULT 0,
@@ -21,10 +21,8 @@ CREATE TABLE `{dbprefix}article`  (
   `visits` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`article_id`) USING BTREE,
   INDEX `{dbprefix}article_user_id`(`user_id`) USING BTREE,
-  INDEX `{dbprefix}artilce_image_id`(`image_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}article_user_id` FOREIGN KEY (`user_id`) REFERENCES `{dbprefix}user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}artilce_image_id` FOREIGN KEY (`image_id`) REFERENCES `{dbprefix}file` (`file_id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+  INDEX `{dbprefix}artilce_image_id`(`image_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records article
@@ -49,9 +47,7 @@ CREATE TABLE `{dbprefix}article_tag`  (
   `tag_id` int(10) UNSIGNED NOT NULL,
   `article_id` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`tag_id`, `article_id`) USING BTREE,
-  INDEX `article_tag_article_id`(`article_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}article_tag_article_id` FOREIGN KEY (`article_id`) REFERENCES `{dbprefix}article` (`article_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}article_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `{dbprefix}tag` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `article_tag_article_id`(`article_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -66,15 +62,13 @@ CREATE TABLE `{dbprefix}comment`  (
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `mobile` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `message` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `message` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `insert_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`comment_id`) USING BTREE,
   INDEX `{dbprefix}comment_user_id`(`user_id`) USING BTREE,
-  INDEX `{dbprefix}comment_parent_id`(`parent_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}comment_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}comment_user_id` FOREIGN KEY (`user_id`) REFERENCES `{dbprefix}user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+  INDEX `{dbprefix}comment_parent_id`(`parent_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table contact
@@ -85,11 +79,11 @@ CREATE TABLE `{dbprefix}contact`  (
   `full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `subject` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `mobile` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `message` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `message` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `insert_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`contact_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table page
@@ -99,13 +93,13 @@ CREATE TABLE `{dbprefix}page`  (
   `page_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `page_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `content` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `insert_date` datetime(0) NULL DEFAULT NULL,
   `visitors` int(11) NULL DEFAULT 0,
   `visits` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`page_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records page
@@ -119,28 +113,27 @@ DROP TABLE IF EXISTS `{dbprefix}settings`;
 CREATE TABLE `{dbprefix}settings`  (
   `settings_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `s_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `s_value` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
-  `s_dataset` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
-  `s_default` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
+  `s_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
+  `s_dataset` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
   `s_view` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `s_order` int(11) NULL DEFAULT NULL,
   `s_group` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   PRIMARY KEY (`settings_id`) USING BTREE,
   UNIQUE INDEX `s_key`(`s_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records settings
 -- ----------------------------
-INSERT INTO `{dbprefix}settings` VALUES (1, 'site_title', '', NULL, 'paper', '{site title}', 1, 'general');
-INSERT INTO `{dbprefix}settings` VALUES (2, 'site_description', '', NULL, '{site description}', 'input', 2, 'general');
-INSERT INTO `{dbprefix}settings` VALUES (5, 'newest_article_count', '10', NULL, NULL, 'input:number', 1, 'articles');
-INSERT INTO `{dbprefix}settings` VALUES (6, 'most_visited_count', '4', NULL, NULL, 'input:number', 2, 'articles');
-INSERT INTO `{dbprefix}settings` VALUES (7, 'hot_tags_count', '12', NULL, NULL, 'input:number', 3, 'articles');
-INSERT INTO `{dbprefix}settings` VALUES (8, 'twitter_link', 'https://twitter.com/pinoox_com', NULL, '', 'input', 1, 'social');
-INSERT INTO `{dbprefix}settings` VALUES (9, 'instagram_link', 'https://instagram.com/pinoox.ir/', NULL, NULL, 'input', 2, 'social');
-INSERT INTO `{dbprefix}settings` VALUES (10, 'telegram_link', 'https://t.me/s/pinoox', NULL, NULL, 'input', 3, 'social');
-INSERT INTO `{dbprefix}settings` VALUES (11, 'site_lang', 'fa', '{\"fa\":\"فارسی\",\"en\":\"english\"}', 'fa', 'select', 3, 'general');
+INSERT INTO `{dbprefix}settings` VALUES (1, 'site_title', 'paper',null,'input', 1, 'general');
+INSERT INTO `{dbprefix}settings` VALUES (2, 'site_description', 'launch a personal blog',null,'input', 2, 'general');
+INSERT INTO `{dbprefix}settings` VALUES (3, 'newest_article_count', '10',null,'input:number', 1, 'articles');
+INSERT INTO `{dbprefix}settings` VALUES (4, 'most_visited_count', '4',null, 'input:number', 2, 'articles');
+INSERT INTO `{dbprefix}settings` VALUES (5, 'hot_tags_count', '12',null, 'input:number', 3, 'articles');
+INSERT INTO `{dbprefix}settings` VALUES (6, 'twitter_link', 'https://twitter.com/pinoox_com', null, 'input', 1, 'social');
+INSERT INTO `{dbprefix}settings` VALUES (7, 'instagram_link', 'https://instagram.com/pinoox_fa/',null, 'input', 2, 'social');
+INSERT INTO `{dbprefix}settings` VALUES (8, 'telegram_link', 'https://t.me/s/pinoox',null, 'input', 3, 'social');
+INSERT INTO `{dbprefix}settings` VALUES (9, 'site_lang', 'fa','{"fa":"فارسی","en":"english"}', 'select', 3, 'general');
 
 -- ----------------------------
 -- Table menu
@@ -164,5 +157,26 @@ INSERT INTO `{dbprefix}menu` VALUES (3, 'primary', 'تماس با ما', 'contac
 INSERT INTO `{dbprefix}menu` VALUES (5, 'footer', 'تماس با ما', 'contact', '');
 INSERT INTO `{dbprefix}menu` VALUES (6, 'footer', 'درباره ما', 'about', '');
 
+
+-- ----------------------------
+-- Foreign keys
+-- ----------------------------
+ALTER TABLE `{dbprefix}article`
+    ADD CONSTRAINT `{dbprefix}article_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `{dbprefix}article`
+    ADD CONSTRAINT `{dbprefix}artilce_image_id` FOREIGN KEY (`image_id`) REFERENCES `pincore_file` (`file_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `{dbprefix}comment`
+    ADD CONSTRAINT `{dbprefix}comment_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `{dbprefix}comment`
+    ADD CONSTRAINT `{dbprefix}comment_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `{dbprefix}article_tag`
+    ADD CONSTRAINT `{dbprefix}article_tag_article_id` FOREIGN KEY (`article_id`) REFERENCES `{dbprefix}article` (`article_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+    ALTER TABLE `{dbprefix}article_tag`
+    ADD CONSTRAINT `{dbprefix}article_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `{dbprefix}tag` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 SET FOREIGN_KEY_CHECKS = 1;

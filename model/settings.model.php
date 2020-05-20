@@ -44,15 +44,7 @@ class SettingsModel extends PaperDatabase
     public static function getFromCache($s_key, $default = null)
     {
         $settings = Cache::get('settings');
-        foreach ($settings as $item) {
-            if ($item['s_key'] == $s_key) {
-                if (!empty($item['s_value'])) return $item['s_value'];
-                else if (!empty($item['s_default'])) return $item['s_default'];
-                break;
-            }
-        }
-        if (!is_null($default)) return $default;
-        return null;
+        return isset($settings[$s_key])? $settings[$s_key] : null;
     }
 
 }

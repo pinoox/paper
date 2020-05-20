@@ -20,7 +20,13 @@ class SettingsService implements ServiceInterface
     public function _run()
     {
         Cache::init('settings',function (){
-            return SettingsModel::fetch_all();
+            $configs = SettingsModel::fetch_all();
+            $result = [];
+            foreach ($configs as $config)
+            {
+                $result[$config['s_key']] = $config['s_value'];
+            }
+            return $result;
         },24);
     }
 
