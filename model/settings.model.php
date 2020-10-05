@@ -27,8 +27,8 @@ class SettingsModel extends PaperDatabase
     public static function fetch_all_groups()
     {
         self::$db->groupBy('s_group');
-        self::$db->orderBy('settings_id', 'ASC');
-        return self::$db->get(self::settings, null, 's_key,s_group');
+        self::$db->orderBy('MIN(settings_id)', 'ASC');
+        return self::$db->get(self::settings, null, 's_group');
     }
 
     public static function update($key, $value)

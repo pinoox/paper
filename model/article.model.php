@@ -76,8 +76,8 @@ class ArticleModel extends PaperDatabase
         self::$db->where('a.status', self::publish);
         self::$db->join(self::tag . ' t', 't.tag_id=at.tag_id', 'INNER');
         self::$db->join(self::article . ' a', 'a.article_id=at.article_id', 'INNER');
-        self::$db->groupby('t.tag_id');
-        return self::$db->get(self::article_tag . ' at', $limit, 't.*');
+        self::$db->groupBy('t.tag_id,t.tag_name');
+        return self::$db->get(self::article_tag . ' at', $limit, 't.tag_id,t.tag_name');
 
     }
 
