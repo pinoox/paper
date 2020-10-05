@@ -1,0 +1,17 @@
+{
+  "name": "blue",
+  "app": "com_pinoox_paper",
+  "cover": "cover.png",
+  "developer": "pinoox team",
+  "copyright": "MIT",
+  "version": "1.0",
+  "app_version": "1.0",
+  "title": {
+    "en": "blue",
+    "fa": "آبی"
+  },
+  "description": {
+    "en": "default paper template",
+    "fa": "قالب پیش فرض پیپر"
+  }
+}
