@@ -99,6 +99,9 @@
                     delete: require(`@img/svg/ic_delete.svg`),
                 },
             }
+        },
+        created() {
+            this.$router.replace({name: 'splash'});
         }
     }
 </script>

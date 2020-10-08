@@ -95,6 +95,20 @@ body {
 
 .app-container {
 
+  .splash {
+    background: #FFF;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    div{
+      color: @textColor;
+    }
+  }
 
   .sidebar {
     background: @primaryColor;
@@ -112,6 +126,7 @@ body {
       display: none; /* Safari and Chrome */
       -ms-overflow-style: none; /* Internet Explorer 10+ */
       scrollbar-width: none; /* Firefox */
+
     }
 
 
