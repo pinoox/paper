@@ -11,7 +11,7 @@ return array (
   'developer' => 'pinoox',
   'enable' => true,
   'theme' => 'blue',
-  'theme-panel' => 'panel',
+  'theme-panel' => 'papyrus',
   'lang' => 'en',
   'service' => [
       'cache/settings'
