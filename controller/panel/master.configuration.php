@@ -11,6 +11,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\panel;
 
+use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Dir;
 use pinoox\component\HelperString;
@@ -55,7 +56,7 @@ class MasterConfiguration implements ControllerInterface
 
     private function setLang()
     {
-        $lang = Lang::get('panel');
+        $lang = LangModel::fetch_all();
         self::$template->set('_lang', HelperString::encodeJson($lang, true));
     }
 
