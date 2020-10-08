@@ -12,7 +12,7 @@
 
     export default {
         created() {
-            setTimeout(()=>{
+           setTimeout(()=>{
                 this.$router.replace({name:'dashboard'});
             },3500);
         },

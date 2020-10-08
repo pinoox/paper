@@ -101,7 +101,7 @@
             }
         },
         created() {
-            this.$router.replace({name: 'splash'});
+            //this.$router.replace({name: 'splash'});
         }
     }
 </script>
