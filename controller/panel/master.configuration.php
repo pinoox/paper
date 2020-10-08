@@ -11,17 +11,12 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\panel;
 
-use pinoox\app\com_pinoox_manager\model\LangModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Dir;
 use pinoox\component\HelperString;
 use pinoox\component\interfaces\ControllerInterface;
 use pinoox\component\Lang;
-use pinoox\component\Request;
-use pinoox\component\Response;
-use pinoox\component\Router;
 use pinoox\component\Template;
-use pinoox\component\User;
 
 class MasterConfiguration implements ControllerInterface
 {
