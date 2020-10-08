@@ -4222,6 +4222,9 @@ body.ltr .main {
   color: #A5B8CE;
   width: 100%;
 }
+.app-container .sidebar .nav .item.active {
+  background: #123259;
+}
 .app-container .sidebar .nav .item.active .icon path {
   fill: #fff;
 }
@@ -4230,7 +4233,7 @@ body.ltr .main {
 }
 .app-container .sidebar .nav .item:hover {
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(18, 50, 89, 0.4);
 }
 .app-container .sidebar .nav .item .icon {
   width: 40px !important;
@@ -4246,13 +4249,14 @@ body.ltr .main {
 .app-container .sidebar .menu {
   flex-grow: 0.1;
   width: 100%;
+  height: 120px;
 }
 .app-container .sidebar .menu .item {
-  display: grid;
   grid-template-columns: 20px 1fr;
   align-items: center;
   color: #A5B8CE;
-  padding: 10px 1.2em;
+  padding: 10px 1.4em;
+  text-align: center;
 }
 .app-container .sidebar .menu .item .icon {
   text-align: center;
@@ -4267,13 +4271,18 @@ body.ltr .main {
 }
 .app-container .sidebar .menu .item:hover {
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(18, 50, 89, 0.4);
 }
 .app-container .sidebar .menu .item.active {
   color: #fff;
+  background: #123259;
 }
 .app-container .sidebar .menu .item.active .icon .svg path {
   fill: #fff;
+}
+.app-container .sidebar hr {
+  border: 1px solid #ffffff1f;
+  width: 70%;
 }
 .app-container .main {
   width: calc(100% - 120px);

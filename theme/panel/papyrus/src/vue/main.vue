@@ -27,30 +27,15 @@
                         <span class="text">آمار</span>
                     </router-link>
                 </div>
-
+                <hr>
                 <div class="menu">
                     <div class="item">
-                        <div class="icon">
-                            <simple-svg :src="icons.profile"
-                                        customClassName="svg"
-                                        fill="#A5B8CE"/>
-                        </div>
                         <span class="text">پروفایل</span>
                     </div>
                     <div class="item">
-                        <div class="icon">
-                            <simple-svg :src="icons.users"
-                                        customClassName="svg"
-                                        fill="#A5B8CE"/>
-                        </div>
                         <span class="text">کاربران</span>
                     </div>
                     <div class="item active">
-                        <div class="icon">
-                            <simple-svg :src="icons.settings"
-                                        customClassName="svg"
-                                        fill="#A5B8CE"/>
-                        </div>
                         <span class="text">تنظیمات</span>
                     </div>
                 </div>
