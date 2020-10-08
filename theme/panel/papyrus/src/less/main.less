@@ -37,6 +37,8 @@
 @titleSize: 1.5em;
 @textSize: 1em;
 @subtitleSize: 0.8em;
+@sidebarWidth: 120px;
+@toolbarHeight: 64px;
 
 ::-webkit-scrollbar {
   width: 0.5em;
@@ -76,17 +78,23 @@ body {
   &.rtl {
     direction: rtl;
     font-family: 'iranSans', serif;
+
+    .main {
+      margin-right: @sidebarWidth;
+    }
   }
 
   &.ltr {
     direction: ltr;
+
+    .main {
+      margin-left: @sidebarWidth;
+    }
   }
 }
 
 .app-container {
-  display: grid;
-  grid-template-columns: 120px calc(100vw - 130px);
-  height: 100vh;
+
 
   .sidebar {
     background: @primaryColor;
@@ -95,6 +103,16 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    height: 100vh;
+    width: @sidebarWidth;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+      scrollbar-width: none; /* Firefox */
+    }
 
 
     .brand {
@@ -135,7 +153,7 @@ body {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: 25px 0;
+        padding: 20px 0 10px 0;
         color: @textColorLight;
         width: 100%;
 
@@ -158,7 +176,7 @@ body {
         }
 
         .icon {
-          width: 34px;
+          width: 40px !important;
 
           path {
             fill: @textColorLight;
@@ -223,15 +241,18 @@ body {
   }
 
   .main {
+    width: calc(100% - @sidebarWidth);
+
     .toolbar {
       background: #fff;
-      height: 64px;
+      height: @toolbarHeight;
       width: 100%;
       border-bottom: 1px solid #E8E8E8;
       display: flex;
       align-items: center;
       color: @secondaryColor;
       overflow: hidden;
+      position: fixed;
 
       .account {
         display: flex;
@@ -339,7 +360,7 @@ body {
         background: transparent;
         border: none;
 
-        tbody{
+        tbody {
           margin-top: 30px;
         }
 
@@ -358,6 +379,8 @@ body {
           font-weight: 400;
         }
       }
+
+      padding-top: @toolbarHeight;
 
     }
   }

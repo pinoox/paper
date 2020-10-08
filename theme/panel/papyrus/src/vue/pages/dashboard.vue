@@ -87,12 +87,31 @@
                 ],
                 swiperOpts: {
                     loop: true,
-                    slidesPerView: 5,
+                    slidesPerView: 1,
                     spaceBetween: 50,
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false
                     },
+                    breakpoints: {
+                        // when window width is >= 320px
+                        320: {
+                            slidesPerView: 1,
+                            spaceBetween: 20
+                        },
+                        480: {
+                            slidesPerView: 2,
+                            spaceBetween: 30
+                        },
+                        640: {
+                            slidesPerView: 3,
+                            spaceBetween: 40
+                        },
+                        768: {
+                            slidesPerView: 4,
+                            spaceBetween: 40
+                        }
+                    }
                 },
                 columns: [
                     {
