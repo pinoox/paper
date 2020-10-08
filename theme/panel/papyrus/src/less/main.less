@@ -1,0 +1,372 @@
+@import "../css/animate.css";
+@import "../css/fonts.css";
+@import '~vue-good-table/dist/vue-good-table.css';
+
+// Base
+@imgRadius: 5px;
+@imgShadow: 0 3px 12px rgba(19, 19, 19, 0.2);
+
+// Colors
+@primaryColor: rgb(31, 66, 108);
+@secondaryColor: rgba(42, 82, 130, 1);
+@linkHover: #c1afea;
+@borderColor: #E2E2E2;
+@textColorLight: #A5B8CE;
+@textColor: #506E93;
+
+
+.boxShadow(@opacity:0.1) {
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, @opacity);
+}
+
+.textShadow(@opacity:0.1) {
+  text-shadow: 0 4px 8px rgba(19, 37, 71, @opacity);
+}
+
+.trans {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+
+
+@biggerTitleSize: 2.6em;
+@bigTitleSize: 2.1em;
+@titleSize: 1.5em;
+@textSize: 1em;
+@subtitleSize: 0.8em;
+
+::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(68, 85, 149, 0.4);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.container {
+  padding: 0 5%;
+}
+
+
+a {
+  .trans;
+  text-decoration: none;
+  color: @primaryColor;
+
+  &:hover {
+    .trans;
+    color: @linkHover;
+  }
+}
+
+body {
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  background: #F3F3F3;
+
+  &.rtl {
+    direction: rtl;
+    font-family: 'iranSans', serif;
+  }
+
+  &.ltr {
+    direction: ltr;
+  }
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 120px calc(100vw - 130px);
+  height: 100vh;
+
+  .sidebar {
+    background: @primaryColor;
+    background: linear-gradient(0deg, @primaryColor 0%, @secondaryColor 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+
+    .brand {
+      margin: 20px 0 0 0;
+      text-align: center;
+      color: #fff;
+      font-weight: 300;
+      font-size: 14px;
+      height: 50px;
+
+      .title {
+        letter-spacing: 2px;
+        font-weight: bold;
+        font-size: 1.3em;
+        background: rgb(79, 117, 163);
+        background: linear-gradient(-90deg, rgba(79, 117, 163, 1) 0%, rgba(156, 188, 230, 1) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .subtitle {
+        font-size: 0.9em;
+        color: @textColorLight;
+      }
+    }
+
+    .nav {
+      flex-grow: 0.8;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 25px 0;
+        color: @textColorLight;
+        width: 100%;
+
+        &.active {
+          .icon {
+            path {
+              fill: #fff;
+            }
+          }
+
+          .text {
+            color: #fff;
+          }
+
+        }
+
+        &:hover {
+          cursor: pointer;
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        .icon {
+          width: 34px;
+
+          path {
+            fill: @textColorLight;
+          }
+
+        }
+
+        .text {
+          display: block;
+          padding: 10px 0;
+          font-size: 0.8em;
+        }
+      }
+    }
+
+    .menu {
+      flex-grow: 0.1;
+      width: 100%;
+
+      .item {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        align-items: center;
+        color: @textColorLight;
+        padding: 10px 1.2em;
+
+        .icon {
+          text-align: center;
+          position: relative;
+          top: 3px;
+
+          .svg {
+            path {
+              fill: @textColorLight;
+            }
+          }
+        }
+
+        .text {
+          margin: 0 7px;
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &.active {
+          color: #fff;
+
+          .icon {
+            .svg {
+              path {
+                fill: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .main {
+    .toolbar {
+      background: #fff;
+      height: 64px;
+      width: 100%;
+      border-bottom: 1px solid #E8E8E8;
+      display: flex;
+      align-items: center;
+      color: @secondaryColor;
+      overflow: hidden;
+
+      .account {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+
+        &:hover {
+          cursor: pointer;
+          background: fade(@primaryColor, 10%);
+        }
+
+        img {
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          .boxShadow();
+        }
+
+        .text {
+          margin: 0 5px;
+        }
+      }
+
+      .quick-actions {
+        margin-left: 30px;
+        display: flex;
+        align-items: center;
+
+        .item {
+          padding: 20px;
+
+          &:hover {
+            cursor: pointer;
+            background: fade(@primaryColor, 10%);
+          }
+
+          .icon {
+            path {
+              stroke: @secondaryColor;
+            }
+          }
+        }
+      }
+    }
+
+    .page {
+      .section {
+        padding: 40px 0;
+
+        .section-title {
+          color: @textColor;
+          margin: 20px 0;
+          display: flex;
+          align-items: center;
+
+          h2 {
+            font-weight: 600;
+            font-size: 1.2em;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+          }
+
+          .more {
+            text-align: left;
+            font-size: 14px;
+            color: @textColorLight;
+
+            &:hover {
+              cursor: pointer;
+              color: @textColor;
+            }
+          }
+        }
+
+      }
+
+      .swiper-articles {
+        padding: 10px;
+
+        .swiper-slide {
+          text-align: center;
+          .trans;
+
+          &:hover {
+            cursor: pointer;
+            color: @textColor;
+            transform: scale(1.03);
+            .trans;
+          }
+
+          .title {
+            font-weight: 500;
+          }
+
+          .thumb {
+            width: 100%;
+            border-radius: 10px;
+            .boxShadow();
+          }
+        }
+      }
+
+      .table {
+        background: transparent;
+        border: none;
+
+        tbody{
+          margin-top: 30px;
+        }
+
+        th {
+          padding: 0 0 1em 0;
+          border-bottom: 1px solid @borderColor;
+          font-size: 12px;
+          font-weight: 300;
+          color: @textColor;
+          background: transparent;
+        }
+
+        td {
+          padding: 0.4em;
+          font-size: 14px;
+          font-weight: 400;
+        }
+      }
+
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+
+}
+
+@media screen and (max-width: 768px) {
+
+}
