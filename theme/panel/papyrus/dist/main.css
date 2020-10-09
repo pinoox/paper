@@ -4281,8 +4281,8 @@ body.ltr .main {
   fill: #fff;
 }
 .app-container .sidebar hr {
-  border: 1px solid #ffffff1f;
   width: 70%;
+  opacity: 0.3;
 }
 .app-container .main {
   width: calc(100% - 120px);
@@ -4407,5 +4407,78 @@ body.ltr .main {
   padding: 0.4em;
   font-size: 14px;
   font-weight: 400;
+}
+.app-container .vue-notification-group {
+  width: 300px !important;
+  left: calc(510% - 150px) !important;
+}
+.app-container .vue-notification-group .notification {
+  left: 0;
+  bottom: 0;
+  position: relative;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 5px rgba(153, 153, 153, 0.36) !important;
+  margin-bottom: 5px;
+  background: rgba(31, 66, 108, 0.7);
+}
+.app-container .vue-notification-group .notification:hover {
+  cursor: pointer;
+  background: rgba(31, 66, 108, 0.75);
+}
+.app-container .vue-notification-group .notification .title {
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: #fff !important;
+}
+.app-container .vue-notification-group .notification .text {
+  color: #f9f9f9;
+  padding: 4px 0;
+  font-size: 12px;
+}
+.app-container .vue-notification-group .notification.error {
+  background: rgba(219, 51, 123, 0.8);
+}
+.app-container .vue-notification-group .notification.error:hover {
+  background: rgba(219, 51, 123, 0.85);
+}
+.app-container .vue-notification-group .notification.warn {
+  background: rgba(237, 151, 3, 0.8);
+}
+.app-container .vue-notification-group .notification.warn:hover {
+  background: rgba(237, 151, 3, 0.85);
+}
+.app-container .vue-notification-group .notification.success {
+  background: rgba(8, 219, 135, 0.8);
+}
+.app-container .vue-notification-group .notification.success:hover {
+  background: rgba(8, 219, 135, 0.85);
+}
+.app-container .vue-notification-group .notification.primary {
+  background: rgba(31, 66, 108, 0.8);
+}
+.app-container .vue-notification-group .notification.primary:hover {
+  background: rgba(31, 66, 108, 0.85);
+}
+.app-container .vue-notification-group .notification.rtl {
+  direction: rtl;
+  text-align: right !important;
+}
+.app-container .vue-notification-group .notification.rtl .marker {
+  right: -17px;
+}
+.app-container .vue-notification-group .notification.rtl .close {
+  left: 15px;
+}
+.app-container .vue-notification-group .notification.ltr {
+  direction: ltr;
+  text-align: left !important;
+}
+.app-container .vue-notification-group .notification.ltr .marker {
+  left: -17px;
+}
+.app-container .vue-notification-group .notification.ltr .close {
+  right: 15px;
 }
 

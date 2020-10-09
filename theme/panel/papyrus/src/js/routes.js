@@ -2,7 +2,7 @@ import Dashboard from '../vue/pages/dashboard.vue';
 import Articles from '../vue/pages/articles.vue';
 import Stats from '../vue/pages/stats.vue';
 import Splash from '../vue/pages/splash.vue';
-import Login from '../vue/login.vue';
+import Login from '../vue/pages/login.vue';
 
 export const routes = [
     {

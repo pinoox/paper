@@ -4,21 +4,7 @@ Vue.mixin({
     computed: {
         isLogin() {
             let user = this.$store.state.user;
-            return !!user && user.isLogin;
-        },
-        isHeader() {
-            return (this.$route.meta.isHeader !== undefined) ? this.$route.meta.isHeader : true;
-        },
-        isBlank() {
-            return (this.$route.meta.isBlank !== undefined) ? this.$route.meta.isBlank : false;
-        },
-        PERMISSION: {
-            get() {
-                return this.USER.permissions;
-            },
-            set(val) {
-                this.USER.permissions = val;
-            }
+            return !!user && !!user.isLogin;
         },
         USER: {
             get() {
@@ -31,11 +17,6 @@ Vue.mixin({
         LANG: {
             get() {
                 return PINOOX.LANG;
-            },
-        },
-        CONFIG: {
-            get() {
-                return PINOOX.CONFIG;
             },
         },
         URL: {
@@ -60,28 +41,6 @@ Vue.mixin({
         }
     },
     methods: {
-        _module(key) {
-            if (!this.isLogin)
-                return false;
-
-            let modules = this.PERMISSION.module;
-            for (let i in modules) {
-                let module = modules[i];
-                module = module.replace(/\|:|@|>/gi, '/')+'/';
-                let $key = key.replace(/\|:|@|>/gi, '/')+'/';
-                module = ($key.indexOf(module) === 0);
-                if (module)
-                    return false;
-            }
-
-            return true;
-        },
-        _option(key) {
-            if (!this.isLogin)
-                return false;
-
-            return !this.PERMISSION.option.includes(key);
-        },
         _delay: (function () {
             let timer = 0;
             return function (callback, ms) {
@@ -140,26 +99,16 @@ Vue.mixin({
                 Object.assign(this.$data, this.$options.data());
 
         },
-        _openLoginModal() {
-            $('#login-modal').modal('show');
-        },
-        _closeLoginModal() {
-            $('#login-modal').modal('hide');
-        },
-        _routeWatch(callback) {
-            this.$watch('$route.params', callback, {
-                immediate: true,
-                deep: true,
-            })
-        },
         _empty(data) {
             return !(data !== undefined && data !== null && data.length > 0);
         },
         _routerReplace(location) {
-            this.$router.replace(location);
+            this.$router.replace(location).catch(()=>{
+            });
         },
         _routerPush(location) {
-            this.$router.push(location);
+            this.$router.push(location).catch(()=>{
+            });
         },
         _replaceAll(str, find, replace) {
             return str.replace(new RegExp(find.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'g'), replace);

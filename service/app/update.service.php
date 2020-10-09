@@ -19,6 +19,7 @@ class UpdateService implements ServiceInterface{
 
     public function _run()
     {
+
           UpdateModel::insert_tables();
     }
 

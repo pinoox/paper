@@ -1,6 +1,7 @@
 @import "../css/animate.css";
 @import "../css/fonts.css";
 @import '~vue-good-table/dist/vue-good-table.css';
+@import '~vuejs-dialog/dist/vuejs-dialog.min.css';
 @import "./login.less";
 
 // Base
@@ -14,7 +15,11 @@
 @borderColor: #E2E2E2;
 @textColorLight: #A5B8CE;
 @textColor: #506E93;
-
+@orangeColor: #ed9703;
+@greenColor: #08DB87;
+@redColor: #db337b;
+@blueColor: #35bbdb;
+@yellowColor: #f1d400;
 
 .boxShadow(@opacity:0.1) {
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, @opacity);
@@ -263,8 +268,8 @@ body {
     }
 
     hr{
-      border: 1px solid #ffffff1f;
       width: 70%;
+      opacity: 0.3;
     }
   }
 
@@ -412,7 +417,101 @@ body {
 
     }
   }
+
+  .vue-notification-group {
+    width: 300px !important;
+    left: calc(510% - 150px) !important;
+
+    .notification {
+      left: 0;
+      bottom: 0;
+      position: relative;
+      overflow: hidden;
+      padding: 8px;
+      border-radius: 4px !important;
+      box-shadow: 0 2px 5px rgba(153, 153, 153, 0.36) !important;
+      margin-bottom: 5px;
+      background: fade(@primaryColor, 70%);
+
+      &:hover {
+        cursor: pointer;
+        background: fade(@primaryColor, 75%);
+      }
+
+      .title {
+        font-weight: 500 !important;
+        font-size: 14px !important;
+        color: #fff !important;
+      }
+
+      .text {
+        color: #f9f9f9;
+        padding: 4px 0;
+        font-size: 12px;
+      }
+
+      &.error {
+        background: fade(@redColor, 80%);
+
+        &:hover {
+          background: fade(@redColor, 85%);
+        }
+      }
+
+      &.warn {
+        background: fade(@orangeColor, 80%);
+
+        &:hover {
+          background: fade(@orangeColor, 85%);
+        }
+      }
+
+      &.success {
+        background: fade(@greenColor, 80%);
+
+        &:hover {
+          background: fade(@greenColor, 85%);
+        }
+      }
+
+      &.primary {
+        background: fade(@primaryColor, 80%);
+
+        &:hover {
+          background: fade(@primaryColor, 85%);
+        }
+      }
+
+      &.rtl {
+        direction: rtl;
+        text-align: right !important;
+
+        .marker {
+          right: -17px;
+        }
+
+        .close {
+          left: 15px;
+        }
+      }
+
+      &.ltr {
+        direction: ltr;
+        text-align: left !important;
+
+        .marker {
+          left: -17px;
+        }
+
+        .close {
+          right: 15px;
+        }
+      }
+
+    }
+  }
 }
+
 
 @media screen and (max-width: 992px) {
 

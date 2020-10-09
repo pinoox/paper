@@ -1,4 +1,5 @@
 <?php
+
 /**
  *      ****  *  *     *  ****  ****  *    *
  *      *  *  *  * *   *  *  *  *  *   *  *
@@ -10,17 +11,22 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  */
 
-namespace pinoox\app\com_pinoox_paper\model;
+namespace pinoox\app\com_pinoox_paper\service;
 
-use pinoox\model\PinooxDatabase;
+use pinoox\component\interfaces\ServiceInterface;
+use pinoox\component\User;
 
-class LangModel extends PinooxDatabase
+class UserService implements ServiceInterface
 {
 
-    public static function fetch_all()
+    public function _run()
     {
-        return [
-            'panel' => rlang('panel'),
-        ];
+        User::lifeTime(90, 'day');
+        User::type(User::JWT);
+    }
+
+    public function _stop()
+    {
+        User::type(User::COOKIE);
     }
 }

@@ -9,18 +9,18 @@
  * @link https://www.pinoox.com/
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
-namespace pinoox\app\com_pinoox_paper\model;
+use pinoox\component\User;
 
-use pinoox\model\PinooxDatabase;
-
-class LangModel extends PinooxDatabase
+class LoginConfiguration extends MasterConfiguration
 {
-
-    public static function fetch_all()
+    public function __construct()
     {
-        return [
-            'panel' => rlang('panel'),
-        ];
+        parent::__construct();
+        if(!User::isLoggedIn())
+        {
+            $this->error();
+        }
     }
 }

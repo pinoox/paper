@@ -13,7 +13,7 @@
     export default {
         created() {
            setTimeout(()=>{
-                this.$router.replace({name:'dashboard'});
+             //   this.$router.replace({name:'dashboard'});
             },3500);
         },
     }

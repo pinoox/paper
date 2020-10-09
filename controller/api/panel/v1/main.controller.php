@@ -10,17 +10,9 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  */
 
-namespace pinoox\app\com_pinoox_paper\model;
+namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
-use pinoox\model\PinooxDatabase;
-
-class LangModel extends PinooxDatabase
+class MainController extends MasterConfiguration
 {
-
-    public static function fetch_all()
-    {
-        return [
-            'panel' => rlang('panel'),
-        ];
-    }
 }
+    

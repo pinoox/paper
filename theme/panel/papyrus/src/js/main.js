@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import '../libs/bootstrap/js/bootstrap.bundle.min';
 import './global';
 import axios from 'axios';
 
@@ -13,13 +12,14 @@ import VueAxios from 'vue-axios';
 import store from './store';
 import Main from '../vue/main.vue';
 import router from './router';
+import Notifications from 'vue-notification';
 import VuejsDialog from 'vuejs-dialog';
-import _ from 'lodash';
 import VueSimpleSVG from 'vue-simple-svg';
 import VueGoodTablePlugin from 'vue-good-table';
 
 Vue.use(VueGoodTablePlugin);
 Vue.use(VueSimpleSVG);
+Vue.use(Notifications);
 Vue.use(VuejsDialog);
 Vue.use(VueAxios, axios);
 

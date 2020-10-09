@@ -6,7 +6,7 @@ const PINOOX = {
         CURRENT: window.location.href,
         BASE: '<?php echo url("^panel"); ?>',
         APP: '<?php echo url("panel"); ?>',
-        API: '<?php echo url("^panel/api/v1/"); ?>',
+        API: '<?php echo url("^api/panel/v1/"); ?>',
         SITE: '<?php echo url("~"); ?>',
         PANEL: '<?php echo url("~panel"); ?>',
         THEME: '<?php echo $_url; ?>',

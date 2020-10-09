@@ -14,6 +14,7 @@ return array (
   'theme-panel' => 'papyrus',
   'lang' => 'fa',
   'service' => [
+      'user',
       'cache/settings'
   ]
 );
