@@ -11,11 +11,6 @@
 <script>
 
     export default {
-        created() {
-           setTimeout(()=>{
-             //   this.$router.replace({name:'dashboard'});
-            },3500);
-        },
     }
 
 </script>

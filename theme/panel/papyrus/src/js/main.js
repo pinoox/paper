@@ -16,7 +16,9 @@ import Notifications from 'vue-notification';
 import VuejsDialog from 'vuejs-dialog';
 import VueSimpleSVG from 'vue-simple-svg';
 import VueGoodTablePlugin from 'vue-good-table';
+import ChDrawer from 'ch-drawer';
 
+Vue.use(ChDrawer, { zIndex: 1000 });
 Vue.use(VueGoodTablePlugin);
 Vue.use(VueSimpleSVG);
 Vue.use(Notifications);
