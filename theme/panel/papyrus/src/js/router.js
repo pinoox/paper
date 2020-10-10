@@ -13,16 +13,12 @@ const router = new VueRouter({
     },
 });
 
-// router.beforeEach((to, from, next) => {
-//     let token = localStorage.getItem('pinoox_user');
-//     if (!token || !router.app.isLogin) {
-//        if (!to.name || to.name !== 'login')
-//             next({name: 'login'});
-//     } else if (!!to.name && to.name === 'login') {
-//         next({name: 'dashboard'});
-//     } else {
-//         next();
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    let token = localStorage.getItem('pinoox_user');
+    if ((!token || !router.app.isLogin) && (!to.name || (to.name !== 'login' && to.name !== 'splash')))
+        next({name: 'login'});
+    else
+        next();
+});
 
 export default router;

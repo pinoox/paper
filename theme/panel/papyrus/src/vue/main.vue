@@ -11,7 +11,7 @@
                 </div>
             </template>
         </notifications>
-        <div v-if="isBoxView">
+        <div v-if="!hasCustomView">
             <div class="sidebar">
                 <div class="brand">
                     <div class="title">PAPER</div>
@@ -107,8 +107,8 @@
             }
         },
         computed: {
-            isBoxView() {
-                return !('box-view' in this.$route.meta && !this.$route.meta['box-view']);
+            hasCustomView() {
+                return !!this.$route.meta.customView;
             }
         },
         methods: {
