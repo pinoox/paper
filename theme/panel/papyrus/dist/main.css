@@ -4110,6 +4110,49 @@
 .container {
   padding: 0 5%;
 }
+.btn {
+  padding: 14px 20px;
+  min-width: 60px;
+  text-align: center;
+  border-radius: 4px;
+  display: inline-block;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.btn:hover {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.btn-primary {
+  background: #1f426c;
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #32629d;
+}
+.btn-secondary {
+  background: #2a5282;
+  color: #fff;
+}
+.btn-secondary:hover {
+  color: #1e4069;
+  background: #A5B8CE;
+}
+.btn-simple {
+  color: #2a5282;
+}
+.btn-simple:hover {
+  color: #1e4069;
+  background: #A5B8CE;
+}
 a {
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
@@ -4223,7 +4266,7 @@ body.ltr .main {
   width: 100%;
 }
 .app-container .sidebar .nav .item.active {
-  background: #123259;
+  background: #1e4069;
 }
 .app-container .sidebar .nav .item.active .icon path {
   fill: #fff;
@@ -4250,6 +4293,8 @@ body.ltr .main {
   flex-grow: 0.1;
   width: 100%;
   height: 120px;
+  border-top: 1px solid rgba(226, 226, 226, 0.1);
+  padding-top: 15px;
 }
 .app-container .sidebar .menu .item {
   grid-template-columns: 20px 1fr;
@@ -4275,7 +4320,7 @@ body.ltr .main {
 }
 .app-container .sidebar .menu .item.active {
   color: #fff;
-  background: #123259;
+  background: #1e4069;
 }
 .app-container .sidebar .menu .item.active .icon .svg path {
   fill: #fff;
@@ -4408,11 +4453,64 @@ body.ltr .main {
   font-size: 14px;
   font-weight: 400;
 }
-.app-container .vue-notification-group {
+.app-container .main .page .write-container .toolbox {
+  background: #fff;
+  overflow: hidden;
+  position: fixed;
+  width: calc(100vw - 120px);
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  height: 64px;
+  top: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.app-container .main .page .write-container .toolbox .item {
+  text-align: center;
+  padding: 20px 30px;
+  width: 50px;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.app-container .main .page .write-container .toolbox .item:hover {
+  cursor: pointer;
+  background: rgba(30, 64, 105, 0.2);
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.app-container .main .page .write-container .toolbox .item .icon {
+  display: block;
+  width: 48px;
+  margin: auto;
+}
+.app-container .main .page .write-container .toolbox .item .label {
+  padding: 4px 0;
+  display: block;
+  font-size: 11px;
+  color: #506E93;
+}
+.app-container .main .page .write-container .paper {
+  background: #fff;
+  width: 70vw;
+  height: 100vh;
+  margin: 64px auto auto;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
+}
+.app-container .main .page .write-container .paper .content {
+  padding: 20px;
+}
+.vue-notification-group {
   width: 300px !important;
   left: calc(510% - 150px) !important;
 }
-.app-container .vue-notification-group .notification {
+.vue-notification-group .notification {
   left: 0;
   bottom: 0;
   position: relative;
@@ -4423,62 +4521,90 @@ body.ltr .main {
   margin-bottom: 5px;
   background: rgba(31, 66, 108, 0.7);
 }
-.app-container .vue-notification-group .notification:hover {
+.vue-notification-group .notification:hover {
   cursor: pointer;
   background: rgba(31, 66, 108, 0.75);
 }
-.app-container .vue-notification-group .notification .title {
+.vue-notification-group .notification .title {
   font-weight: 500 !important;
   font-size: 14px !important;
   color: #fff !important;
 }
-.app-container .vue-notification-group .notification .text {
+.vue-notification-group .notification .text {
   color: #f9f9f9;
   padding: 4px 0;
   font-size: 12px;
 }
-.app-container .vue-notification-group .notification.error {
+.vue-notification-group .notification.error {
   background: rgba(219, 51, 123, 0.8);
 }
-.app-container .vue-notification-group .notification.error:hover {
+.vue-notification-group .notification.error:hover {
   background: rgba(219, 51, 123, 0.85);
 }
-.app-container .vue-notification-group .notification.warn {
+.vue-notification-group .notification.warn {
   background: rgba(237, 151, 3, 0.8);
 }
-.app-container .vue-notification-group .notification.warn:hover {
+.vue-notification-group .notification.warn:hover {
   background: rgba(237, 151, 3, 0.85);
 }
-.app-container .vue-notification-group .notification.success {
+.vue-notification-group .notification.success {
   background: rgba(8, 219, 135, 0.8);
 }
-.app-container .vue-notification-group .notification.success:hover {
+.vue-notification-group .notification.success:hover {
   background: rgba(8, 219, 135, 0.85);
 }
-.app-container .vue-notification-group .notification.primary {
+.vue-notification-group .notification.primary {
   background: rgba(31, 66, 108, 0.8);
 }
-.app-container .vue-notification-group .notification.primary:hover {
+.vue-notification-group .notification.primary:hover {
   background: rgba(31, 66, 108, 0.85);
 }
-.app-container .vue-notification-group .notification.rtl {
+.vue-notification-group .notification.rtl {
   direction: rtl;
   text-align: right !important;
 }
-.app-container .vue-notification-group .notification.rtl .marker {
+.vue-notification-group .notification.rtl .marker {
   right: -17px;
 }
-.app-container .vue-notification-group .notification.rtl .close {
+.vue-notification-group .notification.rtl .close {
   left: 15px;
 }
-.app-container .vue-notification-group .notification.ltr {
+.vue-notification-group .notification.ltr {
   direction: ltr;
   text-align: left !important;
 }
-.app-container .vue-notification-group .notification.ltr .marker {
+.vue-notification-group .notification.ltr .marker {
   left: -17px;
 }
-.app-container .vue-notification-group .notification.ltr .close {
+.vue-notification-group .notification.ltr .close {
   right: 15px;
+}
+.drawer-wrapper .drawer-header {
+  padding: 20px 5%;
+  font-size: 2em;
+  color: #506E93;
+  font-weight: 600;
+  display: inline-block;
+}
+.drawer-wrapper .drawer-header .title {
+  display: block;
+  align-items: center;
+}
+.drawer-wrapper .drawer-header .title .text {
+  display: inline-block;
+  position: relative;
+  top: -17px;
+}
+.drawer-wrapper .drawer-header .title .icon {
+  display: inline-block;
+}
+.drawer-wrapper .drawer-footer {
+  padding: 20px 5%;
+}
+.drawer-wrapper .drawer-footer .btn {
+  margin: 0 5px;
+}
+.drawer-wrapper .drawer-content {
+  padding: 0 5%;
 }
 

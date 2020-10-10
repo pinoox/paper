@@ -17,7 +17,6 @@
                     <div class="title">PAPER</div>
                     <div class="subtitle">پنل مدیریت</div>
                 </div>
-
                 <div class="nav">
                     <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
                         <simple-svg :src="icons.dashboard"
@@ -38,7 +37,6 @@
                         <span class="text">آمار</span>
                     </router-link>
                 </div>
-                <hr>
                 <div class="menu">
                     <div class="item">
                         <span class="text">پروفایل</span>
@@ -46,11 +44,10 @@
                     <div class="item">
                         <span class="text">کاربران</span>
                     </div>
-                    <div class="item active">
+                    <div class="item">
                         <span class="text">تنظیمات</span>
                     </div>
                 </div>
-
             </div>
             <div class="main">
                 <div class="toolbar">
@@ -64,11 +61,11 @@
                                         width="25px"
                                         customClassName="icon"/>
                         </div>
-                        <div class="item">
+                        <router-link tag="div" :to="{name:'write'}" class="item">
                             <simple-svg :src="icons.pen"
                                         width="22px"
                                         customClassName="icon"/>
-                        </div>
+                        </router-link>
                     </div>
                 </div>
 
@@ -103,6 +100,9 @@
                     eye: require(`@img/svg/ic_eye.svg`),
                     pen: require(`@img/svg/ic_pen_square.svg`),
                     delete: require(`@img/svg/ic_delete.svg`),
+                    publish: require(`@img/svg/ic_publish.svg`),
+                    seo: require(`@img/svg/ic_seo.svg`),
+                    category: require(`@img/svg/ic_category.svg`),
                 },
             }
         },
@@ -176,7 +176,7 @@
             USER() {
                 if (!!this.$route.name && this.$route.name === 'splash') {
                     let time = this.getTimeStamp() - this.timestamp;
-                    time = 3500 - time;
+                    time = 0 - time;
                     if (time > 0) {
                         setTimeout(() => {
                             this.checkUser();
