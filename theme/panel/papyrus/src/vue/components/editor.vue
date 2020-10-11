@@ -71,7 +71,9 @@
                             'mergeTableCells'
                         ]
                     },
-                    title: 'تست می شود',
+                    title: {
+                        placeholder: 'عنوان را وارد کنید'
+                    },
                     placeholder: this.placeholder,
                 }
             }
