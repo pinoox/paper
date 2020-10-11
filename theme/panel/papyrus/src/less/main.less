@@ -31,6 +31,10 @@
   text-shadow: 0 4px 8px rgba(19, 37, 71, @opacity);
 }
 
+.no-outline {
+  outline: none;
+}
+
 .trans {
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
@@ -172,7 +176,7 @@ body {
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    height: 100vh;
+    height: 100%;
     width: @sidebarWidth;
     overflow-y: scroll;
 
@@ -325,9 +329,11 @@ body {
     .toolbar {
       background: #fff;
       height: @toolbarHeight;
-      width: 100%;
+      width: calc(100% - @sidebarWidth);
       border-bottom: 1px solid #E8E8E8;
-      display: flex;
+      display: grid;
+      grid-template-columns: 130px 150px auto;
+      grid-auto-rows: @toolbarHeight;
       align-items: center;
       color: @secondaryColor;
       overflow: hidden;
@@ -336,7 +342,8 @@ body {
       .account {
         display: flex;
         align-items: center;
-        padding: 20px;
+        justify-content: center;
+        padding: 14px 6px;
 
         &:hover {
           cursor: pointer;
@@ -356,12 +363,11 @@ body {
       }
 
       .quick-actions {
-        margin-left: 30px;
         display: flex;
         align-items: center;
 
         .item {
-          padding: 20px;
+          padding: 18px;
 
           &:hover {
             cursor: pointer;
@@ -372,6 +378,32 @@ body {
             path {
               stroke: @secondaryColor;
             }
+          }
+        }
+      }
+
+      .toolbox {
+        text-align: left;
+        height: @toolbarHeight;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 15px 25px;
+          .trans;
+
+          .label{
+            font-size: 0.8em;
+          }
+
+          &:hover {
+            cursor: pointer;
+            background: fade(@primaryColor, 10%);
+            .trans;
           }
         }
       }
@@ -462,6 +494,8 @@ body {
       }
 
       .write-container {
+
+
         .toolbox {
           background: #fff;
           overflow: hidden;
@@ -502,15 +536,23 @@ body {
           }
         }
 
+        .toolbar-editor {
+          width: calc(100vw - @sidebarWidth);
+          position: fixed;
+          top: @toolbarHeight;
+        }
+
         .paper {
           background: #fff;
           width: 70vw;
-          height: 100vh;
+          min-height: 100vh;
+          height: 100%;
           margin: @toolbarHeight auto auto;
           .boxShadow();
 
           .content {
             padding: 20px;
+
           }
         }
       }
@@ -518,13 +560,17 @@ body {
     }
   }
 
-  .toolbar-editor{
-    .ck-toolbar__items{
+  .toolbar-editor {
+    .ck-toolbar__items {
       font-size: 16px;
     }
   }
 }
 
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+  border: 1px solid transparent !important;
+  box-shadow: none !important;
+}
 
 .vue-notification-group {
   width: 300px !important;

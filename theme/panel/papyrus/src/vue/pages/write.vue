@@ -1,11 +1,7 @@
 <template>
     <section class="page">
         <div class="write-container">
-           <div>
-               <div class="toolbar-editor">
-
-               </div>
-           </div>
+            <div class="toolbar-editor"></div>
             <div class="toolbox" v-if="false">
                 <div class="item" @click="openToolbox('category')">
                     <simple-svg :src="$parent.icons.category"
@@ -27,9 +23,11 @@
                 </div>
             </div>
             <div class="paper">
-                    <editor class="content" v-model="params.description" name="description"
-                            placeholder="متن را وارد کنید">
-                    </editor>
+                <editor class="content"
+                        v-model="params.description"
+                        name="description"
+                        placeholder="متن را وارد کنید">
+                </editor>
             </div>
         </div>
 
@@ -42,7 +40,8 @@
                     <simple-svg :src="$parent.icons.publish"
                                 width="48px"
                                 customClassName="icon"/>
-                    <div class="text">انتشار نوشته</div></div>
+                    <div class="text">انتشار نوشته</div>
+                </div>
             </div>
             <div class="drawer-content">
                 <h1> Lorem ipsum dolor sit amet, consectetur adipisicing elit. A adipisci aperiam commodi deleniti eius
@@ -64,14 +63,14 @@
     import editor from "../components/editor.vue";
 
     export default {
-        components:{editor},
+        components: {editor},
         data() {
             return {
                 drawerPosition: 'bottom',
                 drawerVisibility: false,
                 drawerArea: '90%',
-                params:{
-                    description:`
+                params: {
+                    description: `
 <h2>تست می شود</h2>
 <p style="padding: 20px">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از
                             طراحان گرافیک

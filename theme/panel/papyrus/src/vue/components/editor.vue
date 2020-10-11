@@ -1,6 +1,7 @@
 <template>
     <div v-if="isLoadEditor" class="content-editor row-editor">
-        <ckeditor class="bg-danger" :value="value" @input="updateValue" :editor="editor" :config="editorConfig" @ready="onReady">
+        <ckeditor class="bg-danger" :value="value" @input="updateValue" :editor="editor" :config="editorConfig"
+                  @ready="onReady">
             <slot></slot>
         </ckeditor>
     </div>
@@ -16,8 +17,8 @@
                 default: null,
             }
         },
-        computed:{
-            editorConfig(){
+        computed: {
+            editorConfig() {
                 return {
                     toolbar: {
                         items: [
@@ -80,7 +81,7 @@
         },
         data() {
             return {
-                isLoadEditor:false,
+                isLoadEditor: false,
                 editor: DecoupledDocumentEditor,
             };
         },
@@ -88,27 +89,24 @@
             updateValue: function (value) {
                 this.$emit('input', value);
             },
-            onReady(editor)
-            {
-                document.querySelector('.toolbar-editor').prepend( editor.ui.view.toolbar.element );
+            onReady(editor) {
+                document.querySelector('.toolbar-editor').prepend(editor.ui.view.toolbar.element);
             }
         },
-        mounted()
-        {
-           // this.editorConfig.language = this.currentLang;
+        mounted() {
+            // this.editorConfig.language = this.currentLang;
             //this.editorConfig.placeholder = 'lkjkljkljkljkl knmklkl';
             this.isLoadEditor = true;
         },
-        watch:{
-            countTranslate()
-            {
+        watch: {
+            countTranslate() {
                 this.isLoadEditor = false;
-                this.$nextTick(()=>{
-                    this._delay(()=>{
+                this.$nextTick(() => {
+                    this._delay(() => {
                         this.isLoadEditor = true;
-                      //  this.editorConfig.language = this.currentLang;
-                      //  this.editorConfig.placeholder = this.LANG.answer.description_placeholder;
-                    },500);
+                        //  this.editorConfig.language = this.currentLang;
+                        //  this.editorConfig.placeholder = this.LANG.answer.description_placeholder;
+                    }, 500);
                 });
             },
         }

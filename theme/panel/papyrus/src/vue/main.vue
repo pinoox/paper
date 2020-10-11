@@ -67,6 +67,26 @@
                                         customClassName="icon"/>
                         </router-link>
                     </div>
+                    <div class="toolbox">
+                        <div class="item">
+                            <simple-svg :src="icons.category"
+                                        width="22px"
+                                        customClassName="icon"/>
+                            <span class="label">دسته بندی</span>
+                        </div>
+                        <div class="item">
+                            <simple-svg :src="icons.seo"
+                                        width="22px"
+                                        customClassName="icon"/>
+                            <span class="label">سئو</span>
+                        </div>
+                        <div class="item">
+                            <simple-svg :src="icons.publish"
+                                        width="22px"
+                                        customClassName="icon"/>
+                            <span class="label">انتشار</span>
+                        </div>
+                    </div>
                 </div>
 
                 <transition mode="out-in" enter-active-class="animated faster fadeIn"

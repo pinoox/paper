@@ -4090,6 +4090,9 @@
     color: #fff !important;
   }
 }
+.no-outline {
+  outline: none;
+}
 .trans {
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
@@ -4214,7 +4217,7 @@ body.ltr .main {
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  height: 100vh;
+  height: 100%;
   width: 120px;
   overflow-y: scroll;
 }
@@ -4335,9 +4338,11 @@ body.ltr .main {
 .app-container .main .toolbar {
   background: #fff;
   height: 64px;
-  width: 100%;
+  width: calc(100% - 120px);
   border-bottom: 1px solid #E8E8E8;
-  display: flex;
+  display: grid;
+  grid-template-columns: 130px 150px auto;
+  grid-auto-rows: 64px;
   align-items: center;
   color: #2a5282;
   overflow: hidden;
@@ -4346,7 +4351,8 @@ body.ltr .main {
 .app-container .main .toolbar .account {
   display: flex;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
+  padding: 14px 6px;
 }
 .app-container .main .toolbar .account:hover {
   cursor: pointer;
@@ -4362,12 +4368,11 @@ body.ltr .main {
   margin: 0 5px;
 }
 .app-container .main .toolbar .quick-actions {
-  margin-left: 30px;
   display: flex;
   align-items: center;
 }
 .app-container .main .toolbar .quick-actions .item {
-  padding: 20px;
+  padding: 18px;
 }
 .app-container .main .toolbar .quick-actions .item:hover {
   cursor: pointer;
@@ -4375,6 +4380,36 @@ body.ltr .main {
 }
 .app-container .main .toolbar .quick-actions .item .icon path {
   stroke: #2a5282;
+}
+.app-container .main .toolbar .toolbox {
+  text-align: left;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.app-container .main .toolbar .toolbox .item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 25px;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.app-container .main .toolbar .toolbox .item .label {
+  font-size: 0.8em;
+}
+.app-container .main .toolbar .toolbox .item:hover {
+  cursor: pointer;
+  background: rgba(31, 66, 108, 0.1);
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 .app-container .main .page {
   padding-top: 64px;
@@ -4496,10 +4531,16 @@ body.ltr .main {
   font-size: 11px;
   color: #506E93;
 }
+.app-container .main .page .write-container .toolbar-editor {
+  width: calc(100vw - 120px);
+  position: fixed;
+  top: 64px;
+}
 .app-container .main .page .write-container .paper {
   background: #fff;
   width: 70vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   margin: 64px auto auto;
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
 }
@@ -4508,6 +4549,10 @@ body.ltr .main {
 }
 .app-container .toolbar-editor .ck-toolbar__items {
   font-size: 16px;
+}
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+  border: 1px solid transparent !important;
+  box-shadow: none !important;
 }
 .vue-notification-group {
   width: 300px !important;
