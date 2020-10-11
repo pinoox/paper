@@ -4506,6 +4506,9 @@ body.ltr .main {
 .app-container .main .page .write-container .paper .content {
   padding: 20px;
 }
+.app-container .toolbar-editor .ck-toolbar__items {
+  font-size: 16px;
+}
 .vue-notification-group {
   width: 300px !important;
   left: calc(510% - 150px) !important;
