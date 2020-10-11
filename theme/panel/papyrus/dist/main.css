@@ -4476,7 +4476,7 @@ body.ltr .main {
   margin-top: 30px;
 }
 .app-container .main .page .table th {
-  padding: 0 0 1em 0;
+  padding: 10px 15px 1em 0;
   border-bottom: 1px solid #E2E2E2;
   font-size: 12px;
   font-weight: 300;
@@ -4487,6 +4487,17 @@ body.ltr .main {
   padding: 0.4em;
   font-size: 14px;
   font-weight: 400;
+}
+.app-container .main .page .table td .thumb {
+  width: 72px;
+}
+.app-container .main .page .table td .thumb.thumb-round {
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
+}
+.app-container .main .page .table td .thumb.thumb-circle {
+  border-radius: 50%;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
 }
 .app-container .main .page .write-container .toolbox {
   background: #fff;
@@ -4546,6 +4557,37 @@ body.ltr .main {
 }
 .app-container .main .page .write-container .paper .content {
   padding: 20px;
+}
+.app-container .main .page .search-bar {
+  position: relative;
+  overflow: hidden;
+}
+.app-container .main .page .search-bar .icon {
+  position: absolute;
+  font-size: 1.3rem;
+  color: #506E93;
+  min-width: 40px;
+  display: block;
+  height: 100%;
+  padding: 16px 10px;
+  text-align: center;
+}
+.app-container .main .page .search-bar .icon:hover {
+  cursor: pointer;
+  background: rgba(30, 64, 105, 0.2);
+}
+.app-container .main .page .search-bar .search-input {
+  font-family: 'iranSans', serif;
+  width: 100%;
+  padding: 10px 70px 10px 10px;
+  height: 32px;
+  outline: none;
+  font-size: 1.1em;
+  border-top: 1px solid #E2E2E2;
+  border-bottom: 1px solid #E2E2E2;
+  border-right: none;
+  border-left: none;
+  color: #506E93;
 }
 .app-container .toolbar-editor .ck-toolbar__items {
   font-size: 16px;
@@ -4654,5 +4696,28 @@ body.ltr .main {
 }
 .drawer-wrapper .drawer-content {
   padding: 0 5%;
+}
+.vgt-wrap.rtl .vgt-table th.sortable::after,
+.vgt-wrap.rtl .vgt-table th.sortable::before {
+  right: 0;
+  left: initial;
+  margin-right: 0;
+}
+.vgt-wrap.rtl .vgt-table th.sorting-asc::after,
+.vgt-wrap.rtl .vgt-table th.sorting-asc::before {
+  margin-right: 0;
+}
+.vgt-wrap__footer {
+  background: transparent;
+  border: none;
+}
+.vgt-wrap__footer .footer__navigation__page-btn {
+  color: #506E93;
+}
+.vgt-wrap__footer .footer__navigation__page-btn .chevron.right::after {
+  border-left: 6px solid #506E93;
+}
+.vgt-wrap__footer .footer__navigation__page-btn .chevron.left::after {
+  border-right: 6px solid #506E93;
 }
 

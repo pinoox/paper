@@ -396,7 +396,7 @@ body {
           padding: 15px 25px;
           .trans;
 
-          .label{
+          .label {
             font-size: 0.8em;
           }
 
@@ -478,7 +478,7 @@ body {
         }
 
         th {
-          padding: 0 0 1em 0;
+          padding: 10px 15px 1em 0;
           border-bottom: 1px solid @borderColor;
           font-size: 12px;
           font-weight: 300;
@@ -490,6 +490,20 @@ body {
           padding: 0.4em;
           font-size: 14px;
           font-weight: 400;
+
+          .thumb {
+            width: 72px;
+
+            &.thumb-round {
+              border-radius: 1rem;
+              .boxShadow();
+            }
+
+            &.thumb-circle {
+              border-radius: 50%;
+              .boxShadow();
+            }
+          }
         }
       }
 
@@ -557,6 +571,41 @@ body {
         }
       }
 
+      .search-bar {
+        position: relative;
+        overflow: hidden;
+
+        .icon {
+          position: absolute;
+          font-size: 1.3rem;
+          color: @textColor;
+          min-width: 40px;
+          display: block;
+          height: 100%;
+          padding: 16px 10px;
+          text-align: center;
+
+
+          &:hover {
+            cursor: pointer;
+            background: fade(@primaryColorDark, 20%);
+          }
+        }
+
+        .search-input {
+          font-family: 'iranSans', serif;
+          width: 100%;
+          padding: 10px 70px 10px 10px;
+          height: @toolbarHeight/2;
+          outline: none;
+          font-size: 1.1em;
+          border-top: 1px solid @borderColor;
+          border-bottom: 1px solid @borderColor;
+          border-right: none;
+          border-left: none;
+          color: @textColor;
+        }
+      }
     }
   }
 
@@ -701,6 +750,41 @@ body {
 
   .drawer-content {
     padding: 0 @drawerPadding;
+  }
+}
+
+.vgt-wrap.rtl {
+  .vgt-table {
+    th.sortable {
+      &::after, &::before {
+        right: 0;
+        left: initial;
+        margin-right: 0;
+      }
+    }
+
+    th.sorting-asc {
+      &::after, &::before {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.vgt-wrap__footer {
+  background: transparent;
+  border: none;
+
+  .footer__navigation__page-btn {
+    color: @textColor;
+
+    .chevron.right::after {
+      border-left: 6px solid @textColor;
+    }
+
+    .chevron.left::after {
+      border-right: 6px solid @textColor;
+    }
   }
 }
 
