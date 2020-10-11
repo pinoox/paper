@@ -17,6 +17,7 @@ import VuejsDialog from 'vuejs-dialog';
 import VueSimpleSVG from 'vue-simple-svg';
 import VueGoodTablePlugin from 'vue-good-table';
 import ChDrawer from 'ch-drawer';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 Vue.use(ChDrawer, { zIndex: 1000 });
 Vue.use(VueGoodTablePlugin);
@@ -24,6 +25,7 @@ Vue.use(VueSimpleSVG);
 Vue.use(Notifications);
 Vue.use(VuejsDialog);
 Vue.use(VueAxios, axios);
+Vue.use(CKEditor);
 
 __webpack_public_path__ = PINOOX.URL.THEME + 'dist/';
 
