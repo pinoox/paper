@@ -24,7 +24,8 @@
             </div>
             <div class="paper">
                 <editor class="content"
-                        v-model="params.description"
+                        :values="editor"
+                        v-model="params"
                         name="description"
                         placeholder="متن را وارد کنید">
                 </editor>
@@ -64,12 +65,19 @@
 
     export default {
         components: {editor},
+        created(){
+        },
         data() {
             return {
                 drawerPosition: 'bottom',
                 drawerVisibility: false,
                 drawerArea: '90%',
+                editor:{
+                    title:'تست',
+                    context:'<p>آزمایش می شود</p>',
+                },
                 params: {
+
                     description: `
 <h2>تست می شود</h2>
 <p style="padding: 20px">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از

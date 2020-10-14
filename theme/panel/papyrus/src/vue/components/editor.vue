@@ -1,6 +1,6 @@
 <template>
     <div v-if="isLoadEditor" class="content-editor row-editor">
-        <ckeditor class="bg-danger" :value="value" @input="updateValue" :editor="editor" :config="editorConfig"
+        <ckeditor class="bg-danger" :value="getValue" @input="updateValue" :editor="initEditor" :config="editorConfig"
                   @ready="onReady">
             <slot></slot>
         </ckeditor>
@@ -10,8 +10,12 @@
 <script>
     export default {
         props: {
-            value: {
-                type: String,
+            values: {
+                default: {
+                    title: null,
+                    context: null,
+                },
+                type: Object,
             },
             placeholder: {
                 default: null,
@@ -22,8 +26,6 @@
                 return {
                     toolbar: {
                         items: [
-                            'exportWord',
-                            'exportPdf',
                             'undo',
                             'redo',
                             '|',
@@ -46,7 +48,7 @@
                             'indent',
                             'outdent',
                             '|',
-                            'todoList',
+                            'code',
                             'link',
                             'blockQuote',
                             'imageUpload',
@@ -54,7 +56,17 @@
                             'imageInsert',
                             'mediaEmbed',
                             '|',
-                            'code'
+                            'exportWord',
+                            'exportPdf',
+                        ],
+                    },
+                    balloonToolbar: {
+                        items: [
+                            'bold',
+                            'italic',
+                            '|',
+                            'undo',
+                            'redo',
                         ]
                     },
                     language: 'fa',
@@ -76,39 +88,56 @@
                         placeholder: 'عنوان را وارد کنید'
                     },
                     placeholder: this.placeholder,
+                    wordCount: {
+                        onUpdate: stats => {
+                            // stats.characters
+                            // stats.words
+                        }
+                    }
                 }
-            }
+            },
+            getTitle() {
+                return this.editor.plugins.get('Title').getTitle();
+            },
+            getBody() {
+                return this.editor.plugins.get('Title').getBody();
+            },
+            getValue() {
+                return '<h1>' + this.values.title + '</h1>\n' + this.values.context;
+            },
         },
         data() {
             return {
                 isLoadEditor: false,
-                editor: DecoupledDocumentEditor,
+                initEditor: DecoupledDocumentEditor,
+                editor: null,
             };
         },
         methods: {
             updateValue: function (value) {
-                this.$emit('input', value);
+                this.callEvents();
             },
             onReady(editor) {
+                this.editor = editor;
                 document.querySelector('.toolbar-editor').prepend(editor.ui.view.toolbar.element);
+            },
+            callEvents(data = null) {
+                data = !!data ? data : {
+                    title: this.getTitle,
+                    context: this.getBody,
+                };
+
+                this.$emit('input', {
+                    title: data.title,
+                    context: data.context,
+                });
+                this.$emit('title', data.title);
+                this.$emit('context', data.context);
             }
         },
         mounted() {
-            // this.editorConfig.language = this.currentLang;
-            //this.editorConfig.placeholder = 'lkjkljkljkljkl knmklkl';
             this.isLoadEditor = true;
+            this.callEvents(this.values);
         },
-        watch: {
-            countTranslate() {
-                this.isLoadEditor = false;
-                this.$nextTick(() => {
-                    this._delay(() => {
-                        this.isLoadEditor = true;
-                        //  this.editorConfig.language = this.currentLang;
-                        //  this.editorConfig.placeholder = this.LANG.answer.description_placeholder;
-                    }, 500);
-                });
-            },
-        }
     }
 </script>
