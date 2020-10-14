@@ -89,6 +89,35 @@
                     </div>
                 </div>
 
+                <div class="toolbar-drawer">
+                    <div class="items">
+                        <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
+                            <simple-svg :src="icons.dashboard"
+                                        customClassName="icon"
+                                        fill="#A5B8CE"/>
+                            <span class="text">داشبورد</span>
+                        </router-link>
+                        <router-link class="item" :to="{name:'articles'}" exact-active-class="active">
+                            <simple-svg :src="icons.article"
+                                        customClassName="icon"
+                                        fill="#A5B8CE"/>
+                            <span class="text">نوشته ها</span>
+                        </router-link>
+                        <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
+                            <simple-svg :src="icons.stats"
+                                        customClassName="icon"
+                                        fill="#A5B8CE"/>
+                            <span class="text">آمار</span>
+                        </router-link>
+                        <router-link class="item" :to="{name:'dashboard'}" exact-active-class="active">
+                            <simple-svg :src="icons.settings"
+                                        customClassName="icon"
+                                        fill="#A5B8CE"/>
+                            <span class="text">بیشتر</span>
+                        </router-link>
+                    </div>
+                </div>
+
                 <transition mode="out-in" enter-active-class="animated faster fadeIn"
                             leave-active-class="animated faster fadeOut">
                     <router-view></router-view>

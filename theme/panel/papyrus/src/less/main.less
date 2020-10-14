@@ -338,6 +338,7 @@ body {
       color: @secondaryColor;
       overflow: hidden;
       position: fixed;
+      z-index: 1000;
 
       .account {
         display: flex;
@@ -393,7 +394,8 @@ body {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 15px 25px;
+          padding: 14px 10px;
+          min-width: 50px;
           .trans;
 
           .label {
@@ -409,8 +411,66 @@ body {
       }
     }
 
+    .toolbar-drawer {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: @toolbarHeight;
+      background: #fff;
+      z-index: 1000;
+      border-top: 1px solid @borderColor;
+
+      .items {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin: 0 5px;
+
+        .item {
+          flex: 1;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 8px 5px;
+          border-radius: 2rem;
+          margin: 0 0.33rem;
+
+          .text {
+            color: @primaryColor;
+            margin-right: 5px;
+            display: none;
+
+          }
+
+          .icon {
+            width: 20px !important;
+
+            path {
+              fill: @primaryColor;
+            }
+          }
+
+          &.active {
+            .text {
+              display: block;
+              font-size: 0.8em;
+              font-weight: 500;
+            }
+
+
+            background: fade(@primaryColor, 20%);
+          }
+        }
+      }
+    }
+
     .page {
       padding-top: @toolbarHeight;
+      padding-bottom: @toolbarHeight;
 
       .section {
         padding: 40px 0;
@@ -509,7 +569,6 @@ body {
 
       .write-container {
 
-
         .toolbox {
           background: #fff;
           overflow: hidden;
@@ -559,7 +618,6 @@ body {
         .paper {
           background: #fff;
           width: 70vw;
-          min-height: 100vh;
           height: 100%;
           margin: @toolbarHeight auto auto;
           .boxShadow();
@@ -581,7 +639,6 @@ body {
           color: @textColor;
           min-width: 40px;
           display: block;
-          height: 100%;
           padding: 16px 10px;
           text-align: center;
 
@@ -788,11 +845,39 @@ body {
   }
 }
 
-
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 991px) {
 
 }
 
 @media screen and (max-width: 768px) {
+  .app-container {
+    .sidebar {
+      display: none;
+    }
 
+    .main {
+      width: 100%;
+      margin: 0 !important;
+
+      .toolbar {
+        width: 100%;
+      }
+
+      .toolbar-drawer {
+        display: block;
+      }
+
+      .page {
+        .write-container {
+          .paper {
+            width: 90vw;
+          }
+
+          .toolbar-editor {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
 }

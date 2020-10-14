@@ -4347,6 +4347,7 @@ body.ltr .main {
   color: #2a5282;
   overflow: hidden;
   position: fixed;
+  z-index: 1000;
 }
 .app-container .main .toolbar .account {
   display: flex;
@@ -4392,7 +4393,8 @@ body.ltr .main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px 25px;
+  padding: 14px 10px;
+  min-width: 50px;
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
   -ms-transition: 0.2s;
@@ -4411,8 +4413,56 @@ body.ltr .main {
   -o-transition: 0.2s;
   transition: 0.2s;
 }
+.app-container .main .toolbar-drawer {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 64px;
+  background: #fff;
+  z-index: 1000;
+  border-top: 1px solid #E2E2E2;
+}
+.app-container .main .toolbar-drawer .items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0 5px;
+}
+.app-container .main .toolbar-drawer .items .item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 5px;
+  border-radius: 2rem;
+  margin: 0 0.33rem;
+}
+.app-container .main .toolbar-drawer .items .item .text {
+  color: #1f426c;
+  margin-right: 5px;
+  display: none;
+}
+.app-container .main .toolbar-drawer .items .item .icon {
+  width: 20px !important;
+}
+.app-container .main .toolbar-drawer .items .item .icon path {
+  fill: #1f426c;
+}
+.app-container .main .toolbar-drawer .items .item.active {
+  background: rgba(31, 66, 108, 0.2);
+}
+.app-container .main .toolbar-drawer .items .item.active .text {
+  display: block;
+  font-size: 0.8em;
+  font-weight: 500;
+}
 .app-container .main .page {
   padding-top: 64px;
+  padding-bottom: 64px;
 }
 .app-container .main .page .section {
   padding: 40px 0;
@@ -4550,7 +4600,6 @@ body.ltr .main {
 .app-container .main .page .write-container .paper {
   background: #fff;
   width: 70vw;
-  min-height: 100vh;
   height: 100%;
   margin: 64px auto auto;
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
@@ -4568,7 +4617,6 @@ body.ltr .main {
   color: #506E93;
   min-width: 40px;
   display: block;
-  height: 100%;
   padding: 16px 10px;
   text-align: center;
 }
@@ -4719,5 +4767,26 @@ body.ltr .main {
 }
 .vgt-wrap__footer .footer__navigation__page-btn .chevron.left::after {
   border-right: 6px solid #506E93;
+}
+@media screen and (max-width: 768px) {
+  .app-container .sidebar {
+    display: none;
+  }
+  .app-container .main {
+    width: 100%;
+    margin: 0 !important;
+  }
+  .app-container .main .toolbar {
+    width: 100%;
+  }
+  .app-container .main .toolbar-drawer {
+    display: block;
+  }
+  .app-container .main .page .write-container .paper {
+    width: 90vw;
+  }
+  .app-container .main .page .write-container .toolbar-editor {
+    width: 100%;
+  }
 }
 
