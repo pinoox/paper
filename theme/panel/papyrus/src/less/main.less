@@ -178,7 +178,7 @@ body {
     position: fixed;
     height: 100%;
     width: @sidebarWidth;
-    overflow-y: scroll;
+    overflow: hidden;
 
     &::-webkit-scrollbar {
       display: none; /* Safari and Chrome */
@@ -610,7 +610,7 @@ body {
         }
 
         .toolbar-editor {
-          width: calc(100vw - @sidebarWidth);
+          width: calc(100% - @sidebarWidth);
           position: fixed;
           top: @toolbarHeight;
         }
