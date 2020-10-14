@@ -3,13 +3,13 @@
         <div class="write-container">
             <div class="toolbox">
                 <div class="items">
-                    <div class="item" @click="openDrawer('')">
+                    <div class="item">
                         ذخیره
                     </div>
-                    <div class="item" @click="openDrawer('')">
+                    <div class="item">
                         انتشار
                     </div>
-                    <div class="item" @click="openDrawer('')">
+                    <div class="item">
                         سئو
                     </div>
                     <div class="item" @click="openDrawer('category')">
@@ -29,27 +29,8 @@
             </div>
         </div>
 
-        <ch-drawer custom-class="drawer-wrapper" :location='drawerPosition'
-                   :visible.sync='drawerVisibility'
-                   :area="drawerArea"
-                   :before-close='handleBeforeClose'>
-            <div slot='header' class="drawer-header">
-                <div class="title">
-                    <simple-svg :src="$parent.icons.publish"
-                                width="48px"
-                                customClassName="icon"/>
-                    <div class="text">انتشار نوشته</div>
-                </div>
-            </div>
-            <div class="drawer-content">
-                <category></category>
-            </div>
-            <div slot='footer' class="drawer-footer">
-                <div @click="drawerVisibility=false" class="btn btn-simple">برگشت</div>
-                <div class="btn btn-primary">ذخیره</div>
-            </div>
+        <category @onClose="drawerName=null" :open="drawerName==='category'"></category>
 
-        </ch-drawer>
     </section>
 </template>
 
@@ -64,9 +45,7 @@
         },
         data() {
             return {
-                drawerPosition: 'bottom',
-                drawerVisibility: false,
-                drawerArea: '90%',
+                drawerName: false,
                 editor: {
                     title: 'تست',
                     context: '<p>آزمایش می شود</p>',
@@ -111,10 +90,7 @@
         },
         methods: {
             openDrawer(drawerName) {
-                this.drawerVisibility = true;
-            },
-            handleBeforeClose(next) {
-                next();
+                this.drawerName = drawerName;
             }
         }
     }

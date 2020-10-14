@@ -3,6 +3,7 @@
 @import '~vue-good-table/dist/vue-good-table.css';
 @import '~vuejs-dialog/dist/vuejs-dialog.min.css';
 @import "./login.less";
+@import "../css/nestable.css";
 
 // Base
 @imgRadius: 5px;
@@ -772,6 +773,14 @@ body {
         top: -17px;
       }
 
+      .subtext {
+        font-size: 14px;
+        font-weight: 400;
+        color: @textColorLight;
+        position: relative;
+        top: -10px;
+      }
+
       .icon {
         display: inline-block;
       }
@@ -788,8 +797,26 @@ body {
 
   .drawer-content {
     padding: 0 @drawerPadding;
+
+    .nestable-category {
+      max-width: 500px;
+      margin: auto;
+
+      .nestable-item, .nestable-item-copy {
+        border-radius: 4px;
+        padding: 10px;
+        background: fade(@primaryColor, 8%);
+      }
+    }
   }
 }
+
+.drawer-category {
+  .add-category {
+
+  }
+}
+
 
 .vgt-wrap.rtl {
   .vgt-table {
@@ -825,6 +852,7 @@ body {
     }
   }
 }
+
 
 @media screen and (max-width: 991px) {
 
