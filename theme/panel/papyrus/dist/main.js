@@ -531,9 +531,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var vue_
   !*** ./src/less/main.less ***!
   \****************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./src/less/main.less?");
+eval("throw new Error(\"Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):\\nModuleBuildError: Module build failed (from ./node_modules/less-loader/dist/cjs.js):\\n\\r\\n\\r\\n\\r\\n<<<<<<< Updated upstream\\r\\n^\\r\\nUnrecognised input\\r\\n      in D:\\\\wamp64\\\\www\\\\app\\\\apps\\\\com_pinoox_paper\\\\theme\\\\panel\\\\papyrus\\\\src\\\\less\\\\main.less (line 416, column 0)\\n    at D:\\\\wamp64\\\\www\\\\app\\\\apps\\\\com_pinoox_paper\\\\theme\\\\panel\\\\papyrus\\\\node_modules\\\\webpack\\\\lib\\\\NormalModule.js:316:20\\n    at D:\\\\wamp64\\\\www\\\\app\\\\apps\\\\com_pinoox_paper\\\\theme\\\\panel\\\\papyrus\\\\node_modules\\\\loader-runner\\\\lib\\\\LoaderRunner.js:367:11\\n    at D:\\\\wamp64\\\\www\\\\app\\\\apps\\\\com_pinoox_paper\\\\theme\\\\panel\\\\papyrus\\\\node_modules\\\\loader-runner\\\\lib\\\\LoaderRunner.js:233:18\\n    at context.callback (D:\\\\wamp64\\\\www\\\\app\\\\apps\\\\com_pinoox_paper\\\\theme\\\\panel\\\\papyrus\\\\node_modules\\\\loader-runner\\\\lib\\\\LoaderRunner.js:111:13)\");\n\n//# sourceURL=webpack:///./src/less/main.less?");
 
 /***/ }),
 

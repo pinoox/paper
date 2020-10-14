@@ -130,7 +130,7 @@ body {
     position: fixed;
     height: 100vh;
     width: @sidebarWidth;
-    overflow-y: scroll;
+    overflow: hidden;
 
     &::-webkit-scrollbar {
       display: none; /* Safari and Chrome */
@@ -413,7 +413,76 @@ body {
         }
       }
 
+<<<<<<< Updated upstream
       padding-top: @toolbarHeight;
+=======
+      .write-container {
+
+
+        .toolbox {
+          background: #fff;
+          overflow: hidden;
+          position: fixed;
+          width: calc(100vw - @sidebarWidth);
+          border-top: 1px solid #e8e8e8;
+          border-bottom: 1px solid #e8e8e8;
+          height: @toolbarHeight;
+          top: @toolbarHeight;
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+
+          .item {
+            text-align: center;
+            padding: 20px 30px;
+            width: 50px;
+            .trans;
+
+            &:hover {
+              cursor: pointer;
+              background: fade(@primaryColorDark, 20%);
+              .trans;
+            }
+
+            .icon {
+              display: block;
+              width: 48px;
+              margin: auto;
+            }
+
+            .label {
+              padding: 4px 0;
+              display: block;
+              font-size: 11px;
+              color: @textColor;
+            }
+          }
+        }
+
+        .toolbar-editor {
+          width: calc(100% - @sidebarWidth);
+          position: fixed;
+          top: @toolbarHeight;
+        }
+
+        .paper {
+          background: #fff;
+          width: 70vw;
+          min-height: 100vh;
+          height: 100%;
+          margin: @toolbarHeight auto auto;
+          .boxShadow();
+
+          .content {
+            padding: 20px;
+
+          }
+        }
+      }
+
+    }
+  }
+>>>>>>> Stashed changes
 
     }
   }
