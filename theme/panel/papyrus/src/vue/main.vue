@@ -12,7 +12,7 @@
             </template>
         </notifications>
         <div v-if="!hasCustomView">
-            <div class="sidebar">
+            <div class="sidebar mode-write">
                 <div class="brand">
                     <div class="title">PAPER</div>
                     <div class="subtitle">پنل مدیریت</div>
@@ -24,11 +24,10 @@
                                     fill="#A5B8CE"/>
                         <span class="text">داشبورد</span>
                     </router-link>
-                    <router-link class="item" :to="{name:'articles'}" exact-active-class="active">
-                        <simple-svg :src="icons.article"
-                                    customClassName="icon"
-                                    fill="#A5B8CE"/>
-                        <span class="text">نوشته ها</span>
+                    <router-link class="item" :to="{name:'write'}" exact-active-class="active">
+                        <simple-svg :src="icons.pen"
+                                    customClassName="icon stroke"/>
+                        <span class="text">نوشتن</span>
                     </router-link>
                     <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
                         <simple-svg :src="icons.stats"
@@ -50,7 +49,7 @@
                 </div>
             </div>
             <div class="main">
-                <div class="toolbar">
+                <div v-if="!$route.meta.hideToolbar" class="toolbar">
                     <div class="account">
                         <img src="@img/sample-user.jpg" alt="profile">
                         <span class="text">رضا رضایی</span>
@@ -67,26 +66,6 @@
                                         customClassName="icon"/>
                         </router-link>
                     </div>
-                    <div class="toolbox">
-                        <div class="item">
-                            <simple-svg :src="icons.category"
-                                        width="22px"
-                                        customClassName="icon"/>
-                            <span class="label">دسته بندی</span>
-                        </div>
-                        <div class="item">
-                            <simple-svg :src="icons.seo"
-                                        width="22px"
-                                        customClassName="icon"/>
-                            <span class="label">سئو</span>
-                        </div>
-                        <div class="item">
-                            <simple-svg :src="icons.publish"
-                                        width="22px"
-                                        customClassName="icon"/>
-                            <span class="label">انتشار</span>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="toolbar-drawer">
@@ -97,11 +76,11 @@
                                         fill="#A5B8CE"/>
                             <span class="text">داشبورد</span>
                         </router-link>
-                        <router-link class="item" :to="{name:'articles'}" exact-active-class="active">
-                            <simple-svg :src="icons.article"
-                                        customClassName="icon"
-                                        fill="#A5B8CE"/>
-                            <span class="text">نوشته ها</span>
+                        <router-link class="item" :to="{name:'write'}" exact-active-class="active">
+                            <simple-svg :src="icons.pen"
+                                        width="22px"
+                                        customClassName="stroke"/>
+                            <span class="text">نوشتن</span>
                         </router-link>
                         <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
                             <simple-svg :src="icons.stats"
@@ -109,8 +88,8 @@
                                         fill="#A5B8CE"/>
                             <span class="text">آمار</span>
                         </router-link>
-                        <router-link class="item" :to="{name:'dashboard'}" exact-active-class="active">
-                            <simple-svg :src="icons.settings"
+                        <router-link class="item" :to="{name:'splash'}" exact-active-class="active">
+                            <simple-svg :src="icons.more"
                                         customClassName="icon"
                                         fill="#A5B8CE"/>
                             <span class="text">بیشتر</span>
@@ -152,6 +131,7 @@
                     publish: require(`@img/svg/ic_publish.svg`),
                     seo: require(`@img/svg/ic_seo.svg`),
                     category: require(`@img/svg/ic_category.svg`),
+                    more: require(`@img/svg/ic_more.svg`),
                 },
             }
         },
@@ -210,7 +190,7 @@
             },
             getTimeStamp(date = null) {
                 return new Date(date).getTime();
-            }
+            },
         },
         created() {
             this.timestamp = this.getTimeStamp();
@@ -220,6 +200,7 @@
                 ...this.$route,
             });
             this._routerReplace({name: 'splash'});
+
         },
         watch: {
             USER() {
@@ -235,7 +216,7 @@
                 }
 
                 this.checkUser();
-            }
+            },
         }
     }
 </script>

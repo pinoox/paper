@@ -1,27 +1,24 @@
 <template>
     <section class="page">
         <div class="write-container">
-            <div class="toolbar-editor"></div>
-            <div class="toolbox" v-if="false">
-                <div class="item" @click="openToolbox('category')">
-                    <simple-svg :src="$parent.icons.category"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">دسته بندی</span>
+            <div class="toolbox">
+                <div class="items">
+                    <div class="item" @click="openDrawer('')">
+                        ذخیره
+                    </div>
+                    <div class="item" @click="openDrawer('')">
+                        انتشار
+                    </div>
+                    <div class="item" @click="openDrawer('')">
+                        سئو
+                    </div>
+                    <div class="item" @click="openDrawer('category')">
+                        دسته بندی
+                    </div>
                 </div>
-                <div class="item" @click="openToolbox('seo')">
-                    <simple-svg :src="$parent.icons.seo"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">سئو</span>
-                </div>
-                <div class="item" @click="openToolbox('publish')">
-                    <simple-svg :src="$parent.icons.publish"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">انتشار</span>
-                </div>
+
             </div>
+            <div class="toolbar-editor"></div>
             <div class="paper">
                 <editor class="content"
                         :values="editor"
@@ -45,10 +42,7 @@
                 </div>
             </div>
             <div class="drawer-content">
-                <h1> Lorem ipsum dolor sit amet, consectetur adipisicing elit. A adipisci aperiam commodi deleniti eius
-                    error, explicabo incidunt, ipsam itaque iusto natus necessitatibus, vero vitae voluptate voluptates.
-                    Debitis eligendi minima officiis.</h1>
-
+                <category></category>
             </div>
             <div slot='footer' class="drawer-footer">
                 <div @click="drawerVisibility=false" class="btn btn-simple">برگشت</div>
@@ -62,19 +56,20 @@
 <script>
 
     import editor from "../components/editor.vue";
+    import category from "../drawers/category.vue";
 
     export default {
-        components: {editor},
-        created(){
+        components: {editor, category},
+        created() {
         },
         data() {
             return {
                 drawerPosition: 'bottom',
                 drawerVisibility: false,
                 drawerArea: '90%',
-                editor:{
-                    title:'تست',
-                    context:'<p>آزمایش می شود</p>',
+                editor: {
+                    title: 'تست',
+                    context: '<p>آزمایش می شود</p>',
                 },
                 params: {
 
@@ -115,7 +110,7 @@
             };
         },
         methods: {
-            openToolbox() {
+            openDrawer(drawerName) {
                 this.drawerVisibility = true;
             },
             handleBeforeClose(next) {

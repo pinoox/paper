@@ -43,6 +43,10 @@
   transition: 0.2s;
 }
 
+.hover-menu {
+  background: fade(@primaryColor, 10%);
+}
+
 @biggerTitleSize: 2.6em;
 @bigTitleSize: 2.1em;
 @titleSize: 1.5em;
@@ -109,6 +113,13 @@
   &:hover {
     color: @primaryColorDark;
     background: @textColorLight;
+  }
+}
+
+.stroke {
+  path {
+    stroke: @secondaryColor !important;
+    fill: transparent !important;
   }
 }
 
@@ -187,7 +198,6 @@ body {
 
     }
 
-
     .brand {
       margin: 20px 0 0 0;
       text-align: center;
@@ -257,6 +267,9 @@ body {
             fill: @textColorLight;
           }
 
+          &.stroke path {
+            stroke: @textColorLight !important;
+          }
         }
 
         .text {
@@ -264,6 +277,7 @@ body {
           padding: 10px 0;
           font-size: 0.8em;
         }
+
       }
     }
 
@@ -317,10 +331,16 @@ body {
       }
     }
 
-    hr {
-      width: 70%;
-      opacity: 0.3;
-    }
+    /*&.mode-write {
+      .nav {
+        .item {
+          .icon {
+            width: 22px !important;
+          }
+        }
+      }
+    }*/
+
   }
 
   .main {
@@ -348,7 +368,7 @@ body {
 
         &:hover {
           cursor: pointer;
-          background: fade(@primaryColor, 10%);
+          .hover-menu;
         }
 
         img {
@@ -372,7 +392,7 @@ body {
 
           &:hover {
             cursor: pointer;
-            background: fade(@primaryColor, 10%);
+            .hover-menu;
           }
 
           .icon {
@@ -383,32 +403,6 @@ body {
         }
       }
 
-      .toolbox {
-        text-align: left;
-        height: @toolbarHeight;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-
-        .item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 14px 10px;
-          min-width: 50px;
-          .trans;
-
-          .label {
-            font-size: 0.8em;
-          }
-
-          &:hover {
-            cursor: pointer;
-            background: fade(@primaryColor, 10%);
-            .trans;
-          }
-        }
-      }
     }
 
     .toolbar-drawer {
@@ -571,40 +565,27 @@ body {
 
         .toolbox {
           background: #fff;
-          overflow: hidden;
+          border-bottom: 1px solid @borderColor;
           position: fixed;
-          width: calc(100vw - @sidebarWidth);
-          border-top: 1px solid #e8e8e8;
-          border-bottom: 1px solid #e8e8e8;
-          height: @toolbarHeight;
-          top: @toolbarHeight;
-          display: flex;
-          align-items: center;
-          justify-content: space-evenly;
+          top: 0;
+          width: 100%;
 
-          .item {
-            text-align: center;
-            padding: 20px 30px;
-            width: 50px;
-            .trans;
+          .items {
+            height: 44px;
+            display: flex;
+            align-items: center;
 
-            &:hover {
-              cursor: pointer;
-              background: fade(@primaryColorDark, 20%);
-              .trans;
-            }
-
-            .icon {
-              display: block;
-              width: 48px;
-              margin: auto;
-            }
-
-            .label {
-              padding: 4px 0;
-              display: block;
-              font-size: 11px;
+            .item {
+              padding: 12px 20px;
+              font-size: 13px;
               color: @textColor;
+              .trans;
+
+              &:hover {
+                cursor: pointer;
+                .hover-menu;
+                .trans;
+              }
             }
           }
         }
@@ -612,7 +593,7 @@ body {
         .toolbar-editor {
           width: calc(100% - @sidebarWidth);
           position: fixed;
-          top: @toolbarHeight;
+          top: 44px;
         }
 
         .paper {
