@@ -64,9 +64,15 @@
                         items: [
                             'bold',
                             'italic',
+                            'fontSize',
                             '|',
-                            'undo',
-                            'redo',
+                            'alignment',
+                            'numberedList',
+                            'bulletedList',
+                            '|',
+                            'link',
+                            'blockQuote',
+                            'code',
                         ]
                     },
                     language: 'fa',
