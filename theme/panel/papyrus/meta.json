@@ -1,0 +1,17 @@
+{
+  "name": "papyrus",
+  "app": "com_pinoox_paper",
+  "cover": "cover.png",
+  "developer": "pinoox",
+  "copyright": "MIT",
+  "version": "1.0",
+  "app_version": "1.0",
+  "title": {
+    "en": "papyrus",
+    "fa": "پاپیروس"
+  },
+  "description": {
+    "en": "modern and innovative template for paper management",
+    "fa": "یک قالب مدرن و مبتکرانه برای مدیریت پیپر"
+  }
+}
