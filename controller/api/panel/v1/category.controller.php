@@ -52,7 +52,6 @@ class CategoryController extends MasterConfiguration
         $input = Request::input('cat,parent', null, '!empty');
         $valid = Validation::check($input, [
             'cat' => ['required', rlang('panel.invalid_request')],
-            'parent' => ['required', rlang('panel.invalid_request')],
         ]);
         if ($valid->isFail())
             Response::json($valid->first(), false);

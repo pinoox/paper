@@ -57,7 +57,7 @@ class CategoryModel extends PaperDatabase
     {
         self::$db->where('cat_id', $catItem['cat_id']);
         return self::$db->update(self::category, [
-            'parent_id' => $parent['cat_id'],
+            'parent_id' => !empty($parent['cat_id']) ? $parent['cat_id'] : 0 ,
         ]);
     }
 
