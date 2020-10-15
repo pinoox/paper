@@ -41,6 +41,12 @@ Vue.mixin({
         }
     },
     methods: {
+        hasErrors(){
+          return false;
+        },
+        getErrors(){
+          return null;
+        },
         _delay: (function () {
             let timer = 0;
             return function (callback, ms) {
@@ -79,13 +85,13 @@ Vue.mixin({
         },
         _confirm(message, func, isLoader = false) {
             this.$dialog.confirm({
-                title: this.LANG.global.warning,
+                title: this.LANG.panel.warning,
                 body: message,
             }, {
                 reverse: true,
                 loader: isLoader,
-                okText: this.LANG.global.yes,
-                cancelText: this.LANG.global.no,
+                okText: this.LANG.panel.yes,
+                cancelText: this.LANG.panel.no,
                 customClass: 'dialog-custom',
             }).then(func);
         },

@@ -1,45 +1,12 @@
 <template>
-    <section class="page">
-        <div class="write-container">
-            <div class="toolbar-editor"></div>
-            <div class="toolbox">
-                <div class="item" @click="openToolbox('category')">
-                    <simple-svg :src="$parent.icons.category"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">دسته بندی</span>
-                </div>
-                <div class="item" @click="openToolbox('seo')">
-                    <simple-svg :src="$parent.icons.seo"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">سئو</span>
-                </div>
-                <div class="item" @click="openToolbox('publish')">
-                    <simple-svg :src="$parent.icons.publish"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">انتشار</span>
-                </div>
-            </div>
-            <div class="paper">
-                <editor class="content"
-                        :values="editor"
-                        v-model="params"
-                        name="description"
-                        :title-placeholder="LANG.panel.enter_title_post"
-                        :placeholder="LANG.panel.enter_context_post">
-                </editor>
-            </div>
-        </div>
-        <publish></publish>
+    <div>
         <ch-drawer custom-class="drawer-wrapper" :location='drawerPosition'
                    :visible.sync='drawerVisibility'
                    :area="drawerArea"
                    :before-close='handleBeforeClose'>
             <div slot='header' class="drawer-header">
                 <div class="title">
-                    <simple-svg :src="$parent.icons.publish"
+                    <simple-svg :src="$parent.$parent.icons.publish"
                                 width="48px"
                                 customClassName="icon"/>
                     <div class="text">انتشار نوشته</div>
@@ -50,25 +17,25 @@
                     <column :sm="2" :md="1">
                         <div class="input-wrapper">
                             <label class="input-label">تصویر پیش نمایش</label>
-                       <div class="img-uploader">
-                           <img src="https://files.virgool.io/upload/users/48205/posts/z9ghb5gtejlr/vu5gmjm4gyrl.jpeg">
-                          <span>تغییر تصویر پیش نمایش</span>
-                       </div>
-                       </div>
+                            <div class="img-uploader">
+                                <img src="https://files.virgool.io/upload/users/48205/posts/z9ghb5gtejlr/vu5gmjm4gyrl.jpeg">
+                                <span>تغییر تصویر پیش نمایش</span>
+                            </div>
+                        </div>
                     </column>
                     <column :sm="2" :md="1">
 
                         <div class="input-wrapper">
                             <label class="input-label">عنوان</label>
                             <div class="input-group">
-                                <input name="name" v-model="editor.title" type="text" placeholder="عنوان را وارد کنید" class="input">
+                                <input name="name" type="text" placeholder="عنوان را وارد کنید" class="input">
                             </div>
                         </div>
 
                         <div class="input-wrapper">
                             <label class="input-label">خلاصه</label>
                             <div class="input-group">
-                                <textarea name="summary" v-model="params.summary"  placeholder="خلاصه کوتاه را وارد کنید" class="input"></textarea>
+                                <textarea name="summary" placeholder="خلاصه کوتاه را وارد کنید" class="input"></textarea>
                             </div>
                         </div>
 
@@ -94,25 +61,16 @@
             </div>
 
         </ch-drawer>
-    </section>
+    </div>
 </template>
 
 <script>
-
-    import Editor from "../components/editor.vue";
-    import publish from "../pages/pubish.vue";
-
     export default {
-        name: 'write',
-        components: {Editor,publish},
-        beforeRouteLeave(to, from, next) {
-            this._confirm('تست می شود', () => {
-                next();
-            });
-
-        },
-        data() {
-            return {
+        data(){
+            return{
+                drawerPosition: 'bottom',
+                drawerVisibility: false,
+                drawerArea: '90%',
                 options: [
                     {
                         title: "HTML5",
@@ -122,19 +80,10 @@
                         }
                     }
                 ],
-                drawerPosition: 'bottom',
-                drawerVisibility: false,
-                drawerArea: '90%',
-                editor: {
-                    title: null,
-                    context: null,
-                },
-                params: {},
-            };
+            }
         },
         methods: {
             openToolbox() {
-                this.editor.title = this.params.title;
                 this.drawerVisibility = true;
             },
             handleBeforeClose(next) {
@@ -143,3 +92,7 @@
         },
     }
 </script>
+
+<style scoped>
+
+</style>

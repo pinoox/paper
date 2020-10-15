@@ -19,7 +19,10 @@
             },
             placeholder: {
                 default: null,
-            }
+            },
+            titlePlaceholder:{
+              default:null,
+            },
         },
         computed: {
             editorConfig() {
@@ -91,7 +94,7 @@
                         ]
                     },
                     title: {
-                        placeholder: 'عنوان را وارد کنید'
+                        placeholder: this.titlePlaceholder,
                     },
                     placeholder: this.placeholder,
                     wordCount: {
@@ -109,7 +112,9 @@
                 return this.editor.plugins.get('Title').getBody();
             },
             getValue() {
-                return '<h1>' + this.values.title + '</h1>\n' + this.values.context;
+                let title = !!this.values.title? this.values.title : '';
+                let context = !!this.values.context? this.values.context : '';
+                return '<h1>' + title + '</h1>\n' + context;
             },
         },
         data() {

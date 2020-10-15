@@ -2,7 +2,9 @@
 @import "../css/fonts.css";
 @import '~vue-good-table/dist/vue-good-table.css';
 @import '~vuejs-dialog/dist/vuejs-dialog.min.css';
+@import '~vue-select/dist/vue-select.css';
 @import "./login.less";
+@import "./form.less";
 
 // Base
 @imgRadius: 5px;
@@ -93,6 +95,26 @@
   }
 }
 
+.btn-success {
+  background: @greenColor;
+  color: #fff;
+
+
+  &:hover {
+    background: rgb(6, 189, 117);
+  }
+}
+
+.btn-danger {
+  background: @redColor;
+  color: #fff;
+
+
+  &:hover {
+    background: rgb(183, 42, 103);
+  }
+}
+
 .btn-secondary {
   background: @secondaryColor;
   color: #fff;
@@ -178,7 +200,6 @@ body {
     position: fixed;
     height: 100%;
     width: @sidebarWidth;
-    overflow: hidden;
 
     &::-webkit-scrollbar {
       display: none; /* Safari and Chrome */
@@ -338,6 +359,7 @@ body {
       color: @secondaryColor;
       overflow: hidden;
       position: fixed;
+      z-index: 9999;
 
       .account {
         display: flex;
@@ -396,7 +418,7 @@ body {
           padding: 15px 25px;
           .trans;
 
-          .label{
+          .label {
             font-size: 0.8em;
           }
 
@@ -502,7 +524,7 @@ body {
           border-top: 1px solid #e8e8e8;
           border-bottom: 1px solid #e8e8e8;
           height: @toolbarHeight;
-          top: @toolbarHeight;
+          bottom: 0;
           display: flex;
           align-items: center;
           justify-content: space-evenly;
@@ -538,12 +560,12 @@ body {
           width: calc(100% - @sidebarWidth);
           position: fixed;
           top: @toolbarHeight;
+          z-index: 9999;
         }
 
         .paper {
           background: #fff;
-          width: 70vw;
-          min-height: 100vh;
+          width: 60vw;
           height: 100%;
           margin: @toolbarHeight auto auto;
           .boxShadow();
@@ -560,6 +582,49 @@ body {
   .toolbar-editor {
     .ck-toolbar__items {
       font-size: 16px;
+    }
+  }
+}
+
+.row {
+  content: "";
+  display: table;
+  clear: both;
+
+  .col {
+    float: right;
+    box-sizing: border-box;
+    padding: 10px;
+
+    &.col-10 {
+      width: 100%;
+    }
+    &.col-9 {
+      width: 90%;
+    }
+    &.col-8 {
+      width: 80%;
+    }
+    &.col-7 {
+      width: 70%;
+    }
+    &.col-6 {
+      width: 60%;
+    }
+    &.col-5 {
+      width: 50%;
+    }
+    &.col-4 {
+      width: 40%;
+    }
+    &.col-3 {
+      width: 30%;
+    }
+    &.col-2 {
+      width: 20%;
+    }
+    &.col-1 {
+      width: 10%;
     }
   }
 }
@@ -662,6 +727,23 @@ body {
   }
 }
 
+.form-row {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  label {
+    margin: 5px 10px 5px 0;
+  }
+
+  input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+}
+
 @drawerPadding: 5%;
 
 .drawer-wrapper {
@@ -701,11 +783,40 @@ body {
   }
 }
 
+.dialog-custom {
+
+  .dg-container {
+    z-index: 999999;
+
+    .dg-btn {
+      margin-left: 5px;
+    }
+
+    .dg-btn--ok {
+      color: @primaryColor;
+      border-color: @primaryColor;
+    }
+
+    .dg-btn--cancel {
+      background-color: @primaryColor;
+    }
+
+    .dg-btn-loader .dg-circle {
+      background-color: @primaryColor;
+    }
+  }
+}
 
 @media screen and (max-width: 992px) {
 
 }
 
 @media screen and (max-width: 768px) {
-
+  .row {
+    .col {
+      &.col-small {
+        width: 100%;
+      }
+    }
+  }
 }
