@@ -58,7 +58,6 @@
     background-color: rgba(31, 66, 108, 0.2);
     border: 2px dashed rgba(31, 66, 108, 0.53);
     -webkit-border-radius: 5px;
-    border-radius: 5px;
 }
 
 .nestable-drag-layer {

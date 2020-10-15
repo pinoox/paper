@@ -28,7 +28,10 @@
                 </editor>
             </div>
             <div class="statusbar">
-                <div class="resize">
+                <div class="item">
+                    <div class="counter">15 کلمه</div>
+                </div>
+                <div class="item">
                     <span class="label no-select">اندازه صفحه</span>
                     <div class="zoom in" @click="resizePaper('in')">
                         <simple-svg :src="$parent.icons.zoomIn"
@@ -41,6 +44,7 @@
                                     fill="#A5B8CE"/>
                     </div>
                 </div>
+
             </div>
         </div>
 

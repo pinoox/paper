@@ -132,6 +132,8 @@
                     seo: require(`@img/svg/ic_seo.svg`),
                     category: require(`@img/svg/ic_category.svg`),
                     more: require(`@img/svg/ic_more.svg`),
+                    zoomIn: require(`@img/svg/ic_zoom_in.svg`),
+                    zoomOut: require(`@img/svg/ic_zoom_out.svg`),
                 },
             }
         },

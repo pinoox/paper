@@ -18,10 +18,15 @@
 @textColorLight: #A5B8CE;
 @textColor: #506E93;
 @orangeColor: #ed9703;
-@greenColor: #08DB87;
+@orangeColorDark: #b37102;
+@greenColor: #06c479;
+@greenColorDark: #09985f;
 @redColor: #db337b;
+@redColorDark: #a7245c;
 @blueColor: #35bbdb;
+@blueColorDark: #2291a9;
 @yellowColor: #f1d400;
+@yellowColorDark: #a79203;
 @bgColor: #F3F3F3;
 
 .boxShadow(@opacity:0.1) {
@@ -30,6 +35,17 @@
 
 .textShadow(@opacity:0.1) {
   text-shadow: 0 4px 8px rgba(19, 37, 71, @opacity);
+}
+
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
 .no-outline {
@@ -47,6 +63,7 @@
 .hover-menu {
   background: fade(@primaryColor, 10%);
 }
+
 
 @biggerTitleSize: 2.6em;
 @bigTitleSize: 2.1em;
@@ -92,7 +109,6 @@
   background: @primaryColor;
   color: #fff;
 
-
   &:hover {
     background: rgb(50, 98, 157);
   }
@@ -108,13 +124,45 @@
   }
 }
 
+.btn-warning {
+  background: @orangeColor;
+  color: #fff;
+
+  &:hover {
+    background: @orangeColorDark;
+  }
+}
+
+.btn-success {
+  background: @greenColor;
+  color: #fff;
+
+  &:hover {
+    background: @greenColorDark
+  }
+}
+
 .btn-simple {
   color: @secondaryColor;
+  background: #fff;
 
   &:hover {
     color: @primaryColorDark;
-    background: @textColorLight;
+    background: fade(@textColorLight, 40%);
   }
+}
+
+.input {
+  border: 2px solid fade(@primaryColor, 10%);
+  font-family: 'iranSans', serif;
+  padding: 15px 15px;
+  border-radius: 6px;
+  outline: none;
+  .boxShadow();
+}
+
+.form-group{
+  margin: 10px;
 }
 
 .stroke {
@@ -599,7 +647,7 @@ body {
 
         .paper {
           background: #fff;
-          width: 70vw;
+          width: 75%;
           height: 100%;
           margin: @toolbarHeight auto auto;
           .boxShadow();
@@ -608,6 +656,59 @@ body {
             padding: 20px;
 
           }
+        }
+
+        .statusbar {
+          position: fixed;
+          width: calc(100% - @sidebarWidth);
+          height: 25px;
+          background: #fff;
+          border-top: 1px solid @borderColor;
+          bottom: 0;
+          display: flex;
+          justify-content: flex-end;
+          overflow: hidden;
+
+          .item {
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+
+            .label {
+              font-size: 11px;
+              color: @textColorLight;
+              margin: 0 10px;
+              padding: 5px 0;
+            }
+
+            .counter {
+              font-size: 11px;
+              color: @textColorLight;
+            }
+
+            .zoom {
+              padding: 5px 5px 0 5px;
+              width: 15px;
+
+              &:hover {
+                cursor: pointer;
+                .hover-menu;
+                .trans;
+
+                .icon path {
+                  fill: @textColor;
+                }
+              }
+
+              .icon {
+                path {
+                  fill: @textColorLight;
+                }
+              }
+            }
+          }
+
+
         }
       }
 
@@ -787,34 +888,76 @@ body {
     }
   }
 
-  .drawer-footer {
-    padding: 20px @drawerPadding;
+  .ch-drawer__footer {
+    border-top: 1px solid fade(@primaryColor, 10%);
+    background: fade(@primaryColor, 5%);
+    padding: 15px @drawerPadding;
 
-    .btn {
-      margin: 0 5px;
+    .drawer-footer {
+
+      .btn {
+        margin: 0 5px;
+      }
     }
+
   }
 
   .drawer-content {
     padding: 0 @drawerPadding;
+
+    .btn-add {
+      margin-bottom: 20px;
+    }
 
     .nestable-category {
       max-width: 500px;
       margin: auto;
 
       .nestable-item, .nestable-item-copy {
-        border-radius: 4px;
         padding: 10px;
         background: fade(@primaryColor, 8%);
       }
+
+      .nestable-item-content {
+        position: relative;
+
+        .select {
+          position: absolute;
+          left: -2px;
+          top: -2px;
+          width: 25px;
+          height: 27px;
+          background: fade(@primaryColor, 10%);
+          border-radius: 5px;
+        }
+
+        .cat-name {
+          font-weight: bold;
+          color: @textColor;
+        }
+
+        .remove {
+          position: absolute;
+          left: 3%;
+          top: 2px;
+          color: @textColor;
+        }
+      }
+    }
+
+
+    .add-category {
+      max-width: 500px;
+      text-align: center;
+      margin: auto auto 30px;
+
+      .input {
+        min-width: 93%;
+      }
+
     }
   }
-}
 
-.drawer-category {
-  .add-category {
-
-  }
 }
 
 
@@ -853,6 +996,9 @@ body {
   }
 }
 
+.multiselect__option--highlight{
+  background: @primaryColorDark;
+}
 
 @media screen and (max-width: 991px) {
 

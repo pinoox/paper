@@ -20,8 +20,8 @@ import ChDrawer from 'ch-drawer';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import VueNestable from 'vue-nestable';
 
-Vue.use(VueNestable)
-Vue.use(ChDrawer, { zIndex: 1000 });
+Vue.use(VueNestable);
+Vue.use(ChDrawer, {zIndex: 1000});
 Vue.use(VueGoodTablePlugin);
 Vue.use(VueSimpleSVG);
 Vue.use(Notifications);
