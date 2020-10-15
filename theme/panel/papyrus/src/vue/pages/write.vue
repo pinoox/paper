@@ -19,13 +19,28 @@
 
             </div>
             <div class="toolbar-editor"></div>
-            <div class="paper">
+            <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">
                 <editor class="content"
                         :values="editor"
                         v-model="params"
                         name="description"
                         placeholder="متن را وارد کنید">
                 </editor>
+            </div>
+            <div class="statusbar">
+                <div class="resize">
+                    <span class="label no-select">اندازه صفحه</span>
+                    <div class="zoom in" @click="resizePaper('in')">
+                        <simple-svg :src="$parent.icons.zoomIn"
+                                    customClassName="icon"
+                                    fill="#A5B8CE"/>
+                    </div>
+                    <div class="zoom out" @click="resizePaper('out')">
+                        <simple-svg :src="$parent.icons.zoomOut"
+                                    customClassName="icon"
+                                    fill="#A5B8CE"/>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -45,6 +60,8 @@
         },
         data() {
             return {
+                paperSize: 75,
+                marginTop: '64px',
                 drawerName: false,
                 editor: {
                     title: 'تست',
@@ -91,7 +108,12 @@
         methods: {
             openDrawer(drawerName) {
                 this.drawerName = drawerName;
-            }
+            },
+            resizePaper(zoom) {
+                if ((zoom === 'in' && this.paperSize < 100)) this.paperSize += 5;
+                if ((zoom === 'out' && this.paperSize > 50)) this.paperSize -= 5;
+                this.marginTop = this.paperSize >= 100 ? 0 : '64px';
+            },
         }
     }
 </script>
