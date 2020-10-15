@@ -33,6 +33,11 @@
                             <span class="cat-name" @click="selectCategory(item)">{{ item.cat_name }}</span>
 
                         </vue-nestable-handle>
+                        <div slot="placeholder">
+                            <b>لیست دسته بندی ها خالی است</b>
+                            <p>با دکمه افزودن بالا میتوانید دسته های جدید را اضافه کنید</p>
+                        </div>
+
                     </vue-nestable>
                 </div>
 
