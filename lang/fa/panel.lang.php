@@ -11,4 +11,7 @@ return [
     'login' => 'ورود',
     'enter_title_post' => 'عنوان را اینجا وارد کنید',
     'enter_context_post' => 'شروع به نوشتن کنید',
+    'title' => 'عنوان',
+    'context' => 'متن',
+    'nothing_found' => 'چیزی یافت نشد',
 ];

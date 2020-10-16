@@ -19,18 +19,18 @@
                 </div>
                 <div class="nav">
                     <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
-                        <simple-svg :src="icons.dashboard"
+                        <simple-svg :src="_icons.dashboard"
                                     customClassName="icon"
                                     fill="#A5B8CE"/>
                         <span class="text">داشبورد</span>
                     </router-link>
                     <router-link class="item" :to="{name:'write'}" exact-active-class="active">
-                        <simple-svg :src="icons.pen"
+                        <simple-svg :src="_icons.pen"
                                     customClassName="icon stroke"/>
                         <span class="text">نوشتن</span>
                     </router-link>
-                    <router-link class="item" :to="{name:'write'}" exact-active-class="active">
-                        <simple-svg :src="icons.article"
+                    <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
+                        <simple-svg :src="_icons.article"
                                     customClassName="icon stroke"/>
                         <span class="text">نوشته ها</span>
                     </router-link>
@@ -48,19 +48,19 @@
                 </div>
             </div>
             <div class="main">
-                <div v-if="!$route.meta.hideToolbar" class="toolbar">
+                <div v-if="hideToolbar" class="toolbar">
                     <div class="account">
                         <img src="@img/sample-user.jpg" alt="profile">
                         <span class="text">رضا رضایی</span>
                     </div>
                     <div class="quick-actions">
                         <div class="item">
-                            <simple-svg :src="icons.eye"
+                            <simple-svg :src="_icons.eye"
                                         width="25px"
                                         customClassName="icon"/>
                         </div>
                         <router-link tag="div" :to="{name:'write'}" class="item">
-                            <simple-svg :src="icons.pen"
+                            <simple-svg :src="_icons.pen"
                                         width="22px"
                                         customClassName="icon"/>
                         </router-link>
@@ -70,25 +70,25 @@
                 <div class="toolbar-drawer">
                     <div class="items">
                         <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
-                            <simple-svg :src="icons.dashboard"
+                            <simple-svg :src="_icons.dashboard"
                                         customClassName="icon"
                                         fill="#A5B8CE"/>
                             <span class="text">داشبورد</span>
                         </router-link>
                         <router-link class="item" :to="{name:'write'}" exact-active-class="active">
-                            <simple-svg :src="icons.pen"
+                            <simple-svg :src="_icons.pen"
                                         width="22px"
                                         customClassName="stroke"/>
                             <span class="text">نوشتن</span>
                         </router-link>
                         <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
-                            <simple-svg :src="icons.stats"
+                            <simple-svg :src="_icons.stats"
                                         customClassName="icon"
                                         fill="#A5B8CE"/>
                             <span class="text">آمار</span>
                         </router-link>
                         <router-link class="item" :to="{name:'splash'}" exact-active-class="active">
-                            <simple-svg :src="icons.more"
+                            <simple-svg :src="_icons.more"
                                         customClassName="icon"
                                         fill="#A5B8CE"/>
                             <span class="text">بیشتر</span>
@@ -119,28 +119,14 @@
                 timestamp: null,
                 route: {},
                 numProcessing: 0,
-                icons: {
-                    dashboard: require(`@img/svg/ic_dashboard.svg`),
-                    article: require(`@img/svg/ic_article.svg`),
-                    stats: require(`@img/svg/ic_stats.svg`),
-                    settings: require(`@img/svg/ic_settings.svg`),
-                    users: require(`@img/svg/ic_users.svg`),
-                    profile: require(`@img/svg/ic_profile.svg`),
-                    eye: require(`@img/svg/ic_eye.svg`),
-                    pen: require(`@img/svg/ic_pen_square.svg`),
-                    delete: require(`@img/svg/ic_delete.svg`),
-                    publish: require(`@img/svg/ic_publish.svg`),
-                    seo: require(`@img/svg/ic_seo.svg`),
-                    category: require(`@img/svg/ic_category.svg`),
-                    more: require(`@img/svg/ic_more.svg`),
-                    zoomIn: require(`@img/svg/ic_zoom_in.svg`),
-                    zoomOut: require(`@img/svg/ic_zoom_out.svg`),
-                },
             }
         },
         computed: {
             hasCustomView() {
                 return !!this.$route.meta.customView;
+            },
+            hideToolbar() {
+                return !this.$route.meta.hideToolbar;
             }
         },
         methods: {
@@ -203,7 +189,6 @@
                 ...this.$route,
             });
             this._routerReplace({name: 'splash'});
-
         },
         watch: {
             USER() {

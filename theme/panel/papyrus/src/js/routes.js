@@ -38,6 +38,15 @@ export const routes = [
         }
     },
     {
+        path: PINOOX.URL.BASE + '/post/:post_id',
+        name: 'post-edit',
+        component: Write,
+        meta: {
+            hideToolbar: true,
+        },
+        props:true,
+    },
+    {
         path: PINOOX.URL.BASE + '/login',
         name: 'login',
         meta: {

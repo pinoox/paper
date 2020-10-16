@@ -38,7 +38,26 @@ Vue.mixin({
                     isLoading: false,
                 }
             }
-        }
+        },
+        _icons() {
+            return {
+                dashboard: require(`@img/svg/ic_dashboard.svg`),
+                article: require(`@img/svg/ic_article.svg`),
+                stats: require(`@img/svg/ic_stats.svg`),
+                settings: require(`@img/svg/ic_settings.svg`),
+                users: require(`@img/svg/ic_users.svg`),
+                profile: require(`@img/svg/ic_profile.svg`),
+                eye: require(`@img/svg/ic_eye.svg`),
+                pen: require(`@img/svg/ic_pen_square.svg`),
+                delete: require(`@img/svg/ic_delete.svg`),
+                publish: require(`@img/svg/ic_publish.svg`),
+                seo: require(`@img/svg/ic_seo.svg`),
+                category: require(`@img/svg/ic_category.svg`),
+                more: require(`@img/svg/ic_more.svg`),
+                zoomIn: require(`@img/svg/ic_zoom_in.svg`),
+                zoomOut: require(`@img/svg/ic_zoom_out.svg`),
+            };
+        },
     },
     methods: {
         hasErrors(){

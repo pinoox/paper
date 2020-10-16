@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $_title ?></title>
+    <title>paper</title>
     <meta property="og:title" content="<?php echo $_title ?>"/>
     <meta property="og:type" content="website"/>
     <meta property="og:description" content="<?php echo @$_description; ?>"/>

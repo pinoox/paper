@@ -27,14 +27,9 @@ class PaperDatabase extends PinooxDatabase
     const unseen = "unseen";
 
     //tables
-    const article = 'com_pinoox_paper_article';
+    const post = 'com_pinoox_paper_post';
+    const post_tag = 'com_pinoox_paper_post_tag';
     const tag = 'com_pinoox_paper_tag';
-    const article_tag = 'com_pinoox_paper_article_tag';
-    const menu = 'com_pinoox_paper_menu';
-    const settings = 'com_pinoox_paper_settings';
-    const comment = 'com_pinoox_paper_comment';
-    const page = 'com_pinoox_paper_page';
-    const contact = 'com_pinoox_paper_contact';
     const category = 'com_pinoox_paper_category';
 
 }
