@@ -29,11 +29,10 @@
                                     customClassName="icon stroke"/>
                         <span class="text">نوشتن</span>
                     </router-link>
-                    <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
-                        <simple-svg :src="icons.stats"
-                                    customClassName="icon"
-                                    fill="#A5B8CE"/>
-                        <span class="text">آمار</span>
+                    <router-link class="item" :to="{name:'write'}" exact-active-class="active">
+                        <simple-svg :src="icons.article"
+                                    customClassName="icon stroke"/>
+                        <span class="text">نوشته ها</span>
                     </router-link>
                 </div>
                 <div class="menu">
@@ -99,7 +98,9 @@
 
                 <transition mode="out-in" enter-active-class="animated faster fadeIn"
                             leave-active-class="animated faster fadeOut">
-                    <router-view></router-view>
+                    <keep-alive include="write">
+                        <router-view></router-view>
+                    </keep-alive>
                 </transition>
             </div>
         </div>

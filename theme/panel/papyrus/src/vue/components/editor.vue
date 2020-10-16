@@ -1,10 +1,36 @@
 <template>
-    <div v-if="isLoadEditor" class="content-editor row-editor">
-        <ckeditor class="bg-danger" :value="getValue" @input="updateValue" :editor="initEditor" :config="editorConfig"
-                  @ready="onReady">
-            <slot></slot>
-        </ckeditor>
+    <div v-if="isLoadEditor">
+        <div class="toolbar-editor"></div>
+        <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">
+            <div class="content-editor row-editor">
+                <ckeditor class="bg-danger" :value="getValue" @input="updateValue" :editor="initEditor"
+                          :config="editorConfig"
+                          @ready="onReady">
+                    <slot></slot>
+                </ckeditor>
+            </div>
+        </div>
+        <div class="statusbar">
+            <div class="item">
+                <div class="label">{{stats.words}} کلمه</div>
+                <div class="label">{{stats.characters}} حرف</div>
+            </div>
+            <div class="item">
+                <span class="label no-select">اندازه صفحه</span>
+                <div class="zoom in" @click="resizePaper('in')">
+                    <simple-svg :src="$parent.$parent.icons.zoomIn"
+                                customClassName="icon"
+                                fill="#A5B8CE"/>
+                </div>
+                <div class="zoom out" @click="resizePaper('out')">
+                    <simple-svg :src="$parent.$parent.icons.zoomOut"
+                                customClassName="icon"
+                                fill="#A5B8CE"/>
+                </div>
+            </div>
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -19,7 +45,10 @@
             },
             placeholder: {
                 default: null,
-            }
+            },
+            titlePlaceholder: {
+                default: null,
+            },
         },
         computed: {
             editorConfig() {
@@ -64,9 +93,15 @@
                         items: [
                             'bold',
                             'italic',
+                            'fontSize',
                             '|',
-                            'undo',
-                            'redo',
+                            'alignment',
+                            'numberedList',
+                            'bulletedList',
+                            '|',
+                            'link',
+                            'blockQuote',
+                            'code',
                         ]
                     },
                     language: 'fa',
@@ -85,13 +120,12 @@
                         ]
                     },
                     title: {
-                        placeholder: 'عنوان را وارد کنید'
+                        placeholder: this.titlePlaceholder,
                     },
                     placeholder: this.placeholder,
                     wordCount: {
                         onUpdate: stats => {
-                            // stats.characters
-                            // stats.words
+                           this.stats = stats;
                         }
                     }
                 }
@@ -103,7 +137,9 @@
                 return this.editor.plugins.get('Title').getBody();
             },
             getValue() {
-                return '<h1>' + this.values.title + '</h1>\n' + this.values.context;
+                let title = !!this.values.title ? this.values.title : '';
+                let context = !!this.values.context ? this.values.context : '';
+                return '<h1>' + title + '</h1>\n' + context;
             },
         },
         data() {
@@ -111,6 +147,12 @@
                 isLoadEditor: false,
                 initEditor: DecoupledDocumentEditor,
                 editor: null,
+                paperSize: 75,
+                marginTop: '64px',
+                stats:{
+                    characters:0,
+                    words:0,
+                },
             };
         },
         methods: {
@@ -133,7 +175,12 @@
                 });
                 this.$emit('title', data.title);
                 this.$emit('context', data.context);
-            }
+            },
+            resizePaper(zoom) {
+                if ((zoom === 'in' && this.paperSize < 100)) this.paperSize += 5;
+                if ((zoom === 'out' && this.paperSize > 50)) this.paperSize -= 5;
+                this.marginTop = this.paperSize >= 100 ? '28px' : '64px';
+            },
         },
         mounted() {
             this.isLoadEditor = true;

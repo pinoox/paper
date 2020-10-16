@@ -2,8 +2,10 @@
 @import "../css/fonts.css";
 @import '~vue-good-table/dist/vue-good-table.css';
 @import '~vuejs-dialog/dist/vuejs-dialog.min.css';
+@import '~vue-select/dist/vue-select.css';
 @import "./login.less";
 @import "../css/nestable.css";
+@import "./form.less";
 
 // Base
 @imgRadius: 5px;
@@ -114,6 +116,26 @@
   }
 }
 
+.btn-success {
+  background: @greenColor;
+  color: #fff;
+
+
+  &:hover {
+    background: rgb(6, 189, 117);
+  }
+}
+
+.btn-danger {
+  background: @redColor;
+  color: #fff;
+
+
+  &:hover {
+    background: rgb(183, 42, 103);
+  }
+}
+
 .btn-secondary {
   background: @secondaryColor;
   color: #fff;
@@ -150,19 +172,6 @@
     color: @primaryColorDark;
     background: fade(@textColorLight, 40%);
   }
-}
-
-.input {
-  border: 2px solid fade(@primaryColor, 10%);
-  font-family: 'iranSans', serif;
-  padding: 15px 15px;
-  border-radius: 6px;
-  outline: none;
-  .boxShadow();
-}
-
-.form-group{
-  margin: 10px;
 }
 
 .stroke {
@@ -238,7 +247,6 @@ body {
     position: fixed;
     height: 100%;
     width: @sidebarWidth;
-    overflow: hidden;
 
     &::-webkit-scrollbar {
       display: none; /* Safari and Chrome */
@@ -960,48 +968,68 @@ body {
 
 }
 
+.dialog-custom {
+  .vgt-wrap.rtl {
+    .vgt-table {
+      th.sortable {
+        &::after, &::before {
+          right: 0;
+          left: initial;
+          margin-right: 0;
+        }
+      }
 
-.vgt-wrap.rtl {
-  .vgt-table {
-    th.sortable {
-      &::after, &::before {
-        right: 0;
-        left: initial;
-        margin-right: 0;
+      .dg-container {
+        z-index: 999999;
+
+        .dg-btn {
+          margin-left: 5px;
+        }
+
+        .dg-btn--ok {
+          color: @primaryColor;
+          border-color: @primaryColor;
+        }
+
+        .dg-btn--cancel {
+          background-color: @primaryColor;
+        }
+
+        .dg-btn-loader .dg-circle {
+          background-color: @primaryColor;
+        }
       }
     }
 
-    th.sorting-asc {
-      &::after, &::before {
-        margin-right: 0;
+    .vgt-wrap__footer {
+      background: transparent;
+      border: none;
+
+      .footer__navigation__page-btn {
+        color: @textColor;
+
+        .chevron.right::after {
+          border-left: 6px solid @textColor;
+        }
+
+        .chevron.left::after {
+          border-right: 6px solid @textColor;
+        }
       }
     }
   }
 }
 
-.vgt-wrap__footer {
-  background: transparent;
-  border: none;
-
-  .footer__navigation__page-btn {
-    color: @textColor;
-
-    .chevron.right::after {
-      border-left: 6px solid @textColor;
-    }
-
-    .chevron.left::after {
-      border-right: 6px solid @textColor;
-    }
-  }
-}
-
-.multiselect__option--highlight{
+.multiselect__option--highlight {
   background: @primaryColorDark;
 }
 
 @media screen and (max-width: 991px) {
-
+  th.sorting-asc {
+    &::after, &::before {
+      margin-right: 0;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
