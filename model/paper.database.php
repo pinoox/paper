@@ -27,6 +27,7 @@ class PaperDatabase extends PinooxDatabase
     const unseen = "unseen";
 
     //tables
+    const settings = 'com_pinoox_paper_settings';
     const post = 'com_pinoox_paper_post';
     const post_tag = 'com_pinoox_paper_post_tag';
     const tag = 'com_pinoox_paper_tag';

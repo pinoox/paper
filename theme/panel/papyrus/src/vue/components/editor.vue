@@ -15,11 +15,11 @@
                 <div class="label" :class="status">{{LANG.post.status[status]}}</div>
             </div>
             <div class="item">
-                <div class="label">{{stats.words}} کلمه</div>
-                <div class="label">{{stats.characters}} حرف</div>
+                <div class="label">{{stats.words}} {{LANG.post.word}}</div>
+                <div class="label">{{stats.characters}} {{LANG.post.character}}</div>
             </div>
             <div class="item">
-                <span class="label no-select">اندازه صفحه</span>
+                <span class="label no-select">{{LANG.post.size_screen}}</span>
                 <div class="zoom in" @click="resizePaper('in')">
                     <simple-svg :src="_icons.zoomIn"
                                 customClassName="icon"

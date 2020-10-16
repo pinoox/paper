@@ -4,16 +4,13 @@
             <div class="toolbox">
                 <div class="items">
                     <div class="item" @click="save()">
-                        ذخیره
+                        {{LANG.post.save}}
                     </div>
                     <div @click="openDrawer('publish')" class="item">
-                        انتشار
-                    </div>
-                    <div class="item">
-                        سئو
+                        {{LANG.post.publication}}
                     </div>
                     <div class="item" @click="openDrawer('category')">
-                        دسته بندی
+                        {{LANG.post.category}}
                     </div>
                 </div>
             </div>
@@ -22,8 +19,8 @@
                     :status="status"
                     v-model="params.editor"
                     name="description"
-                    :title-placeholder="LANG.panel.enter_title_post"
-                    :placeholder="LANG.panel.enter_context_post">
+                    :title-placeholder="LANG.post.enter_title"
+                    :placeholder="LANG.post.enter_context">
             </editor>
         </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
@@ -42,7 +39,7 @@
         props: ['post_id'],
         components: {Editor, Category, Publish},
         beforeRouteLeave(to, from, next) {
-            // this._confirm('تست می شود', () => {
+            // this._confirm('confirm?', () => {
             next();
             // });
         },

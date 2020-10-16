@@ -10,7 +10,7 @@
                     <simple-svg :src="_icons.publish"
                                 width="48px"
                                 customClassName="icon"/>
-                    <div class="text">انتشار نوشته</div>
+                    <div class="text">{{LANG.post.publication_post}}</div>
                 </div>
             </div>
             <div class="drawer-content">
@@ -18,23 +18,23 @@
                     <column :sm="2" :md="1">
 
                         <div class="input-wrapper">
-                            <label class="input-label">عنوان</label>
+                            <label class="input-label">{{LANG.post.title}}</label>
                             <div class="input-group">
                                 <input v-model="$parent.editor.title" name="name" type="text"
-                                       placeholder="عنوان را وارد کنید" class="input">
+                                       :placeholder="LANG.post.enter_title" class="input">
                             </div>
                         </div>
 
                         <div class="input-wrapper">
-                            <label class="input-label">خلاصه</label>
+                            <label class="input-label">{{LANG.post.summary}}</label>
                             <div class="input-group">
-                                <textarea v-model="$parent.params.summary" name="summary" placeholder="خلاصه کوتاه را وارد کنید"
+                                <textarea v-model="$parent.params.summary" name="summary" :placeholder="LANG.post.enter_summary"
                                           class="input"></textarea>
                             </div>
                         </div>
 
                         <div class="input-wrapper">
-                            <label class="input-label">برچسب ها</label>
+                            <label class="input-label">{{LANG.post.tags}}</label>
                             <v-select
                                     multiple
                                     taggable
@@ -44,29 +44,30 @@
                                     :options="tags"
                                     @search="searchTag"
                                     v-model="$parent.params.tags"
-                                    placeholder="برچسب ها را وارد کنید"
+                                    placeholder="add_tag"
                             >
                                 <template slot="no-options">
                                     {{LANG.panel.nothing_found}}
                                 </template>
                             </v-select>
+                            <span class="sub-label">{{LANG.post.help_add_tag}}</span>
                         </div>
                     </column>
                     <column :sm="2" :md="1">
                         <div class="input-wrapper">
-                            <label class="input-label">تصویر پیش نمایش</label>
+                            <label class="input-label">{{LANG.post.preview_image}}</label>
                             <div class="img-uploader">
                                 <img src="https://www.pinoox.com/apps/com_pinoox_hub/theme/blueberry/dist/images/128.de685b7e9f4a0312239b71815fe502ff.png">
-                                <span>تغییر تصویر پیش نمایش</span>
+                                <span>{{LANG.post.change_preview_image}}</span>
                             </div>
                         </div>
                     </column>
                 </row>
             </div>
             <div slot='footer' class="drawer-footer">
-                <div @click="toggleDrawer()" class="btn btn-simple">برگشت</div>
-                <div class="btn btn-success" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">انتشار</div>
-                <div class="btn btn-danger" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">لغو انتشار</div>
+                <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.post.close}}</div>
+                <div class="btn btn-success" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">{{LANG.post.publication}}</div>
+                <div class="btn btn-danger" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">{{LANG.post.cancel_publication}}</div>
             </div>
         </ch-drawer>
     </section>
