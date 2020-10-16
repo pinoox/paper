@@ -55,7 +55,7 @@
                                 <td>منتشر شده</td>
                                 <td>
                                     <simple-svg
-                                            :src="$parent.icons.delete"
+                                            :src="_icons.delete"
                                                 width="22px"
                                                 customClassName="icon"/>
                                 </td>

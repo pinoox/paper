@@ -7,10 +7,10 @@
                    :before-close='handleBeforeClose'>
             <div slot='header' class="drawer-header">
                 <div class="title">
-                    <simple-svg :src="$parent.$parent.icons.publish"
+                    <simple-svg :src="_icons.publish"
                                 width="48px"
                                 customClassName="icon"/>
-                    <div class="text">انتشار نوشته</div>
+                    <div class="text">{{LANG.post.publication_post}}</div>
                 </div>
             </div>
             <div class="drawer-content">
@@ -18,47 +18,56 @@
                     <column :sm="2" :md="1">
 
                         <div class="input-wrapper">
-                            <label class="input-label">عنوان</label>
+                            <label class="input-label">{{LANG.post.title}}</label>
                             <div class="input-group">
-                                <input name="name" type="text" placeholder="عنوان را وارد کنید" class="input">
+                                <input v-model="$parent.editor.title" name="name" type="text"
+                                       :placeholder="LANG.post.enter_title" class="input">
                             </div>
                         </div>
 
                         <div class="input-wrapper">
-                            <label class="input-label">خلاصه</label>
+                            <label class="input-label">{{LANG.post.summary}}</label>
                             <div class="input-group">
-                                <textarea name="summary" placeholder="خلاصه کوتاه را وارد کنید" class="input"></textarea>
+                                <textarea v-model="$parent.params.summary" name="summary" :placeholder="LANG.post.enter_summary"
+                                          class="input"></textarea>
                             </div>
                         </div>
 
                         <div class="input-wrapper">
-                            <label class="input-label">برچسب ها</label>
+                            <label class="input-label">{{LANG.post.tags}}</label>
                             <v-select
-                                    class="input"
-                                    taggable
                                     multiple
-                                    label="title"
+                                    taggable
+                                    class="input"
                                     dir="rtl"
-                                    placeholder="برچسب ها را وارد کنید"
-                                    :options="options"
-                            />
+                                    label="tag_name"
+                                    :options="tags"
+                                    @search="searchTag"
+                                    v-model="$parent.params.tags"
+                                    placeholder="add_tag"
+                            >
+                                <template slot="no-options">
+                                    {{LANG.panel.nothing_found}}
+                                </template>
+                            </v-select>
+                            <span class="sub-label">{{LANG.post.help_add_tag}}</span>
                         </div>
                     </column>
                     <column :sm="2" :md="1">
                         <div class="input-wrapper">
-                            <label class="input-label">تصویر پیش نمایش</label>
+                            <label class="input-label">{{LANG.post.preview_image}}</label>
                             <div class="img-uploader">
-                                <img src="https://files.virgool.io/upload/users/48205/posts/z9ghb5gtejlr/vu5gmjm4gyrl.jpeg">
-                                <span>تغییر تصویر پیش نمایش</span>
+                                <img src="https://www.pinoox.com/apps/com_pinoox_hub/theme/blueberry/dist/images/128.de685b7e9f4a0312239b71815fe502ff.png">
+                                <span>{{LANG.post.change_preview_image}}</span>
                             </div>
                         </div>
                     </column>
                 </row>
             </div>
             <div slot='footer' class="drawer-footer">
-                <div @click="toggleDrawer()" class="btn btn-simple">برگشت</div>
-                <div class="btn btn-success">انتشار</div>
-                <div class="btn btn-danger">لغو انتشار</div>
+                <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.post.close}}</div>
+                <div class="btn btn-success" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">{{LANG.post.publication}}</div>
+                <div class="btn btn-danger" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">{{LANG.post.cancel_publication}}</div>
             </div>
         </ch-drawer>
     </section>
@@ -67,8 +76,12 @@
 <script>
     export default {
         props: ['open'],
-        data(){
-            return{
+        created(){
+          this.getInitTags();
+        },
+        data() {
+            return {
+                tags:[],
                 drawerPosition: 'bottom',
                 drawerVisibility: false,
                 drawerArea: '90%',
@@ -101,6 +114,21 @@
                 this.toggleDrawer();
                 next();
             },
+            searchTag(keyword = '', loading) {
+                this._delay(() => {
+                    keyword = (keyword === undefined) ? null : keyword;
+                    if (!!loading) loading(true);
+                    this.$http.get(this.URL.API + 'post/searchTags/' + keyword, this.offLoading).then((json) => {
+                        this.tags = !!json.data ? json.data : [];
+                        if (!!loading) loading(false);
+                    });
+                }, 350);
+            },
+            getInitTags() {
+                this.$http.get(this.URL.API + 'post/searchTags/').then((json) => {
+                    this.tags = !!json.data ? json.data : [];
+                });
+            }
         },
     }
 </script>
