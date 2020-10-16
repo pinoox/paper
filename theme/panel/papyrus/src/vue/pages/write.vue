@@ -1,135 +1,62 @@
 <template>
     <section class="page">
         <div class="write-container">
-            <div class="toolbar-editor"></div>
             <div class="toolbox">
-                <div class="item" @click="openToolbox('category')">
-                    <simple-svg :src="$parent.icons.category"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">دسته بندی</span>
-                </div>
-                <div class="item" @click="openToolbox('seo')">
-                    <simple-svg :src="$parent.icons.seo"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">سئو</span>
-                </div>
-                <div class="item" @click="openToolbox('publish')">
-                    <simple-svg :src="$parent.icons.publish"
-                                width="22px"
-                                customClassName="icon"/>
-                    <span class="label">انتشار</span>
+                <div class="items">
+                    <div class="item">
+                        ذخیره
+                    </div>
+                    <div @click="openDrawer('publish')" class="item">
+                        انتشار
+                    </div>
+                    <div class="item">
+                        سئو
+                    </div>
+                    <div class="item" @click="openDrawer('category')">
+                        دسته بندی
+                    </div>
                 </div>
             </div>
-            <div class="paper">
-                <editor class="content"
-                        :values="editor"
-                        v-model="params"
-                        name="description"
-                        :title-placeholder="LANG.panel.enter_title_post"
-                        :placeholder="LANG.panel.enter_context_post">
-                </editor>
-            </div>
+            <editor class="content"
+                    :values="editor"
+                    v-model="params"
+                    name="description"
+                    :title-placeholder="LANG.panel.enter_title_post"
+                    :placeholder="LANG.panel.enter_context_post">
+            </editor>
         </div>
-        <publish></publish>
-        <ch-drawer custom-class="drawer-wrapper" :location='drawerPosition'
-                   :visible.sync='drawerVisibility'
-                   :area="drawerArea"
-                   :before-close='handleBeforeClose'>
-            <div slot='header' class="drawer-header">
-                <div class="title">
-                    <simple-svg :src="$parent.icons.publish"
-                                width="48px"
-                                customClassName="icon"/>
-                    <div class="text">انتشار نوشته</div>
-                </div>
-            </div>
-            <div class="drawer-content">
-                <row :gutter="12" :columns="2">
-                    <column :sm="2" :md="1">
-                        <div class="input-wrapper">
-                            <label class="input-label">تصویر پیش نمایش</label>
-                       <div class="img-uploader">
-                           <img src="https://files.virgool.io/upload/users/48205/posts/z9ghb5gtejlr/vu5gmjm4gyrl.jpeg">
-                          <span>تغییر تصویر پیش نمایش</span>
-                       </div>
-                       </div>
-                    </column>
-                    <column :sm="2" :md="1">
-
-                        <div class="input-wrapper">
-                            <label class="input-label">عنوان</label>
-                            <div class="input-group">
-                                <input name="name" v-model="editor.title" type="text" placeholder="عنوان را وارد کنید" class="input">
-                            </div>
-                        </div>
-
-                        <div class="input-wrapper">
-                            <label class="input-label">خلاصه</label>
-                            <div class="input-group">
-                                <textarea name="summary" v-model="params.summary"  placeholder="خلاصه کوتاه را وارد کنید" class="input"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="input-wrapper">
-                            <label class="input-label">برچسب ها</label>
-                            <v-select
-                                    class="input"
-                                    taggable
-                                    multiple
-                                    label="title"
-                                    dir="rtl"
-                                    placeholder="برچسب ها را وارد کنید"
-                                    :options="options"
-                            />
-                        </div>
-                    </column>
-                </row>
-            </div>
-            <div slot='footer' class="drawer-footer">
-                <div @click="drawerVisibility=false" class="btn btn-simple">برگشت</div>
-                <div class="btn btn-success">انتشار</div>
-                <div class="btn btn-danger">لغو انتشار</div>
-            </div>
-
-        </ch-drawer>
+        <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
+        <category @onClose="drawerName=null" :open="drawerName==='category'"></category>
     </section>
 </template>
 
 <script>
 
     import Editor from "../components/editor.vue";
-    import publish from "../pages/pubish.vue";
+    import Publish from "../drawers/pubish.vue";
+    import Category from "../drawers/category.vue";
 
     export default {
         name: 'write',
-        components: {Editor,publish},
+        components: {Editor,Category,Publish},
         beforeRouteLeave(to, from, next) {
             this._confirm('تست می شود', () => {
                 next();
             });
-
         },
         data() {
             return {
-                options: [
-                    {
-                        title: "HTML5",
-                        author: {
-                            firstName: "Remy",
-                            lastName: "Sharp"
-                        }
-                    }
-                ],
-                drawerPosition: 'bottom',
-                drawerVisibility: false,
-                drawerArea: '90%',
                 editor: {
                     title: null,
                     context: null,
                 },
                 params: {},
+
+                drawerName: false,
+                stats:{
+                    word:0,
+                    charecter:0,
+                }
             };
         },
         methods: {
@@ -140,6 +67,10 @@
             handleBeforeClose(next) {
                 next();
             },
-        },
+            openDrawer(drawerName) {
+                this.drawerName = drawerName;
+            },
+
+        }
     }
 </script>

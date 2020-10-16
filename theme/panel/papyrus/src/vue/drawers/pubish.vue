@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <ch-drawer custom-class="drawer-wrapper" :location='drawerPosition'
-                   :visible.sync='drawerVisibility'
+    <section>
+        <ch-drawer custom-class="drawer-wrapper"
+                   :location='drawerPosition'
+                   :visible.sync='drawerOpen'
                    :area="drawerArea"
                    :before-close='handleBeforeClose'>
             <div slot='header' class="drawer-header">
@@ -33,6 +34,7 @@
                         <div class="input-wrapper">
                             <label class="input-label">برچسب ها</label>
                             <v-select
+                                    class="input"
                                     taggable
                                     multiple
                                     label="title"
@@ -54,17 +56,17 @@
                 </row>
             </div>
             <div slot='footer' class="drawer-footer">
-                <div @click="drawerVisibility=false" class="btn btn-simple">برگشت</div>
+                <div @click="toggleDrawer()" class="btn btn-simple">برگشت</div>
                 <div class="btn btn-success">انتشار</div>
                 <div class="btn btn-danger">لغو انتشار</div>
             </div>
-
         </ch-drawer>
-    </div>
+    </section>
 </template>
 
 <script>
     export default {
+        props: ['open'],
         data(){
             return{
                 drawerPosition: 'bottom',
@@ -81,11 +83,22 @@
                 ],
             }
         },
+        computed: {
+            drawerOpen: {
+                get() {
+                    return this.open;
+                },
+                set(val) {
+                    this.$emit('onClose', val);
+                }
+            }
+        },
         methods: {
-            openToolbox() {
-                this.drawerVisibility = true;
+            toggleDrawer() {
+                this.drawerOpen = !this.drawerOpen;
             },
             handleBeforeClose(next) {
+                this.toggleDrawer();
                 next();
             },
         },

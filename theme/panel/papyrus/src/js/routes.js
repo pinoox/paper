@@ -9,7 +9,7 @@ export const routes = [
     {
         path: PINOOX.URL.BASE,
         name: 'splash',
-        meta:{
+        meta: {
             customView: true,
         },
         component: Splash
@@ -32,12 +32,15 @@ export const routes = [
     {
         path: PINOOX.URL.BASE + '/write',
         name: 'write',
-        component: Write
+        component: Write,
+        meta: {
+            hideToolbar: true,
+        }
     },
     {
         path: PINOOX.URL.BASE + '/login',
         name: 'login',
-        meta:{
+        meta: {
             customView: true,
         },
         component: Login,

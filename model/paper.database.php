@@ -35,5 +35,6 @@ class PaperDatabase extends PinooxDatabase
     const comment = 'com_pinoox_paper_comment';
     const page = 'com_pinoox_paper_page';
     const contact = 'com_pinoox_paper_contact';
+    const category = 'com_pinoox_paper_category';
 
 }

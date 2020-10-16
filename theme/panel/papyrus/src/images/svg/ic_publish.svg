@@ -1,26 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" viewBox="0 0 30.762 35">
-  <defs>
-    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
-      <stop offset="0" stop-color="#f1f4f8"/>
-      <stop offset="1" stop-color="#a5b8ce"/>
-    </linearGradient>
-    <linearGradient id="linear-gradient-2" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
-      <stop offset="0" stop-color="#506e93"/>
-      <stop offset="1" stop-color="#a5b8ce"/>
-    </linearGradient>
-  </defs>
-  <g id="Group_89" data-name="Group 89" transform="translate(-1368 -90.508)">
-    <g id="login" transform="translate(1337 90.508)">
-      <g id="Group_85" data-name="Group 85" transform="translate(36.208 4.862)">
-        <g id="Group_84" data-name="Group 84" transform="translate(0)">
-          <path id="Path_65" data-name="Path 65" d="M121.774,60H102V85.275h19.774a1.113,1.113,0,0,0,1.216-.967V60.967A1.113,1.113,0,0,0,121.774,60Z" transform="translate(-102 -60)" fill="url(#linear-gradient)"/>
-        </g>
-      </g>
-      <g id="Group_87" data-name="Group 87" transform="translate(31 0)">
-        <g id="Group_86" data-name="Group 86" transform="translate(0)">
-          <path id="Path_66" data-name="Path 66" d="M60.736,14.424H55.609V13.4a1.025,1.025,0,0,0-1.594-.853l-6.152,4.1a1.025,1.025,0,0,0,0,1.706l6.152,4.1a1.025,1.025,0,0,0,1.594-.853V20.576h5.127a1.025,1.025,0,0,0,1.025-1.025v-4.1A1.025,1.025,0,0,0,60.736,14.424ZM44.93.194a1.025,1.025,0,0,0-.924-.141l-12.3,4.1a1.025,1.025,0,0,0-.7.973V29.873a1.025,1.025,0,0,0,.7.973l12.3,4.1a1.025,1.025,0,0,0,1.35-.973V1.025A1.025,1.025,0,0,0,44.93.194Zm-4.7,18.332A1.025,1.025,0,1,1,41.254,17.5,1.025,1.025,0,0,1,40.229,18.525Z" transform="translate(-31 0)" fill="url(#linear-gradient-2)"/>
-        </g>
-      </g>
-    </g>
-  </g>
+<svg preserveAspectRatio="none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.38948 8.984H6.45648C4.42148 8.984 2.77148 10.634 2.77148 12.669V17.544C2.77148 19.578 4.42148 21.228 6.45648 21.228H17.5865C19.6215 21.228 21.2715 19.578 21.2715 17.544V12.659C21.2715 10.63 19.6265 8.984 17.5975 8.984L16.6545 8.984" stroke="#200E32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.0214 2.19051V14.2315" stroke="#200E32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.10626 5.1188L12.0213 2.1908L14.9373 5.1188" stroke="#200E32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
