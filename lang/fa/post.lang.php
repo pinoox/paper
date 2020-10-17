@@ -18,10 +18,19 @@ return [
     'change_preview_image' => 'تغییر تصویر پیش نمایش',
     'publication' => 'انتشار',
     'cancel_publication' => 'لغو انتشار',
+    'cancel_edit' => 'لغو ویرایش',
     'publication_post' => 'انتشار نوشته',
     'close' => 'بستن',
+    'no_title' => '-',
     'status' => [
         'draft' => 'پیش نویس',
         'publish' => 'منتشر شده',
-    ]
+    ],
+
+    /** category **/
+    'add_category' => 'افزودن',
+    'edit_category' => 'ویرایش',
+    'enter_cat_name' => 'عنوان را وارد کنید',
+    'cat_name_is_duplicated' => 'این عنوان قبلا ثبت شده است',
+    'add_category_by_click' => 'با دکمه افزودن بالا میتوانید دسته های جدید را اضافه کنید',
 ];
