@@ -10,7 +10,7 @@
                         {{LANG.post.publication}}
                     </div>
                     <div class="item" @click="openDrawer('category')">
-                        {{LANG.post.category}}
+                        {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                     </div>
                 </div>
             </div>
@@ -24,7 +24,8 @@
             </editor>
         </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
-        <category @onClose="drawerName=null" :open="drawerName==='category'"></category>
+        <category @onClose="drawerName=null" :open="drawerName==='category'"
+                  @onSelected="setCategory"></category>
     </section>
 </template>
 
@@ -58,12 +59,13 @@
                     summary: '',
                     status: 'draft',
                     tags: [],
+                    category: null,
                 },
                 status: 'draft',
                 drawerName: false,
                 stats: {
-                    word: 0,
-                    charecter: 0,
+                    words: 0,
+                    chars: 0,
                 }
             };
         },
@@ -87,9 +89,9 @@
                     this.status = json.data.status;
                 });
             },
-            changeStatus(status){
-              this.params.status = status;
-              this.save();
+            changeStatus(status) {
+                this.params.status = status;
+                this.save();
             },
             save() {
                 let params = this.getFormData(this.params);
@@ -125,6 +127,14 @@
 
                 return formData;
             },
+            setCategory(val) {
+                this.params.category = val;
+            }
+        },
+        watch: {
+            post_id: function (newVal, oldVal) { // watch it
+                this.post_id = newVal;
+            }
         }
     }
 </script>
