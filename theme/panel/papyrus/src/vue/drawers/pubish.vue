@@ -7,16 +7,12 @@
                    :before-close='handleBeforeClose'>
             <div slot='header' class="drawer-header">
                 <div class="title">
-                    <simple-svg :src="_icons.publish"
-                                width="48px"
-                                customClassName="icon"/>
                     <div class="text">{{LANG.post.publication_post}}</div>
                 </div>
             </div>
             <div class="drawer-content">
                 <row :gutter="12" :columns="2">
                     <column :sm="2" :md="1">
-
                         <div class="input-wrapper">
                             <label class="input-label">{{LANG.post.title}}</label>
                             <div class="input-group">
@@ -66,8 +62,8 @@
             </div>
             <div slot='footer' class="drawer-footer">
                 <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.post.close}}</div>
-                <div class="btn btn-success" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">{{LANG.post.publication}}</div>
-                <div class="btn btn-danger" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">{{LANG.post.cancel_publication}}</div>
+                <div class="btn btn-primary" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">{{LANG.post.publication}}</div>
+                <div class="btn btn-simple" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">{{LANG.post.cancel_publication}}</div>
             </div>
         </ch-drawer>
     </section>
