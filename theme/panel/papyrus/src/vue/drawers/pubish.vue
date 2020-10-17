@@ -44,7 +44,7 @@
                                     :options="tags"
                                     @search="searchTag"
                                     v-model="$parent.params.tags"
-                                    placeholder="add_tag"
+                                    :placeholder="LANG.post.add_tag"
                             >
                                 <template slot="no-options">
                                     {{LANG.panel.nothing_found}}
