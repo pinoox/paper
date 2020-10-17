@@ -32,13 +32,13 @@ class CategoryController extends MasterConfiguration
         $input = Request::input('cat_name,parent_id=0', null, '!empty');
 
         $valid = Validation::check($input, [
-            'cat_name' => ['required', rlang('category.err.enter_cat_name')],
+            'cat_name' => ['required', rlang('post.enter_cat_name')],
         ]);
         if ($valid->isFail())
             Response::json($valid->first(), false);
 
         if (CategoryModel::fetch_by_name($input['cat_name']) != false)
-            Response::json(rlang('category.err.cat_name_is_duplicated'), false);
+            Response::json(rlang('post.cat_name_is_duplicated'), false);
 
         $cat_id = CategoryModel::insert($input);
         if ($cat_id)
