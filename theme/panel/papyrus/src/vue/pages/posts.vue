@@ -1,8 +1,8 @@
 <template>
     <div class="page">
         <div class="search-bar">
-            <i class="icon fas fa-sliders-h"></i>
-            <input class="search-input" type="text" placeholder="جست و جو بین نوشته ها...">
+            <span class="icon"><i class="fa fa-search"></i></span>
+            <input v-model="params.keyword" class="search-input" type="text" placeholder="جست و جو بین نوشته ها...">
         </div>
 
         <div class="container">
@@ -10,32 +10,45 @@
                 <div class="section-content">
                     <vue-good-table
                             styleClass="vgt-table table"
+                            :line-numbers="true"
                             :rtl="true"
                             :columns="columns"
-                            :rows="rows"
-                            :pagination-options="{
-    enabled: true,
-    mode: 'records',
-    perPage: 5,
-    position: 'bottom',
-    perPageDropdown: [3, 7, 9],
-    dropdownAllowAll: false,
-    setCurrentPage: 2,
-    nextLabel: 'بعدی',
-    prevLabel: 'قبلی',
-    rowsPerPageLabel: 'تعداد ردیف در صفحه',
-    ofLabel: 'از',
-    pageLabel: 'صفحه', // for 'pages' mode
-    allLabel: 'همه',
-  }">
-                        >
+                            :rows="posts"
+                            mode="remote"
+                            :search-options="{
+                                 externalQuery: params.keyword,
+                            }"
+                            @on-search="onSearch"
+                            @on-page-change="onPageChange"
+                            @on-sort-change="onSortChange"
+                            @on-per-page-change="onPerPageChange"
+                            :isLoading.sync="isLoading"
+                            :totalRows="pages.count"
+                            :pagination-options="$parent.defaultTableOpts">
                         <template slot="table-row" slot-scope="props">
-                            <div v-if="props.column.field == 'thumb'">
-                                <img class="thumb thumb-round" :src="props.row.thumb" alt="">
+                            <div v-if="props.column.field === 'thumb_128'">
+                                <img class="thumb thumb-round" :src="props.row.thumb_128" alt="">
+                            </div>
+                            <div v-else-if="props.column.field === 'operation'">
+                                <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
+                                <span @click="remove(props.row)" class="btn-action"><i class="fa fa-trash"></i></span>
+                            </div>
+                            <div v-else-if="props.column.field === 'status'">
+                                <span class="light">{{LANG.post.status[props.row.status]}}</span>
                             </div>
                             <div v-else>
-                                {{props.formattedRow[props.column.field]}}
+                                <span :class="props.column.style">
+                                    {{props.formattedRow[props.column.field]}}
+                                </span>
                             </div>
+                        </template>
+                        <div slot="emptystate">
+                            <div class="empty-data">
+                                {{LANG.panel.empty_table}}
+                            </div>
+                        </div>
+                        <template slot="loadingContent">
+                            <div class="loading-message spinner"></div>
                         </template>
                     </vue-good-table>
 
@@ -50,111 +63,94 @@
     export default {
         data() {
             return {
+                isLoading: false,
                 columns: [
                     {
-                        label: 'تصویر',
-                        field: 'thumb',
+                        label: PINOOX.LANG.panel.image,
+                        field: 'thumb_128',
+                        sortable: false,
                     },
                     {
-                        label: 'عنوان',
+                        label: PINOOX.LANG.panel.title,
                         field: 'title',
                     },
                     {
-                        label: 'وضعیت',
+                        label: PINOOX.LANG.panel.status,
                         field: 'status',
+                        style: 'light',
                     },
                     {
-                        label: 'تاریخ',
-                        field: 'insert_date',
+                        label: PINOOX.LANG.panel.date,
+                        field: 'approx_insert_date',
+                        style: 'light',
+                    },
+                    {
+                        label: PINOOX.LANG.panel.operation,
+                        field: 'operation',
+                        style: 'operation',
+                        sortable: false,
                     },
                 ],
-                rows: [
-                    {
-                        id: 1,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید1',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 2 روز پیش',
+                posts: [],
+                pages: [],
+                params: {
+                    keyword: null,
+                    page: 1,
+                    perPage: 10,
+                    sort: {
+                        field: '',
+                        type: '',
                     },
-                    {
-                        id: 2,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید2',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 1 روز پیش',
-                    },
-                    {
-                        id: 3,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید3',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 3 روز پیش',
-                    },
-                    {
-                        id: 1,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید1',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 2 روز پیش',
-                    },
-                    {
-                        id: 2,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید2',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 1 روز پیش',
-                    },
-                    {
-                        id: 3,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید3',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 3 روز پیش',
-                    },
-                    {
-                        id: 1,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید1',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 2 روز پیش',
-                    },
-                    {
-                        id: 2,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید2',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 1 روز پیش',
-                    },
-                    {
-                        id: 3,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید3',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 3 روز پیش',
-                    },
-                    {
-                        id: 1,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید1',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 2 روز پیش',
-                    },
-                    {
-                        id: 2,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید2',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 1 روز پیش',
-                    },
-                    {
-                        id: 3,
-                        thumb: require(`@img/sample-user.jpg`),
-                        title: 'روزه داری در شرایط بحران ویروس کووید3',
-                        status: 'منتشر شده',
-                        insert_date: 'شنبه 3 روز پیش',
-                    },
-                ],
+                },
             }
+        },
+        methods: {
+            getPosts() {
+                this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
+                    this.posts = json.data.posts;
+                    this.pages = json.data.pages;
+                });
+            },
+            updateParams(newProps) {
+                this.params = Object.assign({}, this.params, newProps);
+            },
+            onPageChange(params) {
+                this.updateParams({page: params.currentPage});
+                this.getPosts();
+            },
+            onPerPageChange(params) {
+                this.updateParams({perPage: params.currentPerPage});
+                this.getPosts();
+            },
+            onSearch(params) {
+                this.updateParams({keyword: params.searchTerm});
+                this.getPosts();
+            },
+            edit(row) {
+                this.$router.push({name: 'write', params: {post_id: row.post_id}});
+            },
+            remove(row) {
+                let params = {post_id: row.post_id};
+                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                    this.$http.post(this.URL.API + 'post/delete/', params).then((json) => {
+                        if (this._messageResponse(json.data)) {
+                        }
+                    });
+                });
+            },
+            onSortChange(params) {
+                let first = params.slice(0, 1).shift();
+                this.updateParams({
+                    sort: {
+                        type: first.type,
+                        field: first.field,
+                    },
+                });
+                this.getPosts();
+            },
+        },
+        created() {
+            this.getPosts();
         }
     }
 </script>
