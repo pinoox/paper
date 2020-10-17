@@ -8,6 +8,7 @@
  * @author   Pinoox
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\component\Date;
@@ -68,13 +69,13 @@ class PostModel extends PaperDatabase
     {
 
         self::delete_tags_by_post_id($post_id);
-        if(empty($tags))
+        if (empty($tags))
             return;
         foreach ($tags as $t) {
-            if(is_array($t))
+            if (is_array($t))
                 $t = $t['tag_name'];
 
-                $tag = TagModel::fetch_by_name($t);
+            $tag = TagModel::fetch_by_name($t);
 
 
             if (empty($tag)) {
@@ -91,15 +92,15 @@ class PostModel extends PaperDatabase
         self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id');
         self::$db->groupBy('t.tag_id,t.tag_name');
 
-        $tags = self::$db->get(self::post_tag.' pt',$limit,'t.tag_id,t.tag_name');
-        return $isCount? self::$db->count :$tags;
+        $tags = self::$db->get(self::post_tag . ' pt', $limit, 't.tag_id,t.tag_name');
+        return $isCount ? self::$db->count : $tags;
     }
 
     public static function fetch_tags_by_post_id($post_id)
     {
         self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id');
         self::$db->where('pt.post_id', $post_id);
-        return self::$db->get(self::post_tag.' pt');
+        return self::$db->get(self::post_tag . ' pt');
     }
 
     public static function insert_tag($post_id, $tag_id)
@@ -118,9 +119,34 @@ class PostModel extends PaperDatabase
 
     public static function where_tag_name($keyword)
     {
-        if(!empty($keyword)){
-            $keyword = '%'.$keyword.'%';
-            self::$db->where('t.tag_name LIKE ?',[$keyword]);
+        if (!empty($keyword)) {
+            $keyword = '%' . $keyword . '%';
+            self::$db->where('t.tag_name LIKE ?', [$keyword]);
+        }
+    }
+
+    public static function where_status($status)
+    {
+        if (!is_null($status))
+            self::$db->where('p.status', $status);
+    }
+
+    public static function sort($sort)
+    {
+        if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
+            if ($sort['field'] === 'approx_insert_date')
+                $sort['field'] = 'insert_date';
+
+            self::$db->orderBy($sort['field'], $sort['type']);
+        }
+
+    }
+
+    public static function search_keyword($keyword)
+    {
+        if (!empty($keyword)) {
+            $p = '%' . $keyword . '%';
+            self::$db->where('p.title LIKE ? OR p.summary', [$p]);
         }
     }
 
