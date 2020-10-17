@@ -87,9 +87,9 @@
                     this.status = json.data.status;
                 });
             },
-            changeStatus(status){
-              this.params.status = status;
-              this.save();
+            changeStatus(status) {
+                this.params.status = status;
+                this.save();
             },
             save() {
                 let params = this.getFormData(this.params);
@@ -98,7 +98,11 @@
                         this.status = this.params.status;
                         if (!this.post_id)
                             this._routerReplace({name: 'post-edit', params: {post_id: json.data.result}});
+                    } else {
+                        this.params.status = this.status;
                     }
+                }).catch(function (error) {
+                    this.params.status = this.status;
                 });
             },
             getFormData(params) {
