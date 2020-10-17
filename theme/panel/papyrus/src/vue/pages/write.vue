@@ -50,8 +50,8 @@
         data() {
             return {
                 editor: {
-                    title: null,
-                    context: null,
+                    title: '',
+                    context: '',
                 },
                 params: {
                     editor: {},
@@ -70,18 +70,22 @@
         methods: {
             openDrawer(drawerName) {
                 if (drawerName === 'publish')
-                    this.editor = this.params.editor;
+                    this.setEditorFields(this.params.editor);
 
                 this.drawerName = drawerName;
+            },
+            setEditorFields(data)
+            {
+                this.editor = {
+                    title: !!data['title']? data['title'] : '',
+                    context: !!data['context']? data['context'] : '',
+                };
             },
             getPost() {
                 this.$http.post(this.URL.API + 'post/get/' + this.post_id).then((json) => {
                     this.params.post_id = this.post_id;
-                    this.editor = {
-                        title: json.data.title,
-                        context: json.data.context,
-                    };
-                    this.params.tags = json.data.tags;
+                    this.setEditorFields(json.data);
+                    this.params.tags = this.createTags(json.data.tags);
                     this.params.summary = json.data.summary;
                     this.params.status = json.data.status;
                     this.status = json.data.status;
@@ -105,20 +109,28 @@
                     this.params.status = this.status;
                 });
             },
+            createTags(tags) {
+                tags = !!tags ? tags : [];
+                return tags.map(function (tag) {
+                    return (typeof tag === "object") ? tag['tag_name'] : tag;
+                });
+            },
+            addTags(tags, formData) {
+                for (let index in tags) {
+                    if (!tags[index] === undefined || !tags[index] === null)
+                        continue;
+                    let tag = tags[index];
+                    tag = (typeof tag === "object") ? tag.tag_name : tag;
+                    formData.append('tags[' + index + ']', tag);
+                }
+            },
             getFormData(params) {
                 let formData = new FormData();
                 for (let key in params) {
                     let value = (params[key] !== null) ? params[key] : '';
 
                     if (key === 'tags') {
-                        let tags = params[key];
-                        for (let index in tags) {
-                            if (!tags[index] === undefined || !tags[index] === null)
-                                continue;
-                            let tag = tags[index];
-                            tag = (typeof tag === "object") ? tag.tag_name : tag;
-                            formData.append('tags[' + index + ']', tag);
-                        }
+                        this.addTags(params[key], formData);
                     } else if (key === 'editor') {
                         formData.append('title', value.title);
                         formData.append('context', value.context);

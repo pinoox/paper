@@ -28,7 +28,8 @@
                         <div class="input-wrapper">
                             <label class="input-label">{{LANG.post.summary}}</label>
                             <div class="input-group">
-                                <textarea v-model="$parent.params.summary" name="summary" :placeholder="LANG.post.enter_summary"
+                                <textarea v-model="$parent.params.summary" name="summary"
+                                          :placeholder="LANG.post.enter_summary"
                                           class="input"></textarea>
                             </div>
                         </div>
@@ -38,10 +39,10 @@
                             <v-select
                                     multiple
                                     taggable
+                                    :push-tags="true"
                                     class="input"
                                     dir="rtl"
-                                    label="tag_name"
-                                    :options="tags"
+                                    :options="listTags"
                                     @search="searchTag"
                                     v-model="$parent.params.tags"
                                     :placeholder="LANG.post.add_tag"
@@ -66,8 +67,12 @@
             </div>
             <div slot='footer' class="drawer-footer">
                 <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.post.close}}</div>
-                <div class="btn btn-success" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">{{LANG.post.publication}}</div>
-                <div class="btn btn-danger" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">{{LANG.post.cancel_publication}}</div>
+                <div class="btn btn-success" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">
+                    {{LANG.post.publication}}
+                </div>
+                <div class="btn btn-danger" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">
+                    {{LANG.post.cancel_publication}}
+                </div>
             </div>
         </ch-drawer>
     </section>
@@ -76,27 +81,23 @@
 <script>
     export default {
         props: ['open'],
-        created(){
-          this.getInitTags();
+        created() {
+            this.getInitTags();
         },
         data() {
             return {
-                tags:[],
+                tags: [],
                 drawerPosition: 'bottom',
                 drawerVisibility: false,
                 drawerArea: '90%',
-                options: [
-                    {
-                        title: "HTML5",
-                        author: {
-                            firstName: "Remy",
-                            lastName: "Sharp"
-                        }
-                    }
-                ],
             }
         },
         computed: {
+            listTags() {
+                return this.tags.map(function (row) {
+                    return row['tag_name'];
+                });
+            },
             drawerOpen: {
                 get() {
                     return this.open;
@@ -128,7 +129,7 @@
                 this.$http.get(this.URL.API + 'post/searchTags/').then((json) => {
                     this.tags = !!json.data ? json.data : [];
                 });
-            }
+            },
         },
     }
 </script>
