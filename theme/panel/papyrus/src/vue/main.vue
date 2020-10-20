@@ -98,9 +98,9 @@
 
                 <transition mode="out-in" enter-active-class="animated faster fadeIn"
                             leave-active-class="animated faster fadeOut">
-                    <keep-alive include="write">
+<!--                    <keep-alive include="write">-->
                         <router-view></router-view>
-                    </keep-alive>
+<!--                    </keep-alive>-->
                 </transition>
             </div>
         </div>
@@ -159,13 +159,6 @@
                     }
                     return response;
                 });
-            },
-            tokenAuth() {
-                let token = localStorage.pinoox_user;
-                if (!!token) {
-                    return `${token}`;
-                }
-                return null;
             },
             checkUser() {
                 let token = this.tokenAuth();

@@ -30,7 +30,7 @@
 
 <div id="app"></div>
 
-<script src="<?php echo $_url; ?>plugins/ckeditor/build/ckeditor.js"></script>
+<script src="<?php echo $_url; ?>dist/ckeditor/ckeditor.js"></script>
 <script src="<?php echo $_url; ?>dist/<?php echo @$assets['vendor_js']; ?>"></script>
 <script src="<?php echo $_url; ?>dist/<?php echo @$assets['main_js']; ?>"></script>
 </body>

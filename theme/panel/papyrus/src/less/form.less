@@ -63,7 +63,9 @@
 }
 
 .img-uploader{
+  position: relative;
   height: 240px;
+
   img{
     width: 100%;
     height: 100%;
@@ -80,5 +82,33 @@
     left: 30%;
     border-radius: 5px;
     font-size: 12px;
+    cursor:pointer;
+    text-align: center;
+  }
+}
+
+.post-image-select{
+  height: 300px;
+  overflow-y: auto;
+  background: #edf2f7;
+  border-radius: 4px;
+
+  span.close{
+    position: absolute;
+    left: 16px;
+    top: 6px;
+    padding: 6px 15px;
+    cursor: pointer;
+
+    &:hover{
+      transform: scale(1.2);
+    }
+  }
+
+  .select-image{
+    li{
+      width: 100px;
+      height: 100px;
+    }
   }
 }

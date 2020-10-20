@@ -56,10 +56,20 @@ Vue.mixin({
                 more: require(`@img/svg/ic_more.svg`),
                 zoomIn: require(`@img/svg/ic_zoom_in.svg`),
                 zoomOut: require(`@img/svg/ic_zoom_out.svg`),
-            };
+                close: require(`@img/svg/ic_close.svg`),
+                placeholder : require(`@img/placeholder.png`),
+
+        };
         },
     },
     methods: {
+        tokenAuth() {
+            let token = localStorage.pinoox_user;
+            if (!!token) {
+                return `${token}`;
+            }
+            return null;
+        },
         hasErrors(){
           return false;
         },
