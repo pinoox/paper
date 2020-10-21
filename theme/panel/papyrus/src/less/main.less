@@ -95,6 +95,35 @@
   padding: 0 5%;
 }
 
+.fab {
+  position: fixed;
+  left: 30px;
+  bottom: 30px;
+  width: 66px;
+  height: 66px;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  z-index: 999;
+  .boxShadow(0.5);
+
+  &:hover {
+    cursor: pointer;
+    background: @secondaryColor;
+    .trans;
+  }
+
+  .icon {
+    font-size: 1.3em;
+    position: relative;
+    top: 24px;
+  }
+}
+
+.fab-primary {
+  background: @primaryColor;
+}
+
 .btn-sm {
   padding: 5px 10px !important;
 }
@@ -499,7 +528,7 @@ body {
       width: 100%;
       height: @toolbarHeight;
       background: #fff;
-      z-index: 10000;
+      z-index: 888;
       border-top: 1px solid @borderColor;
 
       .items {
@@ -555,15 +584,18 @@ body {
 
       .section {
         margin: 20px 0;
-        padding: 40px 20px;
+        padding: 20px 20px;
         background: #fff;
         border-radius: 5px;
+        overflow: hidden;
 
         .section-title {
           color: @textColor;
-          margin: 20px 0;
+          margin-bottom: 40px;
           display: flex;
           align-items: center;
+          position: relative;
+
 
           h2 {
             font-weight: 600;
@@ -583,6 +615,7 @@ body {
               color: @textColor;
             }
           }
+
         }
 
       }
@@ -657,14 +690,14 @@ body {
           }
 
           .btn-action {
-            background: #eee;
-            border-radius: 5px;
+            border-radius: 50%;
+            border: 1px solid @borderColor;
             width: 24px;
-            height: 22px;
+            height: 24px;
             display: inline-block;
             text-align: center;
-            padding: 5px;
-            color: fade(@textColor, 70%);
+            padding: 7px 5px 3px 5px;
+            color: fade(@textColor, 60%);
             margin: 5px;
             .trans;
 
@@ -672,7 +705,7 @@ body {
               .trans;
               cursor: pointer;
               color: fade(@textColor, 100%);
-              background: #ddd;
+              background: @textColorLight;
             }
           }
         }
@@ -805,7 +838,6 @@ body {
         position: relative;
         overflow: hidden;
         width: 100%;
-
         border-top: 1px solid @borderColor;
         border-bottom: 1px solid @borderColor;
         background: #fff;
@@ -832,6 +864,99 @@ body {
           border-right: none;
           border-left: none;
           color: @textColor;
+        }
+      }
+
+      .post-stats {
+        margin: 20px 0;
+
+        .apexcharts-legend-text {
+          font-family: @defaultFontFaceRtl !important;
+        }
+
+        .post-title {
+          font-size: 20px;
+          position: relative;
+
+          .label {
+            position: absolute;
+            font-size: 2.5em;
+            font-weight: bold;
+            left: 0;
+            bottom: 0;
+            margin: 0;
+            color: #eff0f2;
+            z-index: 5;
+          }
+
+          .title {
+            z-index: 10;
+            font-weight: 600;
+            margin: 10px 0;
+            font-size: 1.4em;
+            color: @textColor;
+            position: relative;
+          }
+
+          .details {
+            font-size: 0.7em;
+            font-weight: 300;
+            color: @textColor;
+          }
+        }
+
+        .box-group {
+          .box {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-shadow: 0 1px 1px 1px #666;
+            position: relative;
+            border-radius: 5px;
+          }
+
+          .details {
+            position: absolute;
+            color: #fff;
+            left: 15px;
+            top: 10px;
+            font-size: 16px;
+            text-align: left;
+
+            h3, h4 {
+              margin: 5px 0;
+              font-size: 14px;
+              font-weight: 400;
+            }
+
+            h3 {
+              font-weight: bold;
+              font-size: 22px;
+            }
+          }
+
+          strong {
+            position: relative;
+            z-index: 3;
+            top: -8px;
+            color: #fff;
+          }
+
+          .box1 {
+            background-image: linear-gradient(135deg, #ABDCFF 10%, #0396FF 100%);
+          }
+
+          .box2 {
+            background-image: linear-gradient(135deg, #2AFADF 10%, #4C83FF 100%);
+          }
+
+          .box3 {
+            background-image: linear-gradient(135deg, #FFD3A5 10%, #FD6585 100%);
+          }
+
+          .box4 {
+            background-image: linear-gradient(135deg, #EE9AE5 10%, #5961F9 100%);
+          }
+
         }
       }
     }
@@ -884,34 +1009,34 @@ body {
     }
 
     &.error {
-      background: fade(@redColor, 80%);
+      background: fade(@redColor, 100%);
 
       &:hover {
-        background: fade(@redColor, 85%);
+        background: fade(@redColor, 100%);
       }
     }
 
     &.warn {
-      background: fade(@orangeColor, 80%);
+      background: fade(@orangeColor, 100%);
 
       &:hover {
-        background: fade(@orangeColor, 85%);
+        background: fade(@orangeColor, 100%);
       }
     }
 
     &.success {
-      background: fade(@greenColor, 80%);
+      background: fade(@greenColor, 100%);
 
       &:hover {
-        background: fade(@greenColor, 85%);
+        background: fade(@greenColor, 100%);
       }
     }
 
     &.primary {
-      background: fade(@primaryColor, 80%);
+      background: fade(@primaryColor, 100%);
 
       &:hover {
-        background: fade(@primaryColor, 85%);
+        background: fade(@primaryColor, 100%);
       }
     }
 
@@ -1211,6 +1336,10 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+  .fab {
+    bottom: 80px;
+  }
+
   .app-container {
     .sidebar {
       display: none;
@@ -1243,6 +1372,18 @@ body {
             width: 100%;
             bottom: @toolbarHeight;
           }
+        }
+
+        .post-stats {
+          .post-title {
+            font-size: 16px;
+
+            .label {
+              bottom: -5px;
+              font-size: 1.2em;
+            }
+          }
+
         }
       }
     }

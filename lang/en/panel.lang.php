@@ -1,15 +1,21 @@
 <?php
 return [
 
-    /**********************************************************************************************************************
-     * Panel
-     */
+    'close' => 'close',
+    'yes' => 'yes',
+    'user_key' => 'email or username',
+    'login_to_account' => 'login into account',
+    'welcome_to_account' => 'welcome to account',
+    'login' => 'login',
+    'context' => 'context',
+    'nothing_found' => 'nothing found',
+    'are_you_sure_to_delete' => 'Are you sure to delete?',
     'panel_title' => 'Paper Management Panel',
     'app_name' => 'paper',
     'app_description' => 'Pinoox blog app',
+    'save' => 'save',
 
     'dashboard' => 'dashboard',
-    'visits' => 'visits',
     'user' => 'user',
     'users' => 'users',
     'articles' => 'articles',

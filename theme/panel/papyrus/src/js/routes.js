@@ -4,6 +4,9 @@ import Stats from '../vue/pages/stats.vue';
 import Splash from '../vue/pages/splash.vue';
 import Login from '../vue/pages/login.vue';
 import Write from '../vue/pages/write.vue';
+import PostStats from '../vue/pages/post-stats.vue';
+import Users from '../vue/pages/users.vue';
+import Contacts from '../vue/pages/contacts.vue';
 
 export const routes = [
     {
@@ -39,12 +42,28 @@ export const routes = [
         props: true,
     },
     {
+        path: PINOOX.URL.BASE + '/post/stats/:post_id',
+        name: 'post-stats',
+        component: PostStats,
+        props: true,
+    },
+    {
         path: PINOOX.URL.BASE + '/login',
         name: 'login',
         meta: {
             customView: true,
         },
         component: Login,
+    },
+    {
+        path: PINOOX.URL.BASE + '/users',
+        name: 'users',
+        component: Users
+    },
+    {
+        path: PINOOX.URL.BASE + '/contacts',
+        name: 'contacts',
+        component: Contacts
     },
 
 ];

@@ -39,9 +39,9 @@
                     <div class="item">
                         <span class="text">پروفایل</span>
                     </div>
-                    <div class="item">
+                    <router-link :to="{name:'users'}" tag="div" class="item">
                         <span class="text">کاربران</span>
-                    </div>
+                    </router-link>
                     <div class="item">
                         <span class="text">تنظیمات</span>
                     </div>
@@ -96,7 +96,8 @@
                     </div>
                 </div>
 
-                <transition  name="fade" mode="out-in" enter-active-class="animate__animated animate__fadeInDown animate__faster"
+                <transition name="fade" mode="out-in"
+                            enter-active-class="animate__animated animate__fadeInDown animate__faster"
                             leave-active-class="animate__animated animate__fadeOutUp animate__faster">
                     <keep-alive include="write" max="5">
                         <router-view :key="$route.fullPath"></router-view>
@@ -119,7 +120,7 @@
                 defaultTableOpts: {
                     enabled: true,
                     mode: 'records',
-                    perPage:10,
+                    perPage: 10,
                     perPageDropdown: [5, 10, 20, 50],
                     nextLabel: PINOOX.LANG.panel.next,
                     prevLabel: PINOOX.LANG.panel.prev,

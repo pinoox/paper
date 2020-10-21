@@ -1,5 +1,6 @@
 <?php
 return [
+    'close' => 'بستن',
     'yes' => 'بله',
     'no' => 'خیر',
     'warning' => 'هشدار',
@@ -14,6 +15,7 @@ return [
     'are_you_sure_to_delete' => 'آیا از حذف آن مطمئن هستید؟',
     'delete_successfully' => 'با موفقیت حذف شد',
     'error_happened' => 'خطایی رخ داده است',
+    'save' => 'ذخیره',
 
     /* table */
 
@@ -30,4 +32,12 @@ return [
     'operation' => 'عملیات',
     'row' => 'ردیف',
     'status' => 'وضعیت',
+    'user' => 'کاربر',
+
+    /* contacts */
+    'search_in_contacts' => 'جست و جو بین تماس ها...',
+    'subject' => 'موضوع',
+    'contact_status' => ['seen' => 'خوانده شد', 'unseen' => 'خوانده نشده'],
+
+
 ];
