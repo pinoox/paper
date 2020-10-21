@@ -52,7 +52,6 @@ class PostController extends LoginConfiguration
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
     }
 
-
     private function filterSearch($form)
     {
         PostModel::search_keyword($form['keyword']);
@@ -107,10 +106,10 @@ class PostController extends LoginConfiguration
         if (PostModel::fetch_by_id($post_id) != false) {
             $status = PostModel::delete($post_id);
             if ($status)
-                Response::json(rlang('panel.delete_successfully'), true);
+                Response::jsonMessage(rlang('panel.delete_successfully'), true);
         }
 
-        Response::json(rlang('panel.error_happened'), true);
+        Response::jsonMessage(rlang('panel.error_happened'), false);
     }
 
     public function searchTags($keyword = null)

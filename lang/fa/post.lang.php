@@ -22,6 +22,7 @@ return [
     'publication_post' => 'انتشار نوشته',
     'close' => 'بستن',
     'no_title' => '-',
+    'search_in_posts' => 'جست و جو بین نوشته ها...',
     'status' => [
         'draft' => 'پیش نویس',
         'publish' => 'منتشر شده',

@@ -139,7 +139,6 @@ class PostModel extends PaperDatabase
 
             self::$db->orderBy($sort['field'], $sort['type']);
         }
-
     }
 
     public static function search_keyword($keyword)

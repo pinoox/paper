@@ -2,7 +2,7 @@
     <div class="page">
         <div class="search-bar">
             <span class="icon"><i class="fa fa-search"></i></span>
-            <input v-model="params.keyword" class="search-input" type="text" placeholder="جست و جو بین نوشته ها...">
+            <input v-model="params.keyword" class="search-input" type="text" :placeholder="LANG.post.search_in_posts">
         </div>
 
         <div class="container">
@@ -27,11 +27,14 @@
                             :pagination-options="$parent.defaultTableOpts">
                         <template slot="table-row" slot-scope="props">
                             <div v-if="props.column.field === 'thumb_128'">
-                                <img class="thumb thumb-round" :src="props.row.thumb_128" alt="">
+                                <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                             </div>
                             <div v-else-if="props.column.field === 'operation'">
+                                <span @click="stats(props.row)" class="btn-action"><i
+                                        class="fa fa-chart-pie"></i></span>
                                 <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
-                                <span @click="remove(props.row)" class="btn-action"><i class="fa fa-trash"></i></span>
+                                <span @click="remove(props.row,props.index)" class="btn-action"><i
+                                        class="fa fa-trash"></i></span>
                             </div>
                             <div v-else-if="props.column.field === 'status'">
                                 <span class="light">{{LANG.post.status[props.row.status]}}</span>
@@ -105,7 +108,7 @@
             }
         },
         methods: {
-            getPosts() {
+            getItems() {
                 this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
                     this.posts = json.data.posts;
                     this.pages = json.data.pages;
@@ -116,24 +119,28 @@
             },
             onPageChange(params) {
                 this.updateParams({page: params.currentPage});
-                this.getPosts();
+                this.getItems();
             },
             onPerPageChange(params) {
                 this.updateParams({perPage: params.currentPerPage});
-                this.getPosts();
+                this.getItems();
             },
             onSearch(params) {
                 this.updateParams({keyword: params.searchTerm});
-                this.getPosts();
+                this.getItems();
+            },
+            stats(row) {
+                this.$router.push({name: 'post-stats', params: {post_id: row.post_id}});
             },
             edit(row) {
                 this.$router.push({name: 'write', params: {post_id: row.post_id}});
             },
-            remove(row) {
+            remove(row, index) {
                 let params = {post_id: row.post_id};
                 this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.post(this.URL.API + 'post/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
+                            this.$delete(this.posts, index);
                         }
                     });
                 });
@@ -146,11 +153,11 @@
                         field: first.field,
                     },
                 });
-                this.getPosts();
+                this.getItems();
             },
         },
         created() {
-            this.getPosts();
+            this.getItems();
         }
     }
 </script>
