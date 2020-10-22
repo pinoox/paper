@@ -1,5 +1,6 @@
 <?php
 return [
+    'invalid_request' => 'درخواست معتبر نیست',
     'close' => 'بستن',
     'yes' => 'بله',
     'no' => 'خیر',
@@ -33,6 +34,9 @@ return [
     'row' => 'ردیف',
     'status' => 'وضعیت',
     'user' => 'کاربر',
+    'add' => 'افزودن',
+    'edit' => 'ویرایش',
+    'cancel' => 'لغو',
     'added_successfully' => 'با موفقیت اضافه شد',
     'edited_successfully' => 'با موفقیت ویرایش شد',
 

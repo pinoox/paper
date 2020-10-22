@@ -645,6 +645,7 @@
   display: -ms-flexbox;
   display: flex;
   border-radius: 0.25rem;
+  position: relative;
 }
 .input-wrapper .input-group .input {
   font-family: 'iranSans', 'Karla', serif;
@@ -669,6 +670,18 @@
   outline: none !important;
   -webkit-box-shadow: 0 0 0 1px rgba(218, 225, 231, 0.8);
   box-shadow: 0 0 0 1px rgba(218, 225, 231, 0.8);
+}
+.input-wrapper .input-group .btn-insides {
+  position: absolute;
+  left: 0;
+}
+.input-wrapper .input-group .btn-inside {
+  display: inline-block;
+  width: 36px;
+  color: #fff;
+  padding: 14px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 .vs__dropdown-toggle {
   padding: 10px;
@@ -796,6 +809,7 @@
 .btn-primary {
   background: #1f426c;
   color: #fff;
+  border: 2px solid #1f426c;
 }
 .btn-primary:hover {
   background: #32629d;
@@ -834,6 +848,7 @@
 }
 .btn-secondary {
   background: #2a5282;
+  border: 2px solid #2a5282;
   color: #fff;
 }
 .btn-secondary:hover {
@@ -1286,7 +1301,7 @@ body.ltr .main {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 9999;
+  z-index: 777;
 }
 .app-container .main .page .write-container .toolbox .items {
   height: 44px;
@@ -1316,7 +1331,7 @@ body.ltr .main {
   width: calc(100% - 120px);
   position: fixed;
   top: 44px;
-  z-index: 9999;
+  z-index: 777;
 }
 .app-container .main .page .write-container .paper {
   background: #fff;
@@ -1341,7 +1356,7 @@ body.ltr .main {
   display: flex;
   justify-content: flex-end;
   overflow: hidden;
-  z-index: 9999;
+  z-index: 777;
 }
 .app-container .main .page .write-container .statusbar .item {
   padding: 0 10px;
@@ -1611,6 +1626,22 @@ body.ltr .main {
 .drawer-wrapper .drawer-content .btn-add {
   margin-bottom: 20px;
 }
+.drawer-wrapper .drawer-content .category-actions {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px 0;
+}
+.drawer-wrapper .drawer-content .category-actions .container {
+  padding: 0;
+}
+.drawer-wrapper .drawer-content .category-actions .container .input-wrapper {
+  padding: 20px 0;
+}
+.drawer-wrapper .drawer-content .category-actions .text-info {
+  display: block;
+  padding: 10px 0;
+  color: #506E93;
+}
 .drawer-wrapper .drawer-content .nestable-category {
   max-width: 500px;
   margin: auto;
@@ -1621,6 +1652,20 @@ body.ltr .main {
   border-radius: 5px;
   background: rgba(31, 66, 108, 0.05);
   border-right: 1px dashed #c3c3c3;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.drawer-wrapper .drawer-content .nestable-category .nestable-item:hover,
+.drawer-wrapper .drawer-content .nestable-category .nestable-item-copy:hover {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+  background: rgba(42, 82, 130, 0.1);
 }
 .drawer-wrapper .drawer-content .nestable-category .nestable-item-content {
   position: relative;
@@ -1639,11 +1684,35 @@ body.ltr .main {
   color: #506E93;
   cursor: pointer !important;
 }
-.drawer-wrapper .drawer-content .nestable-category .nestable-item-content .remove {
+.drawer-wrapper .drawer-content .nestable-category .nestable-item-content .cat-name:hover {
+  color: #1f426c;
+}
+.drawer-wrapper .drawer-content .nestable-category .nestable-item-content .actions {
   position: absolute;
   left: 3%;
-  top: 2px;
+  top: -7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drawer-wrapper .drawer-content .nestable-category .nestable-item-content .actions .btn-action {
+  width: 36px;
+  height: 36px;
+  text-align: center;
   color: #506E93;
+  display: none;
+}
+.drawer-wrapper .drawer-content .nestable-category .nestable-item-content .actions .btn-action i {
+  position: relative;
+  top: 7px;
+}
+.drawer-wrapper .drawer-content .nestable-category .nestable-item-content .actions .btn-action:hover {
+  background: rgba(31, 66, 108, 0.1);
+  border-radius: 50%;
+}
+.drawer-wrapper .drawer-content .nestable-category.editable [class^="nestable-item-"]:hover .btn-action {
+  display: block;
+  cursor: pointer;
 }
 .drawer-wrapper .drawer-content .nestable-category.editable .nestable-item,
 .drawer-wrapper .drawer-content .nestable-category.editable .nestable-item-copy {

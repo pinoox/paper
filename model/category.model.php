@@ -22,6 +22,12 @@ class CategoryModel extends PaperDatabase
         ]);
     }
 
+    public static function fetch_by_id($cat_id)
+    {
+        self::$db->where('cat_id', $cat_id);
+        return self::$db->getOne(self::category);
+    }
+
     public static function fetch_by_name($cat_name, $no_id = null)
     {
         if (!is_null($no_id))
@@ -31,12 +37,18 @@ class CategoryModel extends PaperDatabase
         return self::$db->getOne(self::category);
     }
 
+    public static function delete($cat_id)
+    {
+        self::$db->where('cat_id', $cat_id);
+        return self::$db->delete(self::category);
+    }
+
     public static function fetch_all()
     {
         return self::$db->get(self::category);
     }
 
-    public static function tree($linear, $parent_id = 0)
+    public static function tree($linear, $parent_id = null)
     {
         $result = [];
         foreach ($linear as $node) {
@@ -57,7 +69,15 @@ class CategoryModel extends PaperDatabase
     {
         self::$db->where('cat_id', $catItem['cat_id']);
         return self::$db->update(self::category, [
-            'parent_id' => !empty($parent['cat_id']) ? $parent['cat_id'] : 0,
+            'parent_id' => !empty($parent['cat_id']) ? $parent['cat_id'] : null,
+        ]);
+    }
+
+    public static function update($input)
+    {
+        self::$db->where('cat_id', $input['cat_id']);
+        return self::$db->update(self::category, [
+            'cat_name' => $input['cat_name']
         ]);
     }
 

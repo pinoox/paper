@@ -4,65 +4,77 @@
         <ch-drawer custom-class="drawer-wrapper"
                    :location='drawerPosition'
                    :visible.sync='drawerOpen'
+                   :blur="false"
                    :area="drawerArea"
                    :before-close='handleBeforeClose'>
             <div slot='header' class="drawer-header">
                 <div class="title">
-                    <div class="text">دسته بندی</div>
-                    <div class="subtext">نوشته های خود را دسته بندی کنید</div>
+                    <div class="text">{{LANG.post.category}}</div>
+                    <div class="subtext">{{LANG.post.category_info}}</div>
                 </div>
             </div>
             <div class="drawer-content">
 
-                <row :gutter="12" :columns="1" v-if="isAdd" class="add-category">
-                    <column :sm="1" :md="1">
-                        <div class="input-wrapper">
-                            <label class="input-label">{{LANG.post.title}}</label>
-                            <div class="input-group">
-                                <input v-model="params.cat_name" name="name" type="text"
-                                       :placeholder="LANG.post.enter_title" class="input">
+
+                <div class="category-actions">
+                    <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-outline-primary btn-sm btn-edit">
+                        {{LANG.post.edit_category}}
+                    </div>
+                    <div v-else @click="resetChanges()" class="btn btn-outline-primary btn-sm btn-edit">
+                        {{LANG.post.cancel_edit}}
+                    </div>
+                    <div v-if="categories.length>0 && isEdit" class="text-info">{{LANG.post.edit_category_info}}</div>
+
+                    <row :gutter="12" :columns="1" v-if="isEdit">
+                        <column :sm="1" :md="1">
+                            <div class="input-wrapper" @keyup.enter="add()">
+                                <label class="input-label">{{LANG.post.add_new_category}}</label>
+                                <div class="input-group">
+                                    <input v-model="params.cat_name" type="text"
+                                           :placeholder="LANG.post.enter_cat_name" class="input">
+                                    <div class="btn-insides">
+                                        <div v-if="!params.cat_id" @click="add()" class="btn btn-primary">
+                                            {{LANG.panel.add}}
+                                        </div>
+                                        <div v-if="!!params.cat_id" @click="cancelEdit" class="btn btn-outline-primary">
+                                            {{LANG.panel.cancel}}
+                                        </div>
+                                        <div v-if="!!params.cat_id" @click="edit()" class="btn btn-primary">
+                                            {{LANG.panel.edit}}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </column>
-                </row>
+                        </column>
+                    </row>
+                </div>
 
-                <div v-else>
-
-                    <div class="header-actions">
-                        <div @click="isAdd=true" class="btn btn-outline-primary btn-sm btn-add">
-                            {{LANG.post.add_category}}
+                <vue-nestable
+                        class="nestable nestable-category"
+                        :class="{ 'editable': isEdit}"
+                        v-model="categories"
+                        @change="trigger"
+                        :rtl="true"
+                        keyProp="cat_id"
+                        :maxDepth="8">
+                    <vue-nestable-handle
+                            :draggable="isEdit"
+                            slot-scope="{ item }"
+                            :item="item">
+                        <span class="cat-name" @click="selectCategory(item)">{{ item.cat_name }}</span>
+                        <div class="actions">
+                            <span @click="editItem(item)" class="btn-action"><i class="fa fa-pen"></i></span>
+                            <span @click="remove(item)" class="btn-action"><i class="fa fa-trash"></i></span>
                         </div>
-                        <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-outline-primary btn-sm btn-edit">
-                            {{LANG.post.edit_category}}
-                        </div>
-                        <div v-else @click="resetChanges()" class="btn btn-outline-primary btn-sm btn-edit">
-                            {{LANG.post.cancel_edit}}
+                    </vue-nestable-handle>
+                    <div slot="placeholder">
+                        <div v-if="!isEdit">
+                            <b>{{LANG.panel.empty_table}}</b>
+                            <p>{{LANG.post.add_category_by_click}}</p>
                         </div>
                     </div>
 
-                    <vue-nestable
-                            class="nestable nestable-category"
-                            :class="{ 'editable': isEdit}"
-                            v-model="categories"
-                            @change="trigger"
-                            :rtl="true"
-                            keyProp="cat_id"
-                            :maxDepth="8">
-                        <vue-nestable-handle
-                                :draggable="isEdit"
-                                slot-scope="{ item }"
-                                :item="item">
-                            <span class="cat-name" @click="selectCategory(item)">{{ item.cat_name }}</span>
-                        </vue-nestable-handle>
-                        <div slot="placeholder">
-                            <b>{{LANG.panel.empty_table}}</b>
-                            <p>{{LANG.panel.add_category_by_click}}</p>
-                        </div>
-
-                    </vue-nestable>
-                </div>
-
-
+                </vue-nestable>
             </div>
             <div slot='footer' class="drawer-footer">
                 <div v-if="isAdd">
@@ -147,6 +159,31 @@
                 this.$emit('onSelected', item);
                 this.toggleDrawer();
             },
+            editItem(item) {
+                this.params.cat_name = item.cat_name;
+                this.params.cat_id = item.cat_id;
+            },
+            cancelEdit() {
+                this.params = {cat_id: null, cat_name: null};
+            },
+            edit() {
+                this.$http.post(this.URL.API + 'category/edit/', this.params).then((json) => {
+                    if (this._messageResponse(json.data)) {
+                        this.loadCategories();
+                    }
+                });
+            },
+            remove(item) {
+                let params = {cat_id: item.cat_id};
+                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                    this.$http.post(this.URL.API + 'category/delete/', params).then((json) => {
+                        if (this._messageResponse(json.data)) {
+                            this.loadCategories();
+                            this.params = {};
+                        }
+                    });
+                });
+            },
             resetChanges() {
                 this.readyToChange = false;
                 this.isEdit = false;
@@ -154,7 +191,7 @@
             },
             add() {
                 this.$http.post(this.URL.API + 'category/add', this.params).then((json) => {
-                    if (json.data.status) {
+                    if (this._statusResponse(json.data)) {
                         this.loadCategories();
                         this.isAdd = false;
                         this.params = {cat_name: null};
@@ -166,7 +203,6 @@
                     if (json.data) {
                         this.readyToChange = false;
                         this.paramsChanges = {};
-                        this.isEdit = false;
                     }
                 });
             },
