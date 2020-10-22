@@ -52,6 +52,7 @@
         },
         methods: {
             ...mapMutations(['addImageEditor']),
+            ...mapMutations(['deleteImageEditor']),
             selectImage() {
                 if (this.$parent.stateImageManager === 'publish')
                     this.editImage();
@@ -66,7 +67,9 @@
                 this._confirm(this.LANG.post.confirm_delete_images, () => {
                     for(const image of this.selected)
                     {
-                        this.$parent.deleteFromImages(image);
+                        this.$parent.deleteFromImages(image).then(()=>{
+                            this.deleteImageEditor(image.link);
+                        });
                     }
                     this.selected = null;
                 });
