@@ -23,9 +23,6 @@
                     <div class="item" @click="drawerName = 'settings'">
                         {{LANG.post.settings}}
                     </div>
-                    <div class="item" @click="deleteImageInContext()">
-                        test
-                    </div>
                 </div>
             </div>
             <editor class="content"
