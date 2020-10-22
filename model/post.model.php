@@ -11,7 +11,9 @@
 
 namespace pinoox\app\com_pinoox_paper\model;
 
+use pinoox\component\app\AppProvider;
 use pinoox\component\Date;
+use pinoox\component\HelperString;
 use pinoox\component\User;
 
 class PostModel extends PaperDatabase
@@ -20,11 +22,13 @@ class PostModel extends PaperDatabase
     {
         $date = Date::g('Y-m-d H:i:s');
         return self::$db->insert(self::post, [
+            'hash_id' => $data['hash_id'],
             'user_id' => User::get('user_id'),
             'title' => $data['title'],
             'summary' => $data['summary'],
             'context' => $data['context'],
             'status' => $data['status'],
+            'image_id' => !empty($data['image'])? $data['image'] : null,
             'insert_date' => $date,
             'update_date' => $date,
         ]);
@@ -39,6 +43,7 @@ class PostModel extends PaperDatabase
             'summary' => $data['summary'],
             'context' => $data['context'],
             'update_date' => $date,
+            'image_id' => !empty($data['image'])? $data['image'] : null,
             'status' => $data['status'],
         ]);
     }
@@ -87,6 +92,20 @@ class PostModel extends PaperDatabase
         }
     }
 
+    private static function delete_tags_by_post_id($post_id)
+    {
+        self::$db->where('post_id', $post_id);
+        return self::$db->delete(self::post_tag);
+    }
+
+    public static function insert_tag($post_id, $tag_id)
+    {
+        return self::$db->insert(self::post_tag, [
+            'post_id' => $post_id,
+            'tag_id' => $tag_id,
+        ]);
+    }
+
     public static function fetch_all_tags($limit = null, $isCount = false)
     {
         self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id');
@@ -103,26 +122,36 @@ class PostModel extends PaperDatabase
         return self::$db->get(self::post_tag . ' pt');
     }
 
-    public static function insert_tag($post_id, $tag_id)
-    {
-        return self::$db->insert(self::post_tag, [
-            'post_id' => $post_id,
-            'tag_id' => $tag_id,
-        ]);
-    }
-
-    private static function delete_tags_by_post_id($post_id)
-    {
-        self::$db->where('post_id', $post_id);
-        return self::$db->delete(self::post_tag);
-    }
-
     public static function where_tag_name($keyword)
     {
         if (!empty($keyword)) {
             $keyword = '%' . $keyword . '%';
             self::$db->where('t.tag_name LIKE ?', [$keyword]);
         }
+    }
+
+    public static function getHashId($length = 6)
+    {
+        $id = HelperString::generateLowRandom($length);
+        $length++;
+        if (self::fetch_by_hash_id($id))
+            $id = self::getHashId($length);
+        return $id;
+    }
+
+    public static function fetch_by_hash_id($hash_id)
+    {
+        self::$db->where('hash_id', $hash_id);
+        return self::$db->getOne(self::post);
+    }
+
+    public static function fetch_images($hash_id)
+    {
+        $package = AppProvider::get('package-name');
+        self::$db->where('app', $package);
+        self::$db->where('file_group', 'post');
+        self::$db->where('file_access', $hash_id);
+        return self::$db->get(self::file,null,'file_id,CONCAT(file_path,file_name) path');
     }
 
     public static function where_status($status)
@@ -149,4 +178,13 @@ class PostModel extends PaperDatabase
         }
     }
 
+    public static function fetch_image($file_id,$hash_id)
+    {
+        $package = AppProvider::get('package-name');
+        self::$db->where('app', $package);
+        self::$db->where('file_group', 'post');
+        self::$db->where('file_access', $hash_id);
+        self::$db->where('file_id', $file_id);
+        return self::$db->getOne(self::file);
+    }
 }

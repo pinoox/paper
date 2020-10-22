@@ -2,7 +2,7 @@
     <div v-if="isLoadEditor">
         <div class="toolbar-editor"></div>
         <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">
-            <div class="content-editor row-editor">
+            <div class="content-editor row-editor" :style="{'margin':marginContent}">
                 <ckeditor class="bg-danger" :value="getValue" @input="updateValue" :editor="initEditor"
                           :config="editorConfig"
                           @ready="onReady">
@@ -39,7 +39,7 @@
 <script>
     export default {
         props: {
-            status:{
+            status: {
                 default: 'draft',
             },
             values: {
@@ -55,9 +55,16 @@
             titlePlaceholder: {
                 default: null,
             },
+            autosaveTime: {
+                default: 10,
+            },
+            autosave: {
+                default: false,
+            },
         },
         computed: {
             editorConfig() {
+                let vm = this;
                 return {
                     toolbar: {
                         items: [
@@ -86,7 +93,7 @@
                             'code',
                             'link',
                             'blockQuote',
-                            'imageUpload',
+                            'horizontalLine',
                             'insertTable',
                             'imageInsert',
                             'mediaEmbed',
@@ -111,36 +118,131 @@
                         ]
                     },
                     language: 'fa',
-                    image: {
-                        toolbar: [
-                            'imageTextAlternative',
-                            'imageStyle:full',
-                            'imageStyle:side'
-                        ]
-                    },
-                    table: {
-                        contentToolbar: [
-                            'tableColumn',
-                            'tableRow',
-                            'mergeTableCells'
-                        ]
-                    },
                     title: {
                         placeholder: this.titlePlaceholder,
                     },
                     placeholder: this.placeholder,
                     wordCount: {
                         onUpdate: stats => {
-                           this.stats = stats;
+                            this.stats = stats;
                         }
-                    }
+                    },
+                    image: {
+                        toolbar: [
+                            'linkImage',
+                            'imageTextAlternative',
+                            '|',
+                            'imageStyle:alignRight',
+                            'imageStyle:alignCenter',
+                            'imageStyle:alignLeft',
+                            '|',
+                            'imageResize',
+
+                        ],
+                        resizeOptions: [
+                            {
+                                name: 'imageResize:original',
+                                value: null,
+                                label: '100%'
+                            },
+                            {
+                                name: 'imageResize:75',
+                                label: '75%',
+                                value: '75'
+                            },
+                            {
+                                name: 'imageResize:50',
+                                label: '50%',
+                                value: '50'
+                            },
+                            {
+                                name: 'imageResize:25',
+                                label: '25%',
+                                value: '25'
+                            },
+                        ],
+                        styles: [
+                            'alignLeft',
+                            'alignCenter',
+                            'alignRight'
+                        ],
+                    },
+                    paperUpload: {
+                        uploadUrl: this.URL.API + 'post/imageUpload',
+                        withCredentials: true,
+                        params: {
+                            hash_id: vm.getHashId,
+                        },
+                        headers: {
+                            Authorization: this.tokenAuth(),
+                        },
+                        getFile(file) {
+                            vm.$parent.pushToImages(file);
+                        },
+                    },
+                    link: {
+                        decorators: [
+                            {
+                                mode: 'manual',
+                                label: 'Open in a new tab',
+                                defaultValue: true,			// This option will be selected by default.
+                                attributes: {
+                                    target: '_blank',
+                                    rel: 'noopener noreferrer'
+                                }
+                            },
+                            {
+                                mode: 'manual',
+                                label: 'Downloadable',
+                                attributes: {
+                                    download: 'file'
+                                }
+                            },
+                        ]
+                    },
+                    fontFamily: {
+                        options: [
+                            'default',
+                            'Arial',
+                            'sans-serif',
+                            'Ubuntu',
+                            'iransans',
+                            'Karla',
+                            'serif',
+                        ],
+                    },
+                    blockToolbar: [
+
+                        'bulletedList', 'numberedList',
+                        '|',
+                        'blockQuote', 'imageUpload'
+                    ],
+                    table: {
+                        contentToolbar: [
+                            'tableColumn', 'tableRow', 'mergeTableCells',
+                            'tableProperties', 'tableCellProperties'
+                        ],
+                        tableProperties: {},
+                        tableCellProperties: {}
+                    },
+                    autosave: this.getAutoSave,
                 }
             },
             getTitle() {
-                return this.editor.plugins.get('Title').getTitle();
+                return this.ckEditor.plugins.get('Title').getTitle();
+            },
+            getAutoSave() {
+                let vm = this;
+                return {
+                    waitingTime: parseInt(this.autosaveTime) * 1000,
+                    save(editor) {
+                        if (vm.autosave)
+                            return vm.$emit('save');
+                    }
+                }
             },
             getBody() {
-                return this.editor.plugins.get('Title').getBody();
+                return this.ckEditor.plugins.get('Title').getBody();
             },
             getValue() {
                 let title = !!this.values.title ? this.values.title : '';
@@ -152,22 +254,30 @@
             return {
                 isLoadEditor: false,
                 initEditor: DecoupledDocumentEditor,
-                editor: null,
                 paperSize: 75,
                 marginTop: '64px',
-                stats:{
-                    characters:0,
-                    words:0,
+                marginContent: '0',
+                stats: {
+                    characters: 0,
+                    words: 0,
                 },
             };
         },
         methods: {
+            getHashId() {
+                return this.$parent.params.hash_id;
+            },
             updateValue: function (value) {
                 this.callEvents();
             },
             onReady(editor) {
-                this.editor = editor;
+                this.ckEditor = editor;
                 document.querySelector('.toolbar-editor').prepend(editor.ui.view.toolbar.element);
+                this.ckEditor.plugins.get('Notification').on('show:warning', (evt, data) => {
+                    let message = !!data.message ? data.message : data.title;
+                    this._notify('warn', message);
+                    evt.stop();
+                });
             },
             callEvents(data = null) {
                 data = !!data ? data : {
@@ -186,6 +296,7 @@
                 if ((zoom === 'in' && this.paperSize < 100)) this.paperSize += 5;
                 if ((zoom === 'out' && this.paperSize > 50)) this.paperSize -= 5;
                 this.marginTop = this.paperSize >= 100 ? '28px' : '64px';
+                this.marginContent = this.paperSize >= 100 ? '30px' : '0';
             },
         },
         mounted() {
