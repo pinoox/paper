@@ -22,6 +22,9 @@ class PaperUserModel extends PaperDatabase
             if ($sort['field'] === 'approx_register_date')
                 $sort['field'] = 'register_date';
 
+            if ($sort['field'] === 'full_name')
+                $sort['field'] = 'fname';
+
             self::$db->orderBy($sort['field'], $sort['type']);
         }
     }

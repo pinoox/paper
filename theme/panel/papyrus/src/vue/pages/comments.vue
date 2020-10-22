@@ -2,7 +2,8 @@
     <div class="page">
         <div class="search-bar">
             <span class="icon"><i class="fa fa-search"></i></span>
-            <input v-model="params.keyword" class="search-input" type="text" :placeholder="LANG.user.search_in_users">
+            <input v-model="params.keyword" class="search-input" type="text"
+                   :placeholder="LANG.comment.search_in_comments">
         </div>
 
         <div class="container">
@@ -13,7 +14,7 @@
                             :line-numbers="true"
                             :rtl="true"
                             :columns="columns"
-                            :rows="users"
+                            :rows="items"
                             mode="remote"
                             :search-options="{
                                  externalQuery: params.keyword,
@@ -30,12 +31,19 @@
                                 <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                             </div>
                             <div v-else-if="props.column.field === 'operation'">
-                                <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
-                                <span @click="remove(props.row,props.index)" class="btn-action"><i
-                                        class="fa fa-trash"></i></span>
+                                <span @click="toggleStatus(props.row,props.index)" class="btn-action">
+                                    <i class="fas"
+                                       :class="[props.row.status==='publish' ? 'fa-comment-slash' : 'fa-check']"></i></span>
+                                <span @click="remove(props.row,props.index)" class="btn-action">
+                                    <i class="fa fa-trash"></i></span>
                             </div>
                             <div v-else-if="props.column.field === 'status'">
-                                <span class="light">{{LANG.user.status[props.row.status]}}</span>
+                                <span class="light">{{LANG.comment.status[props.row.status]}}</span>
+                            </div>
+                            <div v-else-if="props.column.field === 'title'">
+                                <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
+                                    <span :class="props.column.style">{{props.row.title}}</span>
+                                </router-link>
                             </div>
                             <div v-else>
                                 <span :class="props.column.style">
@@ -57,47 +65,46 @@
             </div>
         </div>
 
-        <div @click="add()" class="fab fab-primary"><i class="icon fa fa-plus"></i></div>
-
-        <UserForm @onClose="drawerName=null"
-                  @onSuccess="getItems()"
-                  :user="this.user"
-                  :open="drawerName==='user-form'"></UserForm>
     </div>
 </template>
 
 <script>
-    import UserForm from "../drawers/user-form.vue";
 
     export default {
-        components: {UserForm},
         data() {
             return {
                 isLoading: false,
                 drawerName: null,
                 columns: [
                     {
-                        label: PINOOX.LANG.panel.image,
-                        field: 'thumb_128',
-                        sortable: false,
-                    },
-                    {
-                        label: PINOOX.LANG.user.email,
-                        field: 'email',
-                    },
-                    {
                         label: PINOOX.LANG.panel.user,
                         field: 'full_name',
                     },
                     {
-                        label: PINOOX.LANG.panel.status,
-                        field: 'status',
-                        style: 'light',
+                        label: PINOOX.LANG.panel.subject,
+                        field: 'subject',
+                    },
+                    {
+                        label: PINOOX.LANG.panel.message,
+                        field: 'message',
+                    },
+                    {
+                        label: PINOOX.LANG.post.post,
+                        field: 'title',
+                        style: 'link',
+                    },
+                    {
+                        label: PINOOX.LANG.user.mobile,
+                        field: 'mobile',
                     },
                     {
                         label: PINOOX.LANG.panel.date,
-                        field: 'approx_register_date',
+                        field: 'approx_insert_date',
                         style: 'light',
+                    },
+                    {
+                        label: PINOOX.LANG.panel.status,
+                        field: 'status',
                     },
                     {
                         label: PINOOX.LANG.panel.operation,
@@ -106,7 +113,7 @@
                         sortable: false,
                     },
                 ],
-                users: [],
+                items: [],
                 pages: [],
                 params: {
                     keyword: null,
@@ -117,13 +124,12 @@
                         type: '',
                     },
                 },
-                user: null
             }
         },
         methods: {
             getItems() {
-                this.$http.post(this.URL.API + 'user/getAll/', this.params).then((json) => {
-                    this.users = json.data.users;
+                this.$http.post(this.URL.API + 'comment/getAll/', this.params).then((json) => {
+                    this.items = json.data.items;
                     this.pages = json.data.pages;
                 });
             },
@@ -142,20 +148,19 @@
                 this.updateParams({keyword: params.searchTerm});
                 this.getItems();
             },
-            edit(row) {
-                this.drawerName = 'user-form';
-                this.user = row;
-            },
-            add() {
-                this.drawerName = 'user-form';
-                this.user = null;
+            toggleStatus(item, index) {
+                this.$http.post(this.URL.API + 'comment/changeStatus/', item).then((json) => {
+                    if (this._messageResponse(json.data)) {
+                        this.getItems();
+                    }
+                });
             },
             remove(row, index) {
-                let params = {user_id: row.user_id};
+                let params = {contact_id: row.contact_id};
                 this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
-                    this.$http.post(this.URL.API + 'user/delete/', params).then((json) => {
+                    this.$http.post(this.URL.API + 'comment/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
-                            this.$delete(this.users, index)
+                            this.$delete(this.items, index)
                         }
                     });
                 });

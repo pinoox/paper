@@ -8,6 +8,7 @@
  * @author   Pinoox
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\component\Date;
@@ -18,7 +19,7 @@ class CommentModel extends PaperDatabase
     public static function insert($data)
     {
         return self::$db->insert(self::comment, [
-            'article_id' => $data['article_id'],
+            'post_id' => $data['post_id'],
             'parent_id' => isset($data['parent_id']) ? $data['parent_id'] : null,
             'user_id' => isset($data['user_id']) ? $data['user_id'] : null,
             'full_name' => $data['full_name'],
@@ -50,12 +51,12 @@ class CommentModel extends PaperDatabase
         return self::$db->getOne(self::comment);
     }
 
-    public static function fetch_all_by_article($article_id, $status = self::publish, $limit = null)
+    public static function fetch_all_by_post($post_id, $status = self::publish, $limit = null)
     {
         self::$db->join(self::user . ' u', 'u.user_id=c.user_id', 'LEFT');
-        self::$db->where('c.article_id', $article_id);
+        self::$db->where('c.post_id', $post_id);
         self::$db->where('c.status', $status);
-        return self::$db->get(self::comment . ' c', $limit, 'c.*,CONCAT(u.fname," ",u.lname) user_full_name,u.avatar_id,u.email user_email');
+        return self::$db->get(self::comment . ' c', $limit, 'c.*,CONCAT(u.fname," ",u.lname) user_full_name,u.avatar_id,u.email user_email,p.title post_title');
     }
 
     public static function fetch_all($status = null, $limit = null, $isCount = false)
@@ -64,9 +65,9 @@ class CommentModel extends PaperDatabase
             self::$db->where('c.status', $status);
 
         self::$db->join(self::user . ' u', 'u.user_id=c.user_id', 'LEFT');
-        self::$db->join(self::article . ' a', 'a.article_id=c.article_id', 'LEFT');
+        self::$db->join(self::post . ' p', 'p.post_id=p.post_id', 'LEFT');
         self::$db->orderBy('c.insert_date', 'DESC');
-        $result = self::$db->get(self::comment . ' c', $limit, 'c.*,CONCAT(u.fname," ",u.lname) user_full_name,u.avatar_id,u.email user_email,a.title ');
+        $result = self::$db->get(self::comment . ' c', $limit, 'c.*,CONCAT(u.fname," ",u.lname) user_full_name,u.avatar_id,u.email user_email,p.title ');
         if ($isCount) return count($result);
         return $result;
     }
@@ -105,6 +106,17 @@ class CommentModel extends PaperDatabase
             'pending' => $pending,
             'suspend' => $suspend,
         ];
+    }
+
+
+    public static function sort($sort)
+    {
+        if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
+            if ($sort['field'] === 'approx_insert_date')
+                $sort['field'] = 'insert_date';
+
+            self::$db->orderBy($sort['field'], $sort['type']);
+        }
     }
 
 }

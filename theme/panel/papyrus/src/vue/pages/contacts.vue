@@ -73,6 +73,10 @@
                         field: 'subject',
                     },
                     {
+                        label: PINOOX.LANG.panel.message,
+                        field: 'message',
+                    },
+                    {
                         label: PINOOX.LANG.panel.user,
                         field: 'full_name',
                     },
