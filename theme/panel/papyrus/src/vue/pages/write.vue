@@ -265,7 +265,8 @@
                     if (key === 'tags') {
                         this.addFormTags(params[key], formData);
                     } else if (key === 'image') {
-                        formData.append('image', value.file_id);
+                        let image = !!value.file_id? value.file_id : '';
+                        formData.append('image', image);
                     } else if (key === 'editor') {
                         formData.append('title', value.title);
                         formData.append('context', value.context);
