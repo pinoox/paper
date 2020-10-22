@@ -99,9 +99,7 @@
                 <transition name="fade" mode="out-in"
                             enter-active-class="animate__animated animate__fadeInDown animate__faster"
                             leave-active-class="animate__animated animate__fadeOutUp animate__faster">
-                    <keep-alive include="write" max="5">
-                        <router-view :key="$route.fullPath"></router-view>
-                    </keep-alive>
+                    <router-view :key="$route.fullPath"></router-view>
                 </transition>
             </div>
         </div>

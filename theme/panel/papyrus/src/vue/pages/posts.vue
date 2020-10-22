@@ -36,11 +36,8 @@
                                 <span @click="remove(props.row,props.index)" class="btn-action"><i
                                         class="fa fa-trash"></i></span>
                             </div>
-                            <div v-else-if="props.column.field === 'status'">
-                                <span class="light">{{LANG.post.status[props.row.status]}}</span>
-                            </div>
                             <div v-else>
-                                <span :class="props.column.style">
+                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
                                     {{props.formattedRow[props.column.field]}}
                                 </span>
                             </div>
@@ -75,11 +72,18 @@
                     },
                     {
                         label: PINOOX.LANG.panel.title,
-                        field: 'title',
+                        field: (item)=>{
+                            return this._isNull(item.title,this.LANG.post.no_title);
+                        },
+                        style: (item)=>{
+                            return !item.title? 'light' : '';
+                        },
                     },
                     {
                         label: PINOOX.LANG.panel.status,
-                        field: 'status',
+                        field: (item)=>{
+                            return this.LANG.post.status[item.status];
+                        },
                         style: 'light',
                     },
                     {

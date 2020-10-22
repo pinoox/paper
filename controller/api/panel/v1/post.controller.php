@@ -75,8 +75,6 @@ class PostController extends LoginConfiguration
         $file = FileModel::fetch_by_id($post['image_id']);
         $post['image'] = Url::upload($file, $placeHolder);
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
-        $post['title'] = empty($post['title']) ? rlang('post.no_title') : $post['title'];
-
         return $post;
     }
 
@@ -141,6 +139,7 @@ class PostController extends LoginConfiguration
         $path = Dir::path('uploads/post/' . htmlspecialchars($hash_id) . '/');
         $up = Uploader::init('upload', $path)
             ->insert($hash_id, 'post', User::get('user_id'))
+            ->thumb('128')
             ->allowedTypes('jpg,jfif,jpeg,pjpeg,pjp,png,gif,bmp,webp,tiff,tif', 10)
             ->changeName('none')
             ->finish(true);
@@ -221,6 +220,7 @@ class PostController extends LoginConfiguration
             self::error();
 
         Uploader::init()
+            ->thumb('128')
             ->actRemoveRow($input['file_id']);
         Response::json(rlang('post.delete_successfully'), true);
     }
