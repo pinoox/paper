@@ -14,8 +14,8 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
+use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Dir;
-use pinoox\component\File;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Uploader;
@@ -77,9 +77,9 @@ class PostController extends LoginConfiguration
 
     public function imageUpload()
     {
-        $hash_id = Request::postOne('hash_id',null,'!empty');
-        if(empty($hash_id) || !Request::isFile('upload'))
-            $this->printMessageUpload(rlang('post.error_happened'),false);
+        $hash_id = Request::postOne('hash_id', null, '!empty');
+        if (empty($hash_id) || !Request::isFile('upload'))
+            $this->printMessageUpload(rlang('post.error_happened'), false);
 
         $path = Dir::path('uploads/post/' . htmlspecialchars($hash_id) . '/');
         $up = Uploader::init('upload', $path)
@@ -134,13 +134,26 @@ class PostController extends LoginConfiguration
     public function getImages($hash_id)
     {
         $images = PostModel::fetch_images($hash_id);
-        $images = array_map(function ($image){
+        $images = array_map(function ($image) {
             return [
                 'file_id' => $image['file_id'],
-                'link' => Url::link('~'.$image['path']),
+                'link' => Url::link('~' . $image['path']),
             ];
-        },$images);
+        }, $images);
 
         Response::json($images);
+    }
+
+    public function saveSettings()
+    {
+        $input = Request::input('autosave', '', '!empty');
+        UserSettingModel::save_data(User::get('user_id'),$input,'post');
+        Response::json(rlang('post.save_successfully'),true);
+    }
+
+    public function getSettings()
+    {
+        $data = UserSettingModel::get_data(User::get('user_id'),'post');
+        Response::json($data);
     }
 }

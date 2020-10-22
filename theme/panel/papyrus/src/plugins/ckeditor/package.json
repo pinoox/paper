@@ -45,6 +45,7 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-autosave": "^23.0.0",
     "@ckeditor/ckeditor5-horizontal-line": "^23.0.0",
     "@ckeditor/ckeditor5-upload": "^23.0.0"
   }

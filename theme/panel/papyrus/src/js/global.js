@@ -14,6 +14,14 @@ Vue.mixin({
                 this.$store.state.user = val;
             }
         },
+        ckEditor: {
+            get() {
+                return this.$store.state.ckEditor;
+            },
+            set(val) {
+                this.$store.state.ckEditor = val;
+            }
+        },
         LANG: {
             get() {
                 return PINOOX.LANG;
@@ -45,6 +53,7 @@ Vue.mixin({
                 article: require(`@img/svg/ic_article.svg`),
                 stats: require(`@img/svg/ic_stats.svg`),
                 settings: require(`@img/svg/ic_settings.svg`),
+                setting: require(`@img/svg/ic_setting.svg`),
                 users: require(`@img/svg/ic_users.svg`),
                 profile: require(`@img/svg/ic_profile.svg`),
                 eye: require(`@img/svg/ic_eye.svg`),

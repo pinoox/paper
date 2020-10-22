@@ -12,6 +12,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Url;

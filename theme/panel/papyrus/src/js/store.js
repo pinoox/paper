@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         user: {},
+        ckEditor: null,
         isLoading: false,
     },
     getters: {},
@@ -23,6 +24,15 @@ export default new Vuex.Store({
 
             });
         },
+        addImageEditor:(state,image) =>{
+            state.ckEditor.model.change( writer => {
+                const imageElement = writer.createElement( 'image', {
+                    src: image,
+                } );
+
+                state.ckEditor.model.insertContent( imageElement, state.ckEditor.model.document.selection.getLastPosition() );
+            } );
+        }
     },
     actions: {}
 });

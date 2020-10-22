@@ -14,9 +14,12 @@ namespace pinoox\app\com_pinoox_paper\controller\panel;
 use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Dir;
+use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
 use pinoox\component\interfaces\ControllerInterface;
 use pinoox\component\Lang;
+use pinoox\component\Request;
+use pinoox\component\Response;
 use pinoox\component\Template;
 
 class MasterConfiguration implements ControllerInterface
@@ -104,5 +107,16 @@ class MasterConfiguration implements ControllerInterface
             unset($array[$key]);
             $array[$key][] = $copy;
         }
+    }
+
+    public function error404()
+    {
+        HelperHeader::generateStatusCodeHTTP('404 Not Found');
+
+        if (Request::isAjax())
+            Response::json(rlang('panel.invalid_request'), false);
+
+        self::$template->show('pages>error404');
+        exit;
     }
 }

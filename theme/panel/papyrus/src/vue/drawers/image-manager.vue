@@ -18,6 +18,7 @@
             </div>
             <div slot='footer' class="drawer-footer" >
                 <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.post.close}}</div>
+                <div v-if="!!selected" @click="addImages()" class="btn btn-primary">{{LANG.post.add_to_post}}</div>
             </div>
         </ch-drawer>
     </section>
@@ -25,6 +26,8 @@
 
 <script>
     import SelectImage from '../components/select-image.vue';
+    import {mapMutations} from 'vuex';
+
     export default {
         components:{SelectImage},
         props: ['open'],
@@ -47,10 +50,19 @@
             },
         },
         methods: {
+            ...mapMutations(['addImageEditor']),
             selectImage()
             {
                 if(this.$parent.stateImageManager === 'publish')
                     this.editImage();
+            },
+            addImages()
+            {
+                for (let image of this.selected)
+                {
+                    this.addImageEditor(image.link);
+                }
+                this.toggleDrawer();
             },
             editImage()
             {
@@ -64,6 +76,7 @@
                 this.drawerOpen = !this.drawerOpen;
             },
             handleBeforeClose(next) {
+                this.selected = null;
                 this.toggleDrawer();
                 next();
             },

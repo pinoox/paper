@@ -21,6 +21,7 @@ import ChDrawer from 'ch-drawer';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import VueNestable from 'vue-nestable';
 import vSelect from 'vue-select';
+import ToggleButton from 'vue-js-toggle-button';
 import { Row, Column,Hidden } from 'vue-grid-responsive';
 
 Vue.use(VueNestable);
@@ -31,12 +32,13 @@ Vue.use(Notifications);
 Vue.use(VuejsDialog);
 Vue.use(VueAxios, axios);
 Vue.use(CKEditor);
+Vue.use(ToggleButton);
 Vue.component('v-select', vSelect);
 Vue.component('row', Row);
 Vue.component('column', Column);
 Vue.component('hidden', Hidden);
 
-__webpack_public_path__ = PINOOX.URL.THEME + 'dist/';
+__webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
 
 new Vue({
     el: '#app',

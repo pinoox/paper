@@ -55,6 +55,12 @@
             titlePlaceholder: {
                 default: null,
             },
+            autosaveTime: {
+                default: 10,
+            },
+            autosave: {
+                default: false,
+            },
         },
         computed: {
             editorConfig() {
@@ -126,9 +132,9 @@
                             'linkImage',
                             'imageTextAlternative',
                             '|',
-                            'imageStyle:alignLeft',
-                            'imageStyle:alignCenter',
                             'imageStyle:alignRight',
+                            'imageStyle:alignCenter',
+                            'imageStyle:alignLeft',
                             '|',
                             'imageResize',
 
@@ -164,8 +170,8 @@
                     paperUpload: {
                         uploadUrl: this.URL.API + 'post/imageUpload',
                         withCredentials: true,
-                        params:{
-                          hash_id:vm.getHashId,
+                        params: {
+                            hash_id: vm.getHashId,
                         },
                         headers: {
                             Authorization: this.tokenAuth(),
@@ -219,13 +225,24 @@
                         tableProperties: {},
                         tableCellProperties: {}
                     },
+                    autosave: this.getAutoSave,
                 }
             },
             getTitle() {
-                return this.editor.plugins.get('Title').getTitle();
+                return this.ckEditor.plugins.get('Title').getTitle();
+            },
+            getAutoSave() {
+                let vm = this;
+                return {
+                    waitingTime: parseInt(this.autosaveTime) * 1000,
+                    save(editor) {
+                        if (vm.autosave)
+                            return vm.$emit('save');
+                    }
+                }
             },
             getBody() {
-                return this.editor.plugins.get('Title').getBody();
+                return this.ckEditor.plugins.get('Title').getBody();
             },
             getValue() {
                 let title = !!this.values.title ? this.values.title : '';
@@ -237,7 +254,6 @@
             return {
                 isLoadEditor: false,
                 initEditor: DecoupledDocumentEditor,
-                editor: null,
                 paperSize: 75,
                 marginTop: '64px',
                 marginContent: '0',
@@ -248,17 +264,16 @@
             };
         },
         methods: {
-            getHashId()
-            {
+            getHashId() {
                 return this.$parent.params.hash_id;
             },
             updateValue: function (value) {
                 this.callEvents();
             },
             onReady(editor) {
-                this.editor = editor;
+                this.ckEditor = editor;
                 document.querySelector('.toolbar-editor').prepend(editor.ui.view.toolbar.element);
-                this.editor.plugins.get('Notification').on('show:warning', (evt, data) => {
+                this.ckEditor.plugins.get('Notification').on('show:warning', (evt, data) => {
                     let message = !!data.message ? data.message : data.title;
                     this._notify('warn', message);
                     evt.stop();

@@ -51,6 +51,7 @@ import Notification from '@ckeditor/ckeditor5-ui/src/notification/notification';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor';
 import BlockToolbar from '@ckeditor/ckeditor5-ui/src/toolbar/block/blocktoolbar';
+import AutoSave from '@ckeditor/ckeditor5-autosave/src/autosave';
 
 class Editor extends DecoupledDocumentEditor {}
 
@@ -103,7 +104,8 @@ Editor.builtinPlugins = [
 	BlockToolbar,
 	TableProperties,
 	TableCellProperties,
-	PaperUploadAdapter
+	PaperUploadAdapter,
+	AutoSave
 ];
 
 export default Editor;

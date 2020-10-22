@@ -1,5 +1,10 @@
 <template>
     <section class="page">
+        <div class="float" v-if="false">
+            <img src="@img/rocket.png"
+                 height="100px" width="100px" alt="bubbles">
+        </div>
+
         <div class="write-container">
             <div class="toolbox">
                 <div class="items">
@@ -15,12 +20,18 @@
                     <div class="item" @click="drawerName = 'image-manager'">
                         {{LANG.post.images}}
                     </div>
+                    <div class="item" @click="drawerName = 'settings'">
+                        {{LANG.post.settings}}
+                    </div>
                 </div>
             </div>
             <editor class="content"
                     :values="editor"
                     :status="status"
                     v-model="params.editor"
+                    :autosave="settings.autosave.status"
+                    :autosave-time="settings.autosave.time"
+                    @save="save()"
                     name="description"
                     :title-placeholder="LANG.post.enter_title"
                     :placeholder="LANG.post.enter_context">
@@ -29,6 +40,7 @@
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
         <category @onClose="drawerName=null" :open="drawerName==='category'"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
+        <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
         <input v-show="false" ref="file" type="file" name="file-input" @change="handleFileInput" multiple>
     </section>
 </template>
@@ -39,24 +51,20 @@
     import Publish from "../drawers/publish.vue";
     import Category from "../drawers/category.vue";
     import ImageManager from "../drawers/image-manager.vue";
+    import Settings from "../drawers/settings.vue";
 
     export default {
         name: 'write',
         props: ['post_id'],
-        components: {Editor, Category, Publish, ImageManager},
+        components: {Editor, Category, Publish, ImageManager, Settings},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
             next();
             // });
         },
-        created() {
-            if (!!this.post_id)
-                this.getPost();
-            else
-                this.getHashId();
-        },
         data() {
             return {
+                isShowRocket: false,
                 post: {},
                 editor: {
                     title: '',
@@ -70,16 +78,45 @@
                     hash_id: null,
                     image: null,
                 },
+
                 images: [],
                 status: 'draft',
-                drawerName: false,
-                stats: {
-                    word: 0,
-                    charecter: 0,
+                settings: {
+                    autosave: {
+                        status: false,
+                        time: 10,
+                    },
                 },
+                drawerName: false,
+
             };
         },
+        created() {
+            this.getInitData()
+                .then(() => {
+                    return this.getImages();
+                })
+                .then(() => {
+                    this.getImage();
+                })
+        },
         methods: {
+            getInitData() {
+                this.getSettings();
+                if (!!this.post_id)
+                    return this.getPost();
+                else
+                    return this.getHashId();
+            },
+            showRocket(status) {
+                if (this.isShowRocket || status !== 'publish')
+                    return;
+
+                this.isShowRocket = true;
+                this._delay(() => {
+                    this.isShowRocket = false;
+                }, 1500);
+            },
             handleFileDrop(e) {
                 let droppedFiles = e.dataTransfer.files;
                 if (!droppedFiles) return;
@@ -103,19 +140,16 @@
                 data.append('hash_id', this.params.hash_id);
                 let xhr = this.$http.CancelToken.source();
                 this.$http.post(this.URL.API + 'post/imageUpload/', data, {
-                    cancelToken: xhr.token ,
+                    cancelToken: xhr.token,
                     onUploadProgress: (progressEvent) => {
                         let percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     }
                 }).then((json) => {
-                    if(!json.data.error)
-                    {
+                    if (!json.data.error) {
                         this.pushToImages(json.data.file);
-                    }
-                    else
-                    {
+                    } else {
                         let message = json.data.error.message;
-                        this._notify('error',this.message);
+                        this._notify('error', this.message);
                     }
                 }).catch(function (thrown) {
                 });
@@ -132,11 +166,16 @@
 
                 this.drawerName = drawerName;
             },
+            getSettings() {
+                let hash_id = this.params.hash_id;
+                return this.$http.get(this.URL.API + 'post/getSettings/').then((json) => {
+                    this.settings = !!json.data ? json.data : this.settings;
+                });
+            },
             getImages() {
                 let hash_id = this.params.hash_id;
-                this.$http.post(this.URL.API + 'post/getImages/' + hash_id).then((json) => {
+                return this.$http.get(this.URL.API + 'post/getImages/' + hash_id).then((json) => {
                     this.images = !!json.data ? json.data : [];
-                    this.getImage();
                 });
             },
             setEditorFields(data) {
@@ -146,7 +185,7 @@
                 };
             },
             getPost() {
-                this.$http.post(this.URL.API + 'post/get/' + this.post_id).then((json) => {
+                return this.$http.get(this.URL.API + 'post/get/' + this.post_id).then((json) => {
                     this.post = json.data;
                     this.params.post_id = this.post_id;
                     this.setEditorFields(json.data);
@@ -169,20 +208,26 @@
                 }
             },
             getHashId() {
-                this.$http.post(this.URL.API + 'post/getHashId/').then((json) => {
+                return this.$http.get(this.URL.API + 'post/getHashId/').then((json) => {
                     this.params.hash_id = json.data.result;
                 });
             },
             changeStatus(status) {
+                this.drawerName = null;
                 this.params.status = status;
                 this.save();
             },
             save() {
                 let params = this.getFormData(this.params);
 
-                this.$http.post(this.URL.API + 'post/save', params).then((json) => {
+                return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
                     if (this._messageResponse(json.data)) {
-                        this.status = this.params.status;
+
+                        if (this.params.status !== this.status) {
+                            this.status = this.params.status;
+                            this.showRocket(this.status);
+                        }
+
                         if (!this.post_id)
                             this._routerReplace({name: 'post-edit', params: {post_id: json.data.result}});
                     } else {
@@ -230,9 +275,37 @@
         watch: {
             'params.hash_id': {
                 handler() {
-                    this.getImages();
+
                 }
             },
         }
     }
 </script>
+
+<style>
+    .float {
+        position: fixed;
+        -webkit-animation: floatBubble 1.5s infinite normal ease-in;
+        animation: floatBubble 1.5s infinite normal ease-in;
+        right: 120px;
+        z-index: 9999999;
+    }
+
+    @-webkit-keyframes floatBubble {
+        0% {
+            top: calc(100% - 100px);
+        }
+        100% {
+            top: 0;
+        }
+    }
+
+    @keyframes floatBubble {
+        0% {
+            top: calc(100% - 0px);
+        }
+        100% {
+            top: -10%;
+        }
+    }
+</style>
