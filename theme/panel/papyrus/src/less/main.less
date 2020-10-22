@@ -148,6 +148,7 @@
 .btn-primary {
   background: @primaryColor;
   color: #fff;
+  border: 2px solid @primaryColor;
 
   &:hover {
     background: rgb(50, 98, 157);
@@ -198,6 +199,7 @@
 
 .btn-secondary {
   background: @secondaryColor;
+  border: 2px solid @secondaryColor;
   color: #fff;
 
   &:hover {
@@ -710,6 +712,10 @@ body {
               background: @textColorLight;
             }
           }
+
+          .link {
+            font-weight: 600;
+          }
         }
 
         .empty-data {
@@ -727,7 +733,7 @@ body {
           position: fixed;
           top: 0;
           width: 100%;
-          z-index: 9999;
+          z-index:777;
 
           .items {
             height: 44px;
@@ -753,7 +759,7 @@ body {
           width: calc(100% - @sidebarWidth);
           position: fixed;
           top: 44px;
-          z-index: 9999;
+          z-index: 777;
         }
 
         .paper {
@@ -764,11 +770,13 @@ body {
           .boxShadow();
 
           .content {
-            padding: 20px;
+
           }
 
           .content-editor {
-            padding: 40px;
+            .ck-content{
+              padding: 20px 40px !important;
+            }
           }
         }
 
@@ -782,7 +790,7 @@ body {
           display: flex;
           justify-content: flex-end;
           overflow: hidden;
-          z-index: 9999;
+          z-index: 777;
 
           .item {
             padding: 0 10px;
@@ -1131,6 +1139,28 @@ body {
       margin-bottom: 20px;
     }
 
+    .category-actions {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px 0;
+
+      .container {
+        padding: 0;
+
+        .input-wrapper {
+          padding: 20px 0;
+        }
+
+      }
+
+      .text-info {
+        display: block;
+        padding: 10px 0;
+        color: @textColor
+      }
+
+    }
+
     .nestable-category {
       max-width: 500px;
       margin: auto;
@@ -1140,10 +1170,17 @@ body {
         border-radius: 5px;
         background: fade(@primaryColor, 5%);
         border-right: 1px dashed #c3c3c3;
+        .trans;
+
+        &:hover {
+          .trans;
+          background: fade(@secondaryColor, 10%);
+        }
       }
 
       .nestable-item-content {
         position: relative;
+
 
         .select {
           position: absolute;
@@ -1153,26 +1190,62 @@ body {
           height: 27px;
           background: fade(@primaryColor, 10%);
           border-radius: 5px;
+
         }
 
-        .selected {
-        }
 
         .cat-name {
           font-weight: bold;
           color: @textColor;
           cursor: pointer !important;
+
+          &:hover {
+            color: @primaryColor;
+          }
         }
 
-        .remove {
+        .actions {
           position: absolute;
           left: 3%;
-          top: 2px;
-          color: @textColor;
+          top: -7px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .btn-action {
+            width: 36px;
+            height: 36px;
+            text-align: center;
+            color: @textColor;
+            display: none;
+
+            i {
+              position: relative;
+              top: 7px;
+            }
+
+            &:hover {
+              .hover-menu;
+              border-radius: 50%;
+            }
+          }
         }
+
+
       }
 
       &.editable {
+
+        [class^="nestable-item-"] {
+
+          &:hover {
+            .btn-action {
+              display: block;
+              cursor: pointer;
+            }
+          }
+        }
+
         .nestable-item, .nestable-item-copy {
           background: fade(@primaryColor, 8%);
           border: 2px dashed @textColorLight;
@@ -1182,6 +1255,7 @@ body {
           .cat-name {
             cursor: move !important;
           }
+
         }
       }
     }
@@ -1397,3 +1471,4 @@ body {
   }
 
 }
+

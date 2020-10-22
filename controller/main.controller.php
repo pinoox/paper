@@ -138,7 +138,7 @@ class MainController extends MasterConfiguration
         $tags = ArticleModel::fetch_all_tags_by_article_id($article_id);
 
         //load comments
-        $comments = CommentModel::fetch_all_by_article($article_id, CommentModel::publish);
+        $comments = CommentModel::fetch_all_by_post($article_id, CommentModel::publish);
         $cmCount = count($comments);
         $tree = new Tree();
         $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');

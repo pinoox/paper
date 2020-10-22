@@ -24,6 +24,7 @@ class LangModel extends PinooxDatabase
             'category' => rlang('category'),
             'post' => rlang('post'),
             'user' => rlang('user'),
+            'comment' => rlang('comment'),
         ];
     }
 }

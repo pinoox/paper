@@ -7,6 +7,7 @@ import Write from '../vue/pages/write.vue';
 import PostStats from '../vue/pages/post-stats.vue';
 import Users from '../vue/pages/users.vue';
 import Contacts from '../vue/pages/contacts.vue';
+import Comments from '../vue/pages/comments.vue';
 
 export const routes = [
     {
@@ -64,6 +65,11 @@ export const routes = [
         path: PINOOX.URL.BASE + '/contacts',
         name: 'contacts',
         component: Contacts
+    },
+    {
+        path: PINOOX.URL.BASE + '/comments',
+        name: 'comments',
+        component: Comments
     },
 
 ];
