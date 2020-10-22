@@ -23,6 +23,7 @@ class LangModel extends PinooxDatabase
             'panel' => rlang('panel'),
             'category' => rlang('category'),
             'post' => rlang('post'),
+            'user' => rlang('user'),
         ];
     }
 }

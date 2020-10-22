@@ -154,6 +154,30 @@ class PostModel extends PaperDatabase
         return self::$db->get(self::file,null,'file_id,CONCAT(file_path,file_name) path');
     }
 
+    public static function where_status($status)
+    {
+        if (!is_null($status))
+            self::$db->where('p.status', $status);
+    }
+
+    public static function sort($sort)
+    {
+        if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
+            if ($sort['field'] === 'approx_insert_date')
+                $sort['field'] = 'insert_date';
+
+            self::$db->orderBy($sort['field'], $sort['type']);
+        }
+    }
+
+    public static function search_keyword($keyword)
+    {
+        if (!empty($keyword)) {
+            $p = '%' . $keyword . '%';
+            self::$db->where('p.title LIKE ? OR p.summary', [$p]);
+        }
+    }
+
     public static function fetch_image($file_id,$hash_id)
     {
         $package = AppProvider::get('package-name');

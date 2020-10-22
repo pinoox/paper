@@ -26,8 +26,11 @@ return [
     'images_management' => 'تصویر مورد نظر را انتخاب کنید',
     'confirm_delete_images' => 'تصاویر برای همیشه پاک می شود آیا مطمئن هستید؟',
     'cancel_publication' => 'لغو انتشار',
+    'cancel_edit' => 'لغو ویرایش',
     'publication_post' => 'انتشار نوشته',
     'close' => 'بستن',
+    'no_title' => '-',
+    'search_in_posts' => 'جست و جو بین نوشته ها...',
     'error_happened' => 'خطایی رخ داده است',
     'done_successfully' => 'با موفقیت انجام شد',
     'save_successfully' => 'با موفقیت ذخیره شد',
@@ -46,5 +49,12 @@ return [
     'status' => [
         'draft' => 'پیش نویس',
         'publish' => 'منتشر شده',
-    ]
+    ],
+
+    /** category **/
+    'add_category' => 'افزودن',
+    'edit_category' => 'ویرایش',
+    'enter_cat_name' => 'عنوان را وارد کنید',
+    'cat_name_is_duplicated' => 'این عنوان قبلا ثبت شده است',
+    'add_category_by_click' => 'با دکمه افزودن بالا میتوانید دسته های جدید را اضافه کنید',
 ];

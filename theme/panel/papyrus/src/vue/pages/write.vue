@@ -1,10 +1,5 @@
 <template>
     <section class="page">
-        <div class="float" v-if="false">
-            <img src="@img/rocket.png"
-                 height="100px" width="100px" alt="bubbles">
-        </div>
-
         <div class="write-container">
             <div class="toolbox">
                 <div class="items">
@@ -15,7 +10,7 @@
                         {{LANG.post.publication}}
                     </div>
                     <div class="item" @click="openDrawer('category')">
-                        {{LANG.post.category}}
+                        {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                     </div>
                     <div class="item" @click="drawerName = 'image-manager'">
                         {{LANG.post.images}}
@@ -38,7 +33,8 @@
             </editor>
         </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
-        <category @onClose="drawerName=null" :open="drawerName==='category'"></category>
+        <category @onClose="drawerName=null" :open="drawerName==='category'"
+                  @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
         <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
         <input v-show="false" ref="file" type="file" name="file-input" @change="handleFileInput" multiple>
@@ -64,7 +60,6 @@
         },
         data() {
             return {
-                isShowRocket: false,
                 post: {},
                 editor: {
                     title: '',
@@ -75,6 +70,7 @@
                     summary: '',
                     status: 'draft',
                     tags: [],
+                    category: null,
                     hash_id: null,
                     image: null,
                 },
@@ -88,7 +84,10 @@
                     },
                 },
                 drawerName: false,
-
+                stats: {
+                    word: 0,
+                    charecter: 0,
+                }
             };
         },
         created() {
@@ -107,15 +106,6 @@
                     return this.getPost();
                 else
                     return this.getHashId();
-            },
-            showRocket(status) {
-                if (this.isShowRocket || status !== 'publish')
-                    return;
-
-                this.isShowRocket = true;
-                this._delay(() => {
-                    this.isShowRocket = false;
-                }, 1500);
             },
             handleFileDrop(e) {
                 let droppedFiles = e.dataTransfer.files;
@@ -241,11 +231,10 @@
 
                         if (this.params.status !== this.status) {
                             this.status = this.params.status;
-                            this.showRocket(this.status);
                         }
 
                         if (!this.post_id)
-                            this._routerReplace({name: 'post-edit', params: {post_id: json.data.result}});
+                            this._routerReplace({name: 'write', params: {post_id: json.data.result}});
                     } else {
                         this.params.status = this.status;
                     }
@@ -287,41 +276,9 @@
 
                 return formData;
             },
-        },
-        watch: {
-            'params.hash_id': {
-                handler() {
-
-                }
-            },
+            setCategory(val) {
+                this.params.category = val;
+            }
         }
     }
 </script>
-
-<style>
-    .float {
-        position: fixed;
-        -webkit-animation: floatBubble 1.5s infinite normal ease-in;
-        animation: floatBubble 1.5s infinite normal ease-in;
-        right: 120px;
-        z-index: 9999999;
-    }
-
-    @-webkit-keyframes floatBubble {
-        0% {
-            top: calc(100% - 100px);
-        }
-        100% {
-            top: 0;
-        }
-    }
-
-    @keyframes floatBubble {
-        0% {
-            top: calc(100% - 0px);
-        }
-        100% {
-            top: -10%;
-        }
-    }
-</style>

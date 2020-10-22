@@ -83,4 +83,21 @@ class ContactModel extends PaperDatabase
             'unseen' => $unseen,
         ];
     }
+
+
+    public static function where_status($status)
+    {
+        if (!is_null($status))
+            self::$db->where('c.status', $status);
+    }
+
+    public static function sort($sort)
+    {
+        if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
+            if ($sort['field'] === 'approx_insert_date')
+                $sort['field'] = 'insert_date';
+
+            self::$db->orderBy($sort['field'], $sort['type']);
+        }
+    }
 }

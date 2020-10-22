@@ -1,9 +1,12 @@
 import Dashboard from '../vue/pages/dashboard.vue';
-import Articles from '../vue/pages/articles.vue';
+import Posts from '../vue/pages/posts.vue';
 import Stats from '../vue/pages/stats.vue';
 import Splash from '../vue/pages/splash.vue';
 import Login from '../vue/pages/login.vue';
 import Write from '../vue/pages/write.vue';
+import PostStats from '../vue/pages/post-stats.vue';
+import Users from '../vue/pages/users.vue';
+import Contacts from '../vue/pages/contacts.vue';
 
 export const routes = [
     {
@@ -15,9 +18,9 @@ export const routes = [
         component: Splash
     },
     {
-        path: PINOOX.URL.BASE + '/articles',
-        name: 'articles',
-        component: Articles
+        path: PINOOX.URL.BASE + '/posts',
+        name: 'posts',
+        component: Posts
     },
     {
         path: PINOOX.URL.BASE + '/stats',
@@ -30,21 +33,19 @@ export const routes = [
         component: Dashboard
     },
     {
-        path: PINOOX.URL.BASE + '/write',
+        path: PINOOX.URL.BASE + '/write/:post_id?',
         name: 'write',
         component: Write,
         meta: {
             hideToolbar: true,
-        }
+        },
+        props: true,
     },
     {
-        path: PINOOX.URL.BASE + '/post/:post_id',
-        name: 'post-edit',
-        component: Write,
-        meta: {
-            hideToolbar: true,
-        },
-        props:true,
+        path: PINOOX.URL.BASE + '/post/stats/:post_id',
+        name: 'post-stats',
+        component: PostStats,
+        props: true,
     },
     {
         path: PINOOX.URL.BASE + '/login',
@@ -53,6 +54,16 @@ export const routes = [
             customView: true,
         },
         component: Login,
+    },
+    {
+        path: PINOOX.URL.BASE + '/users',
+        name: 'users',
+        component: Users
+    },
+    {
+        path: PINOOX.URL.BASE + '/contacts',
+        name: 'contacts',
+        component: Contacts
     },
 
 ];

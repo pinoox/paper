@@ -75,7 +75,7 @@
                    if(this._statusResponse(json.data))
                    {
                        this.$set(this.$parent,'settings',this._clone(this.params));
-                       this.close();
+                       this.closeDrawer();
                    }
                 });
             }

@@ -31,7 +31,7 @@
                     </router-link>
                     <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
                         <simple-svg :src="_icons.article"
-                                    customClassName="icon stroke"/>
+                                    customClassName="icon"/>
                         <span class="text">نوشته ها</span>
                     </router-link>
                 </div>
@@ -39,9 +39,9 @@
                     <div class="item">
                         <span class="text">پروفایل</span>
                     </div>
-                    <div class="item">
+                    <router-link :to="{name:'users'}" tag="div" class="item">
                         <span class="text">کاربران</span>
-                    </div>
+                    </router-link>
                     <div class="item">
                         <span class="text">تنظیمات</span>
                     </div>
@@ -96,11 +96,12 @@
                     </div>
                 </div>
 
-                <transition mode="out-in" enter-active-class="animated faster fadeIn"
-                            leave-active-class="animated faster fadeOut">
-<!--                    <keep-alive include="write">-->
-                        <router-view></router-view>
-<!--                    </keep-alive>-->
+                <transition name="fade" mode="out-in"
+                            enter-active-class="animate__animated animate__fadeInDown animate__faster"
+                            leave-active-class="animate__animated animate__fadeOutUp animate__faster">
+                    <keep-alive include="write" max="5">
+                        <router-view :key="$route.fullPath"></router-view>
+                    </keep-alive>
                 </transition>
             </div>
         </div>
@@ -116,6 +117,18 @@
     export default {
         data() {
             return {
+                defaultTableOpts: {
+                    enabled: true,
+                    mode: 'records',
+                    perPage: 10,
+                    perPageDropdown: [5, 10, 20, 50],
+                    nextLabel: PINOOX.LANG.panel.next,
+                    prevLabel: PINOOX.LANG.panel.prev,
+                    rowsPerPageLabel: PINOOX.LANG.panel.rows_per_pages,
+                    ofLabel: PINOOX.LANG.panel.of,
+                    pageLabel: PINOOX.LANG.panel.page, // for 'pages' mode
+                    allLabel: PINOOX.LANG.panel.all,
+                },
                 timestamp: null,
                 route: {},
                 numProcessing: 0,

@@ -14,28 +14,49 @@
             </div>
             <div class="drawer-content">
 
-                <div v-if="isAdd" class="add-category">
-                    <div class="form-group">
-                        <input v-model="params.cat_name" type="text" class="input" placeholder="عنوان را وارد کنید">
-                    </div>
-                </div>
+                <row :gutter="12" :columns="1" v-if="isAdd" class="add-category">
+                    <column :sm="1" :md="1">
+                        <div class="input-wrapper">
+                            <label class="input-label">{{LANG.post.title}}</label>
+                            <div class="input-group">
+                                <input v-model="params.cat_name" name="name" type="text"
+                                       :placeholder="LANG.post.enter_title" class="input">
+                            </div>
+                        </div>
+                    </column>
+                </row>
+
                 <div v-else>
-                    <div @click="isAdd=true" class="btn btn-warning btn-add">افزودن دسته بندی</div>
-                    <vue-nestable class="nestable nestable-category"
-                                  v-model="categories"
-                                  @change="trigger"
-                                  :rtl="true"
-                                  keyProp="cat_id"
-                                  :maxDepth="8">
+
+                    <div class="header-actions">
+                        <div @click="isAdd=true" class="btn btn-outline-primary btn-sm btn-add">
+                            {{LANG.post.add_category}}
+                        </div>
+                        <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-outline-primary btn-sm btn-edit">
+                            {{LANG.post.edit_category}}
+                        </div>
+                        <div v-else @click="resetChanges()" class="btn btn-outline-primary btn-sm btn-edit">
+                            {{LANG.post.cancel_edit}}
+                        </div>
+                    </div>
+
+                    <vue-nestable
+                            class="nestable nestable-category"
+                            :class="{ 'editable': isEdit}"
+                            v-model="categories"
+                            @change="trigger"
+                            :rtl="true"
+                            keyProp="cat_id"
+                            :maxDepth="8">
                         <vue-nestable-handle
+                                :draggable="isEdit"
                                 slot-scope="{ item }"
                                 :item="item">
-
                             <span class="cat-name" @click="selectCategory(item)">{{ item.cat_name }}</span>
                         </vue-nestable-handle>
                         <div slot="placeholder">
-                            <b>لیست دسته بندی ها خالی است</b>
-                            <p>با دکمه افزودن بالا میتوانید دسته های جدید را اضافه کنید</p>
+                            <b>{{LANG.panel.empty_table}}</b>
+                            <p>{{LANG.panel.add_category_by_click}}</p>
                         </div>
 
                     </vue-nestable>
@@ -55,7 +76,6 @@
                     </div>
                     <div v-else>
                         <div @click="toggleDrawer()" class="btn btn-simple">برگشت</div>
-                        <div class="btn btn-primary">ثبت</div>
                     </div>
                 </div>
 
@@ -72,6 +92,7 @@
         props: ['open'],
         data() {
             return {
+                isEdit: false,
                 isAdd: false,
                 drawerPosition: 'bottom',
                 drawerArea: '90%',
@@ -118,15 +139,17 @@
                 for (let i = 0; i < pathTo.length - 1; i++) {
                     node = search[pathTo[i]];
                     search = node.children;
-
                 }
                 return node;
             },
             selectCategory(item) {
-
+                if (this.isEdit) return;
+                this.$emit('onSelected', item);
+                this.toggleDrawer();
             },
             resetChanges() {
                 this.readyToChange = false;
+                this.isEdit = false;
                 this.loadCategories();
             },
             add() {
@@ -143,9 +166,10 @@
                     if (json.data) {
                         this.readyToChange = false;
                         this.paramsChanges = {};
+                        this.isEdit = false;
                     }
                 });
-            }
+            },
         },
         created() {
             this.loadCategories();
