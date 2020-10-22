@@ -23,6 +23,9 @@
                     <div class="item" @click="drawerName = 'settings'">
                         {{LANG.post.settings}}
                     </div>
+                    <div class="item" @click="deleteImageInContext()">
+                        test
+                    </div>
                 </div>
             </div>
             <editor class="content"
@@ -101,6 +104,24 @@
                 })
         },
         methods: {
+            deleteImageInContext(link) {
+                const regex = /(?<tag><figure(.*?)<img[^>]+src="(?<link>[^">]+)"(.*?)<\/figure>)/gm;
+                let m;
+                let context = this.params.editor.context;
+                while ((m = regex.exec(this.params.editor.context)) !== null) {
+                    if (m.index === regex.lastIndex) {
+                        regex.lastIndex++;
+                    }
+                    let groups = !!m.groups? m.groups : {};
+                    if(link === groups.link)
+                    {
+                        context = context.replaceAll(groups.tag,'');
+                    }
+                }
+
+                this.params.editor.context = context;
+                this.setEditorFields(this.params.editor);
+            },
             getInitData() {
                 this.getSettings();
                 if (!!this.post_id)
@@ -161,15 +182,14 @@
                 })
             },
             deleteFromImages(file) {
-                let file_id = (!!file.file_id) ? file.file_id : file;
-
                 this.$http.post(this.URL.API + 'post/deleteImage', {
-                    file_id: file_id,
+                    file_id: file.file_id,
                     hash_id: this.params.hash_id,
                 }).then((json) => {
                     if (json.data.status) {
+                        this.deleteImageInContext(file.link);
                         this.images = this.images.filter(function (image) {
-                            return image.file_id !== file_id;
+                            return image.file_id !== file.file_id;
                         });
                     } else {
                         let message = json.data.result;
