@@ -85,6 +85,10 @@
                         field: 'mobile',
                     },
                     {
+                        label: PINOOX.LANG.user.email,
+                        field: 'email',
+                    },
+                    {
                         label: PINOOX.LANG.panel.date,
                         field: 'approx_insert_date',
                         style: 'light',
