@@ -149,7 +149,7 @@
                         this.pushToImages(json.data.file);
                     } else {
                         let message = json.data.error.message;
-                        this._notify('error', this.message);
+                        this._notify('error', message);
                     }
                 }).catch(function (thrown) {
                 });
@@ -159,6 +159,24 @@
                     file_id: file.file_id,
                     link: file.link,
                 })
+            },
+            deleteFromImages(file) {
+                let file_id = (!!file.file_id) ? file.file_id : file;
+
+                this.$http.post(this.URL.API + 'post/deleteImage', {
+                    file_id: file_id,
+                    hash_id: this.params.hash_id,
+                }).then((json) => {
+                    if (json.data.status) {
+                        this.images = this.images.filter(function (image) {
+                            return image.file_id !== file_id;
+                        });
+                    } else {
+                        let message = json.data.result;
+                        this._notify('error', message);
+                    }
+
+                });
             },
             openDrawer(drawerName) {
                 if (drawerName === 'publish')

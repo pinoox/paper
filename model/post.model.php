@@ -153,4 +153,14 @@ class PostModel extends PaperDatabase
         self::$db->where('file_access', $hash_id);
         return self::$db->get(self::file,null,'file_id,CONCAT(file_path,file_name) path');
     }
+
+    public static function fetch_image($file_id,$hash_id)
+    {
+        $package = AppProvider::get('package-name');
+        self::$db->where('app', $package);
+        self::$db->where('file_group', 'post');
+        self::$db->where('file_access', $hash_id);
+        self::$db->where('file_id', $file_id);
+        return self::$db->getOne(self::file);
+    }
 }

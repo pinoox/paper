@@ -44,10 +44,14 @@ class PostController extends LoginConfiguration
     {
         $input = Request::post('post_id,image,hash_id,title,summary,!context,tags,status=draft', null, '!empty');
 
-        $valid = Validation::check($input, [
-            'title' => ['required', rlang('panel.title')],
+        $validations = [
             'context' => ['required', rlang('panel.context')],
-        ]);
+        ];
+
+        if ($input['status'] == 'publish')
+            $validations['title'] = ['required', rlang('panel.title')];
+
+        $valid = Validation::check($input, $validations);
 
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
@@ -147,13 +151,24 @@ class PostController extends LoginConfiguration
     public function saveSettings()
     {
         $input = Request::input('autosave', '', '!empty');
-        UserSettingModel::save_data(User::get('user_id'),$input,'post');
-        Response::json(rlang('post.save_successfully'),true);
+        UserSettingModel::save_data(User::get('user_id'), $input, 'post');
+        Response::json(rlang('post.save_successfully'), true);
     }
 
     public function getSettings()
     {
-        $data = UserSettingModel::get_data(User::get('user_id'),'post');
+        $data = UserSettingModel::get_data(User::get('user_id'), 'post');
         Response::json($data);
+    }
+
+    public function deleteImage()
+    {
+        $input = Request::input('file_id,hash_id', null, '!empty');
+        if (!PostModel::fetch_image($input['file_id'], $input['hash_id']))
+            self::error();
+
+        Uploader::init()
+            ->actRemoveRow($input['file_id']);
+        Response::json(rlang('post.delete_successfully'), true);
     }
 }
