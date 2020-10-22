@@ -31,7 +31,7 @@ return [
     'cancel_edit' => 'لغو ویرایش',
     'publication_post' => 'انتشار نوشته',
     'close' => 'بستن',
-    'no_title' => '-',
+    'no_title' => 'بدون عنوان',
     'search_in_posts' => 'جست و جو بین نوشته ها...',
     'error_happened' => 'خطایی رخ داده است',
     'done_successfully' => 'با موفقیت انجام شد',

@@ -20,7 +20,7 @@
                     <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-outline-primary btn-sm btn-edit">
                         {{LANG.post.edit_category}}
                     </div>
-                    <div v-else @click="resetChanges()" class="btn btn-outline-primary btn-sm btn-edit">
+                    <div v-else @click="resetChanges()" class="btn btn-outline-primary btn-sm btn-edit btn-danger">
                         {{LANG.post.cancel_edit}}
                     </div>
                     <div v-if="categories.length>0 && isEdit" class="text-info">{{LANG.post.edit_category_info}}</div>

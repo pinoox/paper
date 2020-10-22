@@ -118,7 +118,7 @@ Vue.mixin({
                 return false;
             }
         },
-        _emptyPrint(value, replace = '-') {
+        _isNull(value, replace = '-') {
             return !!value ? value : replace;
         },
         _confirm(message, func, isLoader = false) {
