@@ -173,13 +173,6 @@
                     return response;
                 });
             },
-            tokenAuth() {
-                let token = localStorage.pinoox_user;
-                if (!!token) {
-                    return `${token}`;
-                }
-                return null;
-            },
             checkUser() {
                 let token = this.tokenAuth();
                 if ((!token || !this.isLogin) && (!this.$route.name || this.$route.name !== 'login')) {

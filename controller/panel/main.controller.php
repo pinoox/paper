@@ -24,9 +24,9 @@ class MainController extends MasterConfiguration
     public function dist()
     {
         $url = implode('/', Router::params());
-        if ($url === 'pinoox.js') {
+        if ($url === 'paper/pinoox.js') {
             HelperHeader::contentType('application/javascript', 'UTF-8');
-            self::$template->view('dist/pinoox.js');
+            self::$template->view('dist/paper/pinoox.js');
         } else {
             self::error404();
         }

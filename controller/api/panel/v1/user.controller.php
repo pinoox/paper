@@ -15,6 +15,7 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 use pinoox\app\com_pinoox_paper\model\PaperUserModel;
 use pinoox\component\Date;
 use pinoox\component\Pagination;
+use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Url;

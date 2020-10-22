@@ -20,7 +20,7 @@ const config = {
     },
     output: {
         filename: `[name].js${isRelease ? '?[chunkhash]' : ''}`,
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist/paper'),
     },
     module: {
         rules: [
@@ -140,7 +140,7 @@ if (isRelease) {
     module.exports.plugins.push(
         new WebpackCleanPlugin({
             on: "emit",
-            path: ['./dist']
+            path: ['./dist/paper']
         }));
 }
 
