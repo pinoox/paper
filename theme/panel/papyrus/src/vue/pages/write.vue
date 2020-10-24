@@ -1,25 +1,25 @@
 <template>
     <section class="page">
-        <div class="write-container">
-            <div class="toolbox">
-                <div class="items">
-                    <div class="item" @click="save()">
-                        {{LANG.post.save}}
-                    </div>
-                    <div @click="openDrawer('publish')" class="item">
-                        {{LANG.post.publication}}
-                    </div>
-                    <div class="item" @click="openDrawer('category')">
-                        {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
-                    </div>
-                    <div class="item" @click="drawerName = 'image-manager'">
-                        {{LANG.post.images}}
-                    </div>
-                    <div class="item" @click="drawerName = 'settings'">
-                        {{LANG.post.settings}}
-                    </div>
+        <div class="menubar">
+            <div class="items">
+                <div class="item" @click="save()">
+                    {{LANG.post.save}}
+                </div>
+                <div @click="openDrawer('publish')" class="item">
+                    {{LANG.post.publication}}
+                </div>
+                <div class="item" @click="openDrawer('category')">
+                    {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
+                </div>
+                <div class="item" @click="drawerName = 'image-manager'">
+                    {{LANG.post.images}}
+                </div>
+                <div class="item" @click="drawerName = 'settings'">
+                    {{LANG.post.settings}}
                 </div>
             </div>
+        </div>
+        <div class="write-container">
             <editor class="content"
                     :values="editor"
                     :status="status"
@@ -224,6 +224,7 @@
             save() {
                 let params = this.getFormData(this.params);
                 this.message = PINOOX.LANG.panel.saving;
+
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
                     this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
 

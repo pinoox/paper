@@ -52,6 +52,7 @@ return [
         'draft' => 'پیش نویس',
         'publish' => 'منتشر شده',
     ],
+    'write' => 'نوشتن',
 
     /** category **/
     'add' => 'افزودن',

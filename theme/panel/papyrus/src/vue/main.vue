@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="main">
-                <div v-if="hideToolbar" class="toolbar">
+                <div class="toolbar" v-if="showToolbar">
                     <div class="account">
                         <img src="@img/sample-user.jpg" alt="profile">
                         <span class="text">رضا رضایی</span>
@@ -136,8 +136,8 @@
             hasCustomView() {
                 return !!this.$route.meta.customView;
             },
-            hideToolbar() {
-                return !this.$route.meta.hideToolbar;
+            showToolbar() {
+                return !!this.$route.meta.showToolbar;
             }
         },
         methods: {

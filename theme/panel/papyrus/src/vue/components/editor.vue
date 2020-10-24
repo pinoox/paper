@@ -259,7 +259,6 @@
         },
         data() {
             return {
-                isSaving: false,
                 isLoadEditor: false,
                 initEditor: DecoupledDocumentEditor,
                 paperSize: 75,

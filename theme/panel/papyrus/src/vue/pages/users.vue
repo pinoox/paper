@@ -1,5 +1,13 @@
 <template>
     <div class="page">
+        <div class="menubar">
+            <div class="items">
+                <div class="item" @click="add()">
+                    {{LANG.post.add}}
+                </div>
+            </div>
+        </div>
+
         <div class="search-bar">
             <span class="icon"><i class="fa fa-search"></i></span>
             <input v-model="params.keyword" class="search-input" type="text" :placeholder="LANG.user.search_in_users">
@@ -56,8 +64,6 @@
                 </div>
             </div>
         </div>
-
-        <div @click="add()" class="fab fab-primary"><i class="icon fa fa-plus"></i></div>
 
         <UserForm @onClose="drawerName=null"
                   @onSuccess="getItems()"

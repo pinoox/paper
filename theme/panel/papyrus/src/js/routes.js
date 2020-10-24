@@ -31,15 +31,15 @@ export const routes = [
     {
         path: PINOOX.URL.BASE + '/dashboard',
         name: 'dashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta: {
+            showToolbar: true,
+        }
     },
     {
         path: PINOOX.URL.BASE + '/write/:post_id?',
         name: 'write',
         component: Write,
-        meta: {
-            hideToolbar: true,
-        },
         props: true,
     },
     {
@@ -59,7 +59,7 @@ export const routes = [
     {
         path: PINOOX.URL.BASE + '/users',
         name: 'users',
-        component: Users
+        component: Users,
     },
     {
         path: PINOOX.URL.BASE + '/contacts',
