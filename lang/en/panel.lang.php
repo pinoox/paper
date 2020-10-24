@@ -1,6 +1,7 @@
 <?php
 return [
-
+    'PM' => 'PM',
+    'AM' => 'AM',
     'close' => 'close',
     'yes' => 'yes',
     'user_key' => 'email or username',
@@ -14,6 +15,8 @@ return [
     'app_name' => 'paper',
     'app_description' => 'Pinoox blog app',
     'save' => 'save',
+    'saved' => 'saved',
+    'saving' => 'saving...',
 
     'dashboard' => 'dashboard',
     'user' => 'user',

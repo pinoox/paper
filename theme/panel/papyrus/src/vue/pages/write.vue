@@ -23,6 +23,7 @@
             <editor class="content"
                     :values="editor"
                     :status="status"
+                    :message="message"
                     v-model="params.editor"
                     :autosave="settings.autosave.status"
                     :autosave-time="settings.autosave.time"
@@ -84,10 +85,7 @@
                     },
                 },
                 drawerName: false,
-                stats: {
-                    word: 0,
-                    charecter: 0,
-                }
+                message: null,
             };
         },
         created() {
@@ -225,14 +223,16 @@
             },
             save() {
                 let params = this.getFormData(this.params);
-
+                this.message = PINOOX.LANG.panel.saving;
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
-                    if (this._messageResponse(json.data)) {
+                    this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
 
+                    if (!json.data.status) {
+                        this._notify('error', json.data.message, 'app');
+                    } else if (json.data.status) {
                         if (this.params.status !== this.status) {
                             this.status = this.params.status;
                         }
-
                         if (!this.post_id)
                             this._routerReplace({name: 'write', params: {post_id: json.data.result}});
                     } else {
@@ -265,7 +265,7 @@
                     if (key === 'tags') {
                         this.addFormTags(params[key], formData);
                     } else if (key === 'image') {
-                        let image = !!value.file_id? value.file_id : '';
+                        let image = !!value.file_id ? value.file_id : '';
                         formData.append('image', image);
                     } else if (key === 'editor') {
                         formData.append('title', value.title);
@@ -279,7 +279,7 @@
             },
             setCategory(val) {
                 this.params.category = val;
-            }
-        }
+            },
+        },
     }
 </script>
