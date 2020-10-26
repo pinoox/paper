@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import './global';
 import axios from 'axios';
-
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 import axiosMethodOverride from 'axios-method-override';
 

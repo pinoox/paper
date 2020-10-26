@@ -40,6 +40,8 @@
 </template>
 
 <script>
+    let icon = require('!!raw-loader?!@img/svg/ic_save.svg');
+
     export default {
         props: {
             message: {
@@ -76,6 +78,7 @@
                         items: [
                             'undo',
                             'redo',
+                            'fastBtn:save',
                             '|',
                             'heading',
                             'fontSize',
@@ -232,6 +235,23 @@
                         tableCellProperties: {}
                     },
                     autosave: this.getAutoSave,
+                    fastBtn: [
+                        {
+                            name: 'save',
+                            label: this.LANG.post.save,
+                            icon: icon.default,
+                            keystroke: 'Ctrl+S',
+                            tooltip: true,
+                            created(view) {
+                                vm.$watch('$parent.isSave', (val) => {
+                                    view.isEnabled = val;
+                                }, {
+                                    immediate: true,
+                                });
+                            },
+                            action: vm.$parent.save
+                        }
+                    ]
                 }
             },
             getTitle() {
