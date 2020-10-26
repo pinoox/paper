@@ -48,11 +48,18 @@ return [
     'inactive' => 'غیرفعال',
     'delete' => 'حذف',
     'page_setting_management' => 'تنظیمات صفحه را اینجا مدیریت کنید',
+    'published' => 'تاریخ انتشار',
+    'analysis' => 'تحلیل و بررسی',
     'status' => [
         'draft' => 'پیش نویس',
         'publish' => 'منتشر شده',
     ],
     'write' => 'نوشتن',
+    'stats_7_days' => 'آمار 7 روز اخیر',
+    'stats_15_days' => 'آمار 15 روز اخیر',
+    'visits' => 'بازدیدها',
+    'visitors' => 'بازدید کننده ها',
+    'likes' => 'لایک ها',
 
     /** category **/
     'add' => 'افزودن',
