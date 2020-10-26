@@ -12,8 +12,10 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\component\Browser;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
+use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Date;
 use pinoox\component\Pagination;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
@@ -224,4 +226,63 @@ class PostController extends LoginConfiguration
             ->actRemoveRow($input['file_id']);
         Response::json(rlang('post.delete_successfully'), true);
     }
+
+    public function visit($post_id)
+    {
+        $b = new Browser();
+        $data = [
+            'browser' => $b->getBrowser(),
+            'browser_version' => $b->getVersion(),
+            'platform' => $b->getPlatform(),
+            'os' => $b->getOS(),
+            'device' => $b->getDevice(),
+        ];
+        StatisticModel::visit($post_id, $data);
+    }
+
+    public function getStats($post_id)
+    {
+        $post = PostModel::fetch_by_id($post_id);
+        if (empty($post)) return null;
+
+        //visits
+        $visits = StatisticModel::fetch_visits($post_id, 7);
+        $visitsSeries = StatisticModel::createRangeData($visits['series'], 6, true);
+
+        //visitors
+        $visitors = StatisticModel::fetch_visitors($post_id, 7);
+        $visitorsSeries = StatisticModel::createRangeData($visitors['series'], 6, true);
+
+        $result = [
+            'visits' => [
+                'total' => $visits['total'],
+                'series' => [['data' => $visitsSeries]]
+            ],
+            'visitors' => [
+                'total' => $visitors['total'],
+                'series' => [['data' => $visitorsSeries]]
+            ],
+        ];
+
+        Response::json($result);
+    }
+
+    public function getDevices($post_id)
+    {
+        $post = PostModel::fetch_by_id($post_id);
+        if (empty($post)) return null;
+
+        $devices = StatisticModel::fetch_devices($post_id);
+        $total = StatisticModel::fetch_total_devices($post_id);
+        $percents = StatisticModel::calc_percents($devices, $total);
+
+        $data = [
+            'percents' => array_column($percents, 'percent'),
+            'labels' => array_column($percents, 'device'),
+            'total' => $total
+        ];
+
+        Response::json($data);
+    }
+
 }

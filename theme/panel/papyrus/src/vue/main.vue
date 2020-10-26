@@ -137,8 +137,8 @@
             hasCustomView() {
                 return !!this.$route.meta.customView;
             },
-            hideToolbar() {
-                return !this.$route.meta.hideToolbar;
+            showToolbar() {
+                return !!this.$route.meta.showToolbar;
             }
         },
         methods: {

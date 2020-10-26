@@ -78,7 +78,7 @@
 @textSize: 1em;
 @subtitleSize: 0.8em;
 @sidebarWidth: 120px;
-@toolbarHeight: 64px;
+@toolbarHeight: 44px;
 
 ::-webkit-scrollbar {
   width: 0.5em;
@@ -131,7 +131,7 @@
 }
 
 .btn {
-  padding: 14px 20px;
+  padding: 12px 20px;
   min-width: 60px;
   text-align: center;
   border-radius: 4px;
@@ -190,7 +190,6 @@
 .btn-danger {
   background: @redColor;
   color: #fff;
-
 
   &:hover {
     background: rgb(183, 42, 103);
@@ -484,7 +483,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 14px 6px;
+        padding: 7px 6px;
 
         &:hover {
           cursor: pointer;
@@ -493,8 +492,8 @@ body {
 
         img {
           border-radius: 50%;
-          width: 36px;
-          height: 36px;
+          width: 30px;
+          height: 30px;
           .boxShadow();
         }
 
@@ -508,7 +507,7 @@ body {
         align-items: center;
 
         .item {
-          padding: 18px;
+          padding: 8px;
 
           &:hover {
             cursor: pointer;
@@ -516,6 +515,9 @@ body {
           }
 
           .icon {
+            position: relative;
+            top: 3px;
+
             path {
               stroke: @secondaryColor;
             }
@@ -727,34 +729,6 @@ body {
 
       .write-container {
 
-        .toolbox {
-          background: #fff;
-          border-bottom: 1px solid @borderColor;
-          position: fixed;
-          top: 0;
-          width: 100%;
-          z-index: 777;
-
-          .items {
-            height: 44px;
-            display: flex;
-            align-items: center;
-
-            .item {
-              padding: 12px 20px;
-              font-size: 13px;
-              color: @textColor;
-              .trans;
-
-              &:hover {
-                cursor: pointer;
-                .hover-menu;
-                .trans;
-              }
-            }
-          }
-        }
-
         .toolbar-editor {
           width: calc(100% - @sidebarWidth);
           position: fixed;
@@ -849,6 +823,36 @@ body {
         }
       }
 
+      .menubar {
+        background: #fff;
+        border-bottom: 1px solid @borderColor;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 777;
+
+        .items {
+          height: 44px;
+          display: flex;
+          align-items: center;
+
+          .item {
+            padding: 12px 20px;
+            font-size: 13px;
+            color: @textColor;
+            position: relative;
+            .trans;
+
+            &:hover {
+              cursor: pointer;
+              .hover-menu;
+              .trans;
+            }
+
+          }
+        }
+      }
+
       .search-bar {
         position: relative;
         overflow: hidden;
@@ -863,7 +867,7 @@ body {
           color: @textColorLight;
           min-width: 40px;
           display: block;
-          padding: 12px 10px;
+          padding: 5px 10px;
           text-align: center;
 
         }
@@ -874,7 +878,7 @@ body {
           padding: 10px 50px 10px 40px;
           height: @toolbarHeight/2;
           outline: none;
-          font-size: 1.1em;
+          font-size: 0.9em;
           border: none;
           border-right: none;
           border-left: none;

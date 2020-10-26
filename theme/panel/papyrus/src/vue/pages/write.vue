@@ -1,39 +1,40 @@
 <template>
     <section class="page">
-        <div class="write-container">
-            <div class="toolbox">
-                <div class="items">
-                    <div class="item" @click="save()">
-                        {{LANG.post.save}}
-                    </div>
-                    <div @click="openDrawer('publish')" class="item">
-                        {{LANG.post.publication}}
-                    </div>
-                    <div class="item" @click="openDrawer('category')">
-                        {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
-                    </div>
-                    <div class="item" @click="drawerName = 'image-manager'">
-                        {{LANG.post.images}}
-                    </div>
-                    <div class="item" @click="drawerName = 'settings'">
-                        {{LANG.post.settings}}
-                    </div>
-                    <div class="item" @click="openFullscreen()">
-                        fullscreen
-                    </div>
+        <div class="menubar">
+            <div class="items">
+                <div class="item" @click="save()">
+                    {{LANG.post.save}}
+                </div>
+                <div @click="openDrawer('publish')" class="item">
+                    {{LANG.post.publication}}
+                </div>
+                <div class="item" @click="openDrawer('category')">
+                    {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
+                </div>
+                <div class="item" @click="drawerName = 'image-manager'">
+                    {{LANG.post.images}}
+                </div>
+                <div class="item" @click="drawerName = 'settings'">
+                    {{LANG.post.settings}}
+                </div>
+                <div class="item" @click="openFullscreen()">
+                    fullscreen
                 </div>
             </div>
-                <editor id="write" class="content"
-                        :values="editor"
-                        :status="status"
-                        v-model="params.editor"
-                        :autosave="settings.autosave.status"
-                        :autosave-time="settings.autosave.time"
-                        @save="save()"
-                        name="description"
-                        :title-placeholder="LANG.post.enter_title"
-                        :placeholder="LANG.post.enter_context">
-                </editor>
+        </div>
+        <div class="write-container">
+            <editor id="write" class="content"
+                    :values="editor"
+                    :status="status"
+                    :message="message"
+                    v-model="params.editor"
+                    :autosave="settings.autosave.status"
+                    :autosave-time="settings.autosave.time"
+                    @save="save()"
+                    name="description"
+                    :title-placeholder="LANG.post.enter_title"
+                    :placeholder="LANG.post.enter_context">
+            </editor>
         </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
         <category @onClose="drawerName=null" :open="drawerName==='category'"
@@ -87,6 +88,7 @@
                     },
                 },
                 drawerName: false,
+                message: null,
             };
         },
         created() {
@@ -230,14 +232,18 @@
             },
             save() {
                 let params = this.getFormData(this.params);
+                this.message = PINOOX.LANG.panel.saving;
 
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
-                    if (this._messageResponse(json.data)) {
+                    this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
+
+                    if (!json.data.status) {
+                        this._notify('error', json.data.message, 'app');
+                    } else if (json.data.status) {
                         this.isSave = false;
                         if (this.params.status !== this.status) {
                             this.status = this.params.status;
                         }
-
                         if (!this.post_id)
                             this._routerReplace({name: 'write', params: {post_id: json.data.result}});
                     } else {

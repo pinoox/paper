@@ -1,4 +1,27 @@
-.apexcharts-legend.apexcharts-align-center.position-right{position:relative!important;right:0!important;top:-2px!important;width:100%!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important}.apexcharts-legend.apexcharts-align-center.position-right .apexcharts-legend-marker{margin:0 2px}
+.apexcharts-legend {
+  justify-content: center;
+}
+.apexcharts-legend.apexcharts-align-center.position-right {
+  position: relative !important;
+  right: 0 !important;
+  top: -2px !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.apexcharts-legend.apexcharts-align-center.position-right .apexcharts-legend-marker {
+  margin: 0 2px;
+}
+.apexcharts-legend-text {
+  position: relative;
+  right: 1px;
+  top: -3px;
+}
+.center .apexcharts-canvas {
+  margin: auto;
+}
 
 /*!
  * Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com

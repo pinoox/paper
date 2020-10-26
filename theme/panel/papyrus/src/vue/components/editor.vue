@@ -11,7 +11,10 @@
             </div>
         </div>
         <div class="statusbar">
-            <div class="item revert">
+            <div class="item revert" v-show="message!=null">
+                <div class="label">{{message}}</div>
+            </div>
+            <div class="item">
                 <div class="label" :class="status">{{LANG.post.status[status]}}</div>
             </div>
             <div class="item">
@@ -41,6 +44,9 @@
 
     export default {
         props: {
+            message: {
+                default: null
+            },
             status: {
                 default: 'draft',
             },
@@ -258,6 +264,7 @@
                     save(editor) {
                         if (vm.autosave)
                             return vm.$emit('save');
+
                     }
                 }
             },
@@ -297,6 +304,12 @@
                     let message = !!data.message ? data.message : data.title;
                     this._notify('warn', message);
                     evt.stop();
+                });
+                let vm = this;
+                editor.keystrokes.listenTo( document );
+                editor.keystrokes.set('ctrl+S', (e) => {
+                    e.preventDefault();
+                    vm.$emit('save');
                 });
             },
             callEvents(data = null) {

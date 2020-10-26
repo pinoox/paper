@@ -1,5 +1,13 @@
 <template>
     <div class="page">
+        <div class="menubar">
+            <div class="items">
+                <router-link :to="{name:'write'}" tag="div" class="item">
+                    {{LANG.post.write}}
+                </router-link>
+            </div>
+        </div>
+
         <div class="search-bar">
             <span class="icon"><i class="fa fa-search"></i></span>
             <input v-model="params.keyword" class="search-input" type="text" :placeholder="LANG.post.search_in_posts">

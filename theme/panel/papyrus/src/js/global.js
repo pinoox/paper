@@ -141,17 +141,17 @@ Vue.mixin({
             return !(data !== undefined && data !== null && data.length > 0);
         },
         _routerReplace(location) {
-            this.$router.replace(location).catch(()=>{
+            this.$router.replace(location).catch(() => {
             });
         },
         _routerPush(location) {
-            this.$router.push(location).catch(()=>{
+            this.$router.push(location).catch(() => {
             });
         },
         _replaceAll(str, find, replace) {
             return str.replace(new RegExp(find.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'g'), replace);
         },
-        _isNumber: function(evt) {
+        _isNumber: function (evt) {
             evt = (evt) ? evt : window.event;
             let charCode = (evt.which) ? evt.which : evt.keyCode;
             if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
@@ -159,6 +159,11 @@ Vue.mixin({
             } else {
                 return true;
             }
+        },
+        _timeNow() {
+            let time = new Date().toLocaleTimeString();
+            let parts = time.split(' ');
+            return parts[0] + ' ' + this.LANG.panel[parts[1]];
         }
     }
 });

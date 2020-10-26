@@ -1,5 +1,7 @@
 <?php
 return [
+    'PM' => 'ب.ظ',
+    'AM' => 'ق.ظ',
     'invalid_request' => 'درخواست معتبر نیست',
     'close' => 'بستن',
     'yes' => 'بله',
@@ -17,6 +19,8 @@ return [
     'delete_successfully' => 'با موفقیت حذف شد',
     'error_happened' => 'خطایی رخ داده است',
     'save' => 'ذخیره',
+    'saved' => 'ذخیره شد',
+    'saving' => 'در حال ذخیره کردن...',
 
     /* table */
 
