@@ -3,6 +3,7 @@
         <ch-drawer custom-class="drawer-wrapper"
                    :location='drawerPosition'
                    :visible.sync='drawerOpen'
+                   :blur="false"
                    :area="drawerArea"
                    :before-close='handleBeforeClose'>
             <div slot='header' class="drawer-header">

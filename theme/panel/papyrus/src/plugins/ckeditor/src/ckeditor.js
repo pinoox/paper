@@ -2,6 +2,9 @@
  * @license Copyright (c) 2014-2020, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
+
+__webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
+
 import DecoupledDocumentEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor.js';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment.js';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat.js';
@@ -52,6 +55,7 @@ import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalli
 import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor';
 import BlockToolbar from '@ckeditor/ckeditor5-ui/src/toolbar/block/blocktoolbar';
 import AutoSave from '@ckeditor/ckeditor5-autosave/src/autosave';
+import FastBtn from './fastBtn';
 
 class Editor extends DecoupledDocumentEditor {}
 
@@ -105,7 +109,8 @@ Editor.builtinPlugins = [
 	TableProperties,
 	TableCellProperties,
 	PaperUploadAdapter,
-	AutoSave
+	AutoSave,
+	FastBtn,
 ];
 
 export default Editor;

@@ -66,8 +66,8 @@ Vue.mixin({
                 zoomIn: require(`@img/svg/ic_zoom_in.svg`),
                 zoomOut: require(`@img/svg/ic_zoom_out.svg`),
                 close: require(`@img/svg/ic_close.svg`),
+                save: require(`@img/svg/ic_save.svg`),
                 placeholder : require(`@img/placeholder.png`),
-
         };
         },
     },
@@ -78,12 +78,6 @@ Vue.mixin({
                 return `${token}`;
             }
             return null;
-        },
-        hasErrors(){
-          return false;
-        },
-        getErrors(){
-          return null;
         },
         _delay: (function () {
             let timer = 0;

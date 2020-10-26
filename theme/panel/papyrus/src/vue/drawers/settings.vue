@@ -4,6 +4,7 @@
                    location="bottom"
                    :visible="open"
                    :destroy-on-close="true"
+                   :blur="false"
                    area="90%"
                    @open="openDrawer()"
                    @close="closeDrawer()">
