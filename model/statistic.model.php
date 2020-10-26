@@ -40,7 +40,6 @@ class StatisticModel extends PaperDatabase
         ]);
         if ($status && $insert_id)
             self::commit();
-
         return $insert_id;
     }
 
@@ -126,7 +125,6 @@ class StatisticModel extends PaperDatabase
             } else {
                 self::add_stats($post_id, $data);
             }
-
         } else {
             self::insert($post_id, $data);
         }

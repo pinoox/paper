@@ -13,13 +13,10 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Browser;
-use pinoox\app\com_pinoox_paper\component\PhpUserAgent;
-use pinoox\app\com_pinoox_paper\component\UserAgent;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Date;
-use pinoox\component\HelperString;
 use pinoox\component\Pagination;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Dir;
