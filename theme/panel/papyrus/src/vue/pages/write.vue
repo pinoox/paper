@@ -290,5 +290,10 @@
                 this.params.category = val;
             }
         },
+        watch: {
+            drawerName() {
+                $('.app-container').toggleClass('drawer--blur');
+            }
+        }
     }
 </script>

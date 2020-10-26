@@ -79,12 +79,6 @@ Vue.mixin({
             }
             return null;
         },
-        hasErrors(){
-          return false;
-        },
-        getErrors(){
-          return null;
-        },
         _delay: (function () {
             let timer = 0;
             return function (callback, ms) {

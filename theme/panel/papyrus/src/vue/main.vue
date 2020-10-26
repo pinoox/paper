@@ -1,112 +1,113 @@
 <template>
-    <section class="app-container">
-        <notifications group="app" classes="notification"
-                       style="right:unset!important;top:unset!important;left:1%!important;bottom: 1%!important;">
-            <template slot="body" slot-scope="props">
-                <div class="notification" :class="props.item.type" @click="props.close">
-                    <a class="title">
-                        {{props.item.title}}
-                    </a>
-                    <div class="text" v-html="props.item.text"></div>
-                </div>
-            </template>
-        </notifications>
-        <div v-if="!hasCustomView">
-            <div class="sidebar mode-write">
-                <div class="brand">
-                    <div class="title">PAPER</div>
-                    <div class="subtitle">پنل مدیریت</div>
-                </div>
-                <div class="nav">
-                    <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
-                        <simple-svg :src="_icons.dashboard"
-                                    customClassName="icon"
-                                    fill="#A5B8CE"/>
-                        <span class="text">داشبورد</span>
-                    </router-link>
-                    <router-link class="item" :to="{name:'write'}" exact-active-class="active">
-                        <simple-svg :src="_icons.pen"
-                                    customClassName="icon stroke"/>
-                        <span class="text">نوشتن</span>
-                    </router-link>
-                    <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
-                        <simple-svg :src="_icons.article"
-                                    customClassName="icon"/>
-                        <span class="text">نوشته ها</span>
-                    </router-link>
-                </div>
-                <div class="menu">
-                    <div class="item">
-                        <span class="text">پروفایل</span>
-                    </div>
-                    <router-link :to="{name:'users'}" tag="div" class="item">
-                        <span class="text">کاربران</span>
-                    </router-link>
-                    <div class="item">
-                        <span class="text">تنظیمات</span>
-                    </div>
-                </div>
-            </div>
-            <div class="main">
-                <div v-if="hideToolbar" class="toolbar">
-                    <div class="account">
-                        <img src="@img/sample-user.jpg" alt="profile">
-                        <span class="text">رضا رضایی</span>
-                    </div>
-                    <div class="quick-actions">
-                        <div class="item">
-                            <simple-svg :src="_icons.eye"
-                                        width="25px"
-                                        customClassName="icon"/>
-                        </div>
-                        <router-link tag="div" :to="{name:'write'}" class="item">
-                            <simple-svg :src="_icons.pen"
-                                        width="22px"
-                                        customClassName="icon"/>
-                        </router-link>
-                    </div>
-                </div>
+   <div class="app">
+       <notifications group="app" classes="notification">
+           <template slot="body" slot-scope="props">
+               <div class="notification" :class="props.item.type" @click="props.close">
+                   <a class="title">
+                       {{props.item.title}}
+                   </a>
+                   <div class="text" v-html="props.item.text"></div>
+               </div>
+           </template>
+       </notifications>
+       <section class="app-container">
+           <div v-if="!hasCustomView">
+               <div class="sidebar mode-write">
+                   <div class="brand">
+                       <div class="title">PAPER</div>
+                       <div class="subtitle">پنل مدیریت</div>
+                   </div>
+                   <div class="nav">
+                       <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
+                           <simple-svg :src="_icons.dashboard"
+                                       customClassName="icon"
+                                       fill="#A5B8CE"/>
+                           <span class="text">داشبورد</span>
+                       </router-link>
+                       <router-link class="item" :to="{name:'write'}" exact-active-class="active">
+                           <simple-svg :src="_icons.pen"
+                                       customClassName="icon stroke"/>
+                           <span class="text">نوشتن</span>
+                       </router-link>
+                       <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
+                           <simple-svg :src="_icons.article"
+                                       customClassName="icon"/>
+                           <span class="text">نوشته ها</span>
+                       </router-link>
+                   </div>
+                   <div class="menu">
+                       <div class="item">
+                           <span class="text">پروفایل</span>
+                       </div>
+                       <router-link :to="{name:'users'}" tag="div" class="item">
+                           <span class="text">کاربران</span>
+                       </router-link>
+                       <div class="item">
+                           <span class="text">تنظیمات</span>
+                       </div>
+                   </div>
+               </div>
+               <div class="main">
+                   <div v-if="hideToolbar" class="toolbar">
+                       <div class="account">
+                           <img src="@img/sample-user.jpg" alt="profile">
+                           <span class="text">رضا رضایی</span>
+                       </div>
+                       <div class="quick-actions">
+                           <div class="item">
+                               <simple-svg :src="_icons.eye"
+                                           width="25px"
+                                           customClassName="icon"/>
+                           </div>
+                           <router-link tag="div" :to="{name:'write'}" class="item">
+                               <simple-svg :src="_icons.pen"
+                                           width="22px"
+                                           customClassName="icon"/>
+                           </router-link>
+                       </div>
+                   </div>
 
-                <div class="toolbar-drawer">
-                    <div class="items">
-                        <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
-                            <simple-svg :src="_icons.dashboard"
-                                        customClassName="icon"
-                                        fill="#A5B8CE"/>
-                            <span class="text">داشبورد</span>
-                        </router-link>
-                        <router-link class="item" :to="{name:'write'}" exact-active-class="active">
-                            <simple-svg :src="_icons.pen"
-                                        width="22px"
-                                        customClassName="stroke"/>
-                            <span class="text">نوشتن</span>
-                        </router-link>
-                        <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
-                            <simple-svg :src="_icons.stats"
-                                        customClassName="icon"
-                                        fill="#A5B8CE"/>
-                            <span class="text">آمار</span>
-                        </router-link>
-                        <router-link class="item" :to="{name:'splash'}" exact-active-class="active">
-                            <simple-svg :src="_icons.more"
-                                        customClassName="icon"
-                                        fill="#A5B8CE"/>
-                            <span class="text">بیشتر</span>
-                        </router-link>
-                    </div>
-                </div>
+                   <div class="toolbar-drawer">
+                       <div class="items">
+                           <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
+                               <simple-svg :src="_icons.dashboard"
+                                           customClassName="icon"
+                                           fill="#A5B8CE"/>
+                               <span class="text">داشبورد</span>
+                           </router-link>
+                           <router-link class="item" :to="{name:'write'}" exact-active-class="active">
+                               <simple-svg :src="_icons.pen"
+                                           width="22px"
+                                           customClassName="stroke"/>
+                               <span class="text">نوشتن</span>
+                           </router-link>
+                           <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
+                               <simple-svg :src="_icons.stats"
+                                           customClassName="icon"
+                                           fill="#A5B8CE"/>
+                               <span class="text">آمار</span>
+                           </router-link>
+                           <router-link class="item" :to="{name:'splash'}" exact-active-class="active">
+                               <simple-svg :src="_icons.more"
+                                           customClassName="icon"
+                                           fill="#A5B8CE"/>
+                               <span class="text">بیشتر</span>
+                           </router-link>
+                       </div>
+                   </div>
 
-                <transition name="fade" mode="out-in"
-                            enter-active-class="animate__animated animate__fadeInUp animate__faster"
-                            leave-active-class="animate__animated animate__fadeOutDown animate__faster">
-                    <router-view :key="$route.fullPath"></router-view>
-                </transition>
-            </div>
-        </div>
-        <div v-else>
-            <router-view></router-view>
-        </div>
-    </section>
+                   <transition name="fade" mode="out-in"
+                               enter-active-class="animate__animated animate__fadeInUp animate__faster"
+                               leave-active-class="animate__animated animate__fadeOutDown animate__faster">
+                       <router-view :key="$route.fullPath"></router-view>
+                   </transition>
+               </div>
+           </div>
+           <div v-else>
+               <router-view></router-view>
+           </div>
+       </section>
+   </div>
 </template>
 
 <script>
