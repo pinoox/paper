@@ -18,9 +18,6 @@
                     <div class="item" @click="drawerName = 'settings'">
                         {{LANG.post.settings}}
                     </div>
-                    <div class="item" id="test">
-                       test
-                    </div>
                 </div>
             </div>
             <editor class="content"
@@ -87,10 +84,6 @@
                     },
                 },
                 drawerName: false,
-                stats: {
-                    word: 0,
-                    charecter: 0,
-                }
             };
         },
         created() {
