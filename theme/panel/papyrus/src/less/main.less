@@ -1409,6 +1409,25 @@ body {
   font-family: @defaultFontFaceRtl !important;
 }
 
+#write.fullscreen {
+  background: @bgColor;
+  overflow-y: scroll;
+
+  .paper{
+    margin-bottom: 40px !important;
+    height: auto !important;
+  }
+
+  .toolbar-editor {
+    width: 100% !important;
+    top:0;
+  }
+
+  .statusbar{
+    width: 100% !important;
+  }
+}
+
 @media screen and (max-width: 991px) {
   th.sorting-asc {
     &::after, &::before {

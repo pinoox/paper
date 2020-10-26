@@ -18,19 +18,22 @@
                     <div class="item" @click="drawerName = 'settings'">
                         {{LANG.post.settings}}
                     </div>
+                    <div class="item" @click="openFullscreen()">
+                        fullscreen
+                    </div>
                 </div>
             </div>
-            <editor class="content"
-                    :values="editor"
-                    :status="status"
-                    v-model="params.editor"
-                    :autosave="settings.autosave.status"
-                    :autosave-time="settings.autosave.time"
-                    @save="save()"
-                    name="description"
-                    :title-placeholder="LANG.post.enter_title"
-                    :placeholder="LANG.post.enter_context">
-            </editor>
+                <editor id="write" class="content"
+                        :values="editor"
+                        :status="status"
+                        v-model="params.editor"
+                        :autosave="settings.autosave.status"
+                        :autosave-time="settings.autosave.time"
+                        @save="save()"
+                        name="description"
+                        :title-placeholder="LANG.post.enter_title"
+                        :placeholder="LANG.post.enter_context">
+                </editor>
         </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
         <category @onClose="drawerName=null" :open="drawerName==='category'"
@@ -281,7 +284,28 @@
             },
             setCategory(val) {
                 this.params.category = val;
+            },
+            openFullscreen() {
+               let el = document.getElementById('write');
+                if (el.requestFullscreen) {
+                    el.requestFullscreen();
+                } else if (el.webkitRequestFullscreen) { /* Safari */
+                    el.webkitRequestFullscreen();
+                } else if (el.msRequestFullscreen) { /* IE11 */
+                    el.msRequestFullscreen();
+                }
+            },
+            checkFullscreen(){
+                this.$nextTick(()=>{
+                    let el = document.getElementById('write');
+                    el.addEventListener('fullscreenchange', (event) => {
+                        $('#write').toggleClass('fullscreen');
+                    });
+                });
             }
+        },
+        mounted(){
+          this.checkFullscreen();
         },
         watch: {
             drawerName() {
