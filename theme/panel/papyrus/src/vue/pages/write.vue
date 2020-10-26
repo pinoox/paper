@@ -61,6 +61,7 @@
         },
         data() {
             return {
+                isSave: false,
                 post: {},
                 editor: {
                     title: '',
@@ -75,7 +76,6 @@
                     hash_id: null,
                     image: null,
                 },
-
                 images: [],
                 status: 'draft',
                 settings: {
@@ -96,6 +96,13 @@
                 .then(() => {
                     this.getImage();
                 })
+                .then(() => {
+                    this.$watch('params', () => {
+                        this.isSave = true;
+                    }, {
+                        deep: true,
+                    })
+                });
         },
         methods: {
             getInitData() {
@@ -171,7 +178,6 @@
                 this.drawerName = drawerName;
             },
             getSettings() {
-                let hash_id = this.params.hash_id;
                 return this.$http.get(this.URL.API + 'post/getSettings/').then((json) => {
                     this.settings = !!json.data ? json.data : this.settings;
                 });
@@ -231,6 +237,7 @@
                     if (!json.data.status) {
                         this._notify('error', json.data.message, 'app');
                     } else if (json.data.status) {
+                        this.isSave = false;
                         if (this.params.status !== this.status) {
                             this.status = this.params.status;
                         }
@@ -280,7 +287,12 @@
             },
             setCategory(val) {
                 this.params.category = val;
-            },
+            }
         },
+        watch: {
+            drawerName() {
+                $('.app-container').toggleClass('drawer--blur');
+            }
+        }
     }
 </script>
