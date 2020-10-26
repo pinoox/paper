@@ -1,0 +1,10 @@
+import SpriteSymbol from "../../../node_modules/svg-baker-runtime/browser-symbol.js";
+import sprite from "../../../node_modules/svg-sprite-loader/runtime/browser-sprite.build.js";
+var symbol = new SpriteSymbol({
+  "id": "ic_zoom_out",
+  "use": "ic_zoom_out-usage",
+  "viewBox": "0 0 512.001 512.001",
+  "content": "<symbol xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"none\" viewBox=\"0 0 512.001 512.001\" id=\"ic_zoom_out\"><path data-name=\"minus (1)\" d=\"M256 512.001A256 256 0 0174.98 74.98a256.001 256.001 0 01362.04 362.041A254.328 254.328 0 01256 512.001zm0-472c-119.1 0-216 96.9-216 216s96.9 216 216 216 216-96.9 216-216-96.9-216-216-216zm110 195.98H146v40h220zm0 0\" /></symbol>"
+});
+var result = sprite.add(symbol);
+export default symbol

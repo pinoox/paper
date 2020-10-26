@@ -18,6 +18,9 @@
                     <div class="item" @click="drawerName = 'settings'">
                         {{LANG.post.settings}}
                     </div>
+                    <div class="item" id="test">
+                       test
+                    </div>
                 </div>
             </div>
             <editor class="content"
@@ -60,6 +63,7 @@
         },
         data() {
             return {
+                isSave: false,
                 post: {},
                 editor: {
                     title: '',
@@ -74,7 +78,6 @@
                     hash_id: null,
                     image: null,
                 },
-
                 images: [],
                 status: 'draft',
                 settings: {
@@ -98,6 +101,13 @@
                 .then(() => {
                     this.getImage();
                 })
+                .then(() => {
+                    this.$watch('params', () => {
+                        this.isSave = true;
+                    }, {
+                        deep: true,
+                    })
+                });
         },
         methods: {
             getInitData() {
@@ -173,7 +183,6 @@
                 this.drawerName = drawerName;
             },
             getSettings() {
-                let hash_id = this.params.hash_id;
                 return this.$http.get(this.URL.API + 'post/getSettings/').then((json) => {
                     this.settings = !!json.data ? json.data : this.settings;
                 });
@@ -228,7 +237,7 @@
 
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
                     if (this._messageResponse(json.data)) {
-
+                        this.isSave = false;
                         if (this.params.status !== this.status) {
                             this.status = this.params.status;
                         }
@@ -265,7 +274,7 @@
                     if (key === 'tags') {
                         this.addFormTags(params[key], formData);
                     } else if (key === 'image') {
-                        let image = !!value.file_id? value.file_id : '';
+                        let image = !!value.file_id ? value.file_id : '';
                         formData.append('image', image);
                     } else if (key === 'editor') {
                         formData.append('title', value.title);
@@ -280,6 +289,6 @@
             setCategory(val) {
                 this.params.category = val;
             }
-        }
+        },
     }
 </script>

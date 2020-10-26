@@ -1,0 +1,10 @@
+import SpriteSymbol from "../../../node_modules/svg-baker-runtime/browser-symbol.js";
+import sprite from "../../../node_modules/svg-sprite-loader/runtime/browser-sprite.build.js";
+var symbol = new SpriteSymbol({
+  "id": "ic_close",
+  "use": "ic_close-usage",
+  "viewBox": "0 0 9.557 9.559",
+  "content": "<symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 9.557 9.559\" id=\"ic_close\"><g fill=\"none\" stroke=\"#200e32\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path data-name=\"Path 1\" d=\"M8.494 1.064l-7.433 7.43\" /><path data-name=\"Path 2\" d=\"M8.497 8.499L1.06 1.061\" /></g></symbol>"
+});
+var result = sprite.add(symbol);
+export default symbol
