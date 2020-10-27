@@ -670,6 +670,13 @@
     color: #fff !important;
   }
 }
+.ltr .input-wrapper {
+  text-align: left;
+}
+.ltr .input-wrapper .input-group .btn-insides {
+  left: initial;
+  right: 0;
+}
 .input-wrapper {
   padding: 0.5rem;
   text-align: right;
@@ -789,10 +796,10 @@
   display: flex;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(3px);
   -webkit-transition-duration: 1s;
   transition-duration: 1s;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
   align-items: center;
   justify-content: center;
 }
@@ -870,7 +877,7 @@
   padding: 5px 10px !important;
 }
 .btn {
-  padding: 12px 20px;
+  padding: 14px 20px;
   min-width: 60px;
   text-align: center;
   border-radius: 4px;
@@ -1002,6 +1009,14 @@ body.ltr {
 }
 body.ltr .main {
   margin-left: 120px;
+}
+body.ltr .fa-chevron-left {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+body.ltr .app-container .main .page .post-stats .post-title .label {
+  right: 0;
+  left: initial;
 }
 .app-container .splash {
   font-family: 'Karla', 'iranSans', 'Estedad', serif;
@@ -1518,13 +1533,11 @@ body.ltr .main {
 .app-container .main .page .search-bar .search-input {
   font-family: 'iranSans', 'Estedad', 'Karla', serif;
   width: 90%;
-  padding: 10px 50px 10px 40px;
+  padding: 10px 50px 10px 50px;
   height: 22px;
   outline: none;
   font-size: 0.9em;
-  border: none;
-  border-right: none;
-  border-left: none;
+  border-style: none;
   color: #506E93;
 }
 .app-container .main .page .post-stats {

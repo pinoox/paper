@@ -18,14 +18,14 @@
                <div class="sidebar mode-write">
                    <div class="brand">
                        <div class="title">PAPER</div>
-                       <div class="subtitle">پنل مدیریت</div>
+                       <div class="subtitle"></div>
                    </div>
                    <div class="nav">
                        <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
                            <simple-svg :src="_icons.dashboard"
                                        customClassName="icon"
                                        fill="#A5B8CE"/>
-                           <span class="text">داشبورد</span>
+                           <span class="text">{{LANG.panel.dashboard}}</span>
                        </router-link>
                        <router-link class="item" :to="{name:'write'}" exact-active-class="active">
                            <simple-svg :src="_icons.pen"
@@ -35,18 +35,18 @@
                        <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
                            <simple-svg :src="_icons.article"
                                        customClassName="icon"/>
-                           <span class="text">نوشته ها</span>
+                           <span class="text">{{LANG.panel.posts}}</span>
                        </router-link>
                    </div>
                    <div class="menu">
                        <div class="item">
-                           <span class="text">پروفایل</span>
+                           <span class="text">{{LANG.panel.profile}}</span>
                        </div>
                        <router-link :to="{name:'users'}" tag="div" class="item">
-                           <span class="text">کاربران</span>
+                           <span class="text">{{LANG.panel.users}}</span>
                        </router-link>
                        <div class="item">
-                           <span class="text">تنظیمات</span>
+                           <span class="text">{{LANG.panel.settings}}</span>
                        </div>
                    </div>
                </div>

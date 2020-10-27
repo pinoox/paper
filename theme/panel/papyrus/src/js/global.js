@@ -32,6 +32,9 @@ Vue.mixin({
                 return PINOOX.URL;
             },
         },
+        _dir() {
+            return  !!PINOOX.LANG.paper.direction ? PINOOX.LANG.paper.direction : 'ltr';
+        },
         _isLoading: {
             set(val) {
                 this.$store.state.isLoading = val;

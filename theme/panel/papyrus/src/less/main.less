@@ -52,10 +52,10 @@
   display: flex;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(3px);
   -webkit-transition-duration: 1s;
   transition-duration: 1s;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
   align-items: center;
   justify-content: center;
 
@@ -149,7 +149,7 @@
 }
 
 .btn {
-  padding: 12px 20px;
+  padding: 14px 20px;
   min-width: 60px;
   text-align: center;
   border-radius: 4px;
@@ -293,6 +293,15 @@ body {
 
     .main {
       margin-left: @sidebarWidth;
+    }
+
+    .fa-chevron-left{
+      -webkit-transform: rotate(180deg);
+      transform: rotate(180deg);
+    }
+    .app-container .main .page .post-stats .post-title .label{
+      right: 0;
+      left: initial;
     }
   }
 }
@@ -903,13 +912,11 @@ body {
         .search-input {
           font-family: @defaultFontFaceRtl;
           width: 90%;
-          padding: 10px 50px 10px 40px;
+          padding: 10px 50px 10px 50px;
           height: @toolbarHeight/2;
           outline: none;
           font-size: 0.9em;
-          border: none;
-          border-right: none;
-          border-left: none;
+          border-style: none;
           color: @textColor;
         }
       }

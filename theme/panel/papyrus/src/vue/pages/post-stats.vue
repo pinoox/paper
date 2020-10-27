@@ -197,7 +197,7 @@
                                 },
                                 total: {
                                     show: true,
-                                    label: "مجموع",
+                                    label: PINOOX.LANG.panel.total,
                                     formatter: function (w) {
                                         return '100%';
                                     }

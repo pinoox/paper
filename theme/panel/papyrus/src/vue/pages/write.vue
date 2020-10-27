@@ -14,7 +14,7 @@
                 <div class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
                 </div>
-                <router-link :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
+                <router-link v-if="!!post_id" :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
                     {{LANG.post.stats}}
                 </router-link>
                 <div @click="openDrawer('publish')" class="item">
