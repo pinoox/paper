@@ -18,7 +18,6 @@
                 <div class="section-content">
                     <vue-good-table
                             styleClass="vgt-table table"
-                            :line-numbers="true"
                             :rtl="true"
                             :columns="columns"
                             :rows="posts"
@@ -43,6 +42,16 @@
                                 <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
                                 <span @click="remove(props.row,props.index)" class="btn-action"><i
                                         class="fa fa-trash"></i></span>
+                            </div>
+                            <div v-else-if="props.column.field==='visits'">
+                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
+                                    <i class="fa fa-eye"></i> {{props.formattedRow[props.column.field]}}
+                                </span>
+                            </div>
+                            <div v-else-if="props.column.field==='visitors'">
+                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
+                                    <i class="fa fa-users"></i> {{props.formattedRow[props.column.field]}}
+                                </span>
                             </div>
                             <div v-else>
                                 <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
@@ -74,24 +83,38 @@
                 isLoading: false,
                 columns: [
                     {
+                        label: PINOOX.LANG.panel.id,
+                        field: 'post_id',
+                    },
+                    {
                         label: PINOOX.LANG.panel.image,
                         field: 'thumb_128',
                         sortable: false,
                     },
                     {
                         label: PINOOX.LANG.panel.title,
-                        field: (item)=>{
-                            return this._isNull(item.title,this.LANG.post.no_title);
+                        field: (item) => {
+                            return this._isNull(item.title, this.LANG.post.no_title);
                         },
-                        style: (item)=>{
-                            return !item.title? 'light' : '';
+                        style: (item) => {
+                            return !item.title ? 'light' : '';
                         },
                     },
                     {
                         label: PINOOX.LANG.panel.status,
-                        field: (item)=>{
+                        field: (item) => {
                             return this.LANG.post.status[item.status];
                         },
+                        style: 'light',
+                    },
+                    {
+                        label: PINOOX.LANG.post.visits,
+                        field: 'visits',
+                        style: 'light',
+                    },
+                    {
+                        label: PINOOX.LANG.post.visitors,
+                        field: 'visitors',
                         style: 'light',
                     },
                     {
