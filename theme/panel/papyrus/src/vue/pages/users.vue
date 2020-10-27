@@ -19,7 +19,7 @@
                     <vue-good-table
                             styleClass="vgt-table table"
                             :line-numbers="true"
-                            :rtl="true"
+                            :rtl="_dir==='rtl'"
                             :columns="columns"
                             :rows="users"
                             mode="remote"

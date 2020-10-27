@@ -4,6 +4,7 @@ return [
     'comments' => 'نظرات',
     'message' => 'پیام',
     'comments_list' => 'لیست نظرات',
+    'latest_comments' => 'آخرین نظرات',
 
     'status' => [
         'suspend' => 'تعلیق',

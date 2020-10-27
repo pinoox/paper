@@ -1,5 +1,10 @@
 <template>
     <div class="page">
+        <div class="menubar">
+            <div class="items">
+            </div>
+        </div>
+
         <div class="search-bar">
             <span class="icon"><i class="fa fa-search"></i></span>
             <input v-model="params.keyword" class="search-input" type="text"
@@ -11,8 +16,7 @@
                 <div class="section-content">
                     <vue-good-table
                             styleClass="vgt-table table"
-                            :line-numbers="true"
-                            :rtl="true"
+                            :rtl="_dir==='rtl'"
                             :columns="columns"
                             :rows="items"
                             mode="remote"
@@ -76,6 +80,10 @@
                 isLoading: false,
                 drawerName: null,
                 columns: [
+                    {
+                        label: PINOOX.LANG.panel.id,
+                        field: 'comment_id',
+                    },
                     {
                         label: PINOOX.LANG.panel.user,
                         field: 'full_name',

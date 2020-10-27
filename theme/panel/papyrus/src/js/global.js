@@ -32,6 +32,9 @@ Vue.mixin({
                 return PINOOX.URL;
             },
         },
+        _dir() {
+            return  !!PINOOX.LANG.paper.direction ? PINOOX.LANG.paper.direction : 'ltr';
+        },
         _isLoading: {
             set(val) {
                 this.$store.state.isLoading = val;
@@ -67,6 +70,7 @@ Vue.mixin({
                 zoomOut: require(`@img/svg/ic_zoom_out.svg`),
                 close: require(`@img/svg/ic_close.svg`),
                 save: require(`@img/svg/ic_save.svg`),
+                first_post : require(`@img/svg/first_post.svg`),
                 placeholder : require(`@img/placeholder.png`),
         };
         },

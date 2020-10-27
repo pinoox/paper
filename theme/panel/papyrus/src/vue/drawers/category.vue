@@ -78,16 +78,16 @@
             </div>
             <div slot='footer' class="drawer-footer">
                 <div v-if="isAdd">
-                    <div @click="isAdd=false" class="btn btn-simple">برگشت</div>
-                    <div @click="add()" class="btn btn-warning">افزودن</div>
+                    <div @click="isAdd=false" class="btn btn-simple">{{LANG.panel.back}}</div>
+                    <div @click="add()" class="btn btn-warning">{{LANG.panel.add}}</div>
                 </div>
                 <div v-else>
                     <div v-if="readyToChange">
-                        <div @click="resetChanges()" class="btn btn-simple">لغو</div>
-                        <div @click="saveChanges()" class="btn btn-success">ذخیره تغییرات</div>
+                        <div @click="resetChanges()" class="btn btn-simple">{{LANG.panel.cancel}}</div>
+                        <div @click="saveChanges()" class="btn btn-success">{{LANG.panel.save_changes}}</div>
                     </div>
                     <div v-else>
-                        <div @click="toggleDrawer()" class="btn btn-simple">برگشت</div>
+                        <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.panel.close}}</div>
                     </div>
                 </div>
 

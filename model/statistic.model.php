@@ -12,6 +12,7 @@
 namespace pinoox\app\com_pinoox_paper\model;
 
 
+use pinoox\app\com_pinoox_paper\component\Browser;
 use pinoox\component\Cookie;
 use pinoox\component\Date;
 use pinoox\component\HelperHeader;
@@ -26,7 +27,6 @@ class StatisticModel extends PaperDatabase
 
         $insert_id = self::$db->insert(self::statistic, [
             'post_id' => $post_id,
-            'user_agent' => HelperHeader::getUserAgent(),
             'visitors' => 1,
             'visits' => 1,
             'insert_date' => Date::g('Y-m-d'),
@@ -45,7 +45,7 @@ class StatisticModel extends PaperDatabase
 
     private static function fetch_today_by_post_id($post_id)
     {
-        self::$db->where('DATE(s.insert_date)', Date::g('Y-m-d'));
+        self::$db->where('s.insert_date', Date::g('Y-m-d'));
         self::$db->where('s.post_id', $post_id);
         return self::$db->getOne(self::statistic . ' s');
     }
@@ -54,6 +54,7 @@ class StatisticModel extends PaperDatabase
     {
         self::startTransaction();
 
+        self::$db->where('insert_date', Date::g('Y-m-d'));
         self::$db->where('post_id', $post_id);
         $isOK = self::$db->update(self::statistic, [
             'visits' => self::$db->inc(),
@@ -69,10 +70,11 @@ class StatisticModel extends PaperDatabase
         return $isOK;
     }
 
-    public static function add_stats($post_id , $data)
+    public static function update_stats($post_id, $data)
     {
         self::startTransaction();
 
+        self::$db->where('insert_date', Date::g('Y-m-d'));
         self::$db->where('post_id', $post_id);
         $isOK = self::$db->update(self::statistic, [
             'visitors' => self::$db->inc(),
@@ -91,39 +93,42 @@ class StatisticModel extends PaperDatabase
         return $isOK;
     }
 
-    public static function createOrUpdateJson($stats, $saved, $jsonOut = true)
+    public static function analysisJson($stats, $saved, $jsonOut = true)
     {
-        $saved = HelperString::decodeJson($saved, true);
         $result = [];
-        foreach ($stats as $key => $s) {
-            if (isset($saved[$key])) {
-                $saved[$key][$s] = isset($saved[$key][$s]) ? intval($saved[$key][$s]) + 1 : 1;
-            } else {
-                $saved[$key] = [
-                    $s => 1
-                ];
+
+        if (!empty($saved)) {
+            $saved = HelperString::decodeJson($saved, true);
+            foreach ($stats as $key => $arr) {
+                foreach ($arr as $k => $V) {
+                    $saved[$key][$k] = isset($saved[$key][$k]) ? intval($saved[$key][$k]) + 1 : 1;
+                }
+                $result = $saved;
             }
-            $result = $saved;
+        } else {
+            $result = $stats;
         }
+
         if ($jsonOut)
             return HelperString::encodeJson($result);
 
         return $result;
     }
 
-    public static function visit($post_id, $data)
+    public static function visit($post_id)
     {
+        $data = self::createStatsObject();
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) return;
 
         $todayRow = self::fetch_today_by_post_id($post_id);
-        $data['json_data'] = self::createOrUpdateJson($data, $todayRow['json_data']);
+        $data['json_data'] = self::analysisJson($data, $todayRow['json_data']);
 
         if (!empty($todayRow)) {
             if (self::is_visited($post_id)) {
                 self::update_visits($post_id);
             } else {
-                self::add_stats($post_id, $data);
+                self::update_stats($post_id, $data);
             }
         } else {
             self::insert($post_id, $data);
@@ -154,7 +159,7 @@ class StatisticModel extends PaperDatabase
 
     public static function set_visited($post_id)
     {
-        $endToday = mktime(24, 0, 0);
+        $endToday = strtotime(Date::g('Y-m-d 0:0:0', '+1 days'));
         Cookie::set('visited_' . $post_id, '1', $endToday);
     }
 
@@ -221,28 +226,53 @@ class StatisticModel extends PaperDatabase
     public static function fetch_devices($post_id)
     {
         self::$db->where('s.post_id', $post_id);
-        self::$db->groupBy('s.device');
-        return self::$db->get(self::statistic . ' s', null, 'COUNT(s.device) count,s.device');
-    }
-
-    public static function fetch_total_devices($post_id)
-    {
-        self::$db->where('s.post_id', $post_id);
-        $result = self::$db->getOne(self::statistic . ' s', 'COUNT(s.device) count');
-        return $result['count'];
-    }
-
-    public static function calc_percents($stats, $total)
-    {
-        if (empty($stats)) return [];
+        $rows = self::$db->get(self::statistic . ' s');
+        if (empty($rows)) return [];
 
         $result = [];
-        foreach ($stats as $s) {
-            $s['percent'] = round($s['count'] * 100 / $total);
-            $result[] = $s;
+        foreach ($rows as $r) {
+            $json = json_decode($r['json_data'], true);
+            foreach ($json as $k => $item) {
+                if ($k != 'device') continue;
+                foreach ($item as $device => $count) {
+                    $result[$device] = isset($result[$device]) ? $result[$device] + $count : $count;
+                }
+            }
+        }
+        $total = 0;
+        foreach ($result as $i) {
+            $total += $i;
         }
 
+        return [$result, $total];
+    }
+
+    public static function calc_device_percents($stats, $total)
+    {
+        if (empty($stats)) return [];
+        $result = [];
+        foreach ($stats as $k => $s) {
+            $p  = $s * 100 / (float) $total;
+            $p = floatval( number_format($p, 1));
+            $result[] = ['device' => $k, 'percent' => $p];
+        }
         return $result;
+    }
+
+    public static function createStatsObject()
+    {
+        $b = new Browser();
+        return [
+            'browser' => [
+                $b->getBrowser() => 1
+            ],
+            'platform' => [
+                $b->getPlatform() => 1
+            ],
+            'device' => [
+                $b->getDevice() => 1
+            ],
+        ];
     }
 
 }

@@ -11,13 +11,30 @@
                     </div>
                 </section>
 
+                <section class="section" v-if="monthly!=null">
+                    <div class="section-title">
+                        <h2>{{LANG.post.stats_post}}</h2>
+                    </div>
+                    <div class="section-content">
+                        <row :gutter="0" :columns="1" class="box-group">
+                            <column :sm="1" :md="1" :lg="1">
+                                <apexchart type="bar"
+                                           :options="monthlyOpts"
+                                           :height="monthlyOpts.chart.height"
+                                           :width="monthlyOpts.chart.width"
+                                           :series="monthly"></apexchart>
+                            </column>
+                        </row>
+                    </div>
+                </section>
+
                 <section class="section">
                     <div class="section-title">
                         <h2>{{LANG.post.stats_7_days}}</h2>
                     </div>
                     <div class="section-content">
                         <row :gutter="50" :columns="3" class="box-group">
-                            <column :sm="4" :md="4" :lg="1">
+                            <column :sm="3" :md="4" :lg="1">
                                 <div class="box box3">
                                     <div class="details">
                                         <h3>{{stats.visits.total}}</h3>
@@ -30,7 +47,7 @@
                                                :series="stats.visits.series"></apexchart>
                                 </div>
                             </column>
-                            <column :sm="4" :md="4" :lg="1">
+                            <column :sm="3" :md="4" :lg="1">
                                 <div class="box box4">
                                     <div class="details">
                                         <h3>{{stats.visitors.total}}</h3>
@@ -43,11 +60,27 @@
                                                :series="stats.visitors.series"></apexchart>
                                 </div>
                             </column>
+                            <column :sm="3" :md="4" :lg="1">
+                                <div class="box box2">
+                                    <div class="details">
+                                        <h3>{{stats.visitors.total}}</h3>
+                                        <h4>{{LANG.post.comments}}</h4>
+                                    </div>
+                                    <apexchart type="line"
+                                               :width="220"
+                                               :height="80"
+                                               :options="miniBoxOpts"
+                                               :series="stats.visitors.series"></apexchart>
+                                </div>
+                            </column>
                         </row>
                     </div>
                 </section>
 
-                <section class="section" v-if="devices.total > 0">
+                <section class="section" v-if="devices!=null">
+                    <div class="section-title">
+                        <h2>{{LANG.post.stats_devices}}</h2>
+                    </div>
                     <div class="section-content">
                         <row :gutter="12" :columns="1" class="box-group">
                             <column :sm="1" :md="1" :lg="1">
@@ -77,9 +110,11 @@
         props: ['post_id'],
         data() {
             return {
+                post: null,
                 stats: null,
                 devices: null,
-                post: null,
+                monthly: null,
+
                 miniBoxOpts: {
                     chart: {
                         type: 'line',
@@ -130,7 +165,7 @@
                     colors: ['#fff'],
                     tooltip: {
                         x: {
-                            show: false
+                            show: false,
                         },
                         y: {
                             title: {
@@ -139,7 +174,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+
                 },
                 radialOpts: {
                     chart: {
@@ -161,11 +197,9 @@
                                 },
                                 total: {
                                     show: true,
-                                    label: "مجموع",
+                                    label: PINOOX.LANG.panel.total,
                                     formatter: function (w) {
-                                        return w.globals.seriesTotals.reduce((a, b) => {
-                                            return a + b;
-                                        }, 0) + ' %';
+                                        return '100%';
                                     }
                                 }
                             }
@@ -179,9 +213,47 @@
                         offsetX: 0,
                         offsetY: 0,
                         formatter: function (seriesName, opts) {
-                            return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+                            return '%' + seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
                         },
                     },
+                },
+                monthlyOpts: {
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        width: '100%',
+                        fontFamily: 'IranSans',
+                        toolbar: {
+                            show: false,
+                        },
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '40%',
+                        },
+                    },
+                    dataLabels: {
+                        enabled: true
+                    },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                    },
+                    xaxis: {
+                        categories: []
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return " " + val
+                            }
+                        }
+                    }
                 },
             }
         },
@@ -202,10 +274,18 @@
                     this.radialOpts.labels = json.data.labels;
                 });
             },
+            getMonthly() {
+                return this.$http.post(this.URL.API + 'post/getMonthly/' + this.post_id).then((json) => {
+                    this.monthly = json.data.series;
+                    this.monthlyOpts.xaxis.categories = json.data.date;
+                });
+            },
         },
         created() {
             this.getPost().then(() => {
-                return this.getStats();
+                this.getMonthly();
+            }).then(() => {
+                this.getStats();
             }).then(() => {
                 this.getDevices();
             });
