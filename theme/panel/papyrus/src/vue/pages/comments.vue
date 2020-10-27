@@ -16,7 +16,7 @@
                 <div class="section-content">
                     <vue-good-table
                             styleClass="vgt-table table"
-                            :rtl="true"
+                            :rtl="_dir==='rtl'"
                             :columns="columns"
                             :rows="items"
                             mode="remote"
