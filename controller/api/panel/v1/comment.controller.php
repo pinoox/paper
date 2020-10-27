@@ -29,6 +29,16 @@ class CommentController extends LoginConfiguration
         Response::json($comment);
     }
 
+    public function getLatestComments()
+    {
+        $comments = CommentModel::fetch_all();
+        $comments = array_map(function ($comment) {
+            return $comment = $this->getInfoComment($comment);
+        }, $comments);
+
+        Response::json($comments);
+    }
+
     public function getAll()
     {
         $form = Request::input('keyword,sort,status,perPage=10,page=1', null, '!empty');

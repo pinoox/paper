@@ -5,9 +5,6 @@
                 <div class="item" @click="save()">
                     {{LANG.post.save}}
                 </div>
-                <div @click="openDrawer('publish')" class="item">
-                    {{LANG.post.publication}}
-                </div>
                 <div class="item" @click="openDrawer('category')">
                     {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                 </div>
@@ -16,6 +13,12 @@
                 </div>
                 <div class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
+                </div>
+                <router-link v-if="!!post_id" :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
+                    {{LANG.post.stats}}
+                </router-link>
+                <div @click="openDrawer('publish')" class="item">
+                    {{LANG.post.publication}}
                 </div>
             </div>
         </div>

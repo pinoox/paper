@@ -20,6 +20,7 @@ class LangModel extends PinooxDatabase
     public static function fetch_all()
     {
         return [
+            'paper' => rlang('paper'),
             'panel' => rlang('panel'),
             'category' => rlang('category'),
             'post' => rlang('post'),

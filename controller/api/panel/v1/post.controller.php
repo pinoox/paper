@@ -12,7 +12,6 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
-use pinoox\app\com_pinoox_paper\component\Browser;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
@@ -57,6 +56,16 @@ class PostController extends LoginConfiguration
         }, $posts);
 
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
+    }
+
+    public function getLatestPosts(){
+        $posts = PostModel::fetch_all(10);
+
+        $posts = array_map(function ($post) {
+            return $post = $this->getInfoPost($post);
+        }, $posts);
+
+        Response::json($posts);
     }
 
     private function filterSearch($form)
@@ -229,15 +238,8 @@ class PostController extends LoginConfiguration
 
     public function visit($post_id)
     {
-        $b = new Browser();
-        $data = [
-            'browser' => $b->getBrowser(),
-            'browser_version' => $b->getVersion(),
-            'platform' => $b->getPlatform(),
-            'os' => $b->getOS(),
-            'device' => $b->getDevice(),
-        ];
-        StatisticModel::visit($post_id, $data);
+        StatisticModel::visit($post_id);
+        Response::json('done');
     }
 
     public function getStats($post_id)
@@ -272,17 +274,49 @@ class PostController extends LoginConfiguration
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) return null;
 
-        $devices = StatisticModel::fetch_devices($post_id);
-        $total = StatisticModel::fetch_total_devices($post_id);
-        $percents = StatisticModel::calc_percents($devices, $total);
-
+        list($devices, $total) = StatisticModel::fetch_devices($post_id);
+        $percents = StatisticModel::calc_device_percents($devices, $total);
         $data = [
             'percents' => array_column($percents, 'percent'),
             'labels' => array_column($percents, 'device'),
-            'total' => $total
+            'total' => $total,
         ];
 
         Response::json($data);
+    }
+
+    public function getMonthly($post_id)
+    {
+        $post = PostModel::fetch_by_id($post_id);
+        if (empty($post)) return null;
+
+        $days = 10;
+
+        $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-'.$days . ' days'), Date::g('Y-m-d', '+1 days'));
+        $rangeDate = array_map(function ($d){
+            return Date::j('F d',$d);
+        },$rangeDate);
+
+        //visits
+        $visits = StatisticModel::fetch_visits($post_id, $days);
+        $visitsSeries = StatisticModel::createRangeData($visits['series'], $days - 1, true);
+
+        //visitors
+        $visitors = StatisticModel::fetch_visitors($post_id, $days);
+        $visitorsSeries = StatisticModel::createRangeData($visitors['series'], $days - 1, true);
+
+        $result = [
+            [
+                'name' => rlang('post.visits'),
+                'data' => $visitsSeries
+            ],
+            [
+                'name' => rlang('post.visitors'),
+                'data' => $visitorsSeries
+            ],
+        ];
+
+        Response::json(['series' => $result, 'date' => $rangeDate]);
     }
 
 }
