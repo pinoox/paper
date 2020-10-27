@@ -152,6 +152,7 @@
 
   &:hover {
     background: rgb(50, 98, 157);
+    border: 2px solid rgb(50, 98, 157);
   }
 }
 
@@ -626,7 +627,7 @@ body {
 
       }
 
-      .swiper-articles {
+      .swiper-posts {
         padding: 10px;
 
         .swiper-slide {
@@ -641,11 +642,13 @@ body {
           }
 
           .title {
+            font-size: 13px;
             font-weight: 500;
           }
 
           .thumb {
             width: 100%;
+            height: 170px;
             border-radius: 10px;
             .boxShadow();
           }
@@ -718,6 +721,7 @@ body {
 
           .link {
             font-weight: 500;
+            font-size: 12px;
             color: @textColor;
 
             &:hover {
@@ -982,6 +986,53 @@ body {
             background-image: linear-gradient(135deg, #EE9AE5 10%, #5961F9 100%);
           }
 
+        }
+      }
+
+      .encourage-writing {
+        text-align: center;
+        color: @textColor;
+
+        .greeting {
+          font-size: 3em;
+        }
+
+        .write-guide {
+          font-size: 1.5em;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .btn-wrapper {
+          position: relative;
+
+          .btn-write {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-evenly;
+            position: relative;
+            z-index: 2;
+
+            .icon {
+              margin: 0 5px;
+
+              path {
+                stroke: #fff;
+              }
+            }
+          }
+        }
+
+
+        .art {
+          width: 250px;
+          display: block;
+          margin: auto;
+          position: absolute;
+          left: 5%;
+          top: 15%;
+          z-index: 1;
         }
       }
     }
@@ -1425,6 +1476,27 @@ body {
       margin-right: 0;
     }
   }
+
+  .app-container {
+    .main {
+      .page {
+        .encourage-writing .art {
+          width: 170px;
+          top: 25%;
+        }
+
+        .swiper-posts .swiper-slide {
+          .title {
+            font-size: 12px;
+          }
+
+          .thumb {
+            height: 110px;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -1476,6 +1548,21 @@ body {
             }
           }
 
+        }
+
+        .encourage-writing .art {
+          opacity: 0.3;
+          top: 20%;
+        }
+
+        .swiper-posts .swiper-slide {
+          .title {
+            font-size: 12px;
+          }
+
+          .thumb {
+            height: 110px;
+          }
         }
       }
     }

@@ -27,7 +27,7 @@
                        <router-link class="item" :to="{name:'write'}" exact-active-class="active">
                            <simple-svg :src="_icons.pen"
                                        customClassName="icon stroke"/>
-                           <span class="text">نوشتن</span>
+                           <span class="text">{{LANG.post.write}}</span>
                        </router-link>
                        <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
                            <simple-svg :src="_icons.article"
@@ -79,7 +79,7 @@
                                <simple-svg :src="_icons.pen"
                                            width="22px"
                                            customClassName="stroke"/>
-                               <span class="text">نوشتن</span>
+                               <span class="text">{{LANG.post.write}}</span>
                            </router-link>
                            <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
                                <simple-svg :src="_icons.stats"

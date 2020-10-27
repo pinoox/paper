@@ -882,6 +882,7 @@
 }
 .btn-primary:hover {
   background: #32629d;
+  border: 2px solid #32629d;
 }
 .btn-outline-primary {
   background: #fff;
@@ -1269,10 +1270,10 @@ body.ltr .main {
   cursor: pointer;
   color: #506E93;
 }
-.app-container .main .page .swiper-articles {
+.app-container .main .page .swiper-posts {
   padding: 10px;
 }
-.app-container .main .page .swiper-articles .swiper-slide {
+.app-container .main .page .swiper-posts .swiper-slide {
   text-align: center;
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
@@ -1280,7 +1281,7 @@ body.ltr .main {
   -o-transition: 0.2s;
   transition: 0.2s;
 }
-.app-container .main .page .swiper-articles .swiper-slide:hover {
+.app-container .main .page .swiper-posts .swiper-slide:hover {
   cursor: pointer;
   color: #506E93;
   transform: scale(1.03);
@@ -1290,11 +1291,13 @@ body.ltr .main {
   -o-transition: 0.2s;
   transition: 0.2s;
 }
-.app-container .main .page .swiper-articles .swiper-slide .title {
+.app-container .main .page .swiper-posts .swiper-slide .title {
+  font-size: 13px;
   font-weight: 500;
 }
-.app-container .main .page .swiper-articles .swiper-slide .thumb {
+.app-container .main .page .swiper-posts .swiper-slide .thumb {
   width: 100%;
+  height: 170px;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
 }
@@ -1364,6 +1367,7 @@ body.ltr .main {
 }
 .app-container .main .page .table td .link {
   font-weight: 500;
+  font-size: 12px;
   color: #506E93;
 }
 .app-container .main .page .table td .link:hover {
@@ -1583,6 +1587,44 @@ body.ltr .main {
 }
 .app-container .main .page .post-stats .box-group .box4 {
   background-image: linear-gradient(135deg, #EE9AE5 10%, #5961F9 100%);
+}
+.app-container .main .page .encourage-writing {
+  text-align: center;
+  color: #506E93;
+}
+.app-container .main .page .encourage-writing .greeting {
+  font-size: 3em;
+}
+.app-container .main .page .encourage-writing .write-guide {
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.app-container .main .page .encourage-writing .btn-wrapper {
+  position: relative;
+}
+.app-container .main .page .encourage-writing .btn-wrapper .btn-write {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+  z-index: 2;
+}
+.app-container .main .page .encourage-writing .btn-wrapper .btn-write .icon {
+  margin: 0 5px;
+}
+.app-container .main .page .encourage-writing .btn-wrapper .btn-write .icon path {
+  stroke: #fff;
+}
+.app-container .main .page .encourage-writing .art {
+  width: 250px;
+  display: block;
+  margin: auto;
+  position: absolute;
+  left: 5%;
+  top: 15%;
+  z-index: 1;
 }
 .app-container .toolbar-editor .ck-toolbar__items {
   font-size: 16px;
@@ -1919,6 +1961,16 @@ body.ltr .main {
   th.sorting-asc::before {
     margin-right: 0;
   }
+  .app-container .main .page .encourage-writing .art {
+    width: 170px;
+    top: 25%;
+  }
+  .app-container .main .page .swiper-posts .swiper-slide .title {
+    font-size: 12px;
+  }
+  .app-container .main .page .swiper-posts .swiper-slide .thumb {
+    height: 110px;
+  }
 }
 @media screen and (max-width: 768px) {
   .fab {
@@ -1953,6 +2005,16 @@ body.ltr .main {
   .app-container .main .page .post-stats .post-title .label {
     bottom: -5px;
     font-size: 1.2em;
+  }
+  .app-container .main .page .encourage-writing .art {
+    opacity: 0.3;
+    top: 20%;
+  }
+  .app-container .main .page .swiper-posts .swiper-slide .title {
+    font-size: 12px;
+  }
+  .app-container .main .page .swiper-posts .swiper-slide .thumb {
+    height: 110px;
   }
 }
 

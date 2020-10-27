@@ -58,6 +58,16 @@ class PostController extends LoginConfiguration
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
     }
 
+    public function getLatestPosts(){
+        $posts = PostModel::fetch_all(10);
+
+        $posts = array_map(function ($post) {
+            return $post = $this->getInfoPost($post);
+        }, $posts);
+
+        Response::json($posts);
+    }
+
     private function filterSearch($form)
     {
         PostModel::search_keyword($form['keyword']);

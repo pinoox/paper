@@ -67,6 +67,7 @@ Vue.mixin({
                 zoomOut: require(`@img/svg/ic_zoom_out.svg`),
                 close: require(`@img/svg/ic_close.svg`),
                 save: require(`@img/svg/ic_save.svg`),
+                first_post : require(`@img/svg/first_post.svg`),
                 placeholder : require(`@img/placeholder.png`),
         };
         },
