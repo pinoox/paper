@@ -1321,6 +1321,7 @@ body.ltr .main {
 }
 .app-container .main .page .table td .thumb {
   width: 82px;
+  height: 72px;
 }
 .app-container .main .page .table td .thumb.thumb-round {
   border-radius: 0.5rem;
@@ -1362,7 +1363,11 @@ body.ltr .main {
   background: #A5B8CE;
 }
 .app-container .main .page .table td .link {
-  font-weight: 600;
+  font-weight: 500;
+  color: #506E93;
+}
+.app-container .main .page .table td .link:hover {
+  color: #A5B8CE;
 }
 .app-container .main .page .table .empty-data {
   text-align: center;

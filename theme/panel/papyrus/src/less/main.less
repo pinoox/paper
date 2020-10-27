@@ -677,6 +677,7 @@ body {
 
           .thumb {
             width: 82px;
+            height: 72px;
 
             &.thumb-round {
               border-radius: 0.5rem;
@@ -716,7 +717,12 @@ body {
           }
 
           .link {
-            font-weight: 600;
+            font-weight: 500;
+            color: @textColor;
+
+            &:hover {
+              color: @textColorLight;
+            }
           }
         }
 
