@@ -311,7 +311,6 @@
                 }
             },
             closeFullscreen() {
-                console.log('exit');
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.webkitExitFullscreen) { /* Safari */

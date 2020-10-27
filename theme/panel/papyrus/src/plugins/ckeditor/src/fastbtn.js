@@ -31,7 +31,7 @@ export default class FastBtn extends Plugin {
      * @inheritDoc
      */
     init() {
-        const options = this.editor.config.get('fastBtn');
+        const options = this.editor.config.get('fastbtn');
         if (!options) {
             return;
         }
@@ -67,7 +67,7 @@ export default class FastBtn extends Plugin {
 
     addBtn(name, option) {
         let editor = this.editor;
-        name = 'fastBtn:' + name;
+        name = 'fastbtn:' + name;
         editor.ui.componentFactory.add(name, locale => {
             let action = this.getValue(option, 'action');
             let refresh = this.getValue(option, 'refresh');
@@ -91,7 +91,8 @@ export default class FastBtn extends Plugin {
                 action(view, editor, config);
             };
             view.on('execute', actionFunc);
-            editor.keystrokes.set(config.keystroke, actionFunc);
+            if(!!config.keystroke)
+                editor.keystrokes.set(config.keystroke, actionFunc);
 
             if (!!mounted)
                 mounted(view, editor, config);

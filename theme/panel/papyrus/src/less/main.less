@@ -988,10 +988,22 @@ body {
   }
 }
 
-.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
-  border: 1px solid transparent !important;
-  box-shadow: none !important;
+.write-container{
+  .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+  }
+
+  .ck.ck-toolbar{
+    background: #fff;
+  }
+
+  .ck.ck-button, a.ck.ck-button{
+    color: @primaryColor !important;
+    font-family: @defaultFontFaceRtl !important;
+  }
 }
+
 
 .vue-notification-group {
   width: 300px !important;
@@ -1424,11 +1436,12 @@ body {
 
   .toolbar-editor {
     width: 100% !important;
-    top:0;
+    top:0 !important;
   }
 
   .statusbar{
     width: 100% !important;
+    bottom:0 !important;
   }
 }
 

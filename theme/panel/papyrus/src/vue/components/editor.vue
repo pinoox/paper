@@ -80,8 +80,8 @@
                         items: [
                             'undo',
                             'redo',
-                            'fastBtn:save',
-                            'fastBtn:fullscreen',
+                            'fastbtn:save',
+                            'fastbtn:fullscreen',
                             '|',
                             'heading',
                             'fontSize',
@@ -238,7 +238,7 @@
                         tableCellProperties: {}
                     },
                     autosave: this.getAutoSave,
-                    fastBtn: [
+                    fastbtn: [
                         {
                             name: 'save',
                             label: this.LANG.post.save,
@@ -259,18 +259,17 @@
                             label: this.LANG.post.fullscreen,
                             icon: iconFullscreen.default,
                             tooltip: true,
-                            keystroke: 'Ctrl+S',
                             created(view) {
                                 vm.$watch('$parent.isOpenFullscreen', (status) => {
                                     vm._delay(() => {
                                         view.icon = (status) ? iconExitFullscreen.default : iconFullscreen.default;
-                                        view.label = (status) ? vm.LANG.post.fullscreen : vm.LANG.post.exit_fullscreen;
+                                        view.label = (!status) ? vm.LANG.post.fullscreen : vm.LANG.post.exit_fullscreen;
                                     }, 100);
                                 }, {
                                     immediate: true,
                                 });
                             },
-                            action(view) {
+                            action() {
                                 let status = vm.$parent.isOpenFullscreen;
                                 if (!status)
                                     vm.$parent.openFullscreen();

@@ -1582,9 +1582,17 @@ body.ltr .main {
 .app-container .toolbar-editor .ck-toolbar__items {
   font-size: 16px;
 }
-.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+.write-container .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
   border: 1px solid transparent !important;
   box-shadow: none !important;
+}
+.write-container .ck.ck-toolbar {
+  background: #fff;
+}
+.write-container .ck.ck-button,
+.write-container a.ck.ck-button {
+  color: #1f426c !important;
+  font-family: 'iranSans', 'Estedad', 'Karla', serif !important;
 }
 .vue-notification-group {
   width: 300px !important;
@@ -1919,10 +1927,11 @@ body.ltr .main {
 }
 #write.fullscreen .toolbar-editor {
   width: 100% !important;
-  top: 0;
+  top: 0 !important;
 }
 #write.fullscreen .statusbar {
   width: 100% !important;
+  bottom: 0 !important;
 }
 @media screen and (max-width: 991px) {
   th.sorting-asc::after,
