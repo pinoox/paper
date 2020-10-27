@@ -40,7 +40,9 @@
 </template>
 
 <script>
-    let icon = require('!!raw-loader?!@img/svg/ic_save.svg');
+    let iconSave = require('!!raw-loader?!@img/svg/ic_save.svg');
+    let iconFullscreen = require('!!raw-loader?!@img/svg/ic_fullscreen.svg');
+    let iconExitFullscreen = require('!!raw-loader?!@img/svg/ic_exit_fullscreen.svg');
 
     export default {
         props: {
@@ -79,6 +81,7 @@
                             'undo',
                             'redo',
                             'fastBtn:save',
+                            'fastBtn:fullscreen',
                             '|',
                             'heading',
                             'fontSize',
@@ -239,7 +242,7 @@
                         {
                             name: 'save',
                             label: this.LANG.post.save,
-                            icon: icon.default,
+                            icon: iconSave.default,
                             keystroke: 'Ctrl+S',
                             tooltip: true,
                             created(view) {
@@ -250,6 +253,30 @@
                                 });
                             },
                             action: vm.$parent.save
+                        },
+                        {
+                            name: 'fullscreen',
+                            label: this.LANG.post.fullscreen,
+                            icon: iconFullscreen.default,
+                            tooltip: true,
+                            keystroke: 'Ctrl+S',
+                            created(view) {
+                                vm.$watch('$parent.isOpenFullscreen', (status) => {
+                                    vm._delay(() => {
+                                        view.icon = (status) ? iconExitFullscreen.default : iconFullscreen.default;
+                                        view.label = (status) ? vm.LANG.post.fullscreen : vm.LANG.post.exit_fullscreen;
+                                    }, 100);
+                                }, {
+                                    immediate: true,
+                                });
+                            },
+                            action(view) {
+                                let status = vm.$parent.isOpenFullscreen;
+                                if (!status)
+                                    vm.$parent.openFullscreen();
+                                else
+                                    vm.$parent.closeFullscreen();
+                            }
                         }
                     ]
                 }
@@ -306,7 +333,7 @@
                     evt.stop();
                 });
                 let vm = this;
-                editor.keystrokes.listenTo( document );
+                editor.keystrokes.listenTo(document);
                 editor.keystrokes.set('ctrl+S', (e) => {
                     e.preventDefault();
                     vm.$emit('save');

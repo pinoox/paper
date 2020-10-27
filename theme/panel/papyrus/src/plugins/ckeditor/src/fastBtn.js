@@ -43,7 +43,6 @@ export default class FastBtn extends Plugin {
                 this.addBtn(name, option);
             else
                 this.replaceBtn(name, option);
-
         }
     }
 

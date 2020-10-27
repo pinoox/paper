@@ -47,6 +47,8 @@ return [
     'active' => 'فعال',
     'inactive' => 'غیرفعال',
     'delete' => 'حذف',
+    'fullscreen' => 'تمام صفحه',
+    'exit_fullscreen' => 'خروج از حالت تمام صفحه',
     'page_setting_management' => 'تنظیمات صفحه را اینجا مدیریت کنید',
     'published' => 'تاریخ انتشار',
     'analysis' => 'تحلیل و بررسی',

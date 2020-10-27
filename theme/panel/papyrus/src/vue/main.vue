@@ -48,7 +48,7 @@
                    </div>
                </div>
                <div class="main">
-                   <div v-if="hideToolbar" class="toolbar">
+                   <div v-if="false" class="toolbar">
                        <div class="account">
                            <img src="@img/sample-user.jpg" alt="profile">
                            <span class="text">رضا رضایی</span>

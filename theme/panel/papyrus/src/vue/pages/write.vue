@@ -18,12 +18,12 @@
                     {{LANG.post.settings}}
                 </div>
                 <div class="item" @click="openFullscreen()">
-                    fullscreen
+                    {{LANG.post.fullscreen}}
                 </div>
             </div>
         </div>
-        <div class="write-container">
-            <editor id="write" class="content"
+        <div id="write" class="write-container">
+            <editor class="content"
                     :values="editor"
                     :status="status"
                     :message="message"
@@ -65,6 +65,7 @@
         data() {
             return {
                 isSave: false,
+                isOpenFullscreen: false,
                 post: {},
                 editor: {
                     title: '',
@@ -292,7 +293,15 @@
                 this.params.category = val;
             },
             openFullscreen() {
-               let el = document.getElementById('write');
+                let ckBody = $('#write').find('.ck-body-wrapper');
+
+                if (!ckBody || ckBody.length <= 0) {
+                    ckBody = $('.ck-body-wrapper');
+                    ckBody.css('position', 'absolute');
+                    $('#write').append(ckBody);
+                }
+
+                let el = document.getElementById('write');
                 if (el.requestFullscreen) {
                     el.requestFullscreen();
                 } else if (el.webkitRequestFullscreen) { /* Safari */
@@ -301,17 +310,29 @@
                     el.msRequestFullscreen();
                 }
             },
-            checkFullscreen(){
-                this.$nextTick(()=>{
+            closeFullscreen() {
+                console.log('exit');
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }
+            },
+            checkFullscreen() {
+                let vm = this;
+                this.$nextTick(() => {
                     let el = document.getElementById('write');
                     el.addEventListener('fullscreenchange', (event) => {
+                        vm.isOpenFullscreen = !vm.isOpenFullscreen;
                         $('#write').toggleClass('fullscreen');
                     });
                 });
             }
         },
-        mounted(){
-          this.checkFullscreen();
+        mounted() {
+            this.checkFullscreen();
         },
         watch: {
             drawerName() {
