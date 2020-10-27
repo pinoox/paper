@@ -781,6 +781,21 @@
   width: 100px;
   height: 100px;
 }
+.blur-loading {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  -webkit-transition-duration: 1s;
+  transition-duration: 1s;
+  background: rgba(255, 255, 255, 0.5);
+  align-items: center;
+  justify-content: center;
+}
 .no-select {
   -webkit-touch-callout: none;
   /* iOS Safari */

@@ -54,53 +54,53 @@
                 </div>
 
                 <div class="section" v-if="latestComments!=null && latestComments.length > 0">
-                     <div class="section-title">
-                         <h2>{{LANG.comment.latest_comments}}</h2>
-                         <div class="more"> {{LANG.panel.all}} <i class="fa fa-chevron-left"></i></div>
-                     </div>
-                     <div class="section-content">
-                         <vue-good-table
-                                 styleClass="vgt-table table"
-                                 :rtl="true"
-                                 :columns="commentCols"
-                                 :rows="latestComments">
-                             <template slot="table-row" slot-scope="props">
-                                 <div v-if="props.column.field === 'thumb_128'">
-                                     <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
-                                 </div>
-                                 <div v-else-if="props.column.field === 'operation'">
+                    <div class="section-title">
+                        <h2>{{LANG.comment.latest_comments}}</h2>
+                        <div class="more"> {{LANG.panel.all}} <i class="fa fa-chevron-left"></i></div>
+                    </div>
+                    <div class="section-content">
+                        <vue-good-table
+                                styleClass="vgt-table table"
+                                :rtl="true"
+                                :columns="commentCols"
+                                :rows="latestComments">
+                            <template slot="table-row" slot-scope="props">
+                                <div v-if="props.column.field === 'thumb_128'">
+                                    <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
+                                </div>
+                                <div v-else-if="props.column.field === 'operation'">
                                 <span @click="toggleStatusComment(props.row,props.index)" class="btn-action">
                                     <i class="fas"
                                        :class="[props.row.status==='publish' ? 'fa-comment-slash' : 'fa-check']"></i></span>
-                                     <span @click="removeComment(props.row,props.index)" class="btn-action">
+                                    <span @click="removeComment(props.row,props.index)" class="btn-action">
                                     <i class="fa fa-trash"></i></span>
-                                 </div>
-                                 <div v-else-if="props.column.field === 'status'">
-                                     <span class="light">{{LANG.comment.status[props.row.status]}}</span>
-                                 </div>
-                                 <div v-else-if="props.column.field === 'title'">
-                                     <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
-                                         <span :class="props.column.style">{{props.row.title}}</span>
-                                     </router-link>
-                                 </div>
-                                 <div v-else>
+                                </div>
+                                <div v-else-if="props.column.field === 'status'">
+                                    <span class="light">{{LANG.comment.status[props.row.status]}}</span>
+                                </div>
+                                <div v-else-if="props.column.field === 'title'">
+                                    <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
+                                        <span :class="props.column.style">{{props.row.title}}</span>
+                                    </router-link>
+                                </div>
+                                <div v-else>
                                 <span :class="props.column.style">
                                     {{props.formattedRow[props.column.field]}}
                                 </span>
-                                 </div>
-                             </template>
-                             <div slot="emptystate">
-                                 <div class="empty-data">
-                                     {{LANG.panel.empty_table}}
-                                 </div>
-                             </div>
-                             <template slot="loadingContent">
-                                 <div class="loading-message spinner"></div>
-                             </template>
+                                </div>
+                            </template>
+                            <div slot="emptystate">
+                                <div class="empty-data">
+                                    {{LANG.panel.empty_table}}
+                                </div>
+                            </div>
+                            <template slot="loadingContent">
+                                <div class="loading-message spinner"></div>
+                            </template>
 
-                         </vue-good-table>
-                     </div>
-                 </div>
+                        </vue-good-table>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

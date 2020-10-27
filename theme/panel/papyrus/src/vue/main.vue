@@ -1,5 +1,8 @@
 <template>
    <div class="app">
+       <div class="blur-loading animate__animated animate__fadeIn animate__faster" v-show="_isLoading">
+           <div class="spinner"></div>
+       </div>
        <notifications group="app" classes="notification">
            <template slot="body" slot-scope="props">
                <div class="notification" :class="props.item.type" @click="props.close">
