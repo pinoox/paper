@@ -1018,6 +1018,10 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   right: 0;
   left: initial;
 }
+body.ltr .app-container .main .page .encourage-writing .art {
+  left: initial;
+  right: 5%;
+}
 .app-container .splash {
   font-family: 'Karla', 'iranSans', 'Estedad', serif;
   background: #FFF;
@@ -1646,12 +1650,12 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   stroke: #fff;
 }
 .app-container .main .page .encourage-writing .art {
-  width: 250px;
+  width: 210px;
   display: block;
   margin: auto;
   position: absolute;
   left: 5%;
-  top: 15%;
+  top: 8%;
   z-index: 1;
 }
 .app-container .toolbar-editor .ck-toolbar__items {
@@ -1991,7 +1995,7 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   }
   .app-container .main .page .encourage-writing .art {
     width: 170px;
-    top: 25%;
+    top: 12%;
   }
   .app-container .main .page .swiper-posts .swiper-slide .title {
     font-size: 12px;
@@ -2036,7 +2040,7 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   }
   .app-container .main .page .encourage-writing .art {
     opacity: 0.3;
-    top: 20%;
+    top: 12%;
   }
   .app-container .main .page .swiper-posts .swiper-slide .title {
     font-size: 12px;

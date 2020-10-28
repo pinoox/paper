@@ -12,10 +12,13 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Date;
+use pinoox\component\HelperString;
+use pinoox\component\Lang;
 use pinoox\component\Pagination;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Dir;
@@ -58,14 +61,15 @@ class PostController extends LoginConfiguration
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
     }
 
-    public function getLatestPosts(){
+    public function getLatestPosts()
+    {
         $posts = PostModel::fetch_all(10);
 
         $posts = array_map(function ($post) {
             return $post = $this->getInfoPost($post);
         }, $posts);
 
-        Response::json($posts);
+        Response::json([]);
     }
 
     private function filterSearch($form)
@@ -81,8 +85,8 @@ class PostController extends LoginConfiguration
 
         if (empty($post)) return $post;
         $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
-        $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
-        $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
+        $post['approx_insert_date'] = Helper::getLocalDate('l d F Y (H:i)', $post['insert_date']);
+        $post['publish_date'] = Helper::getLocalDate('Y/m/d H:i\'', $post['publish_date']);
         $file = FileModel::fetch_by_id($post['image_id']);
         $post['image'] = Url::upload($file, $placeHolder);
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
@@ -292,10 +296,13 @@ class PostController extends LoginConfiguration
 
         $days = 10;
 
-        $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-'.$days . ' days'), Date::g('Y-m-d', '+1 days'));
-        $rangeDate = array_map(function ($d){
-            return Date::j('F d',$d);
-        },$rangeDate);
+        $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-' . $days . ' days'), Date::g('Y-m-d', '+1 days'));
+        $rangeDate = array_map(function ($d) {
+            return Helper::getLocalDate('F d', $d);
+        }, $rangeDate);
+
+        $rangeDate[count($rangeDate) - 1] = rlang('post.today');
+        $rangeDate[count($rangeDate) - 2] = rlang('post.yesterday');
 
         //visits
         $visits = StatisticModel::fetch_visits($post_id, $days);

@@ -27,9 +27,8 @@
                     <div class="section-content">
                         <div class="encourage-writing">
                             <div class="greeting">
-                                {{LANG.post.hello}}
-                                <b>{{USER.fname}}</b>
-                                {{LANG.post.dear}}
+                                <span v-if="_dir=='ltr'">{{LANG.post.hello}} {{LANG.post.dear}} <b>{{USER.fname}}</b></span>
+                                <span v-else>{{LANG.post.hello}} <b>{{USER.fname}}</b> {{LANG.post.dear}}</span>
                             </div>
                             <br>
                             <div class="write-guide">
@@ -61,7 +60,7 @@
                     <div class="section-content">
                         <vue-good-table
                                 styleClass="vgt-table table"
-                                :rtl="true"
+                                :rtl="_dir=='rtl'"
                                 :columns="commentCols"
                                 :rows="latestComments">
                             <template slot="table-row" slot-scope="props">
