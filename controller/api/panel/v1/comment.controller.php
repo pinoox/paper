@@ -12,6 +12,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\PaperUserModel;
 use pinoox\component\Date;
@@ -70,7 +71,7 @@ class CommentController extends LoginConfiguration
     private function getInfoComment($comment)
     {
         if (empty($comment)) return $comment;
-        $comment['approx_insert_date'] = Date::j('l d F Y (H:i)', $comment['insert_date']);
+        $comment['approx_insert_date'] = Helper::getLocalDate('l d F Y (H:i)', $comment['insert_date']);
         return $comment;
     }
 

@@ -6,4 +6,10 @@ return [
     'comments' => 'comments',
     'message' => 'message',
     'comments_list' => 'list of comments',
+
+    'status' => [
+        'suspend' => 'suspend',
+        'publish' => 'publish',
+        'pending' => 'pending',
+    ],
 ];

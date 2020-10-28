@@ -227,7 +227,7 @@ class StatisticModel extends PaperDatabase
     {
         self::$db->where('s.post_id', $post_id);
         $rows = self::$db->get(self::statistic . ' s');
-        if (empty($rows)) return [];
+        if (empty($rows)) return [null,null];
 
         $result = [];
         foreach ($rows as $r) {

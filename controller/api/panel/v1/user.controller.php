@@ -12,10 +12,9 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperUserModel;
-use pinoox\component\Date;
 use pinoox\component\Pagination;
-use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Url;
@@ -80,7 +79,7 @@ class UserController extends LoginConfiguration
         $placeHolder = Url::file('resources/image-placeholder.jpg');
 
         if (empty($user)) return $user;
-        $user['approx_register_date'] = Date::j('l d F Y (H:i)', $user['register_date']);
+        $user['approx_register_date'] =  Helper::getLocalDate('l F Y (H:i)', $user['register_date']);
         $file = FileModel::fetch_by_id($user['avatar_id']);
         $user['image'] = Url::upload($file, $placeHolder);
         $user['thumb_128'] = Url::thumb($file, 128, $placeHolder);

@@ -12,7 +12,7 @@ return array (
   'enable' => true,
   'theme' => 'blue',
   'theme-panel' => 'papyrus',
-  'lang' => 'en',
+  'lang' => 'fa',
   'service' => [
       'user',
       'cache/settings'

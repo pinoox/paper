@@ -69,6 +69,8 @@ return [
     'likes' => 'likes',
     'comments' => 'comments',
     'stats_post' => 'Visit statistics',
+    'yesterday' => 'yesterday',
+    'today' => 'today',
 
     /** category **/
     'add' => 'add',
