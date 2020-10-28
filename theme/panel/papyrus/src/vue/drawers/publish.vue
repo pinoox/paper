@@ -53,13 +53,15 @@
                         </div>
                     </column>
                     <column :sm="2" :md="1">
-                        <div class="post-image-select" v-if="isSelectImageBox" @dragover.prevent @drop.prevent @drop="$parent.handleFileDrop">
+                        <div class="post-image-select" v-if="isSelectImageBox" @dragover.prevent @drop.prevent
+                             @drop="$parent.handleFileDrop">
                             <div class="input-wrapper">
                                 <label class="input-label">{{LANG.post.preview_image}}</label>
                                 <span class="close" @click="isSelectImageBox = false"><simple-svg :src="_icons.close"
                                                                                                   customClassName="icon stroke"
                                                                                                   stroke="#A5B8CE"/></span>
-                                <select-image :items="$parent.images" v-model="params.image" @select="isSelectImageBox = false">
+                                <select-image :items="$parent.images" v-model="params.image"
+                                              @select="isSelectImageBox = false">
                                     <li class="add-item" @click="$parent.selectFile">+</li>
                                 </select-image>
                             </div>
@@ -83,10 +85,10 @@
             </div>
             <div slot='footer' class="drawer-footer" v-else>
                 <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.post.close}}</div>
-                <div class="btn btn-success" @click="$parent.changeStatus('publish')" v-if="$parent.status === 'draft'">
+                <div class="btn btn-success" @click="changeStatus('publish')" v-if="$parent.status === 'draft'">
                     {{LANG.post.publication}}
                 </div>
-                <div class="btn btn-danger" @click="$parent.changeStatus('draft')" v-if="$parent.status === 'publish'">
+                <div class="btn btn-danger" @click="changeStatus('draft')" v-if="$parent.status === 'publish'">
                     {{LANG.post.cancel_publication}}
                 </div>
             </div>
@@ -144,6 +146,12 @@
             }
         },
         methods: {
+            changeStatus(status) {
+                this.$parent.save()
+                    .then(() => {
+                        return this.$parent.changeStatus(status);
+                    });
+            },
             openSelectImage() {
                 this.isSelectImageBox = true;
             },

@@ -18,20 +18,76 @@ use pinoox\component\User;
 
 class PostModel extends PaperDatabase
 {
+    const draft = "draft";
+    const publish = "publish";
+
     public static function insert($data)
     {
         $date = Date::g('Y-m-d H:i:s');
         return self::$db->insert(self::post, [
             'hash_id' => $data['hash_id'],
             'user_id' => User::get('user_id'),
-            'title' => $data['title'],
             'summary' => $data['summary'],
-            'context' => $data['context'],
-            'status' => $data['status'],
-            'image_id' => !empty($data['image'])? $data['image'] : null,
+            'status' => self::draft,
+            'image_id' => !empty($data['image']) ? $data['image'] : null,
             'insert_date' => $date,
             'update_date' => $date,
         ]);
+    }
+
+    public static function post_draft_insert($data)
+    {
+        $date = Date::g('Y-m-d H:i:s');
+        return self::$db->insert(self::post_draft, [
+            'post_id' => $data['post_id'],
+            'title' => $data['title'],
+            'context' => $data['context'],
+            'update_date' => $date,
+        ]);
+    }
+
+    public static function post_draft_update($data)
+    {
+        $date = Date::g('Y-m-d H:i:s');
+        self::$db->where('post_id', $data['post_id']);
+        return self::$db->update(self::post_draft, [
+            'title' => $data['title'],
+            'context' => $data['context'],
+            'update_date' => $date,
+        ]);
+    }
+
+    public static function update_status($post_id, $status)
+    {
+        $status = ($status === self::publish) ? self::publish : self::draft;
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post, [
+            'status' => $status,
+        ]);
+    }
+
+    public static function update_publish_post($post_id)
+    {
+        $post = self::post_draft_fetch_by_id($post_id);
+        if (!$post)
+            return false;
+
+        $date = !empty($post['publish_date']) ? $post['publish_date'] : Date::g('Y-m-d H:i:s');
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post, [
+            'title' => $post['draft_title'],
+            'context' => $post['draft_context'],
+            'publish_date' => $date,
+            'status' => self::publish,
+        ]);
+    }
+
+    public static function post_draft_fetch_by_id($post_id)
+    {
+        self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
+        self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id', 'LEFT');
+        self::$db->where('p.post_id', $post_id);
+        return self::$db->getOne(self::post . ' p', 'p.*,pd.title draft_title,pd.context draft_context,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
     }
 
     public static function update($data)
@@ -39,12 +95,9 @@ class PostModel extends PaperDatabase
         $date = Date::g('Y-m-d H:i:s');
         self::$db->where('post_id', $data['post_id']);
         return self::$db->update(self::post, [
-            'title' => $data['title'],
-            'summary' => $data['summary'],
-            'context' => $data['context'],
+            'summary' => !empty($data['summary']) ? $data['summary'] : null,
+            'image_id' => !empty($data['image']) ? $data['image'] : null,
             'update_date' => $date,
-            'image_id' => !empty($data['image'])? $data['image'] : null,
-            'status' => $data['status'],
         ]);
     }
 
@@ -151,7 +204,7 @@ class PostModel extends PaperDatabase
         self::$db->where('app', $package);
         self::$db->where('file_group', 'post');
         self::$db->where('file_access', $hash_id);
-        return self::$db->get(self::file,null,'file_id,CONCAT(file_path,file_name) path');
+        return self::$db->get(self::file, null, 'file_id,CONCAT(file_path,file_name) path');
     }
 
     public static function where_status($status)
@@ -178,7 +231,7 @@ class PostModel extends PaperDatabase
         }
     }
 
-    public static function fetch_image($file_id,$hash_id)
+    public static function fetch_image($file_id, $hash_id)
     {
         $package = AppProvider::get('package-name');
         self::$db->where('app', $package);

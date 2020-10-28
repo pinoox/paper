@@ -15,15 +15,15 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
-use pinoox\component\Date;
-use pinoox\component\Pagination;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
+use pinoox\component\Date;
 use pinoox\component\Dir;
+use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
+use pinoox\component\Uploader;
 use pinoox\component\Url;
 use pinoox\component\User;
-use pinoox\component\Uploader;
 use pinoox\component\Validation;
 use pinoox\model\FileModel;
 
@@ -32,9 +32,23 @@ class PostController extends LoginConfiguration
 {
     public function get($post_id)
     {
-        $post = PostModel::fetch_by_id($post_id);
+        $post = PostModel::post_draft_fetch_by_id($post_id);
         $post = $this->getInfoPost($post);
         Response::json($post);
+    }
+
+    private function getInfoPost($post)
+    {
+        $placeHolder = Url::file('resources/image-placeholder.jpg');
+
+        if (empty($post)) return $post;
+        $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
+        $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
+        $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
+        $file = FileModel::fetch_by_id($post['image_id']);
+        $post['image'] = Url::upload($file, $placeHolder);
+        $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
+        return $post;
     }
 
     public function getAll()
@@ -58,7 +72,15 @@ class PostController extends LoginConfiguration
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
     }
 
-    public function getLatestPosts(){
+    private function filterSearch($form)
+    {
+        PostModel::search_keyword($form['keyword']);
+        PostModel::where_status($form['status']);
+        PostModel::sort($form['sort']);
+    }
+
+    public function getLatestPosts()
+    {
         $posts = PostModel::fetch_all(10);
 
         $posts = array_map(function ($post) {
@@ -68,37 +90,38 @@ class PostController extends LoginConfiguration
         Response::json($posts);
     }
 
-    private function filterSearch($form)
+    public function changeStatus()
     {
-        PostModel::search_keyword($form['keyword']);
-        PostModel::where_status($form['status']);
-        PostModel::sort($form['sort']);
-    }
+        $input = Request::input('post_id,status=draft', null, '!empty');
 
-    private function getInfoPost($post)
-    {
-        $placeHolder = Url::file('resources/image-placeholder.jpg');
+        if ($input['status'] === PostModel::publish) {
+            $post = PostModel::post_draft_fetch_by_id($input['post_id']);
+            $valid = Validation::check($post, [
+                'draft_title' => ['required', rlang('panel.title')],
+                'draft_context' => ['required', rlang('panel.context')],
+            ]);
 
-        if (empty($post)) return $post;
-        $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
-        $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
-        $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
-        $file = FileModel::fetch_by_id($post['image_id']);
-        $post['image'] = Url::upload($file, $placeHolder);
-        $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
-        return $post;
+            if ($valid->isFail())
+                Response::jsonMessage($valid->first(), false);
+
+            $result = PostModel::update_publish_post($input['post_id']);
+        } else {
+            $result = PostModel::update_status($input['post_id'], $input['status']);
+        }
+
+        if ($result)
+            Response::json(rlang('post.save_successfully'), true);
+        else
+            Response::json(rlang('post.error_happened'), false);
     }
 
     public function save()
     {
-        $input = Request::post('post_id,image,hash_id,title,summary,!context,tags,status=draft', null, '!empty');
+        $input = Request::post('post_id,image,hash_id,title,summary,!context,tags', null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
         ];
-
-        if ($input['status'] == 'publish')
-            $validations['title'] = ['required', rlang('panel.title')];
 
         $valid = Validation::check($input, $validations);
 
@@ -109,8 +132,10 @@ class PostController extends LoginConfiguration
         $isEdit = !empty($input['post_id']);
         if ($isEdit) {
             PostModel::update($input);
+            PostModel::post_draft_update($input);
         } else {
             $input['post_id'] = PostModel::insert($input);
+            PostModel::post_draft_insert($input);
         }
 
         // tags
@@ -292,10 +317,10 @@ class PostController extends LoginConfiguration
 
         $days = 10;
 
-        $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-'.$days . ' days'), Date::g('Y-m-d', '+1 days'));
-        $rangeDate = array_map(function ($d){
-            return Date::j('F d',$d);
-        },$rangeDate);
+        $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-' . $days . ' days'), Date::g('Y-m-d', '+1 days'));
+        $rangeDate = array_map(function ($d) {
+            return Date::j('F d', $d);
+        }, $rangeDate);
 
         //visits
         $visits = StatisticModel::fetch_visits($post_id, $days);

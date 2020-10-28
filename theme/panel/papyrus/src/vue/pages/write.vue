@@ -5,23 +5,23 @@
                 <div class="item" @click="save()">
                     {{LANG.post.save}}
                 </div>
+                <div @click="openDrawer('publish')" class="item">
+                    {{LANG.post.publication}}
+                </div>
                 <div class="item" @click="openDrawer('category')">
                     {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                 </div>
                 <div class="item" @click="drawerName = 'image-manager'">
                     {{LANG.post.images}}
                 </div>
-                <div class="item" @click="drawerName = 'settings'">
-                    {{LANG.post.settings}}
-                </div>
                 <router-link v-if="!!post_id" :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
                     {{LANG.post.stats}}
                 </router-link>
-                <div @click="openDrawer('publish')" class="item">
-                    {{LANG.post.publication}}
-                </div>
                 <div class="item" @click="openFullscreen()">
                     {{LANG.post.fullscreen}}
+                </div>
+                <div class="item" @click="drawerName = 'settings'">
+                    {{LANG.post.settings}}
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
         },
         data() {
             return {
-                isSave: false,
+                isSave: true,
                 isOpenFullscreen: false,
                 post: {},
                 editor: {
@@ -77,7 +77,6 @@
                 params: {
                     editor: {},
                     summary: '',
-                    status: 'draft',
                     tags: [],
                     category: null,
                     hash_id: null,
@@ -105,7 +104,7 @@
                 })
                 .then(() => {
                     this.$watch('params', () => {
-                        this.isSave = true;
+                        this.isSave = false;
                     }, {
                         deep: true,
                     })
@@ -205,11 +204,13 @@
                 return this.$http.get(this.URL.API + 'post/get/' + this.post_id).then((json) => {
                     this.post = json.data;
                     this.params.post_id = this.post_id;
-                    this.setEditorFields(json.data);
+                    this.setEditorFields({
+                        title: json.data.draft_title,
+                        context: json.data.draft_context,
+                    });
                     this.params.tags = this.createTags(json.data.tags);
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
-                    this.params.status = json.data.status;
-                    this.status = json.data.status;
+                    this.status = !!json.data.status ? json.data.status : 'draft';
                     this.params.hash_id = json.data.hash_id;
                 });
             },
@@ -230,31 +231,30 @@
                 });
             },
             changeStatus(status) {
-                this.drawerName = null;
-                this.params.status = status;
-                this.save();
+                return this.$http.post(this.URL.API + 'post/changeStatus', {
+                    post_id: this.post_id,
+                    status: status,
+                }).then((json) => {
+                    if (json.data.status) {
+                        this.status = status;
+                    } else {
+                        this._notify('error', json.data.message);
+                    }
+                });
             },
             save() {
                 let params = this.getFormData(this.params);
                 this.message = PINOOX.LANG.panel.saving;
 
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
-                    this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
-
-                    if (!json.data.status) {
-                        this._notify('error', json.data.message, 'app');
-                    } else if (json.data.status) {
-                        this.isSave = false;
-                        if (this.params.status !== this.status) {
-                            this.status = this.params.status;
-                        }
+                    if (json.data.status) {
+                        this.isSave = true;
                         if (!this.post_id)
                             this._routerReplace({name: 'write', params: {post_id: json.data.result}});
+                        this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
                     } else {
-                        this.params.status = this.status;
+                        this._notify('error', json.data.message, 'app');
                     }
-                }).catch(function (error) {
-                    this.params.status = this.status;
                 });
             },
             createTags(tags) {
