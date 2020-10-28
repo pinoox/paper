@@ -100,11 +100,11 @@ class PostController extends LoginConfiguration
                 'draft_title' => ['required', rlang('panel.title')],
                 'draft_context' => ['required', rlang('panel.context')],
             ]);
-
             if ($valid->isFail())
                 Response::jsonMessage($valid->first(), false);
 
             $result = PostModel::update_publish_post($input['post_id']);
+            PostModel::post_draft_update_synced($input['post_id'],1);
         } else {
             $result = PostModel::update_status($input['post_id'], $input['status']);
         }
@@ -133,6 +133,7 @@ class PostController extends LoginConfiguration
         if ($isEdit) {
             PostModel::update($input);
             PostModel::post_draft_update($input);
+            PostModel::post_draft_update_synced($input['post_id'],0);
         } else {
             $input['post_id'] = PostModel::insert($input);
             PostModel::post_draft_insert($input);

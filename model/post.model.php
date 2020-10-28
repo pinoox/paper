@@ -66,6 +66,14 @@ class PostModel extends PaperDatabase
         ]);
     }
 
+    public static function post_draft_update_synced($post_id,$sync = 0)
+    {
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post_draft, [
+            'synced' => $sync,
+        ]);
+    }
+
     public static function update_publish_post($post_id)
     {
         $post = self::post_draft_fetch_by_id($post_id);
@@ -87,7 +95,7 @@ class PostModel extends PaperDatabase
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id', 'LEFT');
         self::$db->where('p.post_id', $post_id);
-        return self::$db->getOne(self::post . ' p', 'p.*,pd.title draft_title,pd.context draft_context,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
+        return self::$db->getOne(self::post . ' p', 'p.*,pd.title draft_title,pd.context draft_context,pd.synced,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
     }
 
     public static function update($data)

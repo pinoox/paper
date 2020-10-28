@@ -69,6 +69,7 @@
             return {
                 isSave: true,
                 isOpenFullscreen: false,
+                isSynced: false,
                 post: {},
                 editor: {
                     title: '',
@@ -212,6 +213,7 @@
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
                     this.status = !!json.data.status ? json.data.status : 'draft';
                     this.params.hash_id = json.data.hash_id;
+                    this.isSynced = !!json.data.synced ? !!(parseInt(json.data.synced)) : false;
                 });
             },
             getImage() {
@@ -237,6 +239,7 @@
                 }).then((json) => {
                     if (json.data.status) {
                         this.status = status;
+                        this.isSynced = true;
                     } else {
                         this._notify('error', json.data.message);
                     }
@@ -251,6 +254,7 @@
                         this.isSave = true;
                         if (!this.post_id)
                             this._routerReplace({name: 'write', params: {post_id: json.data.result}});
+                        this.isSynced = false;
                         this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
                     } else {
                         this._notify('error', json.data.message, 'app');
@@ -339,6 +343,7 @@
         watch: {
             drawerName() {
                 $('.app-container').toggleClass('drawer--blur');
+                $('body').toggleClass('toggle-over-flow');
             }
         }
     }

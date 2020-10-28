@@ -46,6 +46,7 @@ return [
     'delete_successfully' => 'successfully removed',
     'add_to_post' => 'add to post',
     'settings' => 'settings',
+    'sync' => 'Sync',
     'auto_save' => 'auto save',
     'help_auto_save' => 'when this option is enabled, page information is automatically saved after each change in the text',
     'auto_save_time' => 'auto save delay time',

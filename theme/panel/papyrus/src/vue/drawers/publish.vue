@@ -88,6 +88,9 @@
                 <div class="btn btn-success" @click="changeStatus('publish')" v-if="$parent.status === 'draft'">
                     {{LANG.post.publication}}
                 </div>
+                <div class="btn btn-primary" @click="changeStatus('publish')" v-if="$parent.status === 'publish' && !$parent.isSynced">
+                    {{LANG.post.sync}}
+                </div>
                 <div class="btn btn-danger" @click="changeStatus('draft')" v-if="$parent.status === 'publish'">
                     {{LANG.post.cancel_publication}}
                 </div>
