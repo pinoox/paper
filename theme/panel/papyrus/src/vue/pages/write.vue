@@ -58,7 +58,14 @@
 
     export default {
         name: 'write',
-        props: ['post_id'],
+        props: {
+            post_id: {
+                default: null,
+            },
+            post_type: {
+                default: 'post',
+            }
+        },
         components: {Editor, Category, Publish, ImageManager, Settings},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
@@ -101,7 +108,7 @@
                     return this.getImages();
                 })
                 .then(() => {
-                    this.getImage();
+                    this.getFeaturingImage();
                 })
                 .then(() => {
                     this.$watch('params', () => {
@@ -113,6 +120,7 @@
         },
         methods: {
             getInitData() {
+                this.params.post_type = this.post_type;
                 this.getSettings();
                 if (!!this.post_id)
                     return this.getPost();
@@ -202,7 +210,7 @@
                 };
             },
             getPost() {
-                return this.$http.get(this.URL.API + 'post/get/' + this.post_id).then((json) => {
+                return this.$http.get(this.URL.API + 'post/get/' + this.post_id + '/' + this.post_type).then((json) => {
                     this.post = json.data;
                     this.params.post_id = this.post_id;
                     this.setEditorFields({
@@ -216,7 +224,7 @@
                     this.isSynced = !!json.data.synced ? !!(parseInt(json.data.synced)) : false;
                 });
             },
-            getImage() {
+            getFeaturingImage() {
                 if (!this.post.image_id)
                     return;
 
@@ -226,6 +234,10 @@
                         break;
                     }
                 }
+            },
+            deleteImageFeature(image) {
+                if (image.file_id === this.params.image.file_id)
+                    this.params.image = null;
             },
             getHashId() {
                 return this.$http.get(this.URL.API + 'post/getHashId/').then((json) => {

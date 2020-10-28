@@ -14,12 +14,18 @@ namespace pinoox\app\com_pinoox_paper\model;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Date;
 use pinoox\component\HelperString;
+use pinoox\component\Response;
 use pinoox\component\User;
 
 class PostModel extends PaperDatabase
 {
-    const draft = "draft";
-    const publish = "publish";
+    //status
+    const draft_status = "draft";
+    const publish_status = "publish";
+
+    //type
+    const post_type = "post";
+    const page_type = "page";
 
     public static function insert($data)
     {
@@ -28,10 +34,41 @@ class PostModel extends PaperDatabase
             'hash_id' => $data['hash_id'],
             'user_id' => User::get('user_id'),
             'summary' => $data['summary'],
-            'status' => self::draft,
+            'status' => self::draft_status,
+            'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
+            'post_type' => !empty($data['post_type']) ? $data['post_type'] : self::post_type,
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'insert_date' => $date,
             'update_date' => $date,
+        ]);
+    }
+
+    public static function save_draft($data)
+    {
+        $post = self::post_draft_fetch_by_id($data['post_id']);
+        if ($post)
+            self::post_draft_update($data);
+        else
+            self::post_draft_insert($data);
+    }
+
+    public static function post_draft_fetch_by_id($post_id)
+    {
+        self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
+        self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id');
+        self::$db->where('p.post_id', $post_id);
+        return self::$db->getOne(self::post . ' p', 'p.*,pd.title draft_title,pd.context draft_context,pd.synced,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
+    }
+
+    public static function post_draft_update($data)
+    {
+        $date = Date::g('Y-m-d H:i:s');
+        self::$db->where('post_id', $data['post_id']);
+        return self::$db->update(self::post_draft, [
+            'title' => $data['title'],
+            'context' => $data['context'],
+            'update_date' => $date,
+            'synced' => 0,
         ]);
     }
 
@@ -46,27 +83,16 @@ class PostModel extends PaperDatabase
         ]);
     }
 
-    public static function post_draft_update($data)
-    {
-        $date = Date::g('Y-m-d H:i:s');
-        self::$db->where('post_id', $data['post_id']);
-        return self::$db->update(self::post_draft, [
-            'title' => $data['title'],
-            'context' => $data['context'],
-            'update_date' => $date,
-        ]);
-    }
-
     public static function update_status($post_id, $status)
     {
-        $status = ($status === self::publish) ? self::publish : self::draft;
+        $status = ($status === self::publish_status) ? self::publish_status : self::draft_status;
         self::$db->where('post_id', $post_id);
         return self::$db->update(self::post, [
             'status' => $status,
         ]);
     }
 
-    public static function post_draft_update_synced($post_id,$sync = 0)
+    public static function post_draft_update_synced($post_id, $sync = 0)
     {
         self::$db->where('post_id', $post_id);
         return self::$db->update(self::post_draft, [
@@ -86,16 +112,14 @@ class PostModel extends PaperDatabase
             'title' => $post['draft_title'],
             'context' => $post['draft_context'],
             'publish_date' => $date,
-            'status' => self::publish,
+            'status' => self::publish_status,
         ]);
     }
 
-    public static function post_draft_fetch_by_id($post_id)
+    public static function where_post_type($post_type)
     {
-        self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
-        self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id', 'LEFT');
-        self::$db->where('p.post_id', $post_id);
-        return self::$db->getOne(self::post . ' p', 'p.*,pd.title draft_title,pd.context draft_context,pd.synced,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
+        $post_type = !empty($post_type) && $post_type === self::page_type ? self::page_type : self::post_type;
+        self::$db->where('p.post_type', $post_type);
     }
 
     public static function update($data)
@@ -104,6 +128,7 @@ class PostModel extends PaperDatabase
         self::$db->where('post_id', $data['post_id']);
         return self::$db->update(self::post, [
             'summary' => !empty($data['summary']) ? $data['summary'] : null,
+            'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'update_date' => $date,
         ]);

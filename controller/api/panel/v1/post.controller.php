@@ -30,8 +30,9 @@ use pinoox\model\FileModel;
 
 class PostController extends LoginConfiguration
 {
-    public function get($post_id)
+    public function get($post_id, $post_type = null)
     {
+        PostModel::where_post_type($post_type);
         $post = PostModel::post_draft_fetch_by_id($post_id);
         $post = $this->getInfoPost($post);
         Response::json($post);
@@ -92,9 +93,9 @@ class PostController extends LoginConfiguration
 
     public function changeStatus()
     {
-        $input = Request::input('post_id,status=draft', null, '!empty');
+        $input = Request::input(['post_id', 'status' => PostModel::draft_status], null, '!empty');
 
-        if ($input['status'] === PostModel::publish) {
+        if ($input['status'] === PostModel::publish_status) {
             $post = PostModel::post_draft_fetch_by_id($input['post_id']);
             $valid = Validation::check($post, [
                 'draft_title' => ['required', rlang('panel.title')],
@@ -104,7 +105,7 @@ class PostController extends LoginConfiguration
                 Response::jsonMessage($valid->first(), false);
 
             $result = PostModel::update_publish_post($input['post_id']);
-            PostModel::post_draft_update_synced($input['post_id'],1);
+            PostModel::post_draft_update_synced($input['post_id'], 1);
         } else {
             $result = PostModel::update_status($input['post_id'], $input['status']);
         }
@@ -117,7 +118,7 @@ class PostController extends LoginConfiguration
 
     public function save()
     {
-        $input = Request::post('post_id,image,hash_id,title,summary,!context,tags', null, '!empty');
+        $input = Request::post(['post_id', 'post_key', 'post_type' => PostModel::post_type, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags'], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
@@ -132,12 +133,12 @@ class PostController extends LoginConfiguration
         $isEdit = !empty($input['post_id']);
         if ($isEdit) {
             PostModel::update($input);
-            PostModel::post_draft_update($input);
-            PostModel::post_draft_update_synced($input['post_id'],0);
         } else {
             $input['post_id'] = PostModel::insert($input);
-            PostModel::post_draft_insert($input);
         }
+
+        // draft
+        PostModel::save_draft($input);
 
         // tags
         PostModel::insert_tags($input['post_id'], $input['tags']);
