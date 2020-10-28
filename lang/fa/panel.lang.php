@@ -24,6 +24,7 @@ return [
     'back' => 'برگشت',
     'save_changes' => 'ذخیره تغییرات',
     'total' => 'مجموع',
+    'menus_info' => 'دسترسی سریع به بخش های مختلف',
 
     'dashboard' => 'داشبورد',
     'user' => 'کاربر',
@@ -32,6 +33,8 @@ return [
     'menus' => 'منوها',
     'settings' => 'تنظیمات',
     'profile' => 'پروفایل',
+    'comments' => 'نظرات',
+    'contacts' => 'تماس ها',
 
     /* table */
 

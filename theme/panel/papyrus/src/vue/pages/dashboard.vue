@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="section" v-if="latestComments!=null && latestComments.length > 0">
+                <div class="section compact-mode" v-if="latestComments!=null && latestComments.length > 0">
                     <div class="section-title">
                         <h2>{{LANG.comment.latest_comments}}</h2>
                         <div class="more"> {{LANG.panel.all}} <i class="fa fa-chevron-left"></i></div>

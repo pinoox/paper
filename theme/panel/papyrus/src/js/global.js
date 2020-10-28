@@ -55,7 +55,6 @@ Vue.mixin({
                 dashboard: require(`@img/svg/ic_dashboard.svg`),
                 article: require(`@img/svg/ic_article.svg`),
                 stats: require(`@img/svg/ic_stats.svg`),
-                settings: require(`@img/svg/ic_settings.svg`),
                 setting: require(`@img/svg/ic_setting.svg`),
                 users: require(`@img/svg/ic_users.svg`),
                 profile: require(`@img/svg/ic_profile.svg`),
@@ -71,6 +70,8 @@ Vue.mixin({
                 close: require(`@img/svg/ic_close.svg`),
                 save: require(`@img/svg/ic_save.svg`),
                 first_post : require(`@img/svg/first_post.svg`),
+                comment : require(`@img/svg/ic_comment.svg`),
+                call : require(`@img/svg/ic_call.svg`),
                 placeholder : require(`@img/placeholder.png`),
         };
         },

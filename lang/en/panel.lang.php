@@ -24,6 +24,7 @@ return [
     'back' => 'back',
     'save_changes' => 'save changes',
     'total' => 'total',
+    'menus_info' => 'quick access to different sections',
 
     'dashboard' => 'dashboard',
     'user' => 'user',
@@ -32,6 +33,8 @@ return [
     'menus' => 'menus',
     'settings' => 'settings',
     'profile' => 'profile',
+    'comments' => 'comments',
+    'contacts' => 'contacts',
 
     /* table */
 
