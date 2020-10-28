@@ -247,7 +247,7 @@
                             tooltip: true,
                             created(view) {
                                 vm.$watch('$parent.isSave', (val) => {
-                                    view.isEnabled = val;
+                                    view.isEnabled = !val;
                                 }, {
                                     immediate: true,
                                 });
@@ -288,9 +288,10 @@
                 return {
                     waitingTime: parseInt(this.autosaveTime) * 1000,
                     save(editor) {
-                        if (vm.autosave)
+                        if (vm.autosave && !vm.$parent.isSave)
                             return vm.$emit('save');
-
+                        else
+                            return true;
                     }
                 }
             },
