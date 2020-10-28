@@ -32,6 +32,8 @@ return [
     'menus' => 'menus',
     'settings' => 'settings',
     'profile' => 'profile',
+    'comments' => 'comments',
+    'contacts' => 'contacts',
 
     /* table */
 

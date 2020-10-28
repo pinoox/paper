@@ -342,6 +342,7 @@ body {
     align-items: center;
     justify-content: space-between;
     position: fixed;
+    top: 0;
     height: 100%;
     width: @sidebarWidth;
     z-index: 999;
@@ -604,6 +605,11 @@ body {
             path {
               fill: @primaryColor;
             }
+          }
+
+          &:hover {
+            cursor: pointer;
+            .hover-menu;
           }
 
           &.active {
@@ -1355,7 +1361,6 @@ body {
       }
     }
 
-
     .add-category {
       max-width: 500px;
       text-align: center;
@@ -1365,6 +1370,50 @@ body {
         min-width: 93%;
       }
 
+    }
+
+    .menus {
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      text-align: center;
+      grid-gap: 1rem;
+
+      .item {
+        padding: 20px;
+        background: fade(@primaryColor, 4%);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &:hover {
+          cursor: pointer;
+          .hover-menu;
+        }
+
+        .icon {
+          width: 60px !important;
+          height: 60px !important;
+
+          path {
+            fill: @primaryColor;
+          }
+
+          &.stroke {
+            path, circle {
+              stroke: @primaryColor !important;
+            }
+          }
+        }
+
+        .text {
+          font-size: 1.2em;
+          padding: 10px 0;
+          font-weight: 500;
+          color: @primaryColor;
+        }
+      }
     }
   }
 
@@ -1498,7 +1547,6 @@ body {
   height: 10em;
 }
 
-
 .dg-btn {
   font-family: @defaultFontFaceRtl !important;
 }
@@ -1513,6 +1561,8 @@ body {
   .app-container {
     .main {
       .page {
+        padding-top: @toolbarHeight;
+
         .encourage-writing .art {
           width: 170px;
           top: 12%;
@@ -1625,8 +1675,8 @@ body {
       text-align: right;
       vertical-align: middle;
       display: flex;
-      border-bottom: 1px solid #efefef!important;
-      padding: 10px 0!important;
+      border-bottom: 1px solid #efefef !important;
+      padding: 10px 0 !important;
 
       div {
         width: 100%;
@@ -1644,11 +1694,17 @@ body {
 
   }
 
-  .section{
-    &.compact-mode{
-      background: transparent!important;
-      margin: 0!important;
-      padding:0!important;
+  .section {
+    &.compact-mode {
+      background: transparent !important;
+      margin: 0 !important;
+      padding: 0 !important;
+
+      .section-title {
+        margin-bottom: 0 !important;
+        margin-top: 40px;
+      }
     }
+
   }
 }
