@@ -1603,3 +1603,52 @@ body {
 
 }
 
+@media screen and (max-width: 576px) {
+  .vgt-compact td:before {
+    float: right;
+    right: 0;
+    left: initial;
+    padding-right: 10px;
+    padding-left: initial;
+    text-align: right;
+  }
+
+  .vgt-compact {
+    tr {
+      margin-bottom: 15px;
+      border-radius: 5px;
+      padding: 20px;
+      background: #fff;
+    }
+
+    td {
+      text-align: right;
+      vertical-align: middle;
+      display: flex;
+      border-bottom: 1px solid #efefef!important;
+      padding: 10px 0!important;
+
+      div {
+        width: 100%;
+      }
+
+      .btn-action {
+        width: 33px !important;
+        height: 33px !important;
+      }
+
+      &:last-child {
+        border: none !important;
+      }
+    }
+
+  }
+
+  .section{
+    &.compact-mode{
+      background: transparent!important;
+      margin: 0!important;
+      padding:0!important;
+    }
+  }
+}

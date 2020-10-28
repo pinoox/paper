@@ -61,6 +61,7 @@
                         <vue-good-table
                                 styleClass="vgt-table table"
                                 :rtl="_dir=='rtl'"
+                                compactMode
                                 :columns="commentCols"
                                 :rows="latestComments">
                             <template slot="table-row" slot-scope="props">

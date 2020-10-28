@@ -76,7 +76,7 @@
                                <simple-svg :src="_icons.dashboard"
                                            customClassName="icon"
                                            fill="#A5B8CE"/>
-                               <span class="text">داشبورد</span>
+                               <span class="text">{{LANG.panel.dashboard}}</span>
                            </router-link>
                            <router-link class="item" :to="{name:'write'}" exact-active-class="active">
                                <simple-svg :src="_icons.pen"
@@ -84,17 +84,17 @@
                                            customClassName="stroke"/>
                                <span class="text">{{LANG.post.write}}</span>
                            </router-link>
-                           <router-link class="item" :to="{name:'stats'}" exact-active-class="active">
-                               <simple-svg :src="_icons.stats"
+                           <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
+                               <simple-svg :src="_icons.article"
                                            customClassName="icon"
                                            fill="#A5B8CE"/>
-                               <span class="text">آمار</span>
+                               <span class="text">{{LANG.panel.posts}}</span>
                            </router-link>
                            <router-link class="item" :to="{name:'splash'}" exact-active-class="active">
                                <simple-svg :src="_icons.more"
                                            customClassName="icon"
                                            fill="#A5B8CE"/>
-                               <span class="text">بیشتر</span>
+                               <span class="text">{{LANG.panel.more}}</span>
                            </router-link>
                        </div>
                    </div>
