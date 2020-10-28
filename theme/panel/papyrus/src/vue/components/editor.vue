@@ -90,9 +90,6 @@
                             '|',
                             'bold',
                             'italic',
-                            'underline',
-                            'strikethrough',
-                            'highlight',
                             '|',
                             'alignment',
                             '|',
@@ -109,23 +106,20 @@
                             'insertTable',
                             'imageInsert',
                             'mediaEmbed',
-                            '|',
-                            'exportWord',
-                            'exportPdf',
                         ],
                     },
                     balloonToolbar: {
                         items: [
                             'bold',
                             'italic',
+                            'underline',
+                            'strikethrough',
+                            'highlight',
                             'fontSize',
                             '|',
                             'alignment',
-                            'numberedList',
-                            'bulletedList',
                             '|',
                             'link',
-                            'blockQuote',
                             'code',
                         ]
                     },
@@ -225,9 +219,15 @@
                     },
                     blockToolbar: [
 
-                        'bulletedList', 'numberedList',
+                        'bulletedList',
+                        'numberedList',
                         '|',
-                        'blockQuote', 'imageUpload'
+                        'blockQuote',
+                        'code',
+                        'horizontalLine',
+                        '|',
+                        'imageInsert',
+                        'mediaEmbed',
                     ],
                     table: {
                         contentToolbar: [
