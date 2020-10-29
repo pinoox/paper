@@ -14,7 +14,6 @@ namespace pinoox\app\com_pinoox_paper\model;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Date;
 use pinoox\component\HelperString;
-use pinoox\component\Response;
 use pinoox\component\User;
 
 class PostModel extends PaperDatabase
@@ -41,6 +40,16 @@ class PostModel extends PaperDatabase
             'insert_date' => $date,
             'update_date' => $date,
         ]);
+    }
+
+    public static function fetch_by_key($post_key, $no_post_id = null)
+    {
+        if (empty($post_key))
+            return null;
+        if (!empty($no_post_id))
+            self::$db->where('post_id', $no_post_id, '!=');
+        self::$db->where('post_key', $post_key);
+        return self::$db->getOne(self::post);
     }
 
     public static function save_draft($data)
@@ -80,6 +89,7 @@ class PostModel extends PaperDatabase
             'title' => $data['title'],
             'context' => $data['context'],
             'update_date' => $date,
+            'synced' => 0,
         ]);
     }
 

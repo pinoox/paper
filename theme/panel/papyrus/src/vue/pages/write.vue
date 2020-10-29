@@ -6,15 +6,16 @@
                     {{LANG.post.save}}
                 </div>
                 <div @click="openDrawer('publish')" class="item">
-                    {{LANG.post.publication}}
+                    {{post_type === 'post'?LANG.post.post_publication : LANG.post.page_publication}}
                 </div>
-                <div class="item" @click="openDrawer('category')">
+                <div v-if="post_type==='post'" class="item" @click="openDrawer('category')">
                     {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                 </div>
                 <div class="item" @click="drawerName = 'image-manager'">
                     {{LANG.post.images}}
                 </div>
-                <router-link v-if="!!post_id" :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
+                <router-link v-if="!!post_id && post_type==='post'"
+                             :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
                     {{LANG.post.stats}}
                 </router-link>
                 <div class="item" @click="openFullscreen()">
@@ -40,7 +41,7 @@
             </editor>
         </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
-        <category @onClose="drawerName=null" :open="drawerName==='category'"
+        <category v-if="post_type==='post'" @onClose="drawerName=null" :open="drawerName==='category'"
                   @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
         <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
@@ -89,6 +90,7 @@
                     category: null,
                     hash_id: null,
                     image: null,
+                    post_key: '',
                 },
                 images: [],
                 status: 'draft',
@@ -211,6 +213,10 @@
             },
             getPost() {
                 return this.$http.get(this.URL.API + 'post/get/' + this.post_id + '/' + this.post_type).then((json) => {
+                    if (!json.data) {
+                        this._routerReplace({name: 'error'});
+                        return;
+                    }
                     this.post = json.data;
                     this.params.post_id = this.post_id;
                     this.setEditorFields({
@@ -219,6 +225,7 @@
                     });
                     this.params.tags = this.createTags(json.data.tags);
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
+                    this.params.post_key = !!json.data.post_key ? json.data.post_key : '';
                     this.status = !!json.data.status ? json.data.status : 'draft';
                     this.params.hash_id = json.data.hash_id;
                     this.isSynced = !!json.data.synced ? !!(parseInt(json.data.synced)) : false;
@@ -245,32 +252,33 @@
                 });
             },
             changeStatus(status) {
-                return this.$http.post(this.URL.API + 'post/changeStatus', {
-                    post_id: this.post_id,
-                    status: status,
-                }).then((json) => {
-                    if (json.data.status) {
-                        this.status = status;
-                        this.isSynced = true;
-                    } else {
-                        this._notify('error', json.data.message);
-                    }
-                });
+                if (!status)
+                    return;
+
+                this.status = status;
+                this.isSynced = true;
             },
-            save() {
+            save(status = null) {
                 let params = this.getFormData(this.params);
+
+                if (!!status)
+                    params.append('status', status);
+
                 this.message = PINOOX.LANG.panel.saving;
 
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
                         if (!this.post_id)
-                            this._routerReplace({name: 'write', params: {post_id: json.data.result}});
+                            this._routerReplace({name: this.$route.name, params: {post_id: json.data.result}});
                         this.isSynced = false;
                         this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
+                        this.changeStatus(status);
                     } else {
                         this._notify('error', json.data.message, 'app');
                     }
+
+                    return json.data;
                 });
             },
             createTags(tags) {
@@ -356,7 +364,7 @@
             drawerName() {
                 $('.app-container').toggleClass('drawer--blur');
                 $('body').toggleClass('toggle-over-flow');
-            }
+            },
         }
     }
 </script>

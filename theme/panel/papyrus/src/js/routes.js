@@ -8,6 +8,8 @@ import PostStats from '../vue/pages/post-stats.vue';
 import Users from '../vue/pages/users.vue';
 import Contacts from '../vue/pages/contacts.vue';
 import Comments from '../vue/pages/comments.vue';
+import PageWrite from '../vue/pages/page-write.vue';
+import Error from '../vue/pages/error.vue';
 
 export const routes = [
     {
@@ -43,6 +45,12 @@ export const routes = [
         props: true,
     },
     {
+        path: PINOOX.URL.BASE + '/page/write/:post_id?',
+        name: 'page-write',
+        component: PageWrite,
+        props: true,
+    },
+    {
         path: PINOOX.URL.BASE + '/post/stats/:post_id',
         name: 'post-stats',
         component: PostStats,
@@ -70,6 +78,11 @@ export const routes = [
         path: PINOOX.URL.BASE + '/comments',
         name: 'comments',
         component: Comments
+    },
+    {
+        path: PINOOX.URL.BASE + '/error',
+        name: 'error',
+        component: Error,
     },
 
 ];

@@ -4,26 +4,35 @@
                    :location='drawerPosition'
                    :visible.sync='drawerOpen'
                    :blur="false"
+                   @open="openDrawer"
                    :area="drawerArea"
                    :before-close='handleBeforeClose'>
             <div slot='header' class="drawer-header">
                 <div class="title">
-                    <div class="text">{{LANG.post.publication_post}}</div>
+                    <div v-if="$parent.post_type==='post'" class="text">{{LANG.post.post_publication}}</div>
+                    <div v-else class="text">{{LANG.post.page_publication}}</div>
                 </div>
             </div>
             <div class="drawer-content">
                 <row :gutter="12" :columns="2">
                     <column :sm="2" :md="1">
-
                         <div class="input-wrapper">
                             <label class="input-label">{{LANG.post.title}}</label>
                             <div class="input-group">
-                                <input v-model="params.title" name="name" type="text"
+                                <input v-model="params.title" name="title" type="text"
                                        :placeholder="LANG.post.enter_title" class="input">
                             </div>
                         </div>
 
-                        <div class="input-wrapper">
+                        <div v-if="$parent.post_type==='page'" class="input-wrapper">
+                            <label class="input-label">{{LANG.post.page_address}}</label>
+                            <div class="input-group">
+                                <input v-model="params.post_key" name="post_key" type="text"
+                                       :placeholder="LANG.post.enter_page_address" class="input">
+                            </div>
+                        </div>
+
+                        <div v-if="$parent.post_type === 'post'" class="input-wrapper">
                             <label class="input-label">{{LANG.post.summary}}</label>
                             <div class="input-group">
                                 <textarea v-model="params.summary" name="summary"
@@ -53,25 +62,36 @@
                         </div>
                     </column>
                     <column :sm="2" :md="1">
-                        <div class="post-image-select" v-if="isSelectImageBox" @dragover.prevent @drop.prevent
-                             @drop="$parent.handleFileDrop">
-                            <div class="input-wrapper">
-                                <label class="input-label">{{LANG.post.preview_image}}</label>
-                                <span class="close" @click="isSelectImageBox = false"><simple-svg :src="_icons.close"
-                                                                                                  customClassName="icon stroke"
-                                                                                                  stroke="#A5B8CE"/></span>
-                                <select-image :items="$parent.images" v-model="params.image"
-                                              @select="isSelectImageBox = false">
-                                    <li class="add-item" @click="$parent.selectFile">+</li>
-                                </select-image>
+                        <div v-if="$parent.post_type==='page'" class="input-wrapper">
+                            <label class="input-label">{{LANG.post.description}}</label>
+                            <div class="input-group">
+                                <textarea rows="8" v-model="params.summary" name="summary"
+                                          :placeholder="LANG.post.enter_description"
+                                          class="input"></textarea>
                             </div>
                         </div>
+                        <div v-if="$parent.post_type==='post'">
+                            <div class="post-image-select" v-if="isSelectImageBox" @dragover.prevent @drop.prevent
+                                 @drop="$parent.handleFileDrop">
+                                <div class="input-wrapper">
+                                    <label class="input-label">{{LANG.post.preview_image}}</label>
+                                    <span class="close" @click="isSelectImageBox = false"><simple-svg
+                                            :src="_icons.close"
+                                            customClassName="icon stroke"
+                                            stroke="#A5B8CE"/></span>
+                                    <select-image :items="$parent.images" v-model="params.image"
+                                                  @select="isSelectImageBox = false">
+                                        <li class="add-item" @click="$parent.selectFile">+</li>
+                                    </select-image>
+                                </div>
+                            </div>
 
-                        <div class="input-wrapper" v-else>
-                            <label class="input-label">{{LANG.post.preview_image}}</label>
-                            <div class="img-uploader">
-                                <img :src="image">
-                                <span @click="openSelectImage()">{{labelSelectImage}}</span>
+                            <div class="input-wrapper" v-else>
+                                <label class="input-label">{{LANG.post.preview_image}}</label>
+                                <div class="img-uploader">
+                                    <img :src="image">
+                                    <span @click="openSelectImage()">{{labelSelectImage}}</span>
+                                </div>
                             </div>
                         </div>
                     </column>
@@ -88,7 +108,8 @@
                 <div class="btn btn-success" @click="changeStatus('publish')" v-if="$parent.status === 'draft'">
                     {{LANG.post.publication}}
                 </div>
-                <div class="btn btn-primary" @click="changeStatus('publish')" v-if="$parent.status === 'publish' && !$parent.isSynced">
+                <div class="btn btn-primary" @click="changeStatus('publish')"
+                     v-if="$parent.status === 'publish' && !$parent.isSynced">
                     {{LANG.post.sync}}
                 </div>
                 <div class="btn btn-danger" @click="changeStatus('draft')" v-if="$parent.status === 'publish'">
@@ -109,6 +130,7 @@
             return {
                 params: {
                     title: '',
+                    post_key: '',
                     summary: '',
                     tags: [],
                     image: null,
@@ -150,10 +172,7 @@
         },
         methods: {
             changeStatus(status) {
-                this.$parent.save()
-                    .then(() => {
-                        return this.$parent.changeStatus(status);
-                    });
+                this.$parent.save(status);
             },
             openSelectImage() {
                 this.isSelectImageBox = true;
@@ -185,6 +204,7 @@
             getParams() {
                 return {
                     title: this.$parent.editor.title,
+                    post_key: this.$parent.params.post_key,
                     summary: this.$parent.params.summary,
                     tags: this.$parent.params.tags,
                     image: this.$parent.params.image,
@@ -200,20 +220,27 @@
                 });
             },
             saveParams() {
+                let paramsParent = this._clone(this.$parent.params)
                 this.$parent.editor.title = this.params.title;
+                this.$parent.params.post_key = this.params.post_key;
                 this.$parent.params.summary = this.params.summary;
                 this.$parent.params.tags = this._clone(this.params.tags);
                 this.$parent.params.image = this._clone(this.params.image);
-                this.$parent.save();
+                this.$parent.save(this.$parent.status).then((data) => {
+                    if (data.status)
+                        this.$parent.isSynced = true;
+                    else
+                        this.$parent.params = paramsParent;
+                });
+            },
+            openDrawer() {
+                let title = this.$parent.editor.title;
+                let post_key = this.$parent.params.post_key;
+                post_key = !!post_key ? post_key : title.replaceAll(' ', '-');
+                this.$parent.params.post_key = post_key;
+                this.init();
+                this.getInitTags();
             }
         },
-        watch: {
-            open(status) {
-                if (status) {
-                    this.init();
-                    this.getInitTags();
-                }
-            },
-        }
     }
 </script>

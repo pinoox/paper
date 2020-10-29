@@ -288,10 +288,10 @@
                 return {
                     waitingTime: parseInt(this.autosaveTime) * 1000,
                     save(editor) {
-                        if (vm.autosave && !vm.$parent.isSave)
+                        if (vm.autosave && !vm.$parent.isSave && !vm.$parent.drawerName)
                             return vm.$emit('save');
                         else
-                            return true;
+                            return false;
                     }
                 }
             },

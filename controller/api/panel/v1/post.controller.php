@@ -91,18 +91,26 @@ class PostController extends LoginConfiguration
         Response::json($posts);
     }
 
-    public function changeStatus()
+    private function changeStatus($input)
     {
-        $input = Request::input(['post_id', 'status' => PostModel::draft_status], null, '!empty');
+        if(!$input['status'])
+            return;
 
         if ($input['status'] === PostModel::publish_status) {
-            $post = PostModel::post_draft_fetch_by_id($input['post_id']);
-            $valid = Validation::check($post, [
-                'draft_title' => ['required', rlang('panel.title')],
-                'draft_context' => ['required', rlang('panel.context')],
+            $valid = Validation::check($input, [
+                'title' => ['required', rlang('panel.title')],
+                'context' => ['required', rlang('panel.context')],
             ]);
             if ($valid->isFail())
                 Response::jsonMessage($valid->first(), false);
+
+            if ($input['post_type'] === PostModel::page_type) {
+                if (empty($input['post_key']))
+                    Response::jsonMessage(rlang('post.err_page_key_empty'), false);
+
+                if (PostModel::fetch_by_key($input['post_key'], $input['post_id']))
+                    Response::jsonMessage(rlang('post.err_repeat_key'), false);
+            }
 
             $result = PostModel::update_publish_post($input['post_id']);
             PostModel::post_draft_update_synced($input['post_id'], 1);
@@ -110,15 +118,13 @@ class PostController extends LoginConfiguration
             $result = PostModel::update_status($input['post_id'], $input['status']);
         }
 
-        if ($result)
-            Response::json(rlang('post.save_successfully'), true);
-        else
+        if (!$result)
             Response::json(rlang('post.error_happened'), false);
     }
 
     public function save()
     {
-        $input = Request::post(['post_id', 'post_key', 'post_type' => PostModel::post_type, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags'], null, '!empty');
+        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags'], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
@@ -131,16 +137,21 @@ class PostController extends LoginConfiguration
 
         PaperDatabase::startTransaction();
         $isEdit = !empty($input['post_id']);
+
+        // save data
         if ($isEdit) {
             PostModel::update($input);
         } else {
             $input['post_id'] = PostModel::insert($input);
         }
 
-        // draft
+        // save draft
         PostModel::save_draft($input);
 
-        // tags
+        // change status
+        $this->changeStatus($input);
+
+        // save tags
         PostModel::insert_tags($input['post_id'], $input['tags']);
 
         PaperDatabase::commit();

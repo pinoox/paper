@@ -716,13 +716,17 @@
   border-radius: 0.25rem;
   padding: 0.2rem 1rem;
   line-height: 1.25;
-  height: 43px;
+  height: 38px;
   font-size: 1.2rem;
 }
 .input-wrapper .input-group .input:focus {
   outline: none !important;
   -webkit-box-shadow: 0 0 0 1px rgba(218, 225, 231, 0.8);
   box-shadow: 0 0 0 1px rgba(218, 225, 231, 0.8);
+}
+.input-wrapper .input-group textarea.input {
+  height: auto;
+  padding-top: 10px;
 }
 .input-wrapper .input-group .btn-insides {
   position: absolute;
@@ -748,7 +752,7 @@
 }
 .img-uploader {
   position: relative;
-  height: 240px;
+  height: 252px;
 }
 .img-uploader img {
   width: 100%;
