@@ -2,7 +2,7 @@
     <div class="page">
         <div class="menubar">
             <div class="items">
-                <router-link :to="{name:'write'}" tag="div" class="item">
+                <router-link :to="{name:'page-write'}" tag="div" class="item">
                     {{LANG.post.write}}
                 </router-link>
             </div>
@@ -37,20 +37,9 @@
                                 <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                             </div>
                             <div v-else-if="props.column.field === 'operation'">
-                                <router-link :to="{name:'post-stats',params:{post_id:props.row.post_id}}" class="btn-action"><i class="fa fa-chart-pie"></i></router-link>
-                                <router-link :to="{name:'write',params:{post_id:props.row.post_id}}" class="btn-action"><i class="fa fa-edit"></i></router-link>
+                                <router-link :to="{name:'page-write',params:{post_id:props.row.post_id}}" class="btn-action"><i class="fa fa-edit"></i></router-link>
                                 <span @click="remove(props.row,props.index)" class="btn-action"><i
                                         class="fa fa-trash"></i></span>
-                            </div>
-                            <div v-else-if="props.column.field==='visits'">
-                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    <i class="fa fa-eye"></i> {{props.formattedRow[props.column.field]}}
-                                </span>
-                            </div>
-                            <div v-else-if="props.column.field==='visitors'">
-                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    <i class="fa fa-users"></i> {{props.formattedRow[props.column.field]}}
-                                </span>
                             </div>
                             <div v-else>
                                 <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
@@ -86,11 +75,6 @@
                         field: 'post_id',
                     },
                     {
-                        label: PINOOX.LANG.panel.image,
-                        field: 'thumb_128',
-                        sortable: false,
-                    },
-                    {
                         label: PINOOX.LANG.panel.title,
                         field: (item) => {
                             return this._isNull(item.title, this.LANG.post.no_title);
@@ -117,16 +101,6 @@
                         style: 'light',
                     },
                     {
-                        label: PINOOX.LANG.post.visits,
-                        field: 'visits',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.post.visitors,
-                        field: 'visitors',
-                        style: 'light',
-                    },
-                    {
                         label: PINOOX.LANG.panel.operation,
                         field: 'operation',
                         style: 'operation',
@@ -139,7 +113,7 @@
                     keyword: null,
                     page: 1,
                     perPage: 10,
-                    type: 'post',
+                    type: 'page',
                     sort: {
                         field: '',
                         type: '',
@@ -168,12 +142,6 @@
             onSearch(params) {
                 this.updateParams({keyword: params.searchTerm});
                 this.getItems();
-            },
-            stats(row) {
-                this.$router.push({name: 'post-stats', params: {post_id: row.post_id}});
-            },
-            edit(row) {
-                this.$router.push({name: 'write', params: {post_id: row.post_id}});
             },
             remove(row, index) {
                 let params = {post_id: row.post_id};

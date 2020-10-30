@@ -8,6 +8,7 @@ return [
     'first_post' => 'start writing now',
     'write_first_post' => 'new post',
     'stats' => 'statistic',
+    'author' => 'author',
     'post' => 'post',
     'posts' => 'posts',
     'save' => 'save',
