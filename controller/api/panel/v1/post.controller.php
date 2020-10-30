@@ -44,7 +44,7 @@ class PostController extends LoginConfiguration
     private function getInfoPost($post)
     {
         $placeHolder = Url::file('resources/image-placeholder.jpg');
-        
+
         if (empty($post)) return $post;
         $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
         $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);

@@ -33,6 +33,7 @@ return [
     'menus' => 'منوها',
     'settings' => 'تنظیمات',
     'profile' => 'پروفایل',
+    'user_profile' => 'مشخصات کاربری',
     'comments' => 'نظرات',
     'contacts' => 'تماس ها',
 

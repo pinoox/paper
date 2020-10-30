@@ -613,14 +613,13 @@ body {
           }
 
           &.active {
+            background: fade(@primaryColor, 20%);
+
             .text {
               display: block;
               font-size: 0.8em;
               font-weight: 500;
             }
-
-
-            background: fade(@primaryColor, 20%);
           }
         }
       }
@@ -1084,17 +1083,17 @@ body {
   }
 }
 
-.write-container{
+.write-container {
   .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
     border: 1px solid transparent !important;
     box-shadow: none !important;
   }
 
-  .ck.ck-toolbar{
+  .ck.ck-toolbar {
     background: #fff;
   }
 
-  .ck.ck-button, a.ck.ck-button{
+  .ck.ck-button, a.ck.ck-button {
     color: @primaryColor !important;
     font-family: @defaultFontFaceRtl !important;
   }
@@ -1102,7 +1101,7 @@ body {
 
 
 .vue-notification-group {
-  width: 300px !important;
+  width: 320px !important;
   z-index: 99999 !important;
   right: unset !important;
   bottom: unset !important;
@@ -1431,6 +1430,142 @@ body {
 
 }
 
+.form-wrapper {
+  background: #fff;
+  height: 100vh;
+
+  header {
+    .form-header {
+      padding: 30px 5% 10px 5%;
+      font-size: 2em;
+      color: @textColor;
+      font-weight: 600;
+      display: inline-block;
+
+      .title {
+        display: block;
+        align-items: center;
+
+        .text {
+          display: inline-block;
+          position: relative;
+          top: -17px;
+        }
+
+        .subtext {
+          font-size: 14px;
+          font-weight: 400;
+          color: @textColorLight;
+          position: relative;
+          top: -10px;
+        }
+
+        .icon {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  footer {
+    border-top: 1px solid fade(@primaryColor, 10%);
+    background: rgb(243, 245, 247);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 20px 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    border-top: 1px solid #f0f0f0;
+    box-sizing: border-box;
+    width: calc(100% - @sidebarWidth);
+
+    .form-footer {
+
+      .btn {
+        margin: 0 5px;
+      }
+    }
+  }
+
+  .form-content {
+    padding: 20px 5% 100px 5%;
+    background: #fff;
+
+    &.row{
+      padding-bottom: 0px !important;
+    }
+
+    .header {
+      padding: 30px 0 10px 0;
+      font-size: 2em;
+      color: @textColor;
+      font-weight: 600;
+      display: inline-block;
+
+      .title {
+        display: block;
+        align-items: center;
+
+        .text {
+          display: inline-block;
+          position: relative;
+          top: -17px;
+        }
+
+        .subtext {
+          font-size: 14px;
+          font-weight: 400;
+          color: @textColorLight;
+          position: relative;
+          top: -10px;
+        }
+
+        .icon {
+          display: inline-block;
+        }
+      }
+    }
+
+    .footer {
+      padding: 20px 10px 40px 10px;
+      box-sizing: border-box;
+      width: 100%;
+
+      &.revert{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        margin: 0 5px;
+      }
+    }
+
+    .colVGR{
+      .footer{
+        padding: 20px 3px 40px 3px;
+      }
+    }
+    .page {
+      .form-content {
+        padding-bottom: 60px;
+      }
+    }
+
+    .btn-add {
+      margin-bottom: 20px;
+    }
+  }
+}
 
 .vgt-loading {
   backdrop-filter: blur(3px);
@@ -1567,19 +1702,19 @@ body {
   background: @bgColor;
   overflow-y: scroll;
 
-  .paper{
+  .paper {
     margin-bottom: 40px !important;
     height: auto !important;
   }
 
   .toolbar-editor {
     width: 100% !important;
-    top:0 !important;
+    top: 0 !important;
   }
 
-  .statusbar{
+  .statusbar {
     width: 100% !important;
-    bottom:0 !important;
+    bottom: 0 !important;
   }
 }
 
@@ -1683,6 +1818,22 @@ body {
     }
   }
 
+  .form-wrapper {
+    footer {
+      width: 100%;
+      bottom: 40px;
+    }
+
+    .form-content {
+      padding-bottom: 150px;
+    }
+
+    .page {
+      .form-content {
+        padding-bottom: 100px;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 576px) {

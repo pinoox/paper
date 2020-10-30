@@ -1683,7 +1683,7 @@ body.ltr .app-container .main .page .encourage-writing .art {
   font-family: 'iranSans', 'Estedad', 'Karla', serif !important;
 }
 .vue-notification-group {
-  width: 300px !important;
+  width: 320px !important;
   z-index: 99999 !important;
   right: unset !important;
   bottom: unset !important;
@@ -1938,6 +1938,114 @@ body.ltr .app-container .main .page .encourage-writing .art {
   font-weight: 500;
   color: #1f426c;
 }
+.form-wrapper {
+  background: #fff;
+  height: 100vh;
+}
+.form-wrapper header .form-header {
+  padding: 30px 5% 10px 5%;
+  font-size: 2em;
+  color: #506E93;
+  font-weight: 600;
+  display: inline-block;
+}
+.form-wrapper header .form-header .title {
+  display: block;
+  align-items: center;
+}
+.form-wrapper header .form-header .title .text {
+  display: inline-block;
+  position: relative;
+  top: -17px;
+}
+.form-wrapper header .form-header .title .subtext {
+  font-size: 14px;
+  font-weight: 400;
+  color: #A5B8CE;
+  position: relative;
+  top: -10px;
+}
+.form-wrapper header .form-header .title .icon {
+  display: inline-block;
+}
+.form-wrapper footer {
+  border-top: 1px solid rgba(31, 66, 108, 0.1);
+  background: #f3f5f7;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 20px 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  border-top: 1px solid #f0f0f0;
+  box-sizing: border-box;
+  width: calc(100% - 120px);
+}
+.form-wrapper footer .form-footer .btn {
+  margin: 0 5px;
+}
+.form-wrapper .form-content {
+  padding: 20px 5% 100px 5%;
+  background: #fff;
+}
+.form-wrapper .form-content.row {
+  padding-bottom: 0px !important;
+}
+.form-wrapper .form-content .header {
+  padding: 30px 0 10px 0;
+  font-size: 2em;
+  color: #506E93;
+  font-weight: 600;
+  display: inline-block;
+}
+.form-wrapper .form-content .header .title {
+  display: block;
+  align-items: center;
+}
+.form-wrapper .form-content .header .title .text {
+  display: inline-block;
+  position: relative;
+  top: -17px;
+}
+.form-wrapper .form-content .header .title .subtext {
+  font-size: 14px;
+  font-weight: 400;
+  color: #A5B8CE;
+  position: relative;
+  top: -10px;
+}
+.form-wrapper .form-content .header .title .icon {
+  display: inline-block;
+}
+.form-wrapper .form-content .footer {
+  padding: 20px 10px 40px 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.form-wrapper .form-content .footer.revert {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.form-wrapper .form-content .footer .btn {
+  margin: 0 5px;
+}
+.form-wrapper .form-content .colVGR .footer {
+  padding: 20px 3px 40px 3px;
+}
+.form-wrapper .form-content .page .form-content {
+  padding-bottom: 60px;
+}
+.form-wrapper .form-content .btn-add {
+  margin-bottom: 20px;
+}
 .vgt-loading {
   backdrop-filter: blur(3px);
   height: 100%;
@@ -2119,6 +2227,16 @@ body.ltr .app-container .main .page .encourage-writing .art {
   }
   .app-container .main .page .swiper-posts .swiper-slide .thumb {
     height: 110px;
+  }
+  .form-wrapper footer {
+    width: 100%;
+    bottom: 40px;
+  }
+  .form-wrapper .form-content {
+    padding-bottom: 150px;
+  }
+  .form-wrapper .page .form-content {
+    padding-bottom: 100px;
   }
 }
 @media screen and (max-width: 576px) {

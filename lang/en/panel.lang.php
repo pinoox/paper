@@ -32,6 +32,7 @@ return [
     'menus' => 'menus',
     'settings' => 'settings',
     'profile' => 'profile',
+    'user_profile' => 'User Profile',
     'comments' => 'comments',
     'contacts' => 'contacts',
 
