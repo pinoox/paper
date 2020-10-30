@@ -80,6 +80,8 @@ return [
     'likes' => 'لایک ها',
     'comments' => 'نظرات',
     'stats_post' => 'آمار بازدیدها',
+    'yesterday' => 'دیروز',
+    'today' => 'امروز',
 
     /** category **/
     'add' => 'افزودن',

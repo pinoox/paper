@@ -1022,6 +1022,10 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   right: 0;
   left: initial;
 }
+body.ltr .app-container .main .page .encourage-writing .art {
+  left: initial;
+  right: 5%;
+}
 .app-container .splash {
   font-family: 'Karla', 'iranSans', 'Estedad', serif;
   background: #FFF;
@@ -1046,6 +1050,7 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  top: 0;
   height: 100%;
   width: 120px;
   z-index: 999;
@@ -1261,6 +1266,10 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
 }
 .app-container .main .toolbar-drawer .items .item .icon path {
   fill: #1f426c;
+}
+.app-container .main .toolbar-drawer .items .item:hover {
+  cursor: pointer;
+  background: rgba(31, 66, 108, 0.1);
 }
 .app-container .main .toolbar-drawer .items .item.active {
   background: rgba(31, 66, 108, 0.2);
@@ -1650,12 +1659,12 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   stroke: #fff;
 }
 .app-container .main .page .encourage-writing .art {
-  width: 250px;
+  width: 210px;
   display: block;
   margin: auto;
   position: absolute;
   left: 5%;
-  top: 15%;
+  top: 8%;
   z-index: 1;
 }
 .app-container .toolbar-editor .ck-toolbar__items {
@@ -1893,6 +1902,42 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
 .drawer-wrapper .drawer-content .add-category .input {
   min-width: 93%;
 }
+.drawer-wrapper .drawer-content .menus {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  text-align: center;
+  grid-gap: 1rem;
+}
+.drawer-wrapper .drawer-content .menus .item {
+  padding: 20px;
+  background: rgba(31, 66, 108, 0.04);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.drawer-wrapper .drawer-content .menus .item:hover {
+  cursor: pointer;
+  background: rgba(31, 66, 108, 0.1);
+}
+.drawer-wrapper .drawer-content .menus .item .icon {
+  width: 60px !important;
+  height: 60px !important;
+}
+.drawer-wrapper .drawer-content .menus .item .icon path {
+  fill: #1f426c;
+}
+.drawer-wrapper .drawer-content .menus .item .icon.stroke path,
+.drawer-wrapper .drawer-content .menus .item .icon.stroke circle {
+  stroke: #1f426c !important;
+}
+.drawer-wrapper .drawer-content .menus .item .text {
+  font-size: 1.2em;
+  padding: 10px 0;
+  font-weight: 500;
+  color: #1f426c;
+}
 .vgt-loading {
   backdrop-filter: blur(3px);
   height: 100%;
@@ -2017,9 +2062,12 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   th.sorting-asc::before {
     margin-right: 0;
   }
+  .app-container .main .page {
+    padding-top: 44px;
+  }
   .app-container .main .page .encourage-writing .art {
     width: 170px;
-    top: 25%;
+    top: 12%;
   }
   .app-container .main .page .swiper-posts .swiper-slide .title {
     font-size: 12px;
@@ -2064,13 +2112,55 @@ body.ltr .app-container .main .page .post-stats .post-title .label {
   }
   .app-container .main .page .encourage-writing .art {
     opacity: 0.3;
-    top: 20%;
+    top: 12%;
   }
   .app-container .main .page .swiper-posts .swiper-slide .title {
     font-size: 12px;
   }
   .app-container .main .page .swiper-posts .swiper-slide .thumb {
     height: 110px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .vgt-compact td:before {
+    float: right;
+    right: 0;
+    left: initial;
+    padding-right: 10px;
+    padding-left: initial;
+    text-align: right;
+  }
+  .vgt-compact tr {
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 20px;
+    background: #fff;
+  }
+  .vgt-compact td {
+    text-align: right;
+    vertical-align: middle;
+    display: flex;
+    border-bottom: 1px solid #efefef !important;
+    padding: 10px 0 !important;
+  }
+  .vgt-compact td div {
+    width: 100%;
+  }
+  .vgt-compact td .btn-action {
+    width: 33px !important;
+    height: 33px !important;
+  }
+  .vgt-compact td:last-child {
+    border: none !important;
+  }
+  .section.compact-mode {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .section.compact-mode .section-title {
+    margin-bottom: 0 !important;
+    margin-top: 40px;
   }
 }
 

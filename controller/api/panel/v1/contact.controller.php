@@ -12,6 +12,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\component\Date;
 use pinoox\component\Pagination;
@@ -59,7 +60,7 @@ class ContactController extends LoginConfiguration
     private function getInfoContact($contact)
     {
         if (empty($contact)) return $contact;
-        $contact['approx_insert_date'] = Date::j('l d F Y (H:i)', $contact['insert_date']);
+        $contact['approx_insert_date'] =Helper::getLocalDate('l d F Y (H:i)', $contact['insert_date']);
         return $contact;
     }
 

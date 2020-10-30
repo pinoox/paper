@@ -14,11 +14,12 @@
         </div>
 
         <div class="container">
-            <div class="section">
+            <div class="section compact-mode">
                 <div class="section-content">
                     <vue-good-table
                             styleClass="vgt-table table"
                             :rtl="_dir==='rtl'"
+                            compactMode
                             :columns="columns"
                             :rows="contacts"
                             mode="remote"
