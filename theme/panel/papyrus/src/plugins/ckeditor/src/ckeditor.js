@@ -55,7 +55,7 @@ import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalli
 import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor';
 import BlockToolbar from '@ckeditor/ckeditor5-ui/src/toolbar/block/blocktoolbar';
 import AutoSave from '@ckeditor/ckeditor5-autosave/src/autosave';
-import FastBtn from './fastBtn';
+import FastBtn from './fastbtn';
 
 class Editor extends DecoupledDocumentEditor {}
 

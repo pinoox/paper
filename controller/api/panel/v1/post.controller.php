@@ -16,33 +16,48 @@ use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
+use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Date;
 use pinoox\component\HelperString;
 use pinoox\component\Lang;
-use pinoox\component\Pagination;
-use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Dir;
+use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
+use pinoox\component\Uploader;
 use pinoox\component\Url;
 use pinoox\component\User;
-use pinoox\component\Uploader;
 use pinoox\component\Validation;
 use pinoox\model\FileModel;
 
 
 class PostController extends LoginConfiguration
 {
-    public function get($post_id)
+    public function get($post_id, $post_type = null)
     {
-        $post = PostModel::fetch_by_id($post_id);
+        PostModel::where_post_type($post_type);
+        $post = PostModel::post_draft_fetch_by_id($post_id);
         $post = $this->getInfoPost($post);
         Response::json($post);
     }
 
+    private function getInfoPost($post)
+    {
+        $placeHolder = Url::file('resources/image-placeholder.jpg');
+
+        if (empty($post)) return $post;
+        $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
+        $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
+        $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
+        $file = FileModel::fetch_by_id($post['image_id']);
+        $post['image'] = Url::upload($file, $placeHolder);
+        $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
+        return $post;
+    }
+
     public function getAll()
     {
-        $form = Request::input('keyword,sort,status,perPage=10,page=1', null, '!empty');
+        $form = Request::input('keyword,type,sort,status,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
         $count = PostModel::fetch_all(null, true);
@@ -61,6 +76,14 @@ class PostController extends LoginConfiguration
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
     }
 
+    private function filterSearch($form)
+    {
+        PostModel::where_post_type($form['type']);
+        PostModel::search_keyword($form['keyword']);
+        PostModel::where_status($form['status']);
+        PostModel::sort($form['sort']);
+    }
+
     public function getLatestPosts()
     {
         $posts = PostModel::fetch_all(10);
@@ -72,37 +95,44 @@ class PostController extends LoginConfiguration
         Response::json([]);
     }
 
-    private function filterSearch($form)
+    private function changeStatus($input)
     {
-        PostModel::search_keyword($form['keyword']);
-        PostModel::where_status($form['status']);
-        PostModel::sort($form['sort']);
-    }
+        if(!$input['status'])
+            return;
 
-    private function getInfoPost($post)
-    {
-        $placeHolder = Url::file('resources/image-placeholder.jpg');
+        if ($input['status'] === PostModel::publish_status) {
+            $valid = Validation::check($input, [
+                'title' => ['required', rlang('panel.title')],
+                'context' => ['required', rlang('panel.context')],
+            ]);
+            if ($valid->isFail())
+                Response::jsonMessage($valid->first(), false);
 
-        if (empty($post)) return $post;
-        $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
-        $post['approx_insert_date'] = Helper::getLocalDate('l d F Y (H:i)', $post['insert_date']);
-        $post['publish_date'] = Helper::getLocalDate('Y/m/d H:i\'', $post['publish_date']);
-        $file = FileModel::fetch_by_id($post['image_id']);
-        $post['image'] = Url::upload($file, $placeHolder);
-        $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
-        return $post;
+            if ($input['post_type'] === PostModel::page_type) {
+                if (empty($input['post_key']))
+                    Response::jsonMessage(rlang('post.err_page_key_empty'), false);
+
+                if (PostModel::fetch_by_key($input['post_key'], $input['post_id']))
+                    Response::jsonMessage(rlang('post.err_repeat_key'), false);
+            }
+
+            $result = PostModel::update_publish_post($input['post_id']);
+            PostModel::post_draft_update_synced($input['post_id'], 1);
+        } else {
+            $result = PostModel::update_status($input['post_id'], $input['status']);
+        }
+
+        if (!$result)
+            Response::json(rlang('post.error_happened'), false);
     }
 
     public function save()
     {
-        $input = Request::post('post_id,image,hash_id,title,summary,!context,tags,status=draft', null, '!empty');
+        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags'], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
         ];
-
-        if ($input['status'] == 'publish')
-            $validations['title'] = ['required', rlang('panel.title')];
 
         $valid = Validation::check($input, $validations);
 
@@ -111,13 +141,21 @@ class PostController extends LoginConfiguration
 
         PaperDatabase::startTransaction();
         $isEdit = !empty($input['post_id']);
+
+        // save data
         if ($isEdit) {
             PostModel::update($input);
         } else {
             $input['post_id'] = PostModel::insert($input);
         }
 
-        // tags
+        // save draft
+        PostModel::save_draft($input);
+
+        // change status
+        $this->changeStatus($input);
+
+        // save tags
         PostModel::insert_tags($input['post_id'], $input['tags']);
 
         PaperDatabase::commit();

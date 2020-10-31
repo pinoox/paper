@@ -65,7 +65,7 @@ class CommentModel extends PaperDatabase
             self::$db->where('c.status', $status);
 
         self::$db->join(self::user . ' u', 'u.user_id=c.user_id', 'LEFT');
-        self::$db->join(self::post . ' p', 'p.post_id=p.post_id', 'LEFT');
+        self::$db->join(self::post_type . ' p', 'p.post_id=p.post_id', 'LEFT');
         self::$db->orderBy('c.insert_date', 'DESC');
         self::$db->groupBy('c.comment_id');
         $result = self::$db->get(self::comment . ' c', $limit, 'c.*,CONCAT(u.fname," ",u.lname) user_full_name,u.avatar_id,u.email user_email,p.title ');
