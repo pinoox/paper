@@ -32,6 +32,7 @@ return [
     'posts' => 'نوشته ها',
     'menus' => 'منوها',
     'settings' => 'تنظیمات',
+    'subtitle_settings' => 'با انتخاب هر گزینه تنظیمات مربوط به آن صفحه را به سادگی مدیریت کنید',
     'profile' => 'پروفایل',
     'user_profile' => 'مشخصات کاربری',
     'comments' => 'نظرات',
@@ -65,5 +66,15 @@ return [
     'message' => 'پیام',
     'contact_status' => ['seen' => 'خوانده شد', 'unseen' => 'خوانده نشده'],
 
-
+    /* settings */
+    'general_settings' => 'تنظیمات عمومی',
+    'write_settings' => 'تنظیمات نوشتن',
+    'read_settings' => 'تنظیمات خواندن',
+    'theme_settings' => 'تنظیمات قالب',
+    'lang_settings' => 'تنظیمات زبان',
+    'interface_settings' => 'تنظیمات ظاهری',
+    'privacy_settings' => 'تنظیمات حریم خصوصی',
+    'user_settings' => 'تنظیمات کاربری',
+    'site_title' => 'عنوان سایت',
+    'site_description' => 'توضیحات سایت',
 ];

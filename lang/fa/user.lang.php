@@ -18,10 +18,10 @@ return [
     'edited_successfully' => 'با موفقیت ویرایش شد',
     'change_password' => 'تغییر رمز عبور',
     'new_password' => 'رمز عبور جدید',
-    'old_password' => 'رمز عبور قبلی',
+    'old_password' => 'رمز عبور فعلی',
     're_new_password' => 'تکرار رمز عبور جدید',
     'enter_new_password' => 'رمز عبور جدید را وارد کنید',
-    'enter_old_password' => 'رمز عبور قبلی را وارد کنید',
+    'enter_old_password' => 'رمز عبور فعلی را وارد کنید',
     'enter_re_new_password' => 'رمز عبور جدید را تکرار کنید',
     'err_old_password' => 'رمز عبور  را اشتباه وارد کرده اید',
     'status' => [

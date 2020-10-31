@@ -1517,6 +1517,9 @@ body.ltr .app-container .main .page .encourage-writing .art {
   -o-transition: 0.2s;
   transition: 0.2s;
 }
+.app-container .main .page .menubar .items .item.active {
+  border-bottom: 2px solid;
+}
 .app-container .main .page .menubar .items .item:hover {
   cursor: pointer;
   background: rgba(31, 66, 108, 0.1);
@@ -1681,6 +1684,50 @@ body.ltr .app-container .main .page .encourage-writing .art {
 .write-container a.ck.ck-button {
   color: #1f426c !important;
   font-family: 'iranSans', 'Estedad', 'Karla', serif !important;
+}
+.menus {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  text-align: center;
+  grid-gap: 1rem;
+}
+.menus.setting {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.menus .item {
+  padding: 20px;
+  background: rgba(31, 66, 108, 0.04);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.menus .item:hover {
+  cursor: pointer;
+  background: rgba(31, 66, 108, 0.1);
+}
+.menus .item .icon {
+  width: 60px !important;
+  height: 60px !important;
+}
+.menus .item .icon path {
+  fill: #1f426c;
+}
+.menus .item .icon.stroke path,
+.menus .item .icon.stroke circle {
+  stroke: #1f426c !important;
+}
+.menus .item .text {
+  font-size: 1.2em;
+  padding: 10px 0;
+  font-weight: 500;
+  color: #1f426c;
+}
+.menus .item i {
+  font-size: 2.5em;
+  padding: 10px 0;
+  color: #1f426c;
 }
 .vue-notification-group {
   width: 320px !important;
@@ -1901,42 +1948,6 @@ body.ltr .app-container .main .page .encourage-writing .art {
 }
 .drawer-wrapper .drawer-content .add-category .input {
   min-width: 93%;
-}
-.drawer-wrapper .drawer-content .menus {
-  display: grid;
-  align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  text-align: center;
-  grid-gap: 1rem;
-}
-.drawer-wrapper .drawer-content .menus .item {
-  padding: 20px;
-  background: rgba(31, 66, 108, 0.04);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.drawer-wrapper .drawer-content .menus .item:hover {
-  cursor: pointer;
-  background: rgba(31, 66, 108, 0.1);
-}
-.drawer-wrapper .drawer-content .menus .item .icon {
-  width: 60px !important;
-  height: 60px !important;
-}
-.drawer-wrapper .drawer-content .menus .item .icon path {
-  fill: #1f426c;
-}
-.drawer-wrapper .drawer-content .menus .item .icon.stroke path,
-.drawer-wrapper .drawer-content .menus .item .icon.stroke circle {
-  stroke: #1f426c !important;
-}
-.drawer-wrapper .drawer-content .menus .item .text {
-  font-size: 1.2em;
-  padding: 10px 0;
-  font-weight: 500;
-  color: #1f426c;
 }
 .form-wrapper {
   background: #fff;
