@@ -5,24 +5,28 @@
                 <div class="item" @click="save()">
                     {{LANG.post.save}}
                 </div>
-                <div class="item" @click="openDrawer('category')">
+                <div @click="openDrawer('publish')" class="item">
+                    {{post_type === 'post'?LANG.post.post_publication : LANG.post.page_publication}}
+                </div>
+                <div v-if="post_type==='post'" class="item" @click="openDrawer('category')">
                     {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                 </div>
                 <div class="item" @click="drawerName = 'image-manager'">
                     {{LANG.post.images}}
                 </div>
+                <router-link v-if="!!post_id && post_type==='post'"
+                             :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
+                    {{LANG.post.stats}}
+                </router-link>
+                <div class="item" @click="openFullscreen()">
+                    {{LANG.post.fullscreen}}
+                </div>
                 <div class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
                 </div>
-                <router-link v-if="!!post_id" :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
-                    {{LANG.post.stats}}
-                </router-link>
-                <div @click="openDrawer('publish')" class="item">
-                    {{LANG.post.publication}}
-                </div>
             </div>
         </div>
-        <div class="write-container">
+        <div id="write" class="write-container">
             <editor class="content"
                     :values="editor"
                     :status="status"
@@ -37,7 +41,7 @@
             </editor>
         </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
-        <category @onClose="drawerName=null" :open="drawerName==='category'"
+        <category v-if="post_type==='post'" @onClose="drawerName=null" :open="drawerName==='category'"
                   @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
         <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
@@ -55,7 +59,14 @@
 
     export default {
         name: 'write',
-        props: ['post_id'],
+        props: {
+            post_id: {
+                default: null,
+            },
+            post_type: {
+                default: 'post',
+            }
+        },
         components: {Editor, Category, Publish, ImageManager, Settings},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
@@ -64,7 +75,9 @@
         },
         data() {
             return {
-                isSave: false,
+                isSave: true,
+                isOpenFullscreen: false,
+                isSynced: false,
                 post: {},
                 editor: {
                     title: '',
@@ -73,11 +86,11 @@
                 params: {
                     editor: {},
                     summary: '',
-                    status: 'draft',
                     tags: [],
                     category: null,
                     hash_id: null,
                     image: null,
+                    post_key: '',
                 },
                 images: [],
                 status: 'draft',
@@ -97,11 +110,11 @@
                     return this.getImages();
                 })
                 .then(() => {
-                    this.getImage();
+                    this.getFeaturingImage();
                 })
                 .then(() => {
                     this.$watch('params', () => {
-                        this.isSave = true;
+                        this.isSave = false;
                     }, {
                         deep: true,
                     })
@@ -109,6 +122,7 @@
         },
         methods: {
             getInitData() {
+                this.params.post_type = this.post_type;
                 this.getSettings();
                 if (!!this.post_id)
                     return this.getPost();
@@ -198,18 +212,26 @@
                 };
             },
             getPost() {
-                return this.$http.get(this.URL.API + 'post/get/' + this.post_id).then((json) => {
+                return this.$http.get(this.URL.API + 'post/get/' + this.post_id + '/' + this.post_type).then((json) => {
+                    if (!json.data) {
+                        this._routerReplace({name: 'error'});
+                        return;
+                    }
                     this.post = json.data;
                     this.params.post_id = this.post_id;
-                    this.setEditorFields(json.data);
+                    this.setEditorFields({
+                        title: json.data.draft_title,
+                        context: json.data.draft_context,
+                    });
                     this.params.tags = this.createTags(json.data.tags);
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
-                    this.params.status = json.data.status;
-                    this.status = json.data.status;
+                    this.params.post_key = !!json.data.post_key ? json.data.post_key : '';
+                    this.status = !!json.data.status ? json.data.status : 'draft';
                     this.params.hash_id = json.data.hash_id;
+                    this.isSynced = !!json.data.synced ? !!(parseInt(json.data.synced)) : false;
                 });
             },
-            getImage() {
+            getFeaturingImage() {
                 if (!this.post.image_id)
                     return;
 
@@ -220,37 +242,43 @@
                     }
                 }
             },
+            deleteImageFeature(image) {
+                if (image.file_id === this.params.image.file_id)
+                    this.params.image = null;
+            },
             getHashId() {
                 return this.$http.get(this.URL.API + 'post/getHashId/').then((json) => {
                     this.params.hash_id = json.data.result;
                 });
             },
             changeStatus(status) {
-                this.drawerName = null;
-                this.params.status = status;
-                this.save();
+                if (!status)
+                    return;
+
+                this.status = status;
+                this.isSynced = true;
             },
-            save() {
+            save(status = null) {
                 let params = this.getFormData(this.params);
+
+                if (!!status)
+                    params.append('status', status);
+
                 this.message = PINOOX.LANG.panel.saving;
 
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
-                    this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
-
-                    if (!json.data.status) {
-                        this._notify('error', json.data.message, 'app');
-                    } else if (json.data.status) {
-                        this.isSave = false;
-                        if (this.params.status !== this.status) {
-                            this.status = this.params.status;
-                        }
+                    if (json.data.status) {
+                        this.isSave = true;
                         if (!this.post_id)
-                            this._routerReplace({name: 'write', params: {post_id: json.data.result}});
+                            this._routerReplace({name: this.$route.name, params: {post_id: json.data.result}});
+                        this.isSynced = false;
+                        this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
+                        this.changeStatus(status);
                     } else {
-                        this.params.status = this.status;
+                        this._notify('error', json.data.message, 'app');
                     }
-                }).catch(function (error) {
-                    this.params.status = this.status;
+
+                    return json.data;
                 });
             },
             createTags(tags) {
@@ -290,12 +318,53 @@
             },
             setCategory(val) {
                 this.params.category = val;
+            },
+            openFullscreen() {
+                let ckBody = $('#write').find('.ck-body-wrapper');
+
+                if (!ckBody || ckBody.length <= 0) {
+                    ckBody = $('.ck-body-wrapper');
+                    ckBody.css('position', 'absolute');
+                    $('#write').append(ckBody);
+                }
+
+                let el = document.getElementById('write');
+                if (el.requestFullscreen) {
+                    el.requestFullscreen();
+                } else if (el.webkitRequestFullscreen) { /* Safari */
+                    el.webkitRequestFullscreen();
+                } else if (el.msRequestFullscreen) { /* IE11 */
+                    el.msRequestFullscreen();
+                }
+            },
+            closeFullscreen() {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }
+            },
+            checkFullscreen() {
+                let vm = this;
+                this.$nextTick(() => {
+                    let el = document.getElementById('write');
+                    el.addEventListener('fullscreenchange', (event) => {
+                        vm.isOpenFullscreen = !vm.isOpenFullscreen;
+                        $('#write').toggleClass('fullscreen');
+                    });
+                });
             }
+        },
+        mounted() {
+            this.checkFullscreen();
         },
         watch: {
             drawerName() {
                 $('.app-container').toggleClass('drawer--blur');
-            }
+                $('body').toggleClass('toggle-over-flow');
+            },
         }
     }
 </script>

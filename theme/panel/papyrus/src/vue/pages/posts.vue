@@ -38,9 +38,8 @@
                                 <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                             </div>
                             <div v-else-if="props.column.field === 'operation'">
-                                <span @click="stats(props.row)" class="btn-action"><i
-                                        class="fa fa-chart-pie"></i></span>
-                                <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
+                                <router-link :to="{name:'post-stats',params:{post_id:props.row.post_id}}" class="btn-action"><i class="fa fa-chart-pie"></i></router-link>
+                                <router-link :to="{name:'write',params:{post_id:props.row.post_id}}" class="btn-action"><i class="fa fa-edit"></i></router-link>
                                 <span @click="remove(props.row,props.index)" class="btn-action"><i
                                         class="fa fa-trash"></i></span>
                             </div>
@@ -102,6 +101,16 @@
                         },
                     },
                     {
+                        label: PINOOX.LANG.post.author,
+                        field: 'username',
+                        style: 'light',
+                    },
+                    {
+                        label: PINOOX.LANG.panel.date,
+                        field: 'approx_insert_date',
+                        style: 'light',
+                    },
+                    {
                         label: PINOOX.LANG.panel.status,
                         field: (item) => {
                             return this.LANG.post.status[item.status];
@@ -119,11 +128,6 @@
                         style: 'light',
                     },
                     {
-                        label: PINOOX.LANG.panel.date,
-                        field: 'approx_insert_date',
-                        style: 'light',
-                    },
-                    {
                         label: PINOOX.LANG.panel.operation,
                         field: 'operation',
                         style: 'operation',
@@ -136,6 +140,7 @@
                     keyword: null,
                     page: 1,
                     perPage: 10,
+                    type: 'post',
                     sort: {
                         field: '',
                         type: '',

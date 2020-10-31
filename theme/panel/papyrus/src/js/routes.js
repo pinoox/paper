@@ -1,5 +1,6 @@
 import Dashboard from '../vue/pages/dashboard.vue';
 import Posts from '../vue/pages/posts.vue';
+import Pages from '../vue/pages/pages.vue';
 import Stats from '../vue/pages/stats.vue';
 import Splash from '../vue/pages/splash.vue';
 import Login from '../vue/pages/login.vue';
@@ -8,6 +9,11 @@ import PostStats from '../vue/pages/post-stats.vue';
 import Users from '../vue/pages/users.vue';
 import Contacts from '../vue/pages/contacts.vue';
 import Comments from '../vue/pages/comments.vue';
+import PageWrite from '../vue/pages/page-write.vue';
+import Profile from '../vue/pages/profile.vue';
+import Setting from '../vue/pages/setting/main.vue';
+import SettingGeneral from '../vue/pages/setting/general.vue';
+import Error from '../vue/pages/error.vue';
 
 export const routes = [
     {
@@ -22,6 +28,11 @@ export const routes = [
         path: PINOOX.URL.BASE + '/posts',
         name: 'posts',
         component: Posts
+    },
+    {
+        path: PINOOX.URL.BASE + '/pages',
+        name: 'pages',
+        component: Pages
     },
     {
         path: PINOOX.URL.BASE + '/stats',
@@ -40,6 +51,12 @@ export const routes = [
         path: PINOOX.URL.BASE + '/write/:post_id?',
         name: 'write',
         component: Write,
+        props: true,
+    },
+    {
+        path: PINOOX.URL.BASE + '/page/write/:post_id?',
+        name: 'page-write',
+        component: PageWrite,
         props: true,
     },
     {
@@ -71,5 +88,24 @@ export const routes = [
         name: 'comments',
         component: Comments
     },
-
+    {
+        path: PINOOX.URL.BASE + '/profile',
+        name: 'profile',
+        component: Profile,
+    },
+    {
+        path: PINOOX.URL.BASE + '/setting',
+        name: 'setting',
+        component: Setting,
+    },
+    {
+        path: PINOOX.URL.BASE + '/setting/general',
+        name: 'setting-general',
+        component: SettingGeneral,
+    },
+    {
+        path: PINOOX.URL.BASE + '/error',
+        name: 'error',
+        component: Error,
+    },
 ];

@@ -32,7 +32,9 @@ return [
     'posts' => 'posts',
     'menus' => 'menus',
     'settings' => 'settings',
+    'subtitle_settings' => 'Simply manage the settings for that page by selecting an option',
     'profile' => 'profile',
+    'user_profile' => 'User Profile',
     'comments' => 'comments',
     'contacts' => 'contacts',
 
@@ -64,5 +66,15 @@ return [
     'message' => 'message',
     'contact_status' => ['seen' => 'read', 'unseen' => 'Unread'],
 
-
+    /* settings */
+    'general_settings' => 'General Settings',
+    'write_settings' => 'Writing Settings',
+    'read_settings' => 'Reading Settings',
+    'theme_settings' => 'Template Settings',
+    'lang_settings' => 'Language Settings',
+    'interface_settings' => 'Interface Settings',
+    'privacy_settings' => 'Privacy Settings',
+    'user_settings' => 'User Setting',
+    'site_title' => 'Site Title',
+    'site_description' => 'Site Description',
 ];

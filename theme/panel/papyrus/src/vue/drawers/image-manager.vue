@@ -70,6 +70,7 @@
                     {
                         this.$parent.deleteFromImages(image).then(()=>{
                             this.deleteImageEditor(image.link);
+                            this.$parent.deleteImageFeature(image);
                         });
                     }
                     this.selected = null;

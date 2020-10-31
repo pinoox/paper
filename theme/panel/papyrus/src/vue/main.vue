@@ -39,15 +39,15 @@
                         </router-link>
                     </div>
                     <div class="menu">
-                        <div class="item">
+                        <router-link :to="{name:'profile'}" tag="div" class="item">
                             <span class="text">{{LANG.panel.profile}}</span>
-                        </div>
+                        </router-link>
                         <router-link :to="{name:'users'}" tag="div" class="item">
                             <span class="text">{{LANG.panel.users}}</span>
                         </router-link>
-                        <div class="item">
+                        <router-link :to="{name:'setting'}" tag="div" class="item">
                             <span class="text">{{LANG.panel.settings}}</span>
-                        </div>
+                        </router-link>
                     </div>
                 </div>
                 <div class="main">

@@ -79,7 +79,7 @@ class UserController extends LoginConfiguration
         $placeHolder = Url::file('resources/image-placeholder.jpg');
 
         if (empty($user)) return $user;
-        $user['approx_register_date'] =  Helper::getLocalDate('l F Y (H:i)', $user['register_date']);
+        $user['approx_register_date'] = Helper::getLocalDate('l F Y (H:i)', $user['register_date']);
         $file = FileModel::fetch_by_id($user['avatar_id']);
         $user['image'] = Url::upload($file, $placeHolder);
         $user['thumb_128'] = Url::thumb($file, 128, $placeHolder);
@@ -174,5 +174,63 @@ class UserController extends LoginConfiguration
         UserModel::where_search($form['keyword']);
         PaperUserModel::where_status($form['status']);
         PaperUserModel::sort($form['sort']);
+    }
+
+    public function saveUserProfile()
+    {
+        $input = Request::input('fname,lname,username,email', null, '!empty');
+        $valid = Validation::check($input, [
+            'fname' => ['required|length:>2', rlang('user.fname')],
+            'lname' => ['required|length:>2', rlang('user.lname')],
+            'username' => ['required|username', rlang('user.username')],
+            'email' => ['required|email', rlang('user.email')],
+        ]);
+        if ($valid->isFail())
+            Response::json($valid->first(), false);
+
+        $input['user_id'] = User::get('user_id');
+        $username = UserModel::fetch_user_by_email_or_username($input['username'], $input['user_id']);
+        if ($username)
+            Response::json(rlang('user.username_duplicated'), false);
+
+        $email = UserModel::fetch_user_by_email_or_username($input['email'], $input['user_id']);
+        if ($email)
+            Response::json(rlang('user.email_duplicated'), false);
+
+        $status = UserModel::update_info($input['user_id'], $input);
+
+        if ($status)
+            Response::json(rlang('user.edited_successfully'), true);
+
+        Response::json(rlang('panel.error_happened'), false);
+    }
+
+    public function changePassword()
+    {
+        if (!User::isLoggedIn())
+            $this->error();
+
+        $inputs = Request::input('password,re_password,old_password', null, '!empty');
+
+        $valid = Validation::check($inputs, [
+            'old_password' => ['required', rlang('user.password')],
+            'password' => ['required|length:5>|match:!=[old_password]', rlang('user.new_password')],
+            're_password' => ['required|match:==[password]', rlang('user.re_new_password')],
+        ]);
+
+        if ($valid->isFail())
+            Response::json($valid->first(), false);
+
+        $user_id = User::get('user_id');
+
+        if (!UserModel::fetch_by_password($user_id, $inputs['old_password'])) {
+            Response::json(rlang('user.err_old_password'), false);
+        }
+
+        if (UserModel::update_password($user_id, $inputs['password'], $inputs['old_password'])) {
+            Response::json(rlang('user.edited_successfully'), true);
+        }
+
+        Response::json(rlang('user.err_old_password'), false);
     }
 }
