@@ -24,6 +24,7 @@ return [
     'back' => 'back',
     'save_changes' => 'save changes',
     'total' => 'total',
+    'menus_info' => 'quick access to different sections',
 
     'dashboard' => 'dashboard',
     'user' => 'user',
