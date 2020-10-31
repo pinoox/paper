@@ -1,11 +1,12 @@
-.ltr{
-  .input-wrapper{
+.ltr {
+  .input-wrapper {
     text-align: left;
-    .input-group .btn-insides{
+
+    .input-group .btn-insides {
       left: initial;
-      right: 0;  
+      right: 0;
     }
-    
+
   }
 }
 
@@ -20,11 +21,19 @@
     color: #4a5568;
     font-size: .75rem;
     font-weight: 700;
-    margin-bottom: .5rem
+    margin-bottom: .5rem;
+
+    &.center {
+      text-align: center;
+    }
   }
 
   .sub-label {
     font-size: 10px;
+
+    &.center {
+      text-align: center;
+    }
   }
 
   .input-group {
@@ -60,7 +69,7 @@
       }
     }
 
-    textarea.input{
+    textarea.input {
       height: auto;
       padding-top: 10px;
     }
@@ -92,11 +101,11 @@
   font-size: 12px;
 }
 
-.img-uploader{
+.img-uploader {
   position: relative;
   height: 252px;
 
-  img{
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -112,33 +121,46 @@
     left: 30%;
     border-radius: 5px;
     font-size: 12px;
-    cursor:pointer;
+    cursor: pointer;
     text-align: center;
   }
 }
 
-.post-image-select{
+.post-image-select {
   height: 300px;
   overflow-y: auto;
   background: #edf2f7;
   border-radius: 4px;
 
-  span.close{
+  span.close {
     position: absolute;
     left: 16px;
     top: 6px;
     padding: 6px 15px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       transform: scale(1.2);
     }
   }
 
-  .select-image{
-    li{
+  .select-image {
+    li {
       width: 100px;
       height: 100px;
     }
   }
 }
+
+.picture-input {
+  .picture-preview {
+    background-color: initial !important;
+  }
+
+  .picture-inner {
+    background-color: #edf2f7;
+  }
+}
+
+
+

@@ -690,8 +690,14 @@
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
+.input-wrapper .input-label.center {
+  text-align: center;
+}
 .input-wrapper .sub-label {
   font-size: 10px;
+}
+.input-wrapper .sub-label.center {
+  text-align: center;
 }
 .input-wrapper .input-group {
   display: -webkit-box;
@@ -791,6 +797,12 @@
 .post-image-select .select-image li {
   width: 100px;
   height: 100px;
+}
+.picture-input .picture-preview {
+  background-color: initial !important;
+}
+.picture-input .picture-inner {
+  background-color: #edf2f7;
 }
 .blur-loading {
   position: fixed;
@@ -2012,6 +2024,7 @@ body.ltr .app-container .main .page .encourage-writing .art {
   color: #506E93;
   font-weight: 600;
   display: inline-block;
+  width: 100%;
 }
 .form-wrapper .form-content .header .title {
   display: block;
@@ -2048,7 +2061,8 @@ body.ltr .app-container .main .page .encourage-writing .art {
 .form-wrapper .form-content .footer .btn {
   margin: 0 5px;
 }
-.form-wrapper .form-content .colVGR .footer {
+.form-wrapper .form-content .colVGR .footer,
+.form-wrapper .form-content .colVGR .header {
   padding: 20px 3px 40px 3px;
 }
 .form-wrapper .form-content .page .form-content {
@@ -2251,6 +2265,48 @@ body.ltr .app-container .main .page .encourage-writing .art {
   }
 }
 @media screen and (max-width: 576px) {
+  .col-sm-order {
+    flex-direction: row;
+  }
+  .col-sm-order .order-0 {
+    order: 0;
+  }
+  .col-sm-order .order-1 {
+    order: 1;
+  }
+  .col-sm-order .order-2 {
+    order: 2;
+  }
+  .col-sm-order .order-3 {
+    order: 3;
+  }
+  .col-sm-order .order-4 {
+    order: 4;
+  }
+  .col-sm-order .order-5 {
+    order: 5;
+  }
+  .col-sm-order .order-6 {
+    order: 6;
+  }
+  .col-sm-order .order-7 {
+    order: 7;
+  }
+  .col-sm-order .order-8 {
+    order: 8;
+  }
+  .col-sm-order .order-9 {
+    order: 9;
+  }
+  .col-sm-order .order-10 {
+    order: 10;
+  }
+  .col-sm-order .order-11 {
+    order: 11;
+  }
+  .col-sm-order .order-12 {
+    order: 12;
+  }
   .vgt-compact td:before {
     float: right;
     right: 0;

@@ -1519,6 +1519,7 @@ body {
       color: @textColor;
       font-weight: 600;
       display: inline-block;
+      width: 100%;
 
       .title {
         display: block;
@@ -1564,7 +1565,7 @@ body {
     }
 
     .colVGR {
-      .footer {
+      .footer,.header {
         padding: 20px 3px 40px 3px;
       }
     }
@@ -1763,6 +1764,60 @@ body {
   }
 }
 
+.orders(){
+  .order-0 {
+    order: 0;
+  }
+
+  .order-1 {
+    order: 1;
+  }
+
+  .order-2 {
+    order: 2;
+  }
+
+  .order-3 {
+    order: 3;
+  }
+
+  .order-4 {
+    order: 4;
+  }
+
+  .order-5 {
+    order: 5;
+  }
+
+  .order-6 {
+    order: 6;
+  }
+
+  .order-7 {
+    order: 7;
+  }
+
+  .order-8 {
+    order: 8;
+  }
+
+  .order-9 {
+    order: 9;
+  }
+
+  .order-10 {
+    order: 10;
+  }
+
+  .order-11 {
+    order: 11;
+  }
+
+  .order-12 {
+    order: 12;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .fab {
     bottom: 80px;
@@ -1851,6 +1906,12 @@ body {
 }
 
 @media screen and (max-width: 576px) {
+
+  .col-sm-order {
+    flex-direction: row;
+    .orders
+  }
+
   .vgt-compact td:before {
     float: right;
     right: 0;

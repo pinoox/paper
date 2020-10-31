@@ -2,18 +2,15 @@
     <div class="form-wrapper">
             <section>
                 <div class="form-content row" @keyup.enter="saveUserProfile()">
-                    <row :gutter="12">
-                        <div class="header">
+                    <row :gutter="12" :columns="4" class="col-sm-order">
+                        <div class="header order-1" >
                             <div class="title">
                                 <div class="text">
                                     {{LANG.panel.user_profile}}
                                 </div>
                             </div>
                         </div>
-                    </row>
-                    <row :gutter="12" :columns="2">
-
-                        <column :sm="2" :md="1">
+                        <column :sm="3" :lg="2" class="order-2">
                             <div class="input-wrapper">
                                 <label class="input-label">{{LANG.user.fname}}</label>
                                 <div class="input-group">
@@ -21,8 +18,6 @@
                                            :placeholder="LANG.user.fname" class="input">
                                 </div>
                             </div>
-                        </column>
-                        <column :sm="2" :md="1">
                             <div class="input-wrapper">
                                 <label class="input-label">{{LANG.user.lname}}</label>
                                 <div class="input-group">
@@ -30,11 +25,6 @@
                                            :placeholder="LANG.user.lname" class="input">
                                 </div>
                             </div>
-                        </column>
-                    </row>
-
-                    <row :gutter="12" :columns="2">
-                        <column :sm="2" :md="1">
                             <div class="input-wrapper">
                                 <label class="input-label">{{LANG.user.username}}</label>
                                 <div class="input-group">
@@ -42,8 +32,6 @@
                                            :placeholder="LANG.user.username" class="input">
                                 </div>
                             </div>
-                        </column>
-                        <column :sm="2" :md="1">
                             <div class="input-wrapper">
                                 <label class="input-label">{{LANG.user.email}}</label>
                                 <div class="input-group">
@@ -52,13 +40,40 @@
                                 </div>
                             </div>
                         </column>
-                        <div class="footer">
+                        <column :sm="1" :lg="2" class="order-0">
+                            <div class="input-wrapper">
+                                <label class="input-label center">تصویر پروفایل</label>
+                                <div class="input-group">
+                                    <picture-input
+                                            ref="pictureInput"
+                                            width="200"
+                                            height="200"
+                                            radius="50"
+                                            accept="image/jpeg,image/png"
+                                            :hide-change-button="false"
+                                            :crop="true"
+                                            :removable="true"
+
+                                            button-class="btn btn-sm btn-primary"
+                                            remove-button-class="btn btn-sm btn-danger"
+                                            :custom-strings="{
+        upload: 'آپلود',
+        drag: 'ضربه بزنید یا تصویر را بکشید و اینجا رها کنید',
+        remove: 'حذف',
+        select: 'انتخاب تصویر',
+        change: 'تغییر تصویر',
+      }">
+                                    </picture-input>
+                                </div>
+                            </div>
+                        </column>
+                        <div class="footer order-3">
                             <div class="btn btn-primary" @click="saveUserProfile()">{{LANG.panel.save}}</div>
                         </div>
                     </row>
                 </div>
                 <div class="form-content row" @keyup.enter="changePassword()">
-                    <row :gutter="12">
+                    <row :gutter="12" :columns="4">
                         <div class="header">
                             <div class="title">
                                 <div class="text">
@@ -66,8 +81,6 @@
                                 </div>
                             </div>
                         </div>
-                    </row>
-                    <row :gutter="12" :columns="4">
                         <column :sm="3" :lg="2">
                             <div class="input-wrapper">
                                 <label class="input-label">{{LANG.user.old_password}}</label>
@@ -90,10 +103,12 @@
                                            :placeholder="LANG.user.enter_re_new_password" class="input">
                                 </div>
                             </div>
-                            <div class="footer">
-                                <div class="btn btn-primary" @click="changePassword()">{{LANG.panel.save}}</div>
-                            </div>
                         </column>
+                        <div class="footer">
+                            <div class="btn btn-primary" @click="changePassword()">{{LANG.panel.save}}</div>
+                            <br/>
+                            <br/>
+                        </div>
                     </row>
                 </div>
             </section>
@@ -101,7 +116,10 @@
 </template>
 
 <script>
+    import ImageUpload from '../components/image-upload.vue';
+
     export default {
+        components:{ImageUpload},
         name: "profile",
         created() {
             this.getUserProfile();

@@ -23,6 +23,7 @@ import vSelect from 'vue-select';
 import ToggleButton from 'vue-js-toggle-button';
 import { Row, Column,Hidden } from 'vue-grid-responsive';
 import VueApexCharts from 'vue-apexcharts';
+import PictureInput from 'vue-picture-input';
 
 Vue.component('apexchart', VueApexCharts);
 Vue.use(VueNestable);
@@ -38,6 +39,7 @@ Vue.component('v-select', vSelect);
 Vue.component('row', Row);
 Vue.component('column', Column);
 Vue.component('hidden', Hidden);
+Vue.component('picture-input', PictureInput);
 
 __webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
 
