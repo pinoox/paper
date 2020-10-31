@@ -30,6 +30,7 @@ class SettingController extends LoginConfiguration
     {
         $inputs = Request::input('site_title,site_description', null, '!empty');
         Config::set('setting>' . $name, $inputs);
+        Config::save('setting>' . $name);
         Response::json(rlang('post.save_successfully'),true);
     }
 }
