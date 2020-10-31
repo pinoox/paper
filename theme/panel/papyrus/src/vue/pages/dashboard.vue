@@ -18,7 +18,9 @@
                             <router-link tag="div" :to="{name:'write',params:{post_id:i.post_id}}" class="swiper-slide"
                                          v-for="i in latestPosts">
                                 <img class="thumb" :src="i.image" alt="title">
-                                <div class="title">{{i.title}}</div>
+                                <div class="title">{{_isNull(i.title, LANG.post.no_title)}}</div>
+                                <div class="status">{{LANG.post.status[i.status]}}</div>
+
                             </router-link>
                         </swiper>
                     </div>
@@ -55,12 +57,13 @@
                 <div class="section compact-mode" v-if="latestComments!=null && latestComments.length > 0">
                     <div class="section-title">
                         <h2>{{LANG.comment.latest_comments}}</h2>
-                        <div class="more"> {{LANG.panel.all}} <i class="fa fa-chevron-left"></i></div>
+                        <router-link :to="{name:'comments'}" tag="div" class="more"> {{LANG.panel.all}} <i
+                                class="fa fa-chevron-left"></i></router-link>
                     </div>
                     <div class="section-content">
                         <vue-good-table
                                 styleClass="vgt-table table"
-                                :rtl="_dir=='rtl'"
+                                :rtl="_dir==='rtl'"
                                 compactMode
                                 :columns="commentCols"
                                 :rows="latestComments">

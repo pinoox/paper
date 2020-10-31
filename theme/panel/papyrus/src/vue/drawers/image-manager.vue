@@ -13,14 +13,16 @@
                 </div>
             </div>
             <div class="drawer-content" @dragover.prevent @drop.prevent @drop="$parent.handleFileDrop">
-                <select-image :items="$parent.images" v-model="selected" @select="selectImage()" multiple>
+                <select-image :items="$parent.images" v-model="selected"
+                              @select="selectImage()"
+                              multiple>
                     <li class="add-item" @click="$parent.selectFile">+</li>
                 </select-image>
             </div>
             <div slot='footer' class="drawer-footer">
                 <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.post.close}}</div>
                 <div v-if="!!selected" @click="addImages()" class="btn btn-primary">{{LANG.post.add_to_post}}</div>
-                <div v-if="!!selected" @click="deleteImages()" class="btn btn-danger">{{LANG.post.delete}}</div>
+                <div v-if="!!selected" @click="deleteImages()" class="btn btn-danger right">{{LANG.post.delete}}</div>
             </div>
         </ch-drawer>
     </section>

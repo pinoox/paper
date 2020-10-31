@@ -2,11 +2,11 @@
     <section class="page">
         <div class="menubar">
             <div class="items">
+                <div @click="openDrawer('publish')" class="item publish-item">
+                    {{post_type === 'post'?LANG.post.post_publication : LANG.post.page_publication}}
+                </div>
                 <div class="item" @click="save()">
                     {{LANG.post.save}}
-                </div>
-                <div @click="openDrawer('publish')" class="item">
-                    {{post_type === 'post'?LANG.post.post_publication : LANG.post.page_publication}}
                 </div>
                 <div v-if="post_type==='post'" class="item" @click="openDrawer('category')">
                     {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
@@ -18,30 +18,34 @@
                              :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
                     {{LANG.post.stats}}
                 </router-link>
-                <div class="item" @click="openFullscreen()">
-                    {{LANG.post.fullscreen}}
-                </div>
                 <div class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
                 </div>
             </div>
         </div>
-        <div id="write" class="write-container">
-            <editor class="content"
-                    :values="editor"
-                    :status="status"
-                    :message="message"
-                    v-model="params.editor"
-                    :autosave="settings.autosave.status"
-                    :autosave-time="settings.autosave.time"
-                    @save="save()"
-                    name="description"
-                    :title-placeholder="LANG.post.enter_title"
-                    :placeholder="LANG.post.enter_context">
-            </editor>
-        </div>
+        <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
+        <simplebar class="simplebar write">
+            <div id="write" class="write-container">
+                <editor class="content"
+                        :values="editor"
+                        :status="status"
+                        :message="message"
+                        v-model="params.editor"
+                        :autosave="settings.autosave.status"
+                        :autosave-time="settings.autosave.time"
+                        @save="save()"
+                        @onHistoryDrawer="openHistory=!openHistory"
+                        name="description"
+                        :title-placeholder="LANG.post.enter_title"
+                        :placeholder="LANG.post.enter_context">
+                </editor>
+            </div>
+        </simplebar>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
-        <category v-if="post_type==='post'" @onClose="drawerName=null" :open="drawerName==='category'"
+        <category v-if="post_type==='post'"
+                  :open="drawerName==='category'"
+                  :selected="params.category"
+                  @onClose="drawerName=null"
                   @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
         <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
@@ -56,6 +60,7 @@
     import Category from "../drawers/category.vue";
     import ImageManager from "../drawers/image-manager.vue";
     import Settings from "../drawers/settings.vue";
+    import PulledDrawer from "../components/pulled-drawer.vue";
 
     export default {
         name: 'write',
@@ -67,7 +72,7 @@
                 default: 'post',
             }
         },
-        components: {Editor, Category, Publish, ImageManager, Settings},
+        components: {Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
             next();
@@ -75,6 +80,7 @@
         },
         data() {
             return {
+                openHistory: false,
                 isSave: true,
                 isOpenFullscreen: false,
                 isSynced: false,

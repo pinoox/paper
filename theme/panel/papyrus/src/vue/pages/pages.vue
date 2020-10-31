@@ -7,59 +7,61 @@
                 </router-link>
             </div>
         </div>
-
         <div class="search-bar">
             <span class="icon"><i class="fa fa-search"></i></span>
             <input v-model="params.keyword" class="search-input" type="text" :placeholder="LANG.post.search_in_posts">
         </div>
 
-        <div class="container">
-            <div class="section">
-                <div class="section-content">
-                    <vue-good-table
-                            styleClass="vgt-table table"
-                            :rtl="_dir === 'rtl'"
-                            :columns="columns"
-                            :rows="posts"
-                            mode="remote"
-                            :search-options="{
+        <simplebar class="simplebar">
+            <div class="container">
+                <div class="section">
+                    <div class="section-content">
+                        <vue-good-table
+                                styleClass="vgt-table table"
+                                :rtl="_dir === 'rtl'"
+                                :columns="columns"
+                                :rows="posts"
+                                mode="remote"
+                                :search-options="{
                                  externalQuery: params.keyword,
                             }"
-                            @on-search="onSearch"
-                            @on-page-change="onPageChange"
-                            @on-sort-change="onSortChange"
-                            @on-per-page-change="onPerPageChange"
-                            :isLoading.sync="isLoading"
-                            :totalRows="pages.count"
-                            :pagination-options="$parent.defaultTableOpts">
-                        <template slot="table-row" slot-scope="props">
-                            <div v-if="props.column.field === 'thumb_128'">
-                                <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
-                            </div>
-                            <div v-else-if="props.column.field === 'operation'">
-                                <router-link :to="{name:'page-write',params:{post_id:props.row.post_id}}" class="btn-action"><i class="fa fa-edit"></i></router-link>
-                                <span @click="remove(props.row,props.index)" class="btn-action"><i
-                                        class="fa fa-trash"></i></span>
-                            </div>
-                            <div v-else>
+                                @on-search="onSearch"
+                                @on-page-change="onPageChange"
+                                @on-sort-change="onSortChange"
+                                @on-per-page-change="onPerPageChange"
+                                :isLoading.sync="isLoading"
+                                :totalRows="pages.count"
+                                :pagination-options="$parent.defaultTableOpts">
+                            <template slot="table-row" slot-scope="props">
+                                <div v-if="props.column.field === 'thumb_128'">
+                                    <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
+                                </div>
+                                <div v-else-if="props.column.field === 'operation'">
+                                    <router-link :to="{name:'page-write',params:{post_id:props.row.post_id}}"
+                                                 class="btn-action"><i class="fa fa-edit"></i></router-link>
+                                    <span @click="remove(props.row,props.index)" class="btn-action"><i
+                                            class="fa fa-trash"></i></span>
+                                </div>
+                                <div v-else>
                                 <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
                                     {{props.formattedRow[props.column.field]}}
                                 </span>
+                                </div>
+                            </template>
+                            <div slot="emptystate">
+                                <div class="empty-data">
+                                    {{LANG.panel.empty_table}}
+                                </div>
                             </div>
-                        </template>
-                        <div slot="emptystate">
-                            <div class="empty-data">
-                                {{LANG.panel.empty_table}}
-                            </div>
-                        </div>
-                        <template slot="loadingContent">
-                            <div class="loading-message spinner"></div>
-                        </template>
-                    </vue-good-table>
+                            <template slot="loadingContent">
+                                <div class="loading-message spinner"></div>
+                            </template>
+                        </vue-good-table>
 
+                    </div>
                 </div>
             </div>
-        </div>
+        </simplebar>
 
     </div>
 </template>

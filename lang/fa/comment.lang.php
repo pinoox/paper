@@ -5,6 +5,7 @@ return [
     'message' => 'پیام',
     'comments_list' => 'لیست نظرات',
     'latest_comments' => 'آخرین نظرات',
+    'changed_status_successfully' => 'وضعیت با موفقیت تغییر کرد',
 
     'status' => [
         'suspend' => 'تعلیق',

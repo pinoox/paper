@@ -11,8 +11,14 @@
             </div>
         </div>
         <div class="statusbar">
-            <div class="item revert" v-show="message!=null">
-                <div class="label">{{message}}</div>
+            <div class="item revert">
+                <div class="label history" @click="onHistoryDrawer()">
+                    <simple-svg :src="_icons.history"
+                                width="14px"
+                                customClassName="icon"/>
+                    {{LANG.post.change_history}}
+                </div>
+                <div class="label" v-show="message!=null">{{message}}</div>
             </div>
             <div class="item">
                 <div class="label" :class="status">{{LANG.post.status[status]}}</div>
@@ -358,6 +364,9 @@
                 this.marginTop = this.paperSize >= 100 ? '28px' : '64px';
                 this.marginContent = this.paperSize >= 100 ? '30px' : '0';
             },
+            onHistoryDrawer() {
+                this.$emit('onHistoryDrawer', true);
+            }
         },
         mounted() {
             this.isLoadEditor = true;

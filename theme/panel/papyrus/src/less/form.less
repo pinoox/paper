@@ -1,11 +1,12 @@
-.ltr{
-  .input-wrapper{
+.ltr {
+  .input-wrapper {
     text-align: left;
-    .input-group .btn-insides{
+
+    .input-group .btn-insides {
       left: initial;
-      right: 0;  
+      right: 5px;
     }
-    
+
   }
 }
 
@@ -17,14 +18,18 @@
     display: block;
     text-transform: uppercase;
     letter-spacing: .025em;
-    color: #4a5568;
+    color: @primaryColor;
     font-size: .75rem;
     font-weight: 700;
     margin-bottom: .5rem
   }
 
   .sub-label {
-    font-size: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    font-weight: 300;
+    color: @textColor;
+    display: inline-block;
   }
 
   .input-group {
@@ -50,7 +55,7 @@
       border-radius: .25rem;
       padding: 0.2rem 1rem;
       line-height: 1.25;
-      height: 38px;
+      height: 45px;
       font-size: 1.2rem;
 
       &:focus {
@@ -60,14 +65,15 @@
       }
     }
 
-    textarea.input{
+    textarea.input {
       height: auto;
       padding-top: 10px;
     }
 
     .btn-insides {
       position: absolute;
-      left: 0;
+      left: 5px;
+      top: 5px;
     }
 
     .btn-inside {
@@ -92,14 +98,15 @@
   font-size: 12px;
 }
 
-.img-uploader{
+.img-uploader {
   position: relative;
   height: 252px;
 
-  img{
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 5px;
   }
 
   span {
@@ -108,37 +115,62 @@
     background: rgba(0, 0, 0, 0.3);
     color: #fff;
     width: 140px;
-    top: 45%;
-    left: 30%;
+    top: 70%;
+    left: 0;
+    right: 0;
     border-radius: 5px;
     font-size: 12px;
-    cursor:pointer;
+    cursor: pointer;
     text-align: center;
+    display: block;
+    margin: auto;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
   }
 }
 
-.post-image-select{
+.post-image-select {
   height: 300px;
   overflow-y: auto;
   background: #edf2f7;
   border-radius: 4px;
 
-  span.close{
+  span.close {
     position: absolute;
     left: 16px;
     top: 6px;
     padding: 6px 15px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       transform: scale(1.2);
     }
   }
 
-  .select-image{
-    li{
+  .select-image {
+    li {
       width: 100px;
       height: 100px;
+      position: relative;
     }
+  }
+}
+
+.vs__search {
+  font-size: 1.2rem;
+  color: #7a7a7a;
+}
+
+.rtl {
+  .vs__search {
+    font-family: @defaultFontFaceRtl;
+  }
+}
+
+.ltr {
+  .vs__search {
+    font-family: @defaultFontFaceLtr;
   }
 }
