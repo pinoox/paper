@@ -15,7 +15,6 @@ namespace pinoox\app\com_pinoox_paper\model;
 class PaperUserModel extends PaperDatabase
 {
 
-
     public static function sort($sort)
     {
         if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {

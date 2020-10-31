@@ -8,12 +8,18 @@
  * @author   Pinoox
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\component\Date;
 
 class ContactModel extends PaperDatabase
 {
+    /** @const seen,unseen */
+    const status_seen = "seen";
+    const status_unseen = "unseen";
+
+
     public static function insert($data)
     {
         return self::$db->insert(self::contact, [
@@ -52,8 +58,8 @@ class ContactModel extends PaperDatabase
     public static function where_search($keyword)
     {
         if (empty($keyword)) return;
-        if ($keyword == rlang('panel.seen')) $status = self::seen;
-        else if ($keyword == rlang('panel.unseen')) $status = self::unseen;
+        if ($keyword == rlang('panel.seen')) $status = self::status_seen;
+        else if ($keyword == rlang('panel.unseen')) $status = self::status_unseen;
         else $status = false;
 
         $k = '%' . $keyword . '%';
@@ -74,8 +80,8 @@ class ContactModel extends PaperDatabase
     public static function fetch_stats()
     {
         $total = self::fetch_all(null, null, true);
-        $seen = self::fetch_all(self::seen, null, true);
-        $unseen = self::fetch_all(self::unseen, null, true);
+        $seen = self::fetch_all(self::status_seen, null, true);
+        $unseen = self::fetch_all(self::status_unseen, null, true);
 
         return [
             'total' => $total,

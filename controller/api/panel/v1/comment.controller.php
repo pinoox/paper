@@ -14,8 +14,6 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
-use pinoox\app\com_pinoox_paper\model\PaperUserModel;
-use pinoox\component\Date;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -93,10 +91,10 @@ class CommentController extends LoginConfiguration
         $data = Request::input('comment_id,status', null, '!empty');
 
         if (CommentModel::fetch_by_id($data['comment_id']) != false) {
-            $data['status'] = ($data['status'] == PaperUserModel::publish) ? PaperUserModel::suspend : PaperUserModel::publish;
+            $data['status'] = ($data['status'] == CommentModel::status_publish) ? CommentModel::status_suspend : CommentModel::status_publish;
             $status = CommentModel::update_status($data['comment_id'], $data['status']);
             if ($status)
-                Response::jsonMessage(rlang('panel.edited_successfully'), true);
+                Response::jsonMessage(rlang('comment.changed_status_successfully'), true);
         }
 
         Response::jsonMessage(rlang('panel.error_happened'), false);

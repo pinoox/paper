@@ -92,7 +92,7 @@ class PostController extends LoginConfiguration
             return $post = $this->getInfoPost($post);
         }, $posts);
 
-        Response::json([]);
+        Response::json($posts);
     }
 
     private function changeStatus($input)
