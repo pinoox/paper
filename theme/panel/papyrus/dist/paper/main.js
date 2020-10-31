@@ -844,7 +844,7 @@ eval("module.exports = __webpack_require__.p + \"images/logo-256.6fdd524bcc8c253
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("module.exports = __webpack_require__.p + \"images/placeholder.ba55658f6ce00ffc0c829b6de151ee42.png\";\n\n//# sourceURL=webpack:///./src/images/placeholder.png?");
+eval("module.exports = __webpack_require__.p + \"images/placeholder.b543fd429a4f5b17b67b1b7134a0f48f.png\";\n\n//# sourceURL=webpack:///./src/images/placeholder.png?");
 
 /***/ }),
 
