@@ -35,16 +35,17 @@ class CategoryController extends MasterConfiguration
             'cat_name' => ['required', rlang('post.title')],
         ]);
         if ($valid->isFail())
-            Response::json($valid->first(), false);
+            Response::jsonMessage($valid->first(), false);
 
         if (CategoryModel::fetch_by_name($input['cat_name']) != false)
-            Response::json(rlang('post.cat_name_is_duplicated'), false);
+            Response::jsonMessage(rlang('post.cat_name_is_duplicated'), false);
 
         $cat_id = CategoryModel::insert($input);
+        $item = ['cat_id' => $cat_id, 'cat_name' => $input['cat_name'], 'parent_id' => null];
         if ($cat_id)
-            Response::json(rlang('panel.added_successfully'), true);
+            Response::jsonMessage(rlang('panel.added_successfully'), true, $item);
 
-        Response::json(rlang('panel.error_happened'), false);
+        Response::jsonMessage(rlang('panel.error_happened'), false);
     }
 
     public function edit()
@@ -65,7 +66,7 @@ class CategoryController extends MasterConfiguration
 
         $status = CategoryModel::update($input);
         if ($status)
-            Response::json(rlang('panel.edited_successfully'), true);
+            Response::jsonMessage(rlang('panel.edited_successfully'), true);
 
         Response::jsonMessage(rlang('panel.error_happened'), false);
     }

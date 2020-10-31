@@ -55,6 +55,10 @@
                             :draggable="isEdit"
                             slot-scope="{ item }"
                             :item="item">
+                        <span class="selected" @click="unSelectCategory()" v-if="!!selected && selected.cat_id===item.cat_id">
+                            <i class="fa fa-check"></i>
+                            <i class="fa fa-times"></i>
+                        </span>
                         <span class="cat-name" @click="selectCategory(item)">{{ item.cat_name }}</span>
                         <div class="actions">
                             <span @click="editItem(item)" class="btn-action"><i class="fa fa-pen"></i></span>
@@ -76,17 +80,13 @@
                     <div @click="add()" class="btn btn-warning">{{LANG.panel.add}}</div>
                 </div>
                 <div v-else>
-                    <div v-else>
-                        <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.panel.close}}</div>
-                        <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-danger right">
-                            {{LANG.post.edit_category}}
-                        </div>
-                        <div v-else @click="resetChanges()" class="btn btn-danger right">
-                            {{LANG.post.cancel_edit}}
-                        </div>
-
+                    <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.panel.close}}</div>
+                    <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-danger right">
+                        {{LANG.post.edit_category}}
                     </div>
-
+                    <div v-else @click="resetChanges()" class="btn btn-success right">
+                        {{LANG.post.return_to_selection}}
+                    </div>
                 </div>
 
             </div>
@@ -99,7 +99,7 @@
 <script>
 
     export default {
-        props: ['open'],
+        props: ['open', 'selected'],
         data() {
             return {
                 isEdit: false,
@@ -157,6 +157,11 @@
                 this.$emit('onSelected', item);
                 this.toggleDrawer();
             },
+            unSelectCategory() {
+                if (this.isEdit) return;
+                this.$emit('onSelected', null);
+                this.toggleDrawer();
+            },
             editItem(item) {
                 this.params.cat_name = item.cat_name;
                 this.params.cat_id = item.cat_id;
@@ -168,6 +173,7 @@
                 this.$http.post(this.URL.API + 'category/edit/', this.params).then((json) => {
                     if (this._messageResponse(json.data)) {
                         this.loadCategories();
+                        this.params = {cat_id: null, cat_name: null};
                     }
                 });
             },
