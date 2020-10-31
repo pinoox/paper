@@ -101,6 +101,7 @@
 @subtitleSize: 0.8em;
 @sidebarWidth: 120px;
 @toolbarHeight: 44px;
+@pulledDrawerWidth: 333px;
 
 ::-webkit-scrollbar {
   width: 0.5em;
@@ -628,6 +629,13 @@ body {
       padding-top: @toolbarHeight;
       padding-bottom: @toolbarHeight;
 
+      &.pulled {
+        right: @pulledDrawerWidth;
+        width: calc(100% - @pulledDrawerWidth);
+        position: relative;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
       .simplebar {
         height: calc(100vh - 80px);
 
@@ -836,7 +844,7 @@ body {
           z-index: 777;
 
           .item {
-            padding: 0 10px;
+            padding: 0;
             display: flex;
             align-items: center;
 
@@ -854,7 +862,33 @@ body {
                 color: @greenColorDark;
                 opacity: 0.6;
               }
+
+              &.history {
+                color: @primaryColor;
+                padding-bottom: 10px;
+                padding-right: 10px;
+                padding-left: 10px;
+                background: fade(@primaryColor, 10%);
+                margin-right: 0;
+                .trans;
+
+                &:hover {
+                  .trans;
+                  background: fade(@primaryColor, 20%);
+                  cursor: pointer;
+                }
+              }
+
+              .icon {
+                position: relative;
+                top: 4px;
+
+                path {
+                  fill: @primaryColor;
+                }
+              }
             }
+
 
             .counter {
               font-size: 11px;
@@ -1429,7 +1463,8 @@ body {
           .fa-check {
             display: block;
           }
-          .fa{
+
+          .fa {
             position: relative;
             top: 5px;
           }
@@ -1818,6 +1853,110 @@ body {
   }
 }
 
+.pulled-drawer {
+  background: #eaeaea;
+  width: 333px;
+  height: 100%;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  right: @sidebarWidth;
+
+  .drawer-inside {
+    padding-top: 50px;
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      border-bottom: 1px solid fade(@textColorLight, 50%);
+
+      .title {
+        color: @primaryColor;
+        font-weight: 600;
+        font-size: 1em;
+      }
+
+      .clear {
+        font-size: 12px;
+        color: @redColor;
+        padding: 2px 4px;
+        border-radius: 4px;
+
+        &:hover {
+          cursor: pointer;
+          background: fade(@redColor, 10%);
+        }
+      }
+    }
+
+    .drawer-content {
+      .posts-list {
+        .item {
+          padding: 10px 20px;
+          border-bottom: 1px solid fade(@textColorLight, 20%);
+          .trans;
+
+          &:hover {
+            cursor: pointer;
+            .hover-menu;
+            .trans;
+          }
+
+          .title {
+            color: @primaryColor;
+            display: block;
+          }
+
+          .footer-item {
+            display: inline-block;
+            color: @textColor;
+            font-size: 0.8em;
+
+            .date {
+              margin: 0 4px;
+            }
+
+            .status {
+              font-size: 10px;
+              padding: 0 4px;
+              border-radius: 4px;
+              background: fade(@primaryColor, 20%);
+              margin: 0 4px;
+            }
+          }
+
+
+        }
+      }
+
+      .empty {
+        color: @textColor;
+        padding: 20px;
+      }
+    }
+
+    .close-drawer {
+      display: block;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      text-align: right;
+
+      .close {
+        padding: 10px;
+        background: fade(@primaryColor, 10%);
+        color: @textColor;
+        &:hover{
+          background: fade(@primaryColor, 20%);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 991px) {
   th.sorting-asc {
     &::after, &::before {
@@ -1850,8 +1989,8 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  .fab {
-    bottom: 80px;
+  .pulled-drawer {
+    right: 0;
   }
 
   .app-container {
@@ -1872,6 +2011,7 @@ body {
       }
 
       .page {
+
         .write-container {
 
           .paper {

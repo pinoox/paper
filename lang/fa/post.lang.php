@@ -82,6 +82,7 @@ return [
     'stats_post' => 'آمار بازدیدها',
     'yesterday' => 'دیروز',
     'today' => 'امروز',
+    'change_history' => 'تاریخچه تغییرات',
 
     /** category **/
     'add' => 'افزودن',

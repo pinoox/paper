@@ -82,6 +82,7 @@ return [
     'stats_post' => 'Visit statistics',
     'yesterday' => 'yesterday',
     'today' => 'today',
+    'change_history' => 'change history',
 
     /** category **/
     'add' => 'add',

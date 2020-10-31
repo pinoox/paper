@@ -72,6 +72,7 @@ Vue.mixin({
                 first_post : require(`@img/svg/first_post.svg`),
                 comment : require(`@img/svg/ic_comment.svg`),
                 call : require(`@img/svg/ic_call.svg`),
+                history : require(`@img/svg/ic_history.svg`),
                 placeholder : require(`@img/placeholder.png`),
         };
         },

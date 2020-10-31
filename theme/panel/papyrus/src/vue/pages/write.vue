@@ -23,6 +23,7 @@
                 </div>
             </div>
         </div>
+        <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
         <simplebar class="simplebar write">
             <div id="write" class="write-container">
                 <editor class="content"
@@ -33,6 +34,7 @@
                         :autosave="settings.autosave.status"
                         :autosave-time="settings.autosave.time"
                         @save="save()"
+                        @onHistoryDrawer="openHistory=!openHistory"
                         name="description"
                         :title-placeholder="LANG.post.enter_title"
                         :placeholder="LANG.post.enter_context">
@@ -58,6 +60,7 @@
     import Category from "../drawers/category.vue";
     import ImageManager from "../drawers/image-manager.vue";
     import Settings from "../drawers/settings.vue";
+    import PulledDrawer from "../components/pulled-drawer.vue";
 
     export default {
         name: 'write',
@@ -69,7 +72,7 @@
                 default: 'post',
             }
         },
-        components: {Editor, Category, Publish, ImageManager, Settings},
+        components: {Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
             next();
@@ -77,6 +80,7 @@
         },
         data() {
             return {
+                openHistory: false,
                 isSave: true,
                 isOpenFullscreen: false,
                 isSynced: false,
