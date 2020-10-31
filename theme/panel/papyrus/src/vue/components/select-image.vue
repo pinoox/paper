@@ -56,7 +56,7 @@
                 this.items.map((item) => {
                     this.$set(item, 'active', false);
                 });
-            }
+            },
         },
         watch: {
             value: {
