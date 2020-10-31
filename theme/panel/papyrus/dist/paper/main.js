@@ -319,7 +319,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _com
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n/* harmony default export */ __webpack_exports__[\"default\"] = ({});\n\n//# sourceURL=webpack:///./src/vue/pages/error.vue?./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options");
+eval("__webpack_require__.r(__webpack_exports__);\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n/* harmony default export */ __webpack_exports__[\"default\"] = ({});\n\n//# sourceURL=webpack:///./src/vue/pages/error.vue?./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options");
 
 /***/ }),
 
@@ -678,7 +678,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"render\", function() { return render; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"staticRenderFns\", function() { return staticRenderFns; });\nvar render = function() {\n  var _vm = this\n  var _h = _vm.$createElement\n  var _c = _vm._self._c || _h\n  return _vm._m(0)\n}\nvar staticRenderFns = [\n  function() {\n    var _vm = this\n    var _h = _vm.$createElement\n    var _c = _vm._self._c || _h\n    return _c(\"div\", { staticClass: \"page\" }, [\n      _c(\"div\", { staticClass: \"container\" }, [\n        _c(\"div\", { staticClass: \"section\" }, [\n          _c(\"div\", { staticClass: \"section-content\" }, [\n            _c(\"h2\", [_vm._v(\"Error\")])\n          ])\n        ])\n      ])\n    ])\n  }\n]\nrender._withStripped = true\n\n\n\n//# sourceURL=webpack:///./src/vue/pages/error.vue?./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"render\", function() { return render; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"staticRenderFns\", function() { return staticRenderFns; });\nvar render = function() {\n  var _vm = this\n  var _h = _vm.$createElement\n  var _c = _vm._self._c || _h\n  return _c(\"div\", { staticClass: \"error\" }, [\n    _c(\"div\", { staticClass: \"container\" }, [\n      _c(\"div\", { staticClass: \"section\" }, [\n        _c(\n          \"div\",\n          { staticClass: \"section-content\" },\n          [\n            _c(\"h1\", { staticClass: \"title\" }, [\n              _vm._v(_vm._s(_vm.LANG.panel.page_not_found))\n            ]),\n            _vm._v(\" \"),\n            _c(\"h3\", { staticClass: \"subtitle\" }, [\n              _vm._v(_vm._s(_vm.LANG.panel.page_not_found_description))\n            ]),\n            _vm._v(\" \"),\n            _c(\n              \"router-link\",\n              {\n                staticClass: \"btn btn-sm btn-simple\",\n                attrs: { to: { name: \"dashboard\" } }\n              },\n              [_vm._v(_vm._s(_vm.LANG.panel.go_to_dashboard))]\n            ),\n            _vm._v(\" \"),\n            _c(\"img\", {\n              attrs: { src: __webpack_require__(/*! @img/svg/error.svg */ \"./src/images/svg/error.svg\"), alt: \"error\" }\n            })\n          ],\n          1\n        )\n      ])\n    ])\n  ])\n}\nvar staticRenderFns = []\nrender._withStripped = true\n\n\n\n//# sourceURL=webpack:///./src/vue/pages/error.vue?./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options");
 
 /***/ }),
 
@@ -845,6 +845,17 @@ eval("module.exports = __webpack_require__.p + \"images/logo-256.6fdd524bcc8c253
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("module.exports = __webpack_require__.p + \"images/placeholder.ba55658f6ce00ffc0c829b6de151ee42.png\";\n\n//# sourceURL=webpack:///./src/images/placeholder.png?");
+
+/***/ }),
+
+/***/ "./src/images/svg/error.svg":
+/*!**********************************!*\
+  !*** ./src/images/svg/error.svg ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("module.exports = __webpack_require__.p + \"images/error.ed83284e21bc55646b8c852a92a48056.svg\";\n\n//# sourceURL=webpack:///./src/images/svg/error.svg?");
 
 /***/ }),
 

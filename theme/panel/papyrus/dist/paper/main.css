@@ -808,7 +808,7 @@
   justify-content: center;
 }
 .p-0 {
-  padding: 0!important ;
+  padding: 0 !important;
 }
 .no-select {
   -webkit-touch-callout: none;
@@ -971,6 +971,7 @@
 .btn-simple {
   color: #2a5282;
   background: #fff;
+  box-shadow: none;
 }
 .btn-simple:hover {
   color: #1e4069;
@@ -1663,6 +1664,29 @@ body.ltr .app-container .main .page .encourage-writing .art {
   top: 8%;
   z-index: 1;
 }
+.app-container .main .error .section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+.app-container .main .error .section .section-content {
+  color: #1f426c;
+}
+.app-container .main .error .section .section-content img {
+  width: 400px;
+  display: block;
+  margin: auto;
+}
+.app-container .main .error .section .section-content .title {
+  font-size: 2rem;
+}
+.app-container .main .error .section .section-content .subtitle {
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: #506E93;
+}
 .app-container .toolbar-editor .ck-toolbar__items {
   font-size: 16px;
 }
@@ -2283,6 +2307,9 @@ body.ltr .app-container .main .page .encourage-writing .art {
   .section.compact-mode .section-title {
     margin-bottom: 0 !important;
     margin-top: 40px;
+  }
+  .app-container .main .error .section .section-content img {
+    width: 80%;
   }
 }
 

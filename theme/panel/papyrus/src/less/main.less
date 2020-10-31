@@ -62,8 +62,8 @@
 
 }
 
-.p-0{
-  padding:0!important ;
+.p-0 {
+  padding: 0 !important;
 }
 
 .no-select {
@@ -251,6 +251,7 @@
 .btn-simple {
   color: @secondaryColor;
   background: #fff;
+  box-shadow: none;
 
   &:hover {
     color: @primaryColorDark;
@@ -1074,6 +1075,36 @@ body {
           left: 5%;
           top: 8%;
           z-index: 1;
+        }
+      }
+    }
+
+    .error {
+      .section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+
+        .section-content {
+          color: @primaryColor;
+
+          img {
+            width: 400px;
+            display: block;
+            margin: auto;
+          }
+
+          .title {
+            font-size: 2rem;
+          }
+
+          .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: @textColor;
+          }
         }
       }
     }
@@ -1903,4 +1934,9 @@ body {
     }
 
   }
+
+  .app-container .main .error .section .section-content img {
+    width: 80%;
+  }
+
 }
