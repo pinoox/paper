@@ -19,6 +19,7 @@
                                          v-for="i in latestPosts">
                                 <img class="thumb" :src="i.image" alt="title">
                                 <div class="title">{{_isNull(i.title, LANG.post.no_title)}}</div>
+                                <div class="status">{{LANG.post.status[i.status]}}</div>
 
                             </router-link>
                         </swiper>
