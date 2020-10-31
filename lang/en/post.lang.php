@@ -82,6 +82,7 @@ return [
     'stats_post' => 'Visit statistics',
     'yesterday' => 'yesterday',
     'today' => 'today',
+    'change_history' => 'change history',
 
     /** category **/
     'add' => 'add',
@@ -93,4 +94,5 @@ return [
     'cat_name_is_duplicated' => 'this title has already been used',
     'add_category_by_click' => 'you can add new category with edit button',
     'edit_category_info' => 'you can specify subcategories by dragging and dropping each category in edit mode',
+    'return_to_selection' => 'choose category',
 ];

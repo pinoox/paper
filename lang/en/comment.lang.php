@@ -6,6 +6,7 @@ return [
     'comments' => 'comments',
     'message' => 'message',
     'comments_list' => 'list of comments',
+    'changed_status_successfully' => 'status changed successfully',
 
     'status' => [
         'suspend' => 'suspend',

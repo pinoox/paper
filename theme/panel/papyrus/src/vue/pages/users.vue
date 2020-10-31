@@ -12,59 +12,60 @@
             <span class="icon"><i class="fa fa-search"></i></span>
             <input v-model="params.keyword" class="search-input" type="text" :placeholder="LANG.user.search_in_users">
         </div>
-
-        <div class="container">
-            <div class="section compact-mode">
-                <div class="section-content">
-                    <vue-good-table
-                            styleClass="vgt-table table"
-                            :line-numbers="true"
-                            :rtl="_dir==='rtl'"
-                            compactMode
-                            :columns="columns"
-                            :rows="users"
-                            mode="remote"
-                            :search-options="{
+        <simplebar class="simplebar">
+            <div class="container">
+                <div class="section compact-mode">
+                    <div class="section-content">
+                        <vue-good-table
+                                styleClass="vgt-table table"
+                                :line-numbers="true"
+                                :rtl="_dir==='rtl'"
+                                compactMode
+                                :columns="columns"
+                                :rows="users"
+                                mode="remote"
+                                :search-options="{
                                  externalQuery: params.keyword,
                             }"
-                            @on-search="onSearch"
-                            @on-page-change="onPageChange"
-                            @on-sort-change="onSortChange"
-                            @on-per-page-change="onPerPageChange"
-                            :isLoading.sync="isLoading"
-                            :totalRows="pages.count"
-                            :pagination-options="$parent.defaultTableOpts">
-                        <template slot="table-row" slot-scope="props">
-                            <div v-if="props.column.field === 'thumb_128'">
-                                <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
-                            </div>
-                            <div v-else-if="props.column.field === 'operation'">
-                                <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
-                                <span @click="remove(props.row,props.index)" class="btn-action"><i
-                                        class="fa fa-trash"></i></span>
-                            </div>
-                            <div v-else-if="props.column.field === 'status'">
-                                <span class="light">{{LANG.user.status[props.row.status]}}</span>
-                            </div>
-                            <div v-else>
+                                @on-search="onSearch"
+                                @on-page-change="onPageChange"
+                                @on-sort-change="onSortChange"
+                                @on-per-page-change="onPerPageChange"
+                                :isLoading.sync="isLoading"
+                                :totalRows="pages.count"
+                                :pagination-options="$parent.defaultTableOpts">
+                            <template slot="table-row" slot-scope="props">
+                                <div v-if="props.column.field === 'thumb_128'">
+                                    <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
+                                </div>
+                                <div v-else-if="props.column.field === 'operation'">
+                                    <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
+                                    <span @click="remove(props.row,props.index)" class="btn-action"><i
+                                            class="fa fa-trash"></i></span>
+                                </div>
+                                <div v-else-if="props.column.field === 'status'">
+                                    <span class="light">{{LANG.user.status[props.row.status]}}</span>
+                                </div>
+                                <div v-else>
                                 <span :class="props.column.style">
                                     {{props.formattedRow[props.column.field]}}
                                 </span>
+                                </div>
+                            </template>
+                            <div slot="emptystate">
+                                <div class="empty-data">
+                                    {{LANG.panel.empty_table}}
+                                </div>
                             </div>
-                        </template>
-                        <div slot="emptystate">
-                            <div class="empty-data">
-                                {{LANG.panel.empty_table}}
-                            </div>
-                        </div>
-                        <template slot="loadingContent">
-                            <div class="loading-message spinner"></div>
-                        </template>
+                            <template slot="loadingContent">
+                                <div class="loading-message spinner"></div>
+                            </template>
 
-                    </vue-good-table>
+                        </vue-good-table>
+                    </div>
                 </div>
             </div>
-        </div>
+        </simplebar>
 
         <UserForm @onClose="drawerName=null"
                   @onSuccess="getItems()"

@@ -25,6 +25,9 @@ return [
     'save_changes' => 'save changes',
     'total' => 'total',
     'menus_info' => 'quick access to different sections',
+    'go_to_dashboard' => 'go to dashboard',
+    'page_not_found' => 'page not found!',
+    'page_not_found_description' => 'sorry, the page you are looking for does not exist. Please try again!',
 
     'dashboard' => 'dashboard',
     'user' => 'user',

@@ -16,6 +16,7 @@
             <div class="drawer-content">
                 <row :gutter="12" :columns="2">
                     <column :sm="2" :md="1">
+
                         <div class="input-wrapper">
                             <label class="input-label">{{LANG.post.title}}</label>
                             <div class="input-group">
@@ -52,8 +53,8 @@
                                     :options="listTags"
                                     @search="searchTag"
                                     v-model="params.tags"
-                                    :placeholder="LANG.post.add_tag"
-                            >
+                                    :placeholder="LANG.post.add_tag">
+
                                 <template slot="no-options">
                                     {{LANG.panel.nothing_found}}
                                 </template>

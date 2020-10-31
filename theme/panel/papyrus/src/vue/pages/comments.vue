@@ -10,66 +10,66 @@
             <input v-model="params.keyword" class="search-input" type="text"
                    :placeholder="LANG.comment.search_in_comments">
         </div>
-
-        <div class="container">
-            <div class="section compact-mode">
-                <div class="section-content">
-                    <vue-good-table
-                            styleClass="vgt-table table"
-                            :rtl="_dir==='rtl'"
-                            compactMode
-                            :columns="columns"
-                            :rows="items"
-                            mode="remote"
-                            :search-options="{
+        <simplebar class="simplebar">
+            <div class="container">
+                <div class="section compact-mode">
+                    <div class="section-content">
+                        <vue-good-table
+                                styleClass="vgt-table table"
+                                :rtl="_dir==='rtl'"
+                                compactMode
+                                :columns="columns"
+                                :rows="items"
+                                mode="remote"
+                                :search-options="{
                                  externalQuery: params.keyword,
                             }"
-                            @on-search="onSearch"
-                            @on-page-change="onPageChange"
-                            @on-sort-change="onSortChange"
-                            @on-per-page-change="onPerPageChange"
-                            :isLoading.sync="isLoading"
-                            :totalRows="pages.count"
-                            :pagination-options="$parent.defaultTableOpts">
-                        <template slot="table-row" slot-scope="props">
-                            <div v-if="props.column.field === 'thumb_128'">
-                                <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
-                            </div>
-                            <div v-else-if="props.column.field === 'operation'">
+                                @on-search="onSearch"
+                                @on-page-change="onPageChange"
+                                @on-sort-change="onSortChange"
+                                @on-per-page-change="onPerPageChange"
+                                :isLoading.sync="isLoading"
+                                :totalRows="pages.count"
+                                :pagination-options="$parent.defaultTableOpts">
+                            <template slot="table-row" slot-scope="props">
+                                <div v-if="props.column.field === 'thumb_128'">
+                                    <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
+                                </div>
+                                <div v-else-if="props.column.field === 'operation'">
                                 <span @click="toggleStatus(props.row,props.index)" class="btn-action">
                                     <i class="fas"
                                        :class="[props.row.status==='publish' ? 'fa-comment-slash' : 'fa-check']"></i></span>
-                                <span @click="remove(props.row,props.index)" class="btn-action">
+                                    <span @click="remove(props.row,props.index)" class="btn-action">
                                     <i class="fa fa-trash"></i></span>
-                            </div>
-                            <div v-else-if="props.column.field === 'status'">
-                                <span class="light">{{LANG.comment.status[props.row.status]}}</span>
-                            </div>
-                            <div v-else-if="props.column.field === 'title'">
-                                <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
-                                    <span :class="props.column.style">{{props.row.title}}</span>
-                                </router-link>
-                            </div>
-                            <div v-else>
+                                </div>
+                                <div v-else-if="props.column.field === 'status'">
+                                    <span class="light">{{LANG.comment.status[props.row.status]}}</span>
+                                </div>
+                                <div v-else-if="props.column.field === 'title'">
+                                    <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
+                                        <span :class="props.column.style">{{props.row.title}}</span>
+                                    </router-link>
+                                </div>
+                                <div v-else>
                                 <span :class="props.column.style">
                                     {{props.formattedRow[props.column.field]}}
                                 </span>
+                                </div>
+                            </template>
+                            <div slot="emptystate">
+                                <div class="empty-data">
+                                    {{LANG.panel.empty_table}}
+                                </div>
                             </div>
-                        </template>
-                        <div slot="emptystate">
-                            <div class="empty-data">
-                                {{LANG.panel.empty_table}}
-                            </div>
-                        </div>
-                        <template slot="loadingContent">
-                            <div class="loading-message spinner"></div>
-                        </template>
+                            <template slot="loadingContent">
+                                <div class="loading-message spinner"></div>
+                            </template>
 
-                    </vue-good-table>
+                        </vue-good-table>
+                    </div>
                 </div>
             </div>
-        </div>
-
+        </simplebar>
     </div>
 </template>
 

@@ -15,14 +15,6 @@ use pinoox\model\PinooxDatabase;
 class PaperDatabase extends PinooxDatabase
 {
 
-    //constants
-    const active = "active";
-    const pending = "pending";
-    const suspend = "suspend";
-
-    const seen = "seen";
-    const unseen = "unseen";
-
     //tables
     const settings = 'com_pinoox_paper_settings';
     const post = 'com_pinoox_paper_post';

@@ -17,12 +17,6 @@
 
 
                 <div class="category-actions">
-                    <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-outline-primary btn-sm btn-edit">
-                        {{LANG.post.edit_category}}
-                    </div>
-                    <div v-else @click="resetChanges()" class="btn btn-outline-primary btn-sm btn-edit btn-danger">
-                        {{LANG.post.cancel_edit}}
-                    </div>
                     <div v-if="categories.length>0 && isEdit" class="text-info">{{LANG.post.edit_category_info}}</div>
 
                     <row :gutter="12" :columns="1" v-if="isEdit">
@@ -61,6 +55,10 @@
                             :draggable="isEdit"
                             slot-scope="{ item }"
                             :item="item">
+                        <span class="selected" @click="unSelectCategory()" v-if="!!selected && selected.cat_id===item.cat_id">
+                            <i class="fa fa-check"></i>
+                            <i class="fa fa-times"></i>
+                        </span>
                         <span class="cat-name" @click="selectCategory(item)">{{ item.cat_name }}</span>
                         <div class="actions">
                             <span @click="editItem(item)" class="btn-action"><i class="fa fa-pen"></i></span>
@@ -82,12 +80,12 @@
                     <div @click="add()" class="btn btn-warning">{{LANG.panel.add}}</div>
                 </div>
                 <div v-else>
-                    <div v-if="readyToChange">
-                        <div @click="resetChanges()" class="btn btn-simple">{{LANG.panel.cancel}}</div>
-                        <div @click="saveChanges()" class="btn btn-success">{{LANG.panel.save_changes}}</div>
+                    <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.panel.close}}</div>
+                    <div v-if="!isEdit" @click="isEdit=!isEdit" class="btn btn-danger right">
+                        {{LANG.post.edit_category}}
                     </div>
-                    <div v-else>
-                        <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.panel.close}}</div>
+                    <div v-else @click="resetChanges()" class="btn btn-success right">
+                        {{LANG.post.return_to_selection}}
                     </div>
                 </div>
 
@@ -101,7 +99,7 @@
 <script>
 
     export default {
-        props: ['open'],
+        props: ['open', 'selected'],
         data() {
             return {
                 isEdit: false,
@@ -109,9 +107,8 @@
                 drawerPosition: 'bottom',
                 drawerArea: '90%',
                 categories: [],
-                readyToChange: false,
                 params: {cat_name: null},
-                paramsChanges: {}
+                paramsChanges: {},
             }
         },
         computed: {
@@ -138,18 +135,19 @@
                 });
             },
             trigger(item, pathTo) {
-                this.readyToChange = true;
                 let parent = this.getParent(pathTo.pathTo);
                 this.paramsChanges = {cat: item, parent: parent};
-                //this.saveChanges();
+                this.saveChanges();
             },
             getParent(pathTo) {
                 if (pathTo === undefined || pathTo.length <= 0)
                     return false;
+
                 let search = this.categories;
                 let node;
                 for (let i = 0; i < pathTo.length - 1; i++) {
                     node = search[pathTo[i]];
+                    console.log(node);
                     search = node.children;
                 }
                 return node;
@@ -157,6 +155,11 @@
             selectCategory(item) {
                 if (this.isEdit) return;
                 this.$emit('onSelected', item);
+                this.toggleDrawer();
+            },
+            unSelectCategory() {
+                if (this.isEdit) return;
+                this.$emit('onSelected', null);
                 this.toggleDrawer();
             },
             editItem(item) {
@@ -170,6 +173,7 @@
                 this.$http.post(this.URL.API + 'category/edit/', this.params).then((json) => {
                     if (this._messageResponse(json.data)) {
                         this.loadCategories();
+                        this.params = {cat_id: null, cat_name: null};
                     }
                 });
             },
@@ -185,23 +189,22 @@
                 });
             },
             resetChanges() {
-                this.readyToChange = false;
                 this.isEdit = false;
                 this.loadCategories();
             },
             add() {
                 this.$http.post(this.URL.API + 'category/add', this.params).then((json) => {
-                    if (this._statusResponse(json.data)) {
-                        this.loadCategories();
+                    if (this._messageResponse(json.data)) {
                         this.isAdd = false;
+                        this.categories.push(json.data.result);
                         this.params = {cat_name: null};
+
                     }
                 });
             },
             saveChanges() {
                 this.$http.post(this.URL.API + 'category/saveChanges', this.paramsChanges).then((json) => {
                     if (json.data) {
-                        this.readyToChange = false;
                         this.paramsChanges = {};
                     }
                 });
