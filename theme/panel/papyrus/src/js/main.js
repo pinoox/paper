@@ -23,7 +23,9 @@ import vSelect from 'vue-select';
 import ToggleButton from 'vue-js-toggle-button';
 import { Row, Column,Hidden } from 'vue-grid-responsive';
 import VueApexCharts from 'vue-apexcharts';
+import simplebar from 'simplebar-vue';
 
+Vue.component('simplebar', simplebar);
 Vue.component('apexchart', VueApexCharts);
 Vue.use(VueNestable);
 Vue.use(ChDrawer, {zIndex: 1000});

@@ -716,7 +716,7 @@
   border-radius: 0.25rem;
   padding: 0.2rem 1rem;
   line-height: 1.25;
-  height: 38px;
+  height: 45px;
   font-size: 1.2rem;
 }
 .input-wrapper .input-group .input:focus {
@@ -806,6 +806,9 @@
   background: rgba(255, 255, 255, 0.3);
   align-items: center;
   justify-content: center;
+}
+.p-0 {
+  padding: 0!important ;
 }
 .no-select {
   -webkit-touch-callout: none;
@@ -999,6 +1002,7 @@ body {
   margin: 0;
   padding: 0;
   background: #F3F3F3;
+  overflow: hidden;
 }
 body.rtl {
   direction: rtl;
@@ -1045,34 +1049,19 @@ body.ltr .app-container .main .page .encourage-writing .art {
 .app-container .sidebar {
   background: #1f426c;
   background: linear-gradient(0deg, #1f426c 0%, #2a5282 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   position: fixed;
   top: 0;
   height: 100%;
   width: 120px;
   z-index: 999;
-  /*&.mode-write {
-      .nav {
-        .item {
-          .icon {
-            width: 22px !important;
-          }
-        }
-      }
-    }*/
 }
-.app-container .sidebar::-webkit-scrollbar {
-  display: none;
-  /* Safari and Chrome */
-  -ms-overflow-style: none;
-  /* Internet Explorer 10+ */
-  scrollbar-width: none;
-  /* Firefox */
+.app-container .sidebar .sidebar-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
-.app-container .sidebar .brand {
+.app-container .sidebar .sidebar-content .brand {
   margin: 20px 0 0 0;
   text-align: center;
   color: #fff;
@@ -1080,7 +1069,7 @@ body.ltr .app-container .main .page .encourage-writing .art {
   font-size: 14px;
   height: 50px;
 }
-.app-container .sidebar .brand .title {
+.app-container .sidebar .sidebar-content .brand .title {
   letter-spacing: 2px;
   font-weight: bold;
   font-size: 1.3em;
@@ -1089,11 +1078,11 @@ body.ltr .app-container .main .page .encourage-writing .art {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.app-container .sidebar .brand .subtitle {
+.app-container .sidebar .sidebar-content .brand .subtitle {
   font-size: 0.9em;
   color: #A5B8CE;
 }
-.app-container .sidebar .nav {
+.app-container .sidebar .sidebar-content .nav {
   flex-grow: 0.8;
   text-align: center;
   display: flex;
@@ -1101,8 +1090,9 @@ body.ltr .app-container .main .page .encourage-writing .art {
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  height: 66vh;
 }
-.app-container .sidebar .nav .item {
+.app-container .sidebar .sidebar-content .nav .item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1111,67 +1101,67 @@ body.ltr .app-container .main .page .encourage-writing .art {
   color: #A5B8CE;
   width: 100%;
 }
-.app-container .sidebar .nav .item.active {
+.app-container .sidebar .sidebar-content .nav .item.active {
   background: #1e4069;
 }
-.app-container .sidebar .nav .item.active .icon path {
+.app-container .sidebar .sidebar-content .nav .item.active .icon path {
   fill: #fff;
 }
-.app-container .sidebar .nav .item.active .text {
+.app-container .sidebar .sidebar-content .nav .item.active .text {
   color: #fff;
 }
-.app-container .sidebar .nav .item:hover {
+.app-container .sidebar .sidebar-content .nav .item:hover {
   cursor: pointer;
   background: rgba(18, 50, 89, 0.4);
 }
-.app-container .sidebar .nav .item .icon {
+.app-container .sidebar .sidebar-content .nav .item .icon {
   width: 40px !important;
 }
-.app-container .sidebar .nav .item .icon path {
+.app-container .sidebar .sidebar-content .nav .item .icon path {
   fill: #A5B8CE;
 }
-.app-container .sidebar .nav .item .icon.stroke path {
+.app-container .sidebar .sidebar-content .nav .item .icon.stroke path {
   stroke: #A5B8CE !important;
 }
-.app-container .sidebar .nav .item .text {
+.app-container .sidebar .sidebar-content .nav .item .text {
   display: block;
   padding: 10px 0;
   font-size: 0.8em;
 }
-.app-container .sidebar .menu {
+.app-container .sidebar .sidebar-content .menu {
   flex-grow: 0.1;
   width: 100%;
   height: 120px;
   border-top: 1px solid rgba(226, 226, 226, 0.1);
   padding-top: 15px;
 }
-.app-container .sidebar .menu .item {
+.app-container .sidebar .sidebar-content .menu .item {
   grid-template-columns: 20px 1fr;
   align-items: center;
   color: #A5B8CE;
   padding: 10px 1.4em;
   text-align: center;
 }
-.app-container .sidebar .menu .item .icon {
+.app-container .sidebar .sidebar-content .menu .item .icon {
   text-align: center;
   position: relative;
   top: 3px;
 }
-.app-container .sidebar .menu .item .icon .svg path {
+.app-container .sidebar .sidebar-content .menu .item .icon .svg path {
   fill: #A5B8CE;
 }
-.app-container .sidebar .menu .item .text {
+.app-container .sidebar .sidebar-content .menu .item .text {
   margin: 0 7px;
 }
-.app-container .sidebar .menu .item:hover {
+.app-container .sidebar .sidebar-content .menu .item:hover {
   cursor: pointer;
   background: rgba(18, 50, 89, 0.4);
 }
-.app-container .sidebar .menu .item.active {
+.app-container .sidebar .sidebar-content .menu .item.active {
   color: #fff;
   background: #1e4069;
 }
-.app-container .sidebar .menu .item.active .icon .svg path {
+.app-container .sidebar .sidebar-content .menu .item.active .icon .svg path {
   fill: #fff;
 }
 .app-container .main {
@@ -1282,6 +1272,9 @@ body.ltr .app-container .main .page .encourage-writing .art {
 .app-container .main .page {
   padding-top: 44px;
   padding-bottom: 44px;
+}
+.app-container .main .page .simplebar {
+  height: calc(100vh - 100px);
 }
 .app-container .main .page .section {
   margin: 20px 0;
