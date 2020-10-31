@@ -24,7 +24,6 @@
             </div>
         </div>
         <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
-        <simplebar class="simplebar write">
             <div id="write" class="write-container">
                 <editor class="content"
                         :values="editor"
@@ -40,7 +39,6 @@
                         :placeholder="LANG.post.enter_context">
                 </editor>
             </div>
-        </simplebar>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
         <category v-if="post_type==='post'"
                   :open="drawerName==='category'"
