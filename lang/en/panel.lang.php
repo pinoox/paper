@@ -40,6 +40,7 @@ return [
     'user_profile' => 'User Profile',
     'comments' => 'comments',
     'contacts' => 'contacts',
+    'profile_image' => 'Profile image',
 
     /* table */
 
@@ -80,4 +81,18 @@ return [
     'user_settings' => 'User Setting',
     'site_title' => 'Site Title',
     'site_description' => 'Site Description',
+
+    /* picture input */
+    'picture_input' => [
+        'upload' => '<p>Your device does not support file uploading.</p>',
+        'drag' => 'Drag an image or <br>click here to select a file',
+        'tap' => 'Tap here to select a photo <br>from your gallery',
+        'change' => 'Change Photo',
+        'remove' => 'Remove Photo',
+        'select' => 'Select a Photo',
+        'selected' => '<p>Photo successfully selected!</p>',
+        'fileSize' => 'The file size exceeds the limit',
+        'fileType' => 'This file type is not supported.',
+        'aspect' => 'Landscape/Portrait',
+    ]
 ];

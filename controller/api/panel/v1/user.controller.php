@@ -13,10 +13,12 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
+use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PaperUserModel;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
+use pinoox\component\Upload;
 use pinoox\component\Uploader;
 use pinoox\component\Url;
 use pinoox\component\User;
@@ -76,6 +78,13 @@ class UserController extends LoginConfiguration
 
     }
 
+    private function filterSearch($form)
+    {
+        UserModel::where_search($form['keyword']);
+        PaperUserModel::where_status($form['status']);
+        PaperUserModel::sort($form['sort']);
+    }
+
     private function getUserInfo($user)
     {
         $placeHolder = Url::file('resources/image-placeholder.jpg');
@@ -93,7 +102,7 @@ class UserController extends LoginConfiguration
 
     public function add()
     {
-        $input = Request::input('avatar_id,status,fname,lname,username,email,password,re_password', null, '!empty');
+        $input = Request::post('avatar_id,status,fname,lname,username,email,password,re_password', null, '!empty');
         $valid = Validation::check($input, [
             'fname' => ['required|length:>2', rlang('user.fname')],
             'lname' => ['required|length:>2', rlang('user.lname')],
@@ -107,6 +116,7 @@ class UserController extends LoginConfiguration
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
 
+        $input['status'] = $input['status'] === UserModel::active ? UserModel::active : UserModel::suspend;
 
         $username = UserModel::fetch_user_by_email_or_username($input['username']);
         if ($username)
@@ -118,15 +128,17 @@ class UserController extends LoginConfiguration
 
         $user_id = UserModel::insert($input);
 
-        if ($user_id)
+        if ($user_id) {
+            $this->uploadAvatar($user_id);
             Response::jsonMessage(rlang('user.added_successfully'), true);
+        }
 
         Response::jsonMessage(rlang('panel.error_happened'), false);
     }
 
     public function edit()
     {
-        $input = Request::input('user_id,avatar_id,status,fname,lname,username,email,password,re_password', null, '!empty');
+        $input = Request::post('user_id,avatar_id,status,fname,lname,username,email,password,re_password,delete_avatar', null, '!empty');
         $valid = Validation::check($input, [
             'user_id' => ['required', rlang('user.fname')],
             'fname' => ['required|length:>2', rlang('user.fname')],
@@ -142,6 +154,12 @@ class UserController extends LoginConfiguration
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
 
+        $input['status'] = $input['status'] === UserModel::active ? UserModel::active : UserModel::suspend;
+
+        $user = UserModel::fetch_by_id($input['user_id']);
+        if (!$user)
+            Response::jsonMessage(rlang('panel.invalid_request'), false);
+
         $username = UserModel::fetch_user_by_email_or_username($input['username'], $input['user_id']);
         if ($username)
             Response::jsonMessage(rlang('user.username_duplicated'), false);
@@ -150,12 +168,58 @@ class UserController extends LoginConfiguration
         if ($email)
             Response::jsonMessage(rlang('user.email_duplicated'), false);
 
+        PaperDatabase::startTransaction();
         $status = UserModel::update($input['user_id'], $input);
 
-        if ($status)
+        if ($status) {
+            if ($input['delete_avatar'])
+                $this->deleteAvatar($user['avatar_id']);
+
+            $this->uploadAvatar($input['user_id']);
+            PaperDatabase::commit();
             Response::jsonMessage(rlang('user.edited_successfully'), true);
+        }
 
         Response::jsonMessage(rlang('panel.error_happened'), false);
+    }
+
+    private function deleteAvatar($avatar_id)
+    {
+        if (empty($avatar_id))
+            return;
+        Uploader::init()->thumb(['128f', '256f', '512f'], PINOOX_PATH_THUMB)->actRemoveRow($avatar_id);
+
+    }
+
+    /**
+     * @param $user_id
+     * @param int|string|null $old_avatar_id
+     * @return bool|Uploader|Upload
+     */
+    private function uploadAvatar($user_id, $old_avatar_id = null)
+    {
+        if (Request::isFile('avatar')) {
+
+            PinooxDatabase::startTransaction();
+
+            $up = Uploader::init('avatar', path('uploads/avatar/'))
+                ->allowedTypes('png,jpg,jpeg', 5)
+                ->changeName('time')
+                ->transaction()
+                ->thumb(['128f', '256f', '512f'], PINOOX_PATH_THUMB)
+                ->insert('none', 'avatar')->finish(true);
+
+            $avatar_id = $up->getInsertId();
+            if ($up->isCommit() && UserModel::update_avatar($user_id, $avatar_id)) {
+                PinooxDatabase::commit();
+                $up->commit();
+                if (!empty($old_avatar_id)) {
+                    $this->deleteAvatar($old_avatar_id);
+                }
+            }
+            return $up;
+        }
+        return false;
     }
 
     public function delete()
@@ -169,13 +233,6 @@ class UserController extends LoginConfiguration
         }
 
         Response::jsonMessage(rlang('panel.error_happened'), false);
-    }
-
-    private function filterSearch($form)
-    {
-        UserModel::where_search($form['keyword']);
-        PaperUserModel::where_status($form['status']);
-        PaperUserModel::sort($form['sort']);
     }
 
     public function saveUserProfile()
@@ -241,7 +298,7 @@ class UserController extends LoginConfiguration
         if (!User::isLoggedIn())
             $this->error();
         $user = User::get();
-        Uploader::init()->thumb('128f', PINOOX_PATH_THUMB)->actRemoveRow($user['avatar_id']);
+        $this->deleteAvatar($user['avatar_id']);
         if (UserModel::update_avatar($user['user_id'], null)) {
             $user = $this->getUser();
             Response::json($user, true);
@@ -252,34 +309,16 @@ class UserController extends LoginConfiguration
 
     public function changeAvatar()
     {
-        if (!User::isLoggedIn())
-            $this->error();
-
-        if (Request::isFile('avatar')) {
-
-            PinooxDatabase::startTransaction();
-
-            $old_avatar_id = User::get('avatar_id');
-            $up = Uploader::init('avatar', path('uploads/avatar/'))
-                ->allowedTypes('png,jpg,jpeg', 2)
-                ->changeName('time')
-                ->transaction()
-                ->thumb('128f,256f,512f', PINOOX_PATH_THUMB)
-                ->insert('none', 'avatar')->finish(true);
-
-            $avatar_id = $up->getInsertId();
-            if ($up->isCommit() && UserModel::update_avatar(User::get('user_id'), $avatar_id)) {
-                PinooxDatabase::commit();
-                $up->commit();
-                Uploader::init()->thumb('128f', PINOOX_PATH_THUMB)->actRemoveRow($old_avatar_id);
-            }
-            if ($result = $up->result()) {
+        $old_avatar_id = User::get('avatar_id');
+        $user_id = User::get('user_id');
+        if ($upload = $this->uploadAvatar($user_id, $old_avatar_id)) {
+            if ($result = $upload->result()) {
                 Response::json([
                     'avatar' => Url::upload($result),
                     'avatar_thumb' => Url::thumb($result),
                 ], true);
             } else {
-                Response::json($up->error('first'), false);
+                Response::json($upload->error('first'), false);
             }
         }
 

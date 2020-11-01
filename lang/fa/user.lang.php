@@ -8,6 +8,8 @@ return [
     'lname' => 'نام خانوادگی',
     'username' => 'نام کاربری',
     'email' => 'ایمیل',
+    'user_status' => 'وضعیت کاربر',
+    'user_image' => 'تصویر کاربر',
     'mobile' => 'موبایل',
     'password' => 'رمز عبور',
     're_password' => 'تکرار رمز عبور',

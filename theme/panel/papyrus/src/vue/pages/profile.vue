@@ -2,7 +2,7 @@
     <simplebar class="form-wrapper">
         <section>
             <div class="form-content row" @keyup.enter="saveUserProfile()">
-                <row :gutter="12" :columns="4" class="col-sm-order">
+                <row :gutter="12" :columns="2" class="col-sm-order">
                     <div class="header order-1">
                         <div class="title">
                             <div class="text">
@@ -10,7 +10,7 @@
                             </div>
                         </div>
                     </div>
-                    <column :sm="3" :lg="2" class="order-2">
+                    <column :sm="2" :md="1" class="order-2">
                         <div class="input-wrapper">
                             <label class="input-label">{{LANG.user.fname}}</label>
                             <div class="input-group">
@@ -40,34 +40,26 @@
                             </div>
                         </div>
                     </column>
-                    <column :sm="1" :lg="2" class="order-0">
+                    <column :sm="2" :md="1" class="order-0">
                         <div class="input-wrapper">
-                            <label class="input-label center">تصویر پروفایل</label>
+                            <label class="input-label center">{{LANG.panel.profile_image}}</label>
                             <div class="input-group">
                                 <picture-input
                                         ref="pictureInput"
                                         width="200"
                                         height="200"
                                         radius="50"
-                                        :toggle-aspect-ratio="true"
-                                        :auto-toggle-aspect-ratio="true"
+                                        size="5"
+                                        :alert-on-error="false"
                                         accept="image/jpeg,image/png"
                                         :prefill="avatar"
-                                        :hide-change-button="false"
-                                        :crop="true"
                                         :removable="true"
                                         @change="changeAvatar"
                                         @remove="removeAvatar"
+                                        @error="errorAvatar"
                                         button-class="btn btn-sm btn-primary"
                                         remove-button-class="btn btn-sm btn-danger"
-                                        :custom-strings="{
-        upload: 'آپلود',
-        drag: 'ضربه بزنید یا تصویر را بکشید و اینجا رها کنید',
-        remove: 'حذف',
-        select: 'انتخاب تصویر',
-        change: 'تغییر تصویر',
-      }">
-
+                                        :custom-strings="LANG.panel.picture_input">
                                 </picture-input>
                             </div>
                         </div>
@@ -78,7 +70,7 @@
                 </row>
             </div>
             <div class="form-content row" @keyup.enter="changePassword()">
-                <row :gutter="12" :columns="4">
+                <row :gutter="12" :columns="2">
                     <div class="header">
                         <div class="title">
                             <div class="text">
@@ -86,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    <column :sm="3" :lg="2">
+                    <column :sm="2" :md="1">
                         <div class="input-wrapper">
                             <label class="input-label">{{LANG.user.old_password}}</label>
                             <div class="input-group">
@@ -159,6 +151,21 @@
                         this._resetInitialData('paramsChangePassword');
                 });
             },
+            getUserProfile() {
+                this.paramsUserProfile = {
+                    ...this.paramsUserProfile,
+                    ...this.USER,
+                };
+
+                if (this.USER.is_avatar)
+                    this.avatar = this.USER.avatar;
+            },
+            setUserProfile() {
+                this.USER = {
+                    ...this.USER,
+                    ...this.paramsUserProfile,
+                };
+            },
             changeAvatar(file) {
                 let data = new FormData();
                 data.append('avatar', this.$refs.pictureInput.file);
@@ -169,6 +176,7 @@
                         this.USER.is_avatar = true;
                     } else {
                         this._notify('error', json.data.result);
+                        this.avatar = null;
                     }
                 })
             },
@@ -186,20 +194,8 @@
                     }
                 });
             },
-            getUserProfile() {
-                this.paramsUserProfile = {
-                    ...this.paramsUserProfile,
-                    ...this.USER,
-                };
-
-                if (this.USER.is_avatar)
-                    this.avatar = this.USER.avatar;
-            },
-            setUserProfile() {
-                this.USER = {
-                    ...this.USER,
-                    ...this.paramsUserProfile,
-                };
+            errorAvatar(error){
+                this._notify('error', error.message);
             }
         }
     }

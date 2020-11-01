@@ -1938,48 +1938,6 @@ body.ltr .app-container .main .page .encourage-writing .art {
   }
 }
 @media screen and (max-width: 576px) {
-  .col-sm-order {
-    flex-direction: row;
-  }
-  .col-sm-order .order-0 {
-    order: 0;
-  }
-  .col-sm-order .order-1 {
-    order: 1;
-  }
-  .col-sm-order .order-2 {
-    order: 2;
-  }
-  .col-sm-order .order-3 {
-    order: 3;
-  }
-  .col-sm-order .order-4 {
-    order: 4;
-  }
-  .col-sm-order .order-5 {
-    order: 5;
-  }
-  .col-sm-order .order-6 {
-    order: 6;
-  }
-  .col-sm-order .order-7 {
-    order: 7;
-  }
-  .col-sm-order .order-8 {
-    order: 8;
-  }
-  .col-sm-order .order-9 {
-    order: 9;
-  }
-  .col-sm-order .order-10 {
-    order: 10;
-  }
-  .col-sm-order .order-11 {
-    order: 11;
-  }
-  .col-sm-order .order-12 {
-    order: 12;
-  }
   .vgt-compact td:before {
     float: right;
     right: 0;
@@ -2440,6 +2398,9 @@ body.ltr .app-container .main .page .encourage-writing .art {
   padding: 0.5rem;
   text-align: right;
 }
+.input-wrapper.center {
+  text-align: center;
+}
 .input-wrapper .input-label {
   display: block;
   text-transform: uppercase;
@@ -2468,6 +2429,11 @@ body.ltr .app-container .main .page .encourage-writing .art {
   display: flex;
   border-radius: 0.25rem;
   position: relative;
+}
+.input-wrapper .input-group.center {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 .input-wrapper .input-group .input {
   font-family: 'iranSans', 'Karla', serif;
@@ -2586,5 +2552,181 @@ body.ltr .app-container .main .page .encourage-writing .art {
 }
 .picture-input .picture-inner {
   background-color: #edf2f7;
+}
+@media screen and (max-width: 576px) {
+  .col-xs-order {
+    flex-direction: row;
+  }
+  .col-xs-order .order-0 {
+    order: 0;
+  }
+  .col-xs-order .order-1 {
+    order: 1;
+  }
+  .col-xs-order .order-2 {
+    order: 2;
+  }
+  .col-xs-order .order-3 {
+    order: 3;
+  }
+  .col-xs-order .order-4 {
+    order: 4;
+  }
+  .col-xs-order .order-5 {
+    order: 5;
+  }
+  .col-xs-order .order-6 {
+    order: 6;
+  }
+  .col-xs-order .order-7 {
+    order: 7;
+  }
+  .col-xs-order .order-8 {
+    order: 8;
+  }
+  .col-xs-order .order-9 {
+    order: 9;
+  }
+  .col-xs-order .order-10 {
+    order: 10;
+  }
+  .col-xs-order .order-11 {
+    order: 11;
+  }
+  .col-xs-order .order-12 {
+    order: 12;
+  }
+}
+@media screen and (max-width: 768px) {
+  .col-sm-order {
+    flex-direction: row;
+  }
+  .col-sm-order .order-0 {
+    order: 0;
+  }
+  .col-sm-order .order-1 {
+    order: 1;
+  }
+  .col-sm-order .order-2 {
+    order: 2;
+  }
+  .col-sm-order .order-3 {
+    order: 3;
+  }
+  .col-sm-order .order-4 {
+    order: 4;
+  }
+  .col-sm-order .order-5 {
+    order: 5;
+  }
+  .col-sm-order .order-6 {
+    order: 6;
+  }
+  .col-sm-order .order-7 {
+    order: 7;
+  }
+  .col-sm-order .order-8 {
+    order: 8;
+  }
+  .col-sm-order .order-9 {
+    order: 9;
+  }
+  .col-sm-order .order-10 {
+    order: 10;
+  }
+  .col-sm-order .order-11 {
+    order: 11;
+  }
+  .col-sm-order .order-12 {
+    order: 12;
+  }
+}
+@media screen and (max-width: 992px) {
+  .col-md-order {
+    flex-direction: row;
+  }
+  .col-md-order .order-0 {
+    order: 0;
+  }
+  .col-md-order .order-1 {
+    order: 1;
+  }
+  .col-md-order .order-2 {
+    order: 2;
+  }
+  .col-md-order .order-3 {
+    order: 3;
+  }
+  .col-md-order .order-4 {
+    order: 4;
+  }
+  .col-md-order .order-5 {
+    order: 5;
+  }
+  .col-md-order .order-6 {
+    order: 6;
+  }
+  .col-md-order .order-7 {
+    order: 7;
+  }
+  .col-md-order .order-8 {
+    order: 8;
+  }
+  .col-md-order .order-9 {
+    order: 9;
+  }
+  .col-md-order .order-10 {
+    order: 10;
+  }
+  .col-md-order .order-11 {
+    order: 11;
+  }
+  .col-md-order .order-12 {
+    order: 12;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .col-lg-order {
+    flex-direction: row;
+  }
+  .col-lg-order .order-0 {
+    order: 0;
+  }
+  .col-lg-order .order-1 {
+    order: 1;
+  }
+  .col-lg-order .order-2 {
+    order: 2;
+  }
+  .col-lg-order .order-3 {
+    order: 3;
+  }
+  .col-lg-order .order-4 {
+    order: 4;
+  }
+  .col-lg-order .order-5 {
+    order: 5;
+  }
+  .col-lg-order .order-6 {
+    order: 6;
+  }
+  .col-lg-order .order-7 {
+    order: 7;
+  }
+  .col-lg-order .order-8 {
+    order: 8;
+  }
+  .col-lg-order .order-9 {
+    order: 9;
+  }
+  .col-lg-order .order-10 {
+    order: 10;
+  }
+  .col-lg-order .order-11 {
+    order: 11;
+  }
+  .col-lg-order .order-12 {
+    order: 12;
+  }
 }
 

@@ -67,7 +67,7 @@
             </div>
         </simplebar>
 
-        <UserForm @onClose="drawerName=null"
+        <UserForm @close="drawerName=null"
                   @onSuccess="getItems()"
                   :user="this.user"
                   :open="drawerName==='user-form'"></UserForm>

@@ -147,7 +147,6 @@
                 let node;
                 for (let i = 0; i < pathTo.length - 1; i++) {
                     node = search[pathTo[i]];
-                    console.log(node);
                     search = node.children;
                 }
                 return node;
