@@ -15,7 +15,7 @@
         </notifications>
         <section class="app-container">
             <div v-if="!hasCustomView">
-                <simplebar class="sidebar">
+                <div class="sidebar">
                     <div class="sidebar-content">
                         <div class="brand">
                             <div class="title">PAPER</div>
@@ -51,8 +51,7 @@
                             </router-link>
                         </div>
                     </div>
-
-                </simplebar>
+                </div>
                 <div class="main">
                     <div v-if="showToolbar" class="toolbar">
                         <div class="account">

@@ -24,6 +24,7 @@ import ToggleButton from 'vue-js-toggle-button';
 import { Row, Column,Hidden } from 'vue-grid-responsive';
 import VueApexCharts from 'vue-apexcharts';
 import simplebar from 'simplebar-vue';
+import PictureInput from 'vue-picture-input';
 
 Vue.component('simplebar', simplebar);
 Vue.component('apexchart', VueApexCharts);
@@ -40,6 +41,7 @@ Vue.component('v-select', vSelect);
 Vue.component('row', Row);
 Vue.component('column', Column);
 Vue.component('hidden', Hidden);
+Vue.component('picture-input', PictureInput);
 
 __webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
 
