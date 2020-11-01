@@ -200,8 +200,5 @@
                 this.getItems();
             },
         },
-        created() {
-            this.getItems();
-        }
     }
 </script>
