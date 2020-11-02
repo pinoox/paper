@@ -33,7 +33,7 @@
                             </div>
                         </div>
 
-                        <div v-if="$parent.post_type === 'post'" class="input-wrapper">
+                        <div v-if="!$parent.isPageType" class="input-wrapper">
                             <label class="input-label">{{LANG.post.summary}}</label>
                             <div class="input-group">
                                 <textarea v-model="params.summary" name="summary"
@@ -110,7 +110,7 @@
                     {{LANG.post.publication}}
                 </div>
                 <div class="btn btn-primary" @click="changeStatus('publish')"
-                     v-if="$parent.status === 'publish' && !$parent.isSynced">
+                     v-if="$parent.status === 'publish' && !isSynced">
                     {{LANG.post.sync}}
                 </div>
                 <div class="btn btn-danger" @click="changeStatus('draft')" v-if="$parent.status === 'publish'">
@@ -147,6 +147,17 @@
             }
         },
         computed: {
+            isSynced() {
+                let post = this.$parent.post;
+                let editor = this.$parent.params.editor;
+                return JSON.stringify({
+                    title: !!post.title ? post.title : '',
+                    context: !!post.context ? post.context : '',
+                }) === JSON.stringify({
+                    title: !!this.params.title ? this.params.title : '',
+                    context: !!editor.context ? editor.context : '',
+                });
+            },
             listTags() {
                 return this.tags.map(function (row) {
                     return row['tag_name'];
@@ -221,13 +232,18 @@
                 });
             },
             saveParams() {
-                let paramsParent = this._clone(this.$parent.params)
+                let paramsParent = this._clone(this.$parent.params);
                 this.$parent.editor.title = this.params.title;
-                this.$parent.params.post_key = this.params.post_key;
+                this.$parent.params.editor.title = this.params.title;
+                if (this.$parent.isPageType)
+                    this.$parent.params.post_key = this.params.post_key;
                 this.$parent.params.summary = this.params.summary;
                 this.$parent.params.tags = this._clone(this.params.tags);
                 this.$parent.params.image = this._clone(this.params.image);
-                this.$parent.save(this.$parent.status).then((data) => {
+                let status = null;
+                if (this.params.title !== paramsParent.editor.title)
+                    status = this.$parent.status;
+                this.$parent.save(status).then((data) => {
                     if (data.status)
                         this.$parent.isSynced = true;
                     else
@@ -235,10 +251,13 @@
                 });
             },
             openDrawer() {
-                let title = this.$parent.editor.title;
-                let post_key = this.$parent.params.post_key;
-                post_key = !!post_key ? post_key : title.replaceAll(' ', '-');
-                this.$parent.params.post_key = post_key;
+                if (this.$parent.isPageType) {
+                    let title = this.$parent.editor.title;
+                    let post_key = this.$parent.params.post_key;
+                    post_key = !!post_key ? post_key : title.replaceAll(' ', '-');
+                    this.$parent.params.post_key = post_key;
+                }
+
                 this.init();
                 this.getInitTags();
             }

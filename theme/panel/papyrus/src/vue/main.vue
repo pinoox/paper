@@ -15,7 +15,7 @@
         </notifications>
         <section class="app-container">
             <div v-if="!hasCustomView">
-                <simplebar class="sidebar">
+                <div class="sidebar">
                     <div class="sidebar-content">
                         <div class="brand">
                             <div class="title">PAPER</div>
@@ -51,8 +51,7 @@
                             </router-link>
                         </div>
                     </div>
-
-                </simplebar>
+                </div>
                 <div class="main">
                     <div v-if="showToolbar" class="toolbar">
                         <div class="account">
@@ -101,9 +100,9 @@
                         </div>
                     </div>
                     <transition name="fade" mode="out-in"
-                                enter-active-class="animate__animated animate__fadeInUp animate__faster"
-                                leave-active-class="animate__animated animate__fadeOutDown animate__faster">
-                        <router-view :key="$route.fullPath"></router-view>
+                                :enter-active-class="isTransition?'animate__animated animate__fadeInUp animate__faster':''"
+                                :leave-active-class="isTransition?'animate__animated animate__fadeOutDown animate__faster':''">
+                            <router-view :key="$route.fullPath"></router-view>
                     </transition>
                 </div>
             </div>

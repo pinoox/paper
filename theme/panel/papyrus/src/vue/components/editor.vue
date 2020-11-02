@@ -1,15 +1,17 @@
 <template>
     <div v-if="isLoadEditor">
         <div class="toolbar-editor"></div>
-        <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">
-            <div class="content-editor row-editor" :style="{'margin':marginContent}">
-                <ckeditor class="bg-danger" :value="getValue" @input="updateValue" :editor="initEditor"
-                          :config="editorConfig"
-                          @ready="onReady">
-                    <slot></slot>
-                </ckeditor>
+        <simplebar class="simplebar">
+            <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">
+                <div class="content-editor row-editor" :style="{'margin':marginContent}">
+                    <ckeditor class="bg-danger" :value="getValue" @input="updateValue" :editor="initEditor"
+                              :config="editorConfig"
+                              @ready="onReady">
+                        <slot></slot>
+                    </ckeditor>
+                </div>
             </div>
-        </div>
+        </simplebar>
         <div class="statusbar">
             <div class="item revert">
                 <div class="label history" @click="onHistoryDrawer()">
@@ -258,7 +260,9 @@
                                     immediate: true,
                                 });
                             },
-                            action: vm.$parent.save
+                            action() {
+                                vm.$parent.save();
+                            }
                         },
                         {
                             name: 'fullscreen',

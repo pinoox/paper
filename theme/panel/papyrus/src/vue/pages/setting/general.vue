@@ -56,7 +56,7 @@
         methods: {
             getSettings() {
                 this.$http.get(this.URL.API + 'setting/get/general').then((json) => {
-                    let data = !!json.body ? json.body : [];
+                    let data = !!json.data ? json.data : [];
                     this.params = {
                         ...this.params,
                         ...data,
@@ -64,7 +64,7 @@
                 });
             },
             save() {
-                this.$http.post(this.URL.API + 'setting/save/general').then((json) => {
+                this.$http.post(this.URL.API + 'setting/save/general',this.params).then((json) => {
                     this._statusResponse(json.data);
                 });
             }
