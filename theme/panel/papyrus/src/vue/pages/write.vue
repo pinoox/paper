@@ -3,7 +3,7 @@
         <div class="menubar">
             <div class="items">
                 <div @click="openDrawer('publish')" class="item publish-item">
-                    {{post_type === 'post'?LANG.post.post_publication : LANG.post.page_publication}}
+                    {{!isPageType?LANG.post.post_publication : LANG.post.page_publication}}
                 </div>
                 <div class="item" @click="save()">
                     {{LANG.post.save}}
@@ -24,21 +24,21 @@
             </div>
         </div>
         <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
-            <div id="write" class="write-container">
-                <editor class="content"
-                        :values="editor"
-                        :status="status"
-                        :message="message"
-                        v-model="params.editor"
-                        :autosave="settings.autosave.status"
-                        :autosave-time="settings.autosave.time"
-                        @save="save()"
-                        @onHistoryDrawer="openHistory=!openHistory"
-                        name="description"
-                        :title-placeholder="LANG.post.enter_title"
-                        :placeholder="LANG.post.enter_context">
-                </editor>
-            </div>
+        <div id="write" class="write-container">
+            <editor class="content"
+                    :values="editor"
+                    :status="status"
+                    :message="message"
+                    v-model="params.editor"
+                    :autosave="settings.autosave.status"
+                    :autosave-time="settings.autosave.time"
+                    @save="save()"
+                    @onHistoryDrawer="openHistory=!openHistory"
+                    name="description"
+                    :title-placeholder="LANG.post.enter_title"
+                    :placeholder="LANG.post.enter_context">
+            </editor>
+        </div>
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
         <category v-if="post_type==='post'"
                   :open="drawerName==='category'"
@@ -47,6 +47,7 @@
                   @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
         <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
+        <preview @close="drawerName = null" :values="preview" :open="drawerName === 'preview'"></preview>
         <input v-show="false" ref="file" type="file" name="file-input" @change="handleFileInput" multiple>
     </section>
 </template>
@@ -58,6 +59,7 @@
     import Category from "../drawers/category.vue";
     import ImageManager from "../drawers/image-manager.vue";
     import Settings from "../drawers/settings.vue";
+    import Preview from "../drawers/preview.vue";
     import PulledDrawer from "../components/pulled-drawer.vue";
 
     export default {
@@ -70,7 +72,7 @@
                 default: 'post',
             }
         },
-        components: {Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
+        components: {Preview, Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
             next();
@@ -78,6 +80,8 @@
         },
         data() {
             return {
+                preview:{},
+                historyItems:[],
                 openHistory: false,
                 isSave: true,
                 isOpenFullscreen: false,
@@ -108,7 +112,14 @@
                 message: null,
             };
         },
+        computed: {
+            isPageType() {
+                return this.post_type === 'page';
+            }
+        },
         created() {
+            this.isTransition = true;
+
             this.getInitData()
                 .then(() => {
                     return this.getImages();
@@ -128,10 +139,11 @@
             getInitData() {
                 this.params.post_type = this.post_type;
                 this.getSettings();
-                if (!!this.post_id)
+                if (!!this.post_id) {
                     return this.getPost();
-                else
+                } else {
                     return this.getHashId();
+                }
             },
             handleFileDrop(e) {
                 let droppedFiles = e.dataTransfer.files;
@@ -260,6 +272,8 @@
                     return;
 
                 this.status = status;
+                this.post.title = this.params.editor.title;
+                this.post.context = this.params.editor.context;
                 this.isSynced = true;
             },
             save(status = null) {
@@ -273,8 +287,10 @@
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
-                        if (!this.post_id)
+                        if (!this.post_id) {
+                            this.isTransition = false;
                             this._routerReplace({name: this.$route.name, params: {post_id: json.data.result}});
+                        }
                         this.isSynced = false;
                         this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
                         this.changeStatus(status);
@@ -359,10 +375,12 @@
                         $('#write').toggleClass('fullscreen');
                     });
                 });
-            }
+            },
         },
         mounted() {
             this.checkFullscreen();
+            $('.drawer--blur').removeClass('drawer--blur');
+            $('.toggle-over-flow').removeClass('toggle-over-flow');
         },
         watch: {
             drawerName() {

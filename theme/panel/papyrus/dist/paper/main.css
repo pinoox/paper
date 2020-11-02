@@ -1806,6 +1806,12 @@ body.ltr .app-container .main .page .encourage-writing .art {
   cursor: pointer;
   background: rgba(219, 51, 90, 0.1);
 }
+.pulled-drawer .drawer-inside .drawer-content .posts-list {
+  height: 100%;
+}
+.pulled-drawer .drawer-inside .drawer-content .posts-list:last-child {
+  margin-bottom: 50px;
+}
 .pulled-drawer .drawer-inside .drawer-content .posts-list .item {
   padding: 10px 20px;
   border-bottom: 1px solid rgba(165, 184, 206, 0.2);
@@ -1882,7 +1888,13 @@ body.ltr .app-container .main .page .encourage-writing .art {
     height: 110px;
   }
 }
+.preview-editor {
+  padding: 0 15%;
+}
 @media screen and (max-width: 768px) {
+  .preview-editor {
+    padding: initial;
+  }
   .pulled-drawer {
     right: 0;
   }

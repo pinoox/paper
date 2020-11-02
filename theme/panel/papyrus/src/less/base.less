@@ -1670,7 +1670,7 @@ body {
     }
 
     .colVGR {
-      .footer,.header {
+      .footer, .header {
         padding: 20px 3px 40px 3px;
       }
     }
@@ -1878,6 +1878,12 @@ body {
 
     .drawer-content {
       .posts-list {
+        height: 100%;
+
+        &:last-child {
+          margin-bottom: 50px;
+        }
+
         .item {
           padding: 10px 20px;
           border-bottom: 1px solid fade(@textColorLight, 20%);
@@ -1933,7 +1939,8 @@ body {
         padding: 10px;
         background: fade(@primaryColor, 10%);
         color: @textColor;
-        &:hover{
+
+        &:hover {
           background: fade(@primaryColor, 20%);
           cursor: pointer;
         }
@@ -1973,7 +1980,16 @@ body {
   }
 }
 
+.preview-editor {
+  padding: 0 15%;
+}
+
 @media screen and (max-width: 768px) {
+
+  .preview-editor {
+    padding: initial;
+  }
+
   .pulled-drawer {
     right: 0;
   }
