@@ -147,6 +147,18 @@ class PostModel extends PaperDatabase
         return self::$db->get(self::post_history, $limit);
     }
 
+    public static function delete_all_history($post_id)
+    {
+        self::$db->where('post_id', $post_id);
+        return self::$db->delete(self::post_history);
+    }
+
+    public static function delete_history_by_id($ph_id)
+    {
+        self::$db->where('ph_id', $ph_id);
+        return self::$db->delete(self::post_history);
+    }
+
     public static function where_post_type($post_type)
     {
         $post_type = !empty($post_type) && $post_type === self::page_type ? self::page_type : self::post_type;

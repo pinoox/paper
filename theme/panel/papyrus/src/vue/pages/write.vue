@@ -81,6 +81,7 @@
         data() {
             return {
                 preview:{},
+                historyItems:[],
                 openHistory: false,
                 isSave: true,
                 isOpenFullscreen: false,
@@ -374,7 +375,7 @@
                         $('#write').toggleClass('fullscreen');
                     });
                 });
-            }
+            },
         },
         mounted() {
             this.checkFullscreen();

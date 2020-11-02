@@ -6,7 +6,7 @@
             </div>
             <div class="drawer-header">
                 <div class="title">{{LANG.post.change_history}}</div>
-                <div class="clear">{{LANG.post.delete_all}}</div>
+                <div class="clear" @click="deleteAllHistory()">{{LANG.post.delete_all}}</div>
             </div>
             <div class="drawer-content" v-if="historyItems.length > 0">
                 <simplebar class="simplebar">
@@ -39,9 +39,14 @@
         destroyed() {
             $('.page').removeClass('pulled');
         },
-        data() {
-            return {
-                historyItems: [],
+        computed: {
+            historyItems: {
+                get() {
+                    return this.$parent.historyItems;
+                },
+                set(val) {
+                    this.$parent.historyItems = val;
+                }
             }
         },
         methods: {
@@ -55,6 +60,13 @@
             preview(item) {
                 this.$parent.preview = item;
                 this.$parent.drawerName = 'preview';
+            },
+            deleteAllHistory() {
+                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                    this.$http.get(this.URL.API + 'post/deleteAllHistory/' + this.$parent.post_id).then((json) => {
+                        this.historyItems = [];
+                    });
+                });
             },
             getPostHistory() {
                 if (!this.$parent.post_id)

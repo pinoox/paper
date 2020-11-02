@@ -378,4 +378,19 @@ class PostController extends LoginConfiguration
         Response::json(['series' => $result, 'date' => $rangeDate]);
     }
 
+    public function deleteAllHistory($post_id)
+    {
+        if (PostModel::delete_all_history($post_id))
+            Response::jsonMessage(rlang('panel.delete_successfully'), true);
+
+        Response::jsonMessage(rlang('panel.error_happened'), false);
+    }
+
+    public function deleteHistory($ph_id)
+    {
+        if (PostModel::delete_history_by_id($ph_id))
+            Response::jsonMessage(rlang('panel.delete_successfully'), true);
+
+        Response::jsonMessage(rlang('panel.error_happened'), false);
+    }
 }

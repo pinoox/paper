@@ -41,7 +41,7 @@
         data() {
             return {
                 initEditor: DecoupledDocumentEditor,
-                editor:null,
+                editor: null,
             }
         },
         computed: {
@@ -56,6 +56,14 @@
                 let context = !!this.values.context ? this.values.context : '';
                 return '<h1>' + title + '</h1>\n' + context;
             },
+            historyItems: {
+                get() {
+                    return this.$parent.historyItems;
+                },
+                set(val) {
+                    this.$parent.historyItems = val;
+                }
+            }
         },
         methods: {
             openDrawer() {
@@ -68,9 +76,16 @@
                 this.closeDrawer();
             },
             deleteHistory() {
-
+                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                    this.$http.get(this.URL.API + 'post/deleteHistory/' + this.values.ph_id).then((json) => {
+                        this.historyItems = this.historyItems.filter((item) => {
+                            return item.ph_id !== this.values.ph_id;
+                        });
+                        this.closeDrawer();
+                    });
+                });
             },
-            onReady(editor){
+            onReady(editor) {
                 this.editor = editor;
             },
         },
