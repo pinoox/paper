@@ -260,7 +260,9 @@
                                     immediate: true,
                                 });
                             },
-                            action: vm.$parent.save
+                            action() {
+                                vm.$parent.save();
+                            }
                         },
                         {
                             name: 'fullscreen',

@@ -18,8 +18,6 @@ use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Date;
-use pinoox\component\HelperString;
-use pinoox\component\Lang;
 use pinoox\component\Dir;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
@@ -53,6 +51,16 @@ class PostController extends LoginConfiguration
         $post['image'] = Url::upload($file, $placeHolder);
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
         return $post;
+    }
+
+    public function getPostHistory($post_id)
+    {
+        $items = PostModel::fetch_history_by_post_id($post_id, 30);
+        $items = array_map(function ($item) {
+            $item['approx_insert_date'] = Date::j('l d F Y (H:i)', $item['insert_date']);
+            return $item;
+        }, $items);
+        Response::json($items);
     }
 
     public function getAll()
@@ -95,37 +103,6 @@ class PostController extends LoginConfiguration
         Response::json($posts);
     }
 
-    private function changeStatus($input)
-    {
-        if(!$input['status'])
-            return;
-
-        if ($input['status'] === PostModel::publish_status) {
-            $valid = Validation::check($input, [
-                'title' => ['required', rlang('panel.title')],
-                'context' => ['required', rlang('panel.context')],
-            ]);
-            if ($valid->isFail())
-                Response::jsonMessage($valid->first(), false);
-
-            if ($input['post_type'] === PostModel::page_type) {
-                if (empty($input['post_key']))
-                    Response::jsonMessage(rlang('post.err_page_key_empty'), false);
-
-                if (PostModel::fetch_by_key($input['post_key'], $input['post_id']))
-                    Response::jsonMessage(rlang('post.err_repeat_key'), false);
-            }
-
-            $result = PostModel::update_publish_post($input['post_id']);
-            PostModel::post_draft_update_synced($input['post_id'], 1);
-        } else {
-            $result = PostModel::update_status($input['post_id'], $input['status']);
-        }
-
-        if (!$result)
-            Response::json(rlang('post.error_happened'), false);
-    }
-
     public function save()
     {
         $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags'], null, '!empty');
@@ -160,6 +137,38 @@ class PostController extends LoginConfiguration
 
         PaperDatabase::commit();
         Response::jsonMessage(rlang('post.save_successfully'), true, $input['post_id']);
+    }
+
+    private function changeStatus($input)
+    {
+        if (!$input['status'])
+            return;
+
+        if ($input['status'] === PostModel::publish_status) {
+            $valid = Validation::check($input, [
+                'title' => ['required', rlang('panel.title')],
+                'context' => ['required', rlang('panel.context')],
+            ]);
+            if ($valid->isFail())
+                Response::jsonMessage($valid->first(), false);
+
+            if ($input['post_type'] === PostModel::page_type) {
+                if (empty($input['post_key']))
+                    Response::jsonMessage(rlang('post.err_page_key_empty'), false);
+
+                if (PostModel::fetch_by_key($input['post_key'], $input['post_id']))
+                    Response::jsonMessage(rlang('post.err_repeat_key'), false);
+            }
+
+            PostModel::post_history_insert($input);
+            $result = PostModel::update_publish_post($input['post_id']);
+            PostModel::post_draft_update_synced($input['post_id'], 1);
+        } else {
+            $result = PostModel::update_status($input['post_id'], $input['status']);
+        }
+
+        if (!$result)
+            Response::json(rlang('post.error_happened'), false);
     }
 
     public function delete()

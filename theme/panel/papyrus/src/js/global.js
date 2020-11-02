@@ -22,6 +22,14 @@ Vue.mixin({
                 this.$store.state.ckEditor = val;
             }
         },
+        isTransition: {
+            get() {
+                return this.$store.state.isTransition;
+            },
+            set(val) {
+                this.$store.state.isTransition = val;
+            }
+        },
         LANG: {
             get() {
                 return PINOOX.LANG;

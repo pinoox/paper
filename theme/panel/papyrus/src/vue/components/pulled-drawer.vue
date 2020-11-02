@@ -8,43 +8,21 @@
                 <div class="title">تاریخچه تغییرات</div>
                 <div class="clear">حذف همه</div>
             </div>
-            <div class="drawer-content">
-                <simplebar class="simplebar" v-if="true">
+            <div class="drawer-content" v-if="$parent.historyItems.length > 0">
+                <simplebar class="simplebar">
                     <div class="posts-list">
-                        <div class="item">
-                            <div class="title">بهترین داروهای تقویت سیستم ایمنی بدن</div>
+                        <div class="item" v-for="(item,index) in $parent.historyItems">
+                            <div class="title">{{item.title}}</div>
                             <div class="footer-item">
-                                <span class="date">2 روز قبل</span>
-                                <span class="status">منتشر شده</span>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="title">بهترین داروهای تقویت سیستم ایمنی بدن</div>
-                            <div class="footer-item">
-                                <span class="date">2 روز قبل</span>
-                                <span class="status">منتشر شده</span>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="title">بهترین داروهای تقویت سیستم ایمنی بدن</div>
-                            <div class="footer-item">
-                                <span class="date">2 روز قبل</span>
-                                <span class="status">منتشر شده</span>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="title">بهترین داروهای تقویت سیستم ایمنی بدن</div>
-                            <div class="footer-item">
-                                <span class="date">2 روز قبل</span>
+                                <span class="date">{{item.approx_insert_date}}</span>
                                 <span class="status">منتشر شده</span>
                             </div>
                         </div>
                     </div>
                 </simplebar>
-                <div v-else>
-                    <div class="empty">چیزی برای نمایش وجود ندارد</div>
-                </div>
-
+            </div>
+            <div class="drawer-content" v-else>
+                <div class="empty">چیزی برای نمایش وجود ندارد</div>
             </div>
         </section>
         <div class="pulled-overlay"></div>
@@ -55,10 +33,11 @@
 <script>
     export default {
         mounted() {
-            document.getElementsByClassName('page')[0].classList.add("pulled");
+            this.$parent.getPostHistory();
+            $('.page').addClass('pulled');
         },
         destroyed() {
-            document.getElementsByClassName('page')[0].classList.remove("pulled");
+            $('.page').removeClass('pulled');
         },
         methods: {
             close() {
@@ -67,7 +46,3 @@
         }
     }
 </script>
-
-<style lang="less">
-
-</style>

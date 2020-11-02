@@ -100,9 +100,9 @@
                         </div>
                     </div>
                     <transition name="fade" mode="out-in"
-                                enter-active-class="animate__animated animate__fadeInUp animate__faster"
-                                leave-active-class="animate__animated animate__fadeOutDown animate__faster">
-                        <router-view :key="$route.fullPath"></router-view>
+                                :enter-active-class="isTransition?'animate__animated animate__fadeInUp animate__faster':''"
+                                :leave-active-class="isTransition?'animate__animated animate__fadeOutDown animate__faster':''">
+                            <router-view :key="$route.fullPath"></router-view>
                     </transition>
                 </div>
             </div>

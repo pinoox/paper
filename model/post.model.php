@@ -126,6 +126,23 @@ class PostModel extends PaperDatabase
         ]);
     }
 
+    public static function post_history_insert($data)
+    {
+        $date = Date::g('Y-m-d H:i:s');
+        return self::$db->insert(self::post_history, [
+            'post_id' => $data['post_id'],
+            'title' => $data['title'],
+            'context' => $data['context'],
+            'insert_date' => $date,
+        ]);
+    }
+
+    public static function fetch_history_by_post_id($post_id, $limit = null)
+    {
+        self::$db->where('post_id', $post_id);
+        return self::$db->get(self::post_history, $limit);
+    }
+
     public static function where_post_type($post_type)
     {
         $post_type = !empty($post_type) && $post_type === self::page_type ? self::page_type : self::post_type;
