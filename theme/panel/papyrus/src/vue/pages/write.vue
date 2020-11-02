@@ -47,6 +47,7 @@
                   @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
         <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
+        <preview @close="drawerName = null" :values="preview" :open="drawerName === 'preview'"></preview>
         <input v-show="false" ref="file" type="file" name="file-input" @change="handleFileInput" multiple>
     </section>
 </template>
@@ -58,6 +59,7 @@
     import Category from "../drawers/category.vue";
     import ImageManager from "../drawers/image-manager.vue";
     import Settings from "../drawers/settings.vue";
+    import Preview from "../drawers/preview.vue";
     import PulledDrawer from "../components/pulled-drawer.vue";
 
     export default {
@@ -70,7 +72,7 @@
                 default: 'post',
             }
         },
-        components: {Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
+        components: {Preview, Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
             next();
@@ -78,6 +80,7 @@
         },
         data() {
             return {
+                preview:{},
                 openHistory: false,
                 isSave: true,
                 isOpenFullscreen: false,
@@ -106,7 +109,6 @@
                 },
                 drawerName: false,
                 message: null,
-                historyItems: [],
             };
         },
         computed: {
@@ -223,14 +225,6 @@
                     title: !!data['title'] ? data['title'] : '',
                     context: !!data['context'] ? data['context'] : '',
                 };
-            },
-            getPostHistory() {
-                if (!this.post_id)
-                    return;
-
-                return this.$http.get(this.URL.API + 'post/getPostHistory/' + this.post_id).then((json) => {
-                    this.historyItems = !!json.data ? json.data : [];
-                });
             },
             getPost() {
                 return this.$http.get(this.URL.API + 'post/get/' + this.post_id + '/' + this.post_type).then((json) => {

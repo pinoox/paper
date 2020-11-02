@@ -8,6 +8,8 @@ return [
     'lname' => 'last name',
     'username' => 'username',
     'email' => 'email',
+    'user_status' => 'User status',
+    'user_image' => 'User image',
     'mobile' => 'mobile',
     'password' => 'password',
     're_password' => 'repeat password',
@@ -26,7 +28,7 @@ return [
     'err_old_password' => 'You entered the wrong password',
     'status' => [
         'active' => 'active',
-        'suspend'=>'suspend',
-        'pending'=>'pending',
+        'suspend' => 'suspend',
+        'pending' => 'pending',
     ],
 ];

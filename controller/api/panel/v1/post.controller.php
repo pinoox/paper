@@ -152,6 +152,8 @@ class PostController extends LoginConfiguration
             if ($valid->isFail())
                 Response::jsonMessage($valid->first(), false);
 
+            $post = PostModel::fetch_by_id($input['post_id']);
+
             if ($input['post_type'] === PostModel::page_type) {
                 if (empty($input['post_key']))
                     Response::jsonMessage(rlang('post.err_page_key_empty'), false);
@@ -160,10 +162,13 @@ class PostController extends LoginConfiguration
                     Response::jsonMessage(rlang('post.err_repeat_key'), false);
             }
 
-            PostModel::post_history_insert($input);
+            $status = $post['status'] === PostModel::publish_status ? PostModel::synced_status : PostModel::publish_status;
+
+            PostModel::post_history_insert($input, $status);
             $result = PostModel::update_publish_post($input['post_id']);
             PostModel::post_draft_update_synced($input['post_id'], 1);
         } else {
+            PostModel::post_history_insert($input, PostModel::cancel_publish_status);
             $result = PostModel::update_status($input['post_id'], $input['status']);
         }
 

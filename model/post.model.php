@@ -21,6 +21,8 @@ class PostModel extends PaperDatabase
     //status
     const draft_status = "draft";
     const publish_status = "publish";
+    const cancel_publish_status = "cancel_publish";
+    const synced_status = "synced";
 
     //type
     const post_type = "post";
@@ -126,7 +128,7 @@ class PostModel extends PaperDatabase
         ]);
     }
 
-    public static function post_history_insert($data)
+    public static function post_history_insert($data,$status)
     {
         $date = Date::g('Y-m-d H:i:s');
         return self::$db->insert(self::post_history, [
@@ -134,11 +136,13 @@ class PostModel extends PaperDatabase
             'title' => $data['title'],
             'context' => $data['context'],
             'insert_date' => $date,
+            'status' => $status,
         ]);
     }
 
     public static function fetch_history_by_post_id($post_id, $limit = null)
     {
+        self::$db->orderBy('insert_date', 'DESC');
         self::$db->where('post_id', $post_id);
         return self::$db->get(self::post_history, $limit);
     }
