@@ -26,6 +26,7 @@ export default new Vuex.Store({
             });
         },
         addImageEditor: (state, image) => {
+            image = typeof image === 'object'? image.link : image;
             state.ckEditor.model.change(writer => {
                 const imageElement = writer.createElement('image', {
                     src: image,

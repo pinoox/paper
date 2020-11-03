@@ -66,6 +66,11 @@
                 }
                 this.toggleDrawer();
             },
+            addImage(image)
+            {
+                this.addImageEditor(image.link);
+                this.toggleDrawer();
+            },
             deleteImages() {
                 this._confirm(this.LANG.post.confirm_delete_images, () => {
                     for(const image of this.selected)
