@@ -68,7 +68,7 @@ class PostModel extends PaperDatabase
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id');
         self::$db->where('p.post_id', $post_id);
-        return self::$db->getOne(self::post . ' p', 'p.*,pd.title draft_title,pd.context draft_context,pd.synced,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
+        return self::$db->getOne(self::post . ' p', 'p.*,pd.title draft_title,pd.context draft_context,pd.synced,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id,pd.characters,pd.words');
     }
 
     public static function post_draft_update($data)
@@ -80,6 +80,8 @@ class PostModel extends PaperDatabase
             'context' => $data['context'],
             'update_date' => $date,
             'synced' => 0,
+            'characters' => !empty($data['characters'])? $data['characters'] : 0,
+            'words' => !empty($data['words'])? $data['words'] : 0,
         ]);
     }
 
@@ -92,6 +94,8 @@ class PostModel extends PaperDatabase
             'context' => $data['context'],
             'update_date' => $date,
             'synced' => 0,
+            'characters' => !empty($data['characters'])? $data['characters'] : 0,
+            'words' => !empty($data['words'])? $data['words'] : 0,
         ]);
     }
 
@@ -125,6 +129,8 @@ class PostModel extends PaperDatabase
             'context' => $post['draft_context'],
             'publish_date' => $date,
             'status' => self::publish_status,
+            'characters' => !empty($post['characters'])? $post['characters'] : 0,
+            'words' => !empty($post['words'])? $post['words'] : 0,
         ]);
     }
 
@@ -133,6 +139,7 @@ class PostModel extends PaperDatabase
         $date = Date::g('Y-m-d H:i:s');
         return self::$db->insert(self::post_history, [
             'post_id' => $data['post_id'],
+            'user_id' => User::get('user_id'),
             'title' => $data['title'],
             'context' => $data['context'],
             'insert_date' => $date,
