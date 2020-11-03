@@ -15,7 +15,6 @@
                 </div>
             </div>
             <div class="drawer-content" @keyup.enter="save()">
-                <simplebar>
                     <row :gutter="12" :columns="2" class="col-sm-order">
 
                         <column :sm="2" :md="1" class="order-1">
@@ -95,7 +94,6 @@
                             </div>
                         </column>
                     </row>
-                </simplebar>
             </div>
             <div slot='footer' class="drawer-footer">
                 <div @click="closeDrawer()" class="btn btn-simple">{{LANG.panel.close}}</div>

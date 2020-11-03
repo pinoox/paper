@@ -14,7 +14,7 @@
         </simplebar>
         <div class="statusbar">
             <div class="item revert">
-                <div class="label history" @click="onHistoryDrawer()">
+                <div v-if="!!$parent.post_id" class="label history" @click="onHistoryDrawer()">
                     <simple-svg :src="_icons.history"
                                 width="14px"
                                 customClassName="icon"/>
@@ -26,8 +26,8 @@
                 <div class="label" :class="status">{{LANG.post.status[status]}}</div>
             </div>
             <div class="item">
-                <div class="label">{{stats.words}} {{LANG.post.word}}</div>
-                <div class="label">{{stats.characters}} {{LANG.post.character}}</div>
+                <div class="label">{{$parent.params.words}} {{LANG.post.word}}</div>
+                <div class="label">{{$parent.params.characters}} {{LANG.post.character}}</div>
             </div>
             <div class="item">
                 <span class="label no-select">{{LANG.post.size_screen}}</span>
@@ -93,7 +93,6 @@
                             '|',
                             'heading',
                             'fontSize',
-                            'fontFamily',
                             'fontColor',
                             '|',
                             'bold',
@@ -122,7 +121,6 @@
                             'italic',
                             'underline',
                             'strikethrough',
-                            'highlight',
                             'fontSize',
                             '|',
                             'alignment',
@@ -138,7 +136,8 @@
                     placeholder: this.placeholder,
                     wordCount: {
                         onUpdate: stats => {
-                            this.stats = stats;
+                            this.$parent.params.characters = stats.characters;
+                            this.$parent.params.words = stats.words;
                         }
                     },
                     image: {
@@ -298,7 +297,7 @@
                 return {
                     waitingTime: parseInt(this.autosaveTime) * 1000,
                     save(editor) {
-                        if (vm.autosave && !vm.$parent.isSave && !vm.$parent.drawerName)
+                        if (vm.autosave && !!vm.$parent.post_id && !vm.$parent.isSave && !vm.$parent.drawerName)
                             return vm.$emit('save');
                         else
                             return false;
@@ -321,10 +320,6 @@
                 paperSize: 75,
                 marginTop: '64px',
                 marginContent: '0',
-                stats: {
-                    characters: 0,
-                    words: 0,
-                },
             };
         },
         methods: {

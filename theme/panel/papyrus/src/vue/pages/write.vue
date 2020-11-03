@@ -2,13 +2,13 @@
     <section class="page">
         <div class="menubar">
             <div class="items">
-                <div @click="openDrawer('publish')" class="item publish-item">
+                <div v-if="!!post_id" @click="openDrawer('publish')" class="item publish-item">
                     {{!isPageType?LANG.post.post_publication : LANG.post.page_publication}}
                 </div>
                 <div class="item" @click="save()">
                     {{LANG.post.save}}
                 </div>
-                <div v-if="post_type==='post'" class="item" @click="openDrawer('category')">
+                <div v-if="!!post_id && post_type==='post'" class="item" @click="openDrawer('category')">
                     {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                 </div>
                 <div class="item" @click="drawerName = 'image-manager'">
@@ -18,7 +18,7 @@
                              :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
                     {{LANG.post.stats}}
                 </router-link>
-                <div class="item" @click="drawerName = 'settings'">
+                <div v-if="!!post_id" class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
                 </div>
             </div>
@@ -64,24 +64,24 @@
 
     export default {
         name: 'write',
-        props: {
-            post_id: {
-                default: null,
-            },
-            post_type: {
-                default: 'post',
-            }
-        },
         components: {Preview, Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
             next();
             // });
         },
+        beforeRouteUpdate(to, from, next) {
+            if (to.name === this.$route.name) {
+                window.history.pushState(null, {}, to.path);
+            } else {
+                next();
+            }
+        },
         data() {
             return {
-                preview:{},
-                historyItems:[],
+                temp_post_id: null,
+                preview: {},
+                historyItems: [],
                 openHistory: false,
                 isSave: true,
                 isOpenFullscreen: false,
@@ -99,6 +99,8 @@
                     hash_id: null,
                     image: null,
                     post_key: '',
+                    characters: 0,
+                    words: 0,
                 },
                 images: [],
                 status: 'draft',
@@ -115,11 +117,22 @@
         computed: {
             isPageType() {
                 return this.post_type === 'page';
-            }
+            },
+            post_type() {
+                return !!this.$route.name && this.$route.name === 'page-write' ? 'page' : 'post';
+            },
+            post_id:
+                {
+                    get() {
+                        return this.temp_post_id;
+                    },
+                    set(val) {
+                        this.temp_post_id = val;
+                    }
+                }
         },
         created() {
-            this.isTransition = true;
-
+            this.setPostId();
             this.getInitData()
                 .then(() => {
                     return this.getImages();
@@ -136,6 +149,10 @@
                 });
         },
         methods: {
+            setPostId() {
+                if (!!this.$route.params.post_id)
+                    this.post_id = this.$route.params.post_id;
+            },
             getInitData() {
                 this.params.post_type = this.post_type;
                 this.getSettings();
@@ -287,10 +304,7 @@
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
-                        if (!this.post_id) {
-                            this.isTransition = false;
-                            this._routerReplace({name: this.$route.name, params: {post_id: json.data.result}});
-                        }
+                        this.replaceUrl(json.data.result);
                         this.isSynced = false;
                         this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
                         this.changeStatus(status);
@@ -299,6 +313,16 @@
                     }
 
                     return json.data;
+                });
+            },
+            replaceUrl(post_id) {
+                if (!!this.post_id)
+                    return;
+
+                this.post_id = post_id;
+                this._routerReplace({name: this.$route.name, params: {post_id: post_id}});
+                this.getPost().then(() => {
+                    this.isSave = true;
                 });
             },
             createTags(tags) {
