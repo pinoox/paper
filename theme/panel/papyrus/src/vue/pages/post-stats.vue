@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <simplebar class="simplebar">
-            <div class="container" v-if="post!=null && stats!=null">
+            <div class="container" v-if=" post!=null && stats!=null">
                 <div class="post-stats">
 
                     <section class="section">
@@ -12,92 +12,103 @@
                         </div>
                     </section>
 
-                    <section class="section" v-if="monthly!=null">
-                        <div class="section-title">
-                            <h2>{{LANG.post.stats_post}}</h2>
-                        </div>
-                        <div class="section-content">
-                            <row :gutter="0" :columns="1" class="box-group">
-                                <column :sm="1" :md="1" :lg="1">
-                                    <apexchart type="bar"
-                                               :options="monthlyOpts"
-                                               :height="monthlyOpts.chart.height"
-                                               :width="monthlyOpts.chart.width"
-                                               :series="monthly"></apexchart>
-                                </column>
-                            </row>
-                        </div>
-                    </section>
+                    <div v-if="hasStats">
+                        <section class="section" v-if="monthly!=null">
+                            <div class="section-title">
+                                <h2>{{LANG.post.stats_post}}</h2>
+                            </div>
+                            <div class="section-content">
+                                <row :gutter="0" :columns="1" class="box-group">
+                                    <column :sm="1" :md="1" :lg="1">
+                                        <apexchart type="bar"
+                                                   :options="monthlyOpts"
+                                                   :height="monthlyOpts.chart.height"
+                                                   :width="monthlyOpts.chart.width"
+                                                   :series="monthly"></apexchart>
+                                    </column>
+                                </row>
+                            </div>
+                        </section>
 
-                    <section class="section">
-                        <div class="section-title">
-                            <h2>{{LANG.post.stats_7_days}}</h2>
-                        </div>
-                        <div class="section-content">
-                            <row :gutter="50" :columns="3" class="box-group">
-                                <column :sm="3" :md="4" :lg="1">
-                                    <div class="box box3">
-                                        <div class="details">
-                                            <h3>{{stats.visits.total}}</h3>
-                                            <h4>{{LANG.post.visits}}</h4>
+                        <section class="section">
+                            <div class="section-title">
+                                <h2>{{LANG.post.stats_7_days}}</h2>
+                            </div>
+                            <div class="section-content">
+                                <row :gutter="50" :columns="3" class="box-group">
+                                    <column :sm="3" :md="4" :lg="1">
+                                        <div class="box box3">
+                                            <div class="details">
+                                                <h3>{{stats.visits.total}}</h3>
+                                                <h4>{{LANG.post.visits}}</h4>
+                                            </div>
+                                            <apexchart type="line"
+                                                       :width="220"
+                                                       :height="80"
+                                                       :options="miniBoxOpts"
+                                                       :series="stats.visits.series"></apexchart>
                                         </div>
-                                        <apexchart type="line"
-                                                   :width="220"
-                                                   :height="80"
-                                                   :options="miniBoxOpts"
-                                                   :series="stats.visits.series"></apexchart>
-                                    </div>
-                                </column>
-                                <column :sm="3" :md="4" :lg="1">
-                                    <div class="box box4">
-                                        <div class="details">
-                                            <h3>{{stats.visitors.total}}</h3>
-                                            <h4>{{LANG.post.visitors}}</h4>
+                                    </column>
+                                    <column :sm="3" :md="4" :lg="1">
+                                        <div class="box box4">
+                                            <div class="details">
+                                                <h3>{{stats.visitors.total}}</h3>
+                                                <h4>{{LANG.post.visitors}}</h4>
+                                            </div>
+                                            <apexchart type="line"
+                                                       :width="220"
+                                                       :height="80"
+                                                       :options="miniBoxOpts"
+                                                       :series="stats.visitors.series"></apexchart>
                                         </div>
-                                        <apexchart type="line"
-                                                   :width="220"
-                                                   :height="80"
-                                                   :options="miniBoxOpts"
-                                                   :series="stats.visitors.series"></apexchart>
-                                    </div>
-                                </column>
-                                <column :sm="3" :md="4" :lg="1">
-                                    <div class="box box2">
-                                        <div class="details">
-                                            <h3>{{stats.visitors.total}}</h3>
-                                            <h4>{{LANG.post.comments}}</h4>
+                                    </column>
+                                    <column :sm="3" :md="4" :lg="1">
+                                        <div class="box box2">
+                                            <div class="details">
+                                                <h3>{{stats.visitors.total}}</h3>
+                                                <h4>{{LANG.post.comments}}</h4>
+                                            </div>
+                                            <apexchart type="line"
+                                                       :width="220"
+                                                       :height="80"
+                                                       :options="miniBoxOpts"
+                                                       :series="stats.visitors.series"></apexchart>
                                         </div>
-                                        <apexchart type="line"
-                                                   :width="220"
-                                                   :height="80"
-                                                   :options="miniBoxOpts"
-                                                   :series="stats.visitors.series"></apexchart>
-                                    </div>
-                                </column>
-                            </row>
-                        </div>
-                    </section>
+                                    </column>
+                                </row>
+                            </div>
+                        </section>
 
-                    <section class="section" v-if="devices!=null">
-                        <div class="section-title">
-                            <h2>{{LANG.post.stats_devices}}</h2>
+                        <section class="section" v-if="devices!=null">
+                            <div class="section-title">
+                                <h2>{{LANG.post.stats_devices}}</h2>
+                            </div>
+                            <div class="section-content">
+                                <row :gutter="12" :columns="1" class="box-group">
+                                    <column :sm="1" :md="1" :lg="1">
+                                        <div class="box center" v-if="devices!=null">
+                                            <apexchart
+                                                    ref="devicesChart"
+                                                    type="radialBar"
+                                                    :width="350"
+                                                    :height="350"
+                                                    :options="radialOpts"
+                                                    :series="devices.percents"></apexchart>
+                                        </div>
+                                    </column>
+                                </row>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="section">
+                        <div class="empty-message">
+                            <div class="text"><span class="icon"><i class="fas fa-chart-line"></i></span> {{LANG.post.empty_stats}}</div>
+                            <div @click="$router.go(-1)" class="btn btn-simple btn-sm">{{LANG.panel.back}}</div>
                         </div>
-                        <div class="section-content">
-                            <row :gutter="12" :columns="1" class="box-group">
-                                <column :sm="1" :md="1" :lg="1">
-                                    <div class="box center" v-if="devices!=null">
-                                        <apexchart
-                                                ref="devicesChart"
-                                                type="radialBar"
-                                                :width="350"
-                                                :height="350"
-                                                :options="radialOpts"
-                                                :series="devices.percents"></apexchart>
-                                    </div>
-                                </column>
-                            </row>
-                        </div>
-                    </section>
+
+
+                    </div>
+
 
                 </div>
             </div>
@@ -110,6 +121,7 @@
         props: ['post_id'],
         data() {
             return {
+                hasStats: false,
                 post: null,
                 stats: null,
                 devices: null,
@@ -280,9 +292,16 @@
                     this.monthlyOpts.xaxis.categories = json.data.date;
                 });
             },
+            getHasStats() {
+                return this.$http.post(this.URL.API + 'post/hasStats/' + this.post_id).then((json) => {
+                    this.hasStats = json.data;
+                });
+            },
         },
         created() {
             this.getPost().then(() => {
+                this.getHasStats();
+            }).then(() => {
                 this.getMonthly();
             }).then(() => {
                 this.getStats();
