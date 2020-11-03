@@ -7,26 +7,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         user: {},
+        userSettings: {},
         ckEditor: null,
         isLoading: false,
         isTransition: true,
     },
     getters: {},
     mutations: {
-        getUser: (state) => {
-            $http.get(PINOOX.URL.API + 'user/get').then((json) => {
-                if (!!json.data && json.data.status && json.data.status !== 404) {
-                    let data = json.data.result;
-                    data.isLogin = true;
-                    state.user = data;
-                } else {
-                    state.user = {isLogin: false}
-                }
-
-            });
-        },
         addImageEditor: (state, image) => {
-            image = typeof image === 'object'? image.link : image;
+            image = typeof image === 'object' ? image.link : image;
             state.ckEditor.model.change(writer => {
                 const imageElement = writer.createElement('image', {
                     src: image,
@@ -52,5 +41,7 @@ export default new Vuex.Store({
             state.ckEditor.setData(context);
         },
     },
-    actions: {}
+    actions: {
+
+    }
 });

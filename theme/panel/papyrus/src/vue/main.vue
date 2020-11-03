@@ -80,7 +80,6 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex';
     import Menu from "./drawers/menu.vue";
     import Sidebar from "./components/sidebar.vue";
 
@@ -115,7 +114,6 @@
             }
         },
         methods: {
-            ...mapMutations(['getUser']),
             customInterceptors() {
                 this.numProcessing = 0;
                 this.$http.interceptors.request.use((request) => {
@@ -162,7 +160,7 @@
         created() {
             this.timestamp = this.getTimeStamp();
             this.customInterceptors();
-            this.getUser();
+            this.getInitUser();
             this.route = this._clone({
                 ...this.$route,
             });

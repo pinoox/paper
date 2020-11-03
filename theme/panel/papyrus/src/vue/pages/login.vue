@@ -23,8 +23,6 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex';
-
     export default {
         data() {
             return {
@@ -36,12 +34,11 @@
         },
         methods:
             {
-                ...mapMutations(['getUser']),
                 login() {
-                    this.$http.post(PINOOX.URL.API + 'account/login',this.params).then((json) => {
+                    this.$http.post(PINOOX.URL.API + 'account/login', this.params).then((json) => {
                         if (this._messageResponse(json.data)) {
                             localStorage.pinoox_user = json.data.result;
-                            this.getUser();
+                            this.getInitUser();
                         }
                     });
                 }
