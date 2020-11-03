@@ -26,8 +26,8 @@
                 <div class="label" :class="status">{{LANG.post.status[status]}}</div>
             </div>
             <div class="item">
-                <div class="label">{{stats.words}} {{LANG.post.word}}</div>
-                <div class="label">{{stats.characters}} {{LANG.post.character}}</div>
+                <div class="label">{{$parent.params.words}} {{LANG.post.word}}</div>
+                <div class="label">{{$parent.params.characters}} {{LANG.post.character}}</div>
             </div>
             <div class="item">
                 <span class="label no-select">{{LANG.post.size_screen}}</span>
@@ -136,7 +136,8 @@
                     placeholder: this.placeholder,
                     wordCount: {
                         onUpdate: stats => {
-                            this.stats = stats;
+                            this.$parent.params.characters = stats.characters;
+                            this.$parent.params.words = stats.words;
                         }
                     },
                     image: {
@@ -319,10 +320,6 @@
                 paperSize: 75,
                 marginTop: '64px',
                 marginContent: '0',
-                stats: {
-                    characters: 0,
-                    words: 0,
-                },
             };
         },
         methods: {

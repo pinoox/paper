@@ -99,6 +99,8 @@
                     hash_id: null,
                     image: null,
                     post_key: '',
+                    characters: 0,
+                    words: 0,
                 },
                 images: [],
                 status: 'draft',
