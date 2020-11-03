@@ -14,7 +14,7 @@
         </simplebar>
         <div class="statusbar">
             <div class="item revert">
-                <div class="label history" @click="onHistoryDrawer()">
+                <div v-if="!!$parent.post_id" class="label history" @click="onHistoryDrawer()">
                     <simple-svg :src="_icons.history"
                                 width="14px"
                                 customClassName="icon"/>
@@ -93,7 +93,6 @@
                             '|',
                             'heading',
                             'fontSize',
-                            'fontFamily',
                             'fontColor',
                             '|',
                             'bold',
@@ -122,7 +121,6 @@
                             'italic',
                             'underline',
                             'strikethrough',
-                            'highlight',
                             'fontSize',
                             '|',
                             'alignment',
@@ -298,7 +296,7 @@
                 return {
                     waitingTime: parseInt(this.autosaveTime) * 1000,
                     save(editor) {
-                        if (vm.autosave && !vm.$parent.isSave && !vm.$parent.drawerName)
+                        if (vm.autosave && !!vm.$parent.post_id && !vm.$parent.isSave && !vm.$parent.drawerName)
                             return vm.$emit('save');
                         else
                             return false;

@@ -9,7 +9,6 @@ import PostStats from '../vue/pages/post-stats.vue';
 import Users from '../vue/pages/users.vue';
 import Contacts from '../vue/pages/contacts.vue';
 import Comments from '../vue/pages/comments.vue';
-import PageWrite from '../vue/pages/page-write.vue';
 import Profile from '../vue/pages/profile.vue';
 import Setting from '../vue/pages/setting/main.vue';
 import SettingGeneral from '../vue/pages/setting/general.vue';
@@ -56,7 +55,7 @@ export const routes = [
     {
         path: PINOOX.URL.BASE + '/page/write/:post_id?',
         name: 'page-write',
-        component: PageWrite,
+        component: Write,
         props: true,
     },
     {
