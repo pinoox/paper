@@ -28,6 +28,9 @@ return [
     'go_to_dashboard' => 'go to dashboard',
     'page_not_found' => 'page not found!',
     'page_not_found_description' => 'sorry, the page you are looking for does not exist. Please try again!',
+    'quick_access' => 'quick access',
+    'sections' => 'sections',
+    'total_posts_stats' => 'Visit statistics of all posts',
 
     'dashboard' => 'dashboard',
     'user' => 'user',

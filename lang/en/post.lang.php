@@ -90,8 +90,7 @@ return [
     'stats_post' => 'Visit statistics',
     'yesterday' => 'yesterday',
     'today' => 'today',
-    'change_history' => 'change history',
-
+    'empty_stats' => 'no statistics have been recorded for this post so far',
     /** category **/
     'add' => 'add',
     'category_info' => 'categorize your posts',

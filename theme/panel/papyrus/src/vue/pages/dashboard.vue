@@ -1,223 +1,186 @@
 <template>
     <section class="page">
-        <div class="container">
+        <simplebar class="simplebar">
             <div class="dashboard">
-                <div class="section"
-                     v-if="latestPosts!=null && latestPosts.length>0">
-                    <div class="section-title">
-                        <h2>{{LANG.post.latest_posts}}</h2>
-                        <router-link :to="{name:'posts'}" class="more">{{LANG.post.all}} <i
-                                class="fa fa-chevron-left"></i></router-link>
-                    </div>
-                    <div class="section-content">
-                        <swiper class="swiper-posts"
-                                :options="swiperOpts"
-                                :next="false"
-                                :prev="false"
-                                :pagination="false">
-                            <router-link tag="div" :to="{name:'write',params:{post_id:i.post_id}}" class="swiper-slide"
-                                         v-for="i in latestPosts">
-                                <img class="thumb" :src="i.image" alt="title">
-                                <div class="title">{{_isNull(i.title, LANG.post.no_title)}}</div>
-                                <div class="status">{{LANG.post.status[i.status]}}</div>
-
-                            </router-link>
-                        </swiper>
-                    </div>
-                </div>
-                <div class="section" v-else>
-                    <div class="section-content">
-                        <div class="encourage-writing">
-                            <div class="greeting">
-                                <span v-if="_dir=='ltr'">{{LANG.post.hello}} {{LANG.post.dear}} <b>{{USER.fname}}</b></span>
-                                <span v-else>{{LANG.post.hello}} <b>{{USER.fname}}</b> {{LANG.post.dear}}</span>
+                <row :gutter="10" :columns="5">
+                    <column :sm="4" :md="3" :lg="3">
+                        <div class="greeting">
+                            <div class="art">
+                                <img src="@img/svg/art_sun.svg" alt="moon">
                             </div>
-                            <br>
-                            <div class="write-guide">
-                                {{LANG.post.first_post}}
+                            <div class="text">
+                                <div class="title">
+                                    <span class="hello">{{LANG.panel.hello}}</span>
+                                    <span class="user">{{USER.fname}}</span>
+                                    <span class="date">{{LANG.panel.today}} سه شنبه 13 آبان 1399</span>
+                                </div>
+                                <div class="message">{{LANG.panel.greeting_message}}</div>
                             </div>
-                            <br>
-                            <div class="btn-wrapper">
-                                <router-link :to="{name:'write'}" tag="div" class="btn btn-primary btn-write">
-                                    <simple-svg
-                                            :src="_icons.pen"
-                                            width="22px"
-                                            customClassName="icon"/>
-                                    {{LANG.post.write_first_post}}
-                                </router-link>
-                                <img :src="_icons.arrow_right" class="arrow">
+                            <div class="action">
+                                <div class="btn btn-sm btn-outline-primary">{{LANG.panel.get_started}}</div>
                             </div>
-
-                            <img :src="_icons.first_post" class="art">
-
                         </div>
-                    </div>
-                </div>
-
-                <div class="section compact-mode" v-if="latestComments!=null && latestComments.length > 0">
-                    <div class="section-title">
-                        <h2>{{LANG.comment.latest_comments}}</h2>
-                        <router-link :to="{name:'comments'}" tag="div" class="more"> {{LANG.panel.all}} <i
-                                class="fa fa-chevron-left"></i></router-link>
-                    </div>
-                    <div class="section-content">
-                        <vue-good-table
-                                styleClass="vgt-table table"
-                                :rtl="_dir==='rtl'"
-                                compactMode
-                                :columns="commentCols"
-                                :rows="latestComments">
-                            <template slot="table-row" slot-scope="props">
-                                <div v-if="props.column.field === 'thumb_128'">
-                                    <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
-                                </div>
-                                <div v-else-if="props.column.field === 'operation'">
-                                <span @click="toggleStatusComment(props.row,props.index)" class="btn-action">
-                                    <i class="fas"
-                                       :class="[props.row.status==='publish' ? 'fa-comment-slash' : 'fa-check']"></i></span>
-                                    <span @click="removeComment(props.row,props.index)" class="btn-action">
-                                    <i class="fa fa-trash"></i></span>
-                                </div>
-                                <div v-else-if="props.column.field === 'status'">
-                                    <span class="light">{{LANG.comment.status[props.row.status]}}</span>
-                                </div>
-                                <div v-else-if="props.column.field === 'title'">
-                                    <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
-                                        <span :class="props.column.style">{{props.row.title}}</span>
-                                    </router-link>
-                                </div>
-                                <div v-else>
-                                <span :class="props.column.style">
-                                    {{props.formattedRow[props.column.field]}}
-                                </span>
-                                </div>
-                            </template>
-                            <div slot="emptystate">
-                                <div class="empty-data">
-                                    {{LANG.panel.empty_table}}
+                    </column>
+                    <column :sm="4" :md="1" :lg="1">
+                        <div class="single-stat purple">
+                            <div class="caption">کل زمان سپری شده برای نوشتن</div>
+                            <div class="amount">2</div>
+                            <div class="unit">ساعت</div>
+                        </div>
+                    </column>
+                    <column :sm="4" :md="1" :lg="1">
+                        <div class="single-stat red">
+                            <div class="caption">{{LANG.panel.total_written_words}}</div>
+                            <div class="amount">{{stats.words}}</div>
+                            <div class="unit">{{LANG.panel.word}}</div>
+                        </div>
+                    </column>
+                </row>
+                <br>
+                <row :gutter="10" :columns="3">
+                    <column :sm="1" :md="1" :lg="1">
+                        <div class="box-stat box">
+                            <div class="text">
+                                <div class="caption">{{LANG.panel.visits}} {{LANG.panel.today}}</div>
+                                <div class="amount">2265 {{LANG.panel.times}}</div>
+                                <div class="footnote red"><i class="fas fa-chart-line"></i> 12% کاهش نسبت به دیروز</div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <simple-svg :src="_icons.eye"
+                                                customClassName="stroke"/>
                                 </div>
                             </div>
-                            <template slot="loadingContent">
-                                <div class="loading-message spinner"></div>
-                            </template>
+                        </div>
+                    </column>
+                    <column :sm="1" :md="1" :lg="1">
+                        <div class="box-stat box">
+                            <div class="text">
+                                <div class="caption">{{LANG.panel.visitors}} {{LANG.panel.today}}</div>
+                                <div class="amount">265 {{LANG.panel.persons}}</div>
+                                <div class="footnote green"><i class="fas fa-chart-line"></i> 36% افزایش نسبت به دیروز
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <simple-svg :src="_icons.users"
+                                                customClassName="fill ic_users"/>
+                                </div>
+                            </div>
+                        </div>
+                    </column>
+                    <column :sm="1" :md="1" :lg="1">
+                        <div class="box-stat box">
+                            <div class="text">
+                                <div class="caption">{{LANG.comment.comments}} {{LANG.panel.today}}</div>
+                                <div class="amount">2 {{LANG.comment.comment}}</div>
+                                <div class="footnote orange">2 {{LANG.comment.comment}}
+                                    {{LANG.comment.status.pending}}
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <simple-svg :src="_icons.comment"
+                                                customClassName="stroke ic_comments"/>
+                                </div>
+                            </div>
+                        </div>
+                    </column>
+                </row>
 
-                        </vue-good-table>
-                    </div>
+                <div class="container">
+                    <section class="section" v-if="monthly!=null">
+                        <div class="section-title">
+                            <h2>{{LANG.panel.total_posts_stats}}</h2>
+                        </div>
+                        <div class="section-content">
+                            <row :gutter="0" :columns="1" class="box-group">
+                                <column :sm="1" :md="1" :lg="1">
+                                    <apexchart type="bar"
+                                               :options="monthlyOpts"
+                                               :height="monthlyOpts.chart.height"
+                                               :width="monthlyOpts.chart.width"
+                                               :series="monthly"></apexchart>
+                                </column>
+                            </row>
+                        </div>
+                    </section>
                 </div>
             </div>
-        </div>
+        </simplebar>
     </section>
 </template>
 
 <script>
-    import Swiper from '../components/swiper.vue';
 
     export default {
-        components: {Swiper},
         data() {
             return {
-                latestPosts: null,
-                latestComments: null,
-                swiperOpts: {
-                    loop: false,
-                    slidesPerView: 1,
-                    spaceBetween: 50,
-                    autoplay: {
-                        delay: 2500,
-                        disableOnInteraction: false
+                monthly: null,
+                monthlyOpts: {
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        width: '100%',
+                        fontFamily: 'IranSans',
+                        toolbar: {
+                            show: false,
+                        },
                     },
-                    breakpoints: {
-                        // when window width is >= 320px
-                        320: {
-                            slidesPerView: 1,
-                            spaceBetween: 20
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '40%',
                         },
-                        480: {
-                            slidesPerView: 2,
-                            spaceBetween: 30
-                        },
-                        640: {
-                            slidesPerView: 3,
-                            spaceBetween: 40
-                        },
-                        768: {
-                            slidesPerView: 4,
-                            spaceBetween: 40
+                    },
+                    dataLabels: {
+                        enabled: true
+                    },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                    },
+                    xaxis: {
+                        categories: []
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return " " + val
+                            }
                         }
                     }
                 },
-                commentCols: [
-                    {
-                        label: PINOOX.LANG.panel.id,
-                        field: 'comment_id',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.user,
-                        field: 'full_name',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.subject,
-                        field: 'subject',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.message,
-                        field: 'message',
-                    },
-                    {
-                        label: PINOOX.LANG.post.post,
-                        field: 'title',
-                        style: 'link',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.date,
-                        field: 'approx_insert_date',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.status,
-                        field: 'status',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.operation,
-                        field: 'operation',
-                        style: 'operation',
-                        sortable: false,
-                    },
-                ],
+                unseen: {contacts: null, comments: null},
+                stats: {words: 0},
             }
         },
         methods: {
-            getLatestPosts() {
-                this.$http.post(this.URL.API + 'post/getLatestPosts/').then((json) => {
-                    this.latestPosts = json.data;
+            getCountNotifies() {
+                this.$http.post(this.URL.API + 'dashboard/getCountNotifies').then((json) => {
+                    this.unseen = json.data;
                 });
             },
-            getLatestComments() {
-                this.$http.post(this.URL.API + 'comment/getLatestComments/').then((json) => {
-                    this.latestComments = json.data;
+            getStats() {
+                return this.$http.post(this.URL.API + 'dashboard/getStats').then((json) => {
+                    this.stats = json.data;
                 });
             },
-            toggleStatusComment(item, index) {
-                this.$http.post(this.URL.API + 'comment/changeStatus/', item).then((json) => {
-                    if (this._messageResponse(json.data)) {
-                        this.getLatestComments();
-                    }
-                });
-            },
-            removeComment(row, index) {
-                let params = {contact_id: row.contact_id};
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
-                    this.$http.post(this.URL.API + 'comment/delete/', params).then((json) => {
-                        if (this._messageResponse(json.data)) {
-                            this.$delete(this.latestComments, index)
-                        }
-                    });
+            getMonthly() {
+                return this.$http.post(this.URL.API + 'post/getMonthly/').then((json) => {
+                    this.monthly = json.data.series;
+                    this.monthlyOpts.xaxis.categories = json.data.date;
                 });
             },
         },
         created() {
-            this.getLatestPosts();
-            this.getLatestComments();
+            this.getCountNotifies();
+            this.getStats();
+            this.getMonthly();
         }
     }
 </script>
