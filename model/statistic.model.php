@@ -165,9 +165,11 @@ class StatisticModel extends PaperDatabase
 
     public static function fetch_visits($post_id, $days = 7)
     {
+        if (!is_null($post_id))
+            self::$db->where('s.post_id', $post_id);
+
         $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
         self::$db->where('s.insert_date', $fromDate, '>=');
-        self::$db->where('s.post_id', $post_id);
         self::$db->groupBy('date');
         $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date, SUM(s.visits) value');
         if (empty($result)) return null;
@@ -181,11 +183,14 @@ class StatisticModel extends PaperDatabase
 
     public static function fetch_visitors($post_id, $days = 7)
     {
+        $q = is_null($post_id) ? 'SUM(s.visitors) value' : 'COUNT(s.stat_id) value';
+        if (!is_null($post_id))
+            self::$db->where('s.post_id', $post_id);
+
         $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
         self::$db->where('s.insert_date', $fromDate, '>=');
-        self::$db->where('s.post_id', $post_id);
         self::$db->groupBy('date');
-        $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date, COUNT(s.stat_id) value');
+        $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date,' . $q);
         if (empty($result)) return null;
 
         $total = 0;
@@ -227,7 +232,7 @@ class StatisticModel extends PaperDatabase
     {
         self::$db->where('s.post_id', $post_id);
         $rows = self::$db->get(self::statistic . ' s');
-        if (empty($rows)) return [null,null];
+        if (empty($rows)) return [null, null];
 
         $result = [];
         foreach ($rows as $r) {
@@ -252,11 +257,18 @@ class StatisticModel extends PaperDatabase
         if (empty($stats)) return [];
         $result = [];
         foreach ($stats as $k => $s) {
-            $p  = $s * 100 / (float) $total;
-            $p = floatval( number_format($p, 1));
+            $p = $s * 100 / (float)$total;
+            $p = floatval(number_format($p, 1));
             $result[] = ['device' => $k, 'percent' => $p];
         }
         return $result;
+    }
+
+    public static function has_stats($post_id)
+    {
+        self::$db->where('s.stat_id', $post_id);
+        self::$db->getOne(self::statistic . ' s');
+        return self::$db->count > 0;
     }
 
     public static function createStatsObject()

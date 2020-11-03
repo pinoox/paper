@@ -341,10 +341,12 @@ class PostController extends LoginConfiguration
         Response::json($data);
     }
 
-    public function getMonthly($post_id)
+    public function getMonthly($post_id = null)
     {
-        $post = PostModel::fetch_by_id($post_id);
-        if (empty($post)) return null;
+        if (!is_null($post_id)) {
+            $post = PostModel::fetch_by_id($post_id);
+            if (empty($post)) return null;
+        }
 
         $days = 10;
 
@@ -378,6 +380,11 @@ class PostController extends LoginConfiguration
         Response::json(['series' => $result, 'date' => $rangeDate]);
     }
 
+    public function hasStats($post_id)
+    {
+        Response::json(StatisticModel::has_stats($post_id));
+    }
+
     public function deleteAllHistory($post_id)
     {
         if (PostModel::delete_all_history($post_id))
@@ -393,4 +400,5 @@ class PostController extends LoginConfiguration
 
         Response::jsonMessage(rlang('panel.error_happened'), false);
     }
+
 }

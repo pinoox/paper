@@ -88,7 +88,10 @@ return [
     'stats_post' => 'آمار بازدیدها',
     'yesterday' => 'دیروز',
     'today' => 'امروز',
-    'change_history' => 'تاریخچه تغییرات',
+    'posts_count' => 'نوشته های منتشر شده',
+    'comments_count' => 'نظرات',
+    'contacts_count' => 'تماس ها',
+    'empty_stats' => 'تاکنون هیچ آماری برای این نوشته ثبت نشده است',
 
     /** category **/
     'add' => 'افزودن',

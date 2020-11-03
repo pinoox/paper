@@ -128,7 +128,7 @@ class PostModel extends PaperDatabase
         ]);
     }
 
-    public static function post_history_insert($data,$status)
+    public static function post_history_insert($data, $status)
     {
         $date = Date::g('Y-m-d H:i:s');
         return self::$db->insert(self::post_history, [
@@ -315,5 +315,13 @@ class PostModel extends PaperDatabase
         self::$db->where('file_access', $hash_id);
         self::$db->where('file_id', $file_id);
         return self::$db->getOne(self::file);
+    }
+
+    public static function fetch_total_words()
+    {
+        $result = self::$db->getOne(self::post_draft . ' pd', 'SUM(words) words');
+        if (empty($result)) return 0;
+
+        return $result['words'];
     }
 }
