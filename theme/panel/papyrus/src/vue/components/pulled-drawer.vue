@@ -1,12 +1,12 @@
 <template>
-    <section class="pulled-drawer">
+    <section class="pulled-drawer animate__animated animate__fadeInRight animate__faster">
         <section class="drawer-inside">
             <div class="close-drawer" @click="close()">
                 <div class="close"><i class="fa fa-chevron-right"></i> {{LANG.panel.close}}</div>
             </div>
             <div class="drawer-header">
                 <div class="title">{{LANG.post.change_history}}</div>
-                <div class="clear" @click="deleteAllHistory()">{{LANG.post.delete_all}}</div>
+                <div v-if="!!historyItems && historyItems.length > 0 " class="clear" @click="deleteAllHistory()">{{LANG.post.delete_all}}</div>
             </div>
             <div class="drawer-content" v-if="historyItems.length > 0">
                 <simplebar class="simplebar">
