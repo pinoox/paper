@@ -36,7 +36,7 @@
                                 :pagination-options="$parent.defaultTableOpts">
                             <template slot="table-row" slot-scope="props">
                                 <div v-if="props.column.field === 'thumb_128'">
-                                    <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
+                                    <img class="thumb thumb-circle" :src="props.row.thumb_128" :alt="props.row.title">
                                 </div>
                                 <div v-else-if="props.column.field === 'operation'">
                                     <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
