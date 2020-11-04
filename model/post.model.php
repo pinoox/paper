@@ -24,6 +24,10 @@ class PostModel extends PaperDatabase
     const cancel_publish_status = "cancel_publish";
     const synced_status = "synced";
 
+    // status comment
+    const open_status = "open";
+    const closed_status = "closed";
+
     //type
     const post_type = "post";
     const page_type = "page";
@@ -80,8 +84,8 @@ class PostModel extends PaperDatabase
             'context' => $data['context'],
             'update_date' => $date,
             'synced' => 0,
-            'characters' => !empty($data['characters'])? $data['characters'] : 0,
-            'words' => !empty($data['words'])? $data['words'] : 0,
+            'characters' => !empty($data['characters']) ? $data['characters'] : 0,
+            'words' => !empty($data['words']) ? $data['words'] : 0,
         ]);
     }
 
@@ -94,8 +98,8 @@ class PostModel extends PaperDatabase
             'context' => $data['context'],
             'update_date' => $date,
             'synced' => 0,
-            'characters' => !empty($data['characters'])? $data['characters'] : 0,
-            'words' => !empty($data['words'])? $data['words'] : 0,
+            'characters' => !empty($data['characters']) ? $data['characters'] : 0,
+            'words' => !empty($data['words']) ? $data['words'] : 0,
         ]);
     }
 
@@ -105,6 +109,15 @@ class PostModel extends PaperDatabase
         self::$db->where('post_id', $post_id);
         return self::$db->update(self::post, [
             'status' => $status,
+        ]);
+    }
+
+    public static function update_setting($post_id, $data)
+    {
+        $data['comment_status'] = ($data['comment_status'] === self::open_status) ? self::open_status : self::closed_status;
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post, [
+            'comment_status' => $data['comment_status'],
         ]);
     }
 
@@ -129,8 +142,8 @@ class PostModel extends PaperDatabase
             'context' => $post['draft_context'],
             'publish_date' => $date,
             'status' => self::publish_status,
-            'characters' => !empty($post['characters'])? $post['characters'] : 0,
-            'words' => !empty($post['words'])? $post['words'] : 0,
+            'characters' => !empty($post['characters']) ? $post['characters'] : 0,
+            'words' => !empty($post['words']) ? $post['words'] : 0,
         ]);
     }
 

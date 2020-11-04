@@ -16,7 +16,6 @@ use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
-use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Date;
 use pinoox\component\Dir;
 use pinoox\component\Pagination;
@@ -105,7 +104,7 @@ class PostController extends LoginConfiguration
 
     public function save()
     {
-        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags','characters'=>0,'words'=>0], null, '!empty');
+        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
@@ -269,15 +268,15 @@ class PostController extends LoginConfiguration
 
     public function saveSettings()
     {
-        $input = Request::input('autosave', '', '!empty');
-        UserSettingModel::save_data(User::get('user_id'), $input, 'post');
+        $input = Request::input(
+            [
+                'post_id',
+                'comment_status' => PostModel::open_status
+            ],
+            null, '!empty'
+        );
+        PostModel::update_setting($input['post_id'], $input);
         Response::json(rlang('post.save_successfully'), true);
-    }
-
-    public function getSettings()
-    {
-        $data = UserSettingModel::get_data(User::get('user_id'), 'post');
-        Response::json($data);
     }
 
     public function deleteImage()
