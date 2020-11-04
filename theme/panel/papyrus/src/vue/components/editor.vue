@@ -122,6 +122,7 @@
                             'underline',
                             'strikethrough',
                             'fontSize',
+                            'highlight',
                             '|',
                             'alignment',
                             '|',
@@ -312,22 +313,25 @@
                 let context = !!this.values.context ? this.values.context : '';
                 return '<h1>' + title + '</h1>\n' + context;
             },
-            paperSize:
-                {
-                    get() {
-                        return !!this.userSettings.paperSize ? this.userSettings.paperSize : 75;
-                    },
-                    set(val) {
-                        this.userSettings.paperSize = val;
-                    }
+            paperSize: {
+                get() {
+                    return !!this.userSettings.paperSize ? this.userSettings.paperSize : 75;
+                },
+                set(val) {
+                    this.userSettings.paperSize = val;
                 }
+            },
+            marginTop(){
+                return this.paperSize >= 100 ? '28px' : '64px';
+            },
+            marginContent(){
+                return this.paperSize >= 100 ? '30px' : '0';
+            },
         },
         data() {
             return {
                 isLoadEditor: false,
                 initEditor: DecoupledDocumentEditor,
-                marginTop: '64px',
-                marginContent: '0',
             };
         },
         methods: {
@@ -381,12 +385,5 @@
             this.isLoadEditor = true;
             this.callEvents(this.values);
         },
-        watch:
-            {
-                paperSize() {
-                    this.marginTop = this.paperSize >= 100 ? '28px' : '64px';
-                    this.marginContent = this.paperSize >= 100 ? '30px' : '0';
-                }
-            }
     }
 </script>
