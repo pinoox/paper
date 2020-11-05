@@ -90,7 +90,7 @@ class UserController extends LoginConfiguration
         $placeHolder = Url::file('resources/image-placeholder.jpg');
 
         if (empty($user)) return $user;
-        $user['approx_register_date'] = Helper::getLocalDate('l F Y (H:i)', $user['register_date']);
+        $user['approx_register_date'] = Helper::getLocaleDate('l F Y (H:i)', $user['register_date']);
         $file = FileModel::fetch_by_id($user['avatar_id']);
         $user['image'] = Url::upload($file, $placeHolder);
         $user['thumb_128'] = Url::thumb($file, 128, $placeHolder);

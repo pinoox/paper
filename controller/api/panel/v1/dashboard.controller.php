@@ -26,7 +26,7 @@ class DashboardController extends MasterConfiguration
 
     public function getTime()
     {
-        $datetime = Helper::getLocalDate();
+        $datetime = Helper::getLocaleDate();
         Response::json($datetime);
     }
 

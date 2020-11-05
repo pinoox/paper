@@ -69,7 +69,7 @@ class CommentController extends LoginConfiguration
     private function getInfoComment($comment)
     {
         if (empty($comment)) return $comment;
-        $comment['approx_insert_date'] = Helper::getLocalDate('l d F Y (H:i)', $comment['insert_date']);
+        $comment['approx_insert_date'] = Helper::getLocaleDate('l d F Y (H:i)', $comment['insert_date']);
         return $comment;
     }
 
