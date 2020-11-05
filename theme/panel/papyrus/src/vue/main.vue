@@ -49,6 +49,9 @@
                             <router-link :to="{name:'setting'}" tag="div" class="item">
                                 <span class="text">{{LANG.panel.settings}}</span>
                             </router-link>
+                            <div class="item" @click="logout()">
+                                <span class="text">{{LANG.panel.logout}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,7 +105,7 @@
                     <transition name="fade" mode="out-in"
                                 :enter-active-class="isTransition?'animate__animated animate__fadeInUp animate__faster':''"
                                 :leave-active-class="isTransition?'animate__animated animate__fadeOutDown animate__faster':''">
-                            <router-view :key="$route.fullPath"></router-view>
+                        <router-view :key="$route.fullPath"></router-view>
                     </transition>
                 </div>
             </div>
@@ -193,6 +196,17 @@
             getTimeStamp(date = null) {
                 return new Date(date).getTime();
             },
+            logout() {
+                this._confirm(PINOOX.LANG.panel.are_you_sure_logout_account, () => {
+                    this.$http.get(this.URL.API + 'user/logout').then((json) => {
+                        if (json.data.status) {
+                            this.USER.user = {isLogin: false};
+                            this.$router.replace({name:'login'});
+                        }
+                    });
+                });
+
+            }
         },
         created() {
             this.timestamp = this.getTimeStamp();

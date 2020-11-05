@@ -43,6 +43,7 @@ return [
     'word' => 'کلمه',
     'asc_progress' => 'افزایش نسبت به دیروز',
     'desc_progress' => 'کاهش نسبت به دیروز',
+    'are_you_sure_logout_account' => 'آیا می‌خواهید از حساب کاربری خود خارج شوید؟',
 
     'dashboard' => 'داشبورد',
     'user' => 'کاربر',
