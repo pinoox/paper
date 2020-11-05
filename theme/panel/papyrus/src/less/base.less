@@ -33,6 +33,16 @@
   text-shadow: 0 4px 8px rgba(19, 37, 71, @opacity);
 }
 
+.ltr-text {
+  direction: ltr;
+  display: inline-block;
+}
+
+.rtl-text {
+  direction: rtl;
+  display: inline-block;
+}
+
 .blur-loading {
   position: fixed;
   left: 0;
@@ -632,6 +642,44 @@ body {
       .simplebar {
         overflow-x: hidden;
         height: calc(100vh - 75px);
+      }
+
+      .section-tab {
+        display: flex;
+        list-style: none;
+        margin: 20px 0;
+        padding: 0;
+
+        li {
+          background: fade(@textColorLight, 30%);
+          font-size: 13px;
+          padding: 10px 20px;
+          color: @textColor;
+          .trans;
+
+          &.active {
+            background: @secondaryColor;
+            color: #fff;
+          }
+
+          &:hover {
+            cursor: pointer;
+            background: @textColorLight;
+            color: @textColor;
+            .trans;
+          }
+
+          &:first-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+          }
+
+          &:last-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+          }
+
+        }
       }
 
       .section {
@@ -1361,13 +1409,15 @@ body {
           .footnote {
             font-size: 1em;
 
-            &.green{
+            &.green {
               color: @greenColor;
             }
-            &.red{
+
+            &.red {
               color: @redColor;
             }
-            &.orange{
+
+            &.orange {
               color: @orangeColor;
             }
           }
@@ -1382,31 +1432,39 @@ body {
             border-radius: 50%;
 
             svg {
-              width: 50px!important;
+              width: 50px !important;
               position: relative;
               top: 5px;
 
-              &.fill{
+              &.fill {
                 path {
-                  fill: #849FBE!important;
-                }
-              }
-              &.stroke{
-                path {
-                  stroke: #849FBE!important;
+                  fill: #849FBE !important;
                 }
               }
 
-              &.ic_users{
-                width: 40px!important;
+              &.stroke {
+                path {
+                  stroke: #849FBE !important;
+                }
+              }
+
+              &.ic_users {
+                width: 40px !important;
                 top: 15px;
               }
-              &.ic_comments{
-                width: 40px!important;
+
+              &.ic_comments {
+                width: 40px !important;
                 top: 10px;
               }
             }
           }
+        }
+      }
+
+      a.box-stat {
+        &:hover {
+          .hover-menu;
         }
       }
     }

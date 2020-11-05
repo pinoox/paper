@@ -285,7 +285,7 @@ class PostModel extends PaperDatabase
 
     public static function where_status($status)
     {
-        if (!is_null($status))
+        if (!is_null($status) && $status != 'all')
             self::$db->where('p.status', $status);
     }
 
