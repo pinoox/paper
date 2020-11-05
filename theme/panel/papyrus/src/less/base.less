@@ -33,6 +33,21 @@
   text-shadow: 0 4px 8px rgba(19, 37, 71, @opacity);
 }
 
+/* Make it move */
+@keyframes marquee {
+  0% {
+    transform: translateX(0px)
+  }
+
+  40%, 60% {
+    transform: translateX(calc(40px - 100%))
+  }
+
+  100% {
+    transform: translateX(0px)
+  }
+}
+
 .ltr-text {
   direction: ltr;
   display: inline-block;
@@ -452,7 +467,6 @@ body {
       .menu {
         flex-grow: 0.1;
         width: 100%;
-        height: 120px;
         border-top: 1px solid fade(@borderColor, 10%);
         padding-top: 15px;
 
@@ -645,10 +659,11 @@ body {
       }
 
       .section-tab {
-        display: flex;
+        display: inline-flex;
         list-style: none;
         margin: 20px 0;
         padding: 0;
+        border-radius: 10px;
 
         li {
           background: fade(@textColorLight, 30%);
@@ -993,6 +1008,41 @@ body {
           height: 44px;
           display: flex;
           align-items: center;
+
+          .text {
+            display: flex;
+            flex-wrap: wrap;
+            flex-flow: row;
+            align-items: center;
+            padding: 0 2%;
+            width: calc(100% - @sidebarWidth);
+            font-weight: 500;
+            color: @textColor;
+            font-size: 1rem;
+
+            .icon {
+              border-radius: 4px;
+              padding: 5px 6px;
+              font-weight: 400;
+              font-size: 0.8em;
+              background: fade(@textColorLight, 30%);
+              min-width: 70px;
+              text-align: center;
+
+              .trans;
+
+              &:hover {
+                .trans;
+                cursor: pointer;
+                background: fade(@textColorLight, 50%);
+              }
+            }
+
+            .title {
+              padding: 0 10px;
+              color: #777;
+            }
+          }
 
           .item {
             padding: 12px 20px;
@@ -2430,11 +2480,24 @@ body {
           }
         }
 
-
         .quick-nav {
           .box {
             .label {
               font-size: 12px;
+            }
+          }
+        }
+
+        .menubar {
+          .items {
+            overflow-y: hidden;
+
+            .text {
+              width: 100%;
+
+              .title {
+                font-size: 0.75rem;
+              }
             }
           }
         }
