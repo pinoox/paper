@@ -13,6 +13,20 @@
         </div>
         <simplebar class="simplebar">
             <div class="container">
+                <ul class="section-tab">
+                    <li @click="filter('all')"
+                        :class="[params.status==='all' ? 'active' :'' ]">{{LANG.panel.all}}
+                    </li>
+                    <li @click="filter('publish')"
+                        :class="[params.status==='publish'? 'active' :'']">
+                        {{LANG.post.status.publish}}
+                    </li>
+                    <li @click="filter('draft')"
+                        :class="[params.status==='draft'? 'active' :'']">
+                        {{LANG.post.status.draft}}
+                    </li>
+                </ul>
+
                 <div class="section compact-mode">
                     <div class="section-content">
                         <vue-good-table
@@ -39,7 +53,8 @@
                                 <div v-else-if="props.column.field === 'operation'">
                                     <router-link :to="{name:'post-stats',params:{post_id:props.row.post_id}}"
                                                  class="btn-action"><i class="fa fa-chart-pie"></i></router-link>
-                                    <router-link :to="{name:'write',params:{post_id:props.row.post_id}}" class="btn-action">
+                                    <router-link :to="{name:'write',params:{post_id:props.row.post_id}}"
+                                                 class="btn-action">
                                         <i class="fa fa-edit"></i></router-link>
                                     <span @click="remove(props.row,props.index)" class="btn-action"><i
                                             class="fa fa-trash"></i></span>
@@ -69,7 +84,6 @@
                                 <div class="loading-message spinner"></div>
                             </template>
                         </vue-good-table>
-
                     </div>
                 </div>
             </div>
@@ -144,6 +158,7 @@
                     page: 1,
                     perPage: 10,
                     type: 'post',
+                    status: 'all',
                     sort: {
                         field: '',
                         type: '',
@@ -197,6 +212,10 @@
                         field: first.field,
                     },
                 });
+                this.getItems();
+            },
+            filter(param) {
+                this.updateParams({status: param});
                 this.getItems();
             },
         },

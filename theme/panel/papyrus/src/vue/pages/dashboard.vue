@@ -3,32 +3,35 @@
         <simplebar class="simplebar">
             <div class="dashboard">
                 <row :gutter="10" :columns="5">
-                    <column :sm="4" :md="3" :lg="3">
-                        <div class="greeting">
+                    <column :xs="5" :sm="5" :md="5" :lg="3">
+                        <div class="greeting" :class="{'night':isNight}">
                             <div class="art">
-                                <img src="@img/svg/art_sun.svg" alt="moon">
+                                <img v-if="isNight" src="@img/svg/art_moon.svg" alt="moon">
+                                <img v-else src="@img/svg/art_sun.svg" alt="sun">
                             </div>
                             <div class="text">
                                 <div class="title">
                                     <span class="hello">{{LANG.panel.hello}}</span>
                                     <span class="user">{{USER.fname}}</span>
-                                    <span class="date">{{LANG.panel.today}} سه شنبه 13 آبان 1399</span>
+                                    <span class="date">{{LANG.panel.today}} {{todayDate}}</span>
                                 </div>
                                 <div class="message">{{LANG.panel.greeting_message}}</div>
                             </div>
                             <div class="action">
-                                <div class="btn btn-sm btn-outline-primary">{{LANG.panel.get_started}}</div>
+                                <router-link :to="{name:'write'}" class="btn btn-sm btn-outline-primary">
+                                    {{LANG.panel.get_started}}
+                                </router-link>
                             </div>
                         </div>
                     </column>
-                    <column :sm="4" :md="1" :lg="1">
+                    <column :xs="2" :sm="2" :md="2" :lg="1">
                         <div class="single-stat purple">
                             <div class="caption">کل زمان سپری شده برای نوشتن</div>
                             <div class="amount">2</div>
                             <div class="unit">ساعت</div>
                         </div>
                     </column>
-                    <column :sm="4" :md="1" :lg="1">
+                    <column :xs="3" :sm="3" :md="3" :lg="1">
                         <div class="single-stat red">
                             <div class="caption">{{LANG.panel.total_written_words}}</div>
                             <div class="amount">{{stats.words}}</div>
@@ -37,13 +40,19 @@
                     </column>
                 </row>
                 <br>
-                <row :gutter="10" :columns="3">
+                <row :gutter="10" :columns="3" v-if="!!stats.postStats">
                     <column :sm="1" :md="1" :lg="1">
                         <div class="box-stat box">
                             <div class="text">
                                 <div class="caption">{{LANG.panel.visits}} {{LANG.panel.today}}</div>
-                                <div class="amount">2265 {{LANG.panel.times}}</div>
-                                <div class="footnote red"><i class="fas fa-chart-line"></i> 12% کاهش نسبت به دیروز</div>
+                                <div class="amount">{{stats.postStats.visits}} {{LANG.panel.times}}</div>
+                                <div class="footnote"
+                                     :class="{'green' : stats.postProgress.visits>0,'red': stats.postProgress.visits<0 }"
+                                     v-if="stats.postProgress.visits !== 0">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span class="ltr-text">% {{stats.postProgress.visits}}</span>    {{stats.postProgress.visits > 0 ?
+                                    LANG.panel.asc_progress : LANG.panel.desc_progress }}
+                                </div>
                             </div>
                             <div class="icon">
                                 <div class="bg">
@@ -57,8 +66,13 @@
                         <div class="box-stat box">
                             <div class="text">
                                 <div class="caption">{{LANG.panel.visitors}} {{LANG.panel.today}}</div>
-                                <div class="amount">265 {{LANG.panel.persons}}</div>
-                                <div class="footnote green"><i class="fas fa-chart-line"></i> 36% افزایش نسبت به دیروز
+                                <div class="amount">{{stats.postStats.visitors}} {{LANG.panel.persons}}</div>
+                                <div class="footnote"
+                                     :class="{'green' : stats.postProgress.visitors>0,'red': stats.postProgress.visitors<0 }"
+                                     v-if="stats.postProgress.visitors !== 0">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span class="ltr-text">% {{stats.postProgress.visitors}}</span>  {{stats.postProgress.visitors > 0 ?
+                                    LANG.panel.asc_progress : LANG.panel.desc_progress }}
                                 </div>
                             </div>
                             <div class="icon">
@@ -70,11 +84,12 @@
                         </div>
                     </column>
                     <column :sm="1" :md="1" :lg="1">
-                        <div class="box-stat box">
+                        <router-link :to="{name:'comments'}" class="box-stat box">
                             <div class="text">
-                                <div class="caption">{{LANG.comment.comments}} {{LANG.panel.today}}</div>
-                                <div class="amount">2 {{LANG.comment.comment}}</div>
-                                <div class="footnote orange">2 {{LANG.comment.comment}}
+                                <div class="caption">{{LANG.comment.comments}}</div>
+                                <div class="amount">{{stats.commentStats.total}} {{LANG.comment.comment}}</div>
+                                <div class="footnote orange" v-show="stats.commentStats.pending>0">
+                                    {{stats.commentStats.pending}} {{LANG.comment.comment}}
                                     {{LANG.comment.status.pending}}
                                 </div>
                             </div>
@@ -84,7 +99,7 @@
                                                 customClassName="stroke ic_comments"/>
                                 </div>
                             </div>
-                        </div>
+                        </router-link>
                     </column>
                 </row>
 
@@ -116,6 +131,7 @@
     export default {
         data() {
             return {
+                todayDate: null,
                 monthly: null,
                 monthlyOpts: {
                     chart: {
@@ -159,7 +175,20 @@
                 stats: {words: 0},
             }
         },
+        computed: {
+            isNight: {
+                get() {
+                    let hour = new Date().getHours();
+                    return hour < 6 && hour > 18
+                }
+            }
+        },
         methods: {
+            getTime() {
+                this.$http.post(this.URL.API + 'dashboard/getTime').then((json) => {
+                    this.todayDate = json.data;
+                });
+            },
             getCountNotifies() {
                 this.$http.post(this.URL.API + 'dashboard/getCountNotifies').then((json) => {
                     this.unseen = json.data;
@@ -178,6 +207,7 @@
             },
         },
         created() {
+            this.getTime();
             this.getCountNotifies();
             this.getStats();
             this.getMonthly();

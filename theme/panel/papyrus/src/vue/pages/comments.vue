@@ -2,6 +2,10 @@
     <div class="page">
         <div class="menubar">
             <div class="items">
+                <div class="text" v-if="!!post">
+                    <router-link tag="span" :to="{name:'write',params:{post_id:this.post_id}}" class="icon"><i class="fa fa-chevron-right"></i> {{LANG.panel.back}}</router-link>
+                    <span class="title">{{post.draft_title}}</span>
+                </div>
             </div>
         </div>
 
@@ -10,6 +14,7 @@
             <input v-model="params.keyword" class="search-input" type="text"
                    :placeholder="LANG.comment.search_in_comments">
         </div>
+
         <simplebar class="simplebar">
             <div class="container">
                 <div class="section compact-mode">
@@ -76,6 +81,7 @@
 <script>
 
     export default {
+        props: ['post_id'],
         data() {
             return {
                 isLoading: false,
@@ -124,10 +130,12 @@
                 ],
                 items: [],
                 pages: [],
+                post: null,
                 params: {
                     keyword: null,
                     page: 1,
                     perPage: 10,
+                    post_id: null,
                     sort: {
                         field: '',
                         type: '',
@@ -135,11 +143,16 @@
                 },
             }
         },
+        created() {
+            this.params.post_id = this.post_id;
+        },
         methods: {
             getItems() {
+
                 this.$http.post(this.URL.API + 'comment/getAll/', this.params).then((json) => {
                     this.items = json.data.items;
                     this.pages = json.data.pages;
+                    this.post = json.data.post;
                 });
             },
             updateParams(newProps) {

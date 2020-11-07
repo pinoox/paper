@@ -163,13 +163,15 @@ class StatisticModel extends PaperDatabase
         Cookie::set('visited_' . $post_id, '1', $endToday);
     }
 
-    public static function fetch_visits($post_id, $days = 7)
+    public static function fetch_visits($post_id, $days = null)
     {
         if (!is_null($post_id))
             self::$db->where('s.post_id', $post_id);
 
-        $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
-        self::$db->where('s.insert_date', $fromDate, '>=');
+        if (!is_null($days)) {
+            $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
+            self::$db->where('s.insert_date', $fromDate, '>=');
+        }
         self::$db->groupBy('date');
         $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date, SUM(s.visits) value');
         if (empty($result)) return null;
@@ -181,14 +183,17 @@ class StatisticModel extends PaperDatabase
         return ['total' => $total, 'series' => $result];
     }
 
-    public static function fetch_visitors($post_id, $days = 7)
+    public static function fetch_visitors($post_id, $days = null)
     {
         $q = is_null($post_id) ? 'SUM(s.visitors) value' : 'COUNT(s.stat_id) value';
         if (!is_null($post_id))
             self::$db->where('s.post_id', $post_id);
 
-        $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
-        self::$db->where('s.insert_date', $fromDate, '>=');
+        if (!is_null($days)) {
+            $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
+            self::$db->where('s.insert_date', $fromDate, '>=');
+        }
+
         self::$db->groupBy('date');
         $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date,' . $q);
         if (empty($result)) return null;
@@ -198,6 +203,29 @@ class StatisticModel extends PaperDatabase
             $total += $item['value'];
 
         return ['total' => $total, 'series' => $result];
+    }
+
+    public static function fetch_posts_stats($date)
+    {
+        self::$db->where('s.insert_date', $date, '=');
+        return self::$db->getOne(self::statistic . ' s', 'IFNULL(SUM(s.visits), 0) visits, IFNULL(SUM(s.visitors), 0) visitors');
+    }
+
+    public static function calc_post_stats_progress_than_yesterday($stats, $yesterday)
+    {
+        self::$db->where('s.insert_date', $yesterday, '=');
+        $yesterdayStats = self::$db->getOne(self::statistic . ' s', 'IFNULL(SUM(s.visits), 0) visits, IFNULL(SUM(s.visitors), 0) visitors');
+
+        $diffVisits = $stats['visits'] - $yesterdayStats['visits'];
+        $diffVisitors = $stats['visitors'] - $yesterdayStats['visitors'];
+
+        $yesterdayStats['visits'] = $yesterdayStats['visits'] <= 0 ? 1 : $yesterdayStats['visits'];
+        $yesterdayStats['visitors'] = $yesterdayStats['visitors'] <= 0 ? 1 : $yesterdayStats['visitors'];
+
+        $visitsProgress = round($diffVisits * 100 / $yesterdayStats['visits']);
+        $visitorsProgress = round($diffVisitors * 100 / $yesterdayStats['visitors']);
+
+        return ['visits' => $visitsProgress, 'visitors' => $visitorsProgress];
     }
 
     public static function createRangeData($stats, $days, $onlyValue = false)

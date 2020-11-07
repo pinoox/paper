@@ -55,7 +55,8 @@
                             :draggable="isEdit"
                             slot-scope="{ item }"
                             :item="item">
-                        <span class="selected" @click="unSelectCategory()" v-if="!!selected && selected.cat_id===item.cat_id">
+                        <span class="selected" @click="unSelectCategory()"
+                              v-if="!!selected && selected.cat_id===item.cat_id">
                             <i class="fa fa-check"></i>
                             <i class="fa fa-times"></i>
                         </span>
@@ -135,7 +136,8 @@
                 });
             },
             trigger(item, pathTo) {
-                let parent = this.getParent(pathTo.pathTo);
+                let parent = null;
+                if (!this._isNull(pathTo)) parent = this.getParent(pathTo.pathTo);
                 this.paramsChanges = {cat: item, parent: parent};
                 this.saveChanges();
             },

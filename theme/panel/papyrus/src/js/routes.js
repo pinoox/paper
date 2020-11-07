@@ -84,9 +84,10 @@ export const routes = [
         component: Contacts
     },
     {
-        path: PINOOX.URL.BASE + '/comments',
+        path: PINOOX.URL.BASE + '/comments/:post_id?',
         name: 'comments',
-        component: Comments
+        component: Comments,
+        props: true,
     },
     {
         path: PINOOX.URL.BASE + '/profile',

@@ -351,7 +351,7 @@ class PostController extends LoginConfiguration
 
         $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-' . $days . ' days'), Date::g('Y-m-d', '+1 days'));
         $rangeDate = array_map(function ($d) {
-            return Helper::getLocalDate('F d', $d);
+            return Helper::getLocaleDate('F d', $d);
         }, $rangeDate);
 
         $rangeDate[count($rangeDate) - 1] = rlang('post.today');

@@ -156,6 +156,17 @@
             getTimeStamp(date = null) {
                 return new Date(date).getTime();
             },
+            logout() {
+                this._confirm(PINOOX.LANG.panel.are_you_sure_logout_account, () => {
+                    this.$http.get(this.URL.API + 'user/logout').then((json) => {
+                        if (json.data.status) {
+                            this.USER.user = {isLogin: false};
+                            this.$router.replace({name:'login'});
+                        }
+                    });
+                });
+
+            }
         },
         created() {
             this.timestamp = this.getTimeStamp();

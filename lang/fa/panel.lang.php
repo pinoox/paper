@@ -41,6 +41,9 @@ return [
     'persons' => 'نفر',
     'total_written_words' => 'تعداد کلمات نوشته شده',
     'word' => 'کلمه',
+    'asc_progress' => 'افزایش نسبت به دیروز',
+    'desc_progress' => 'کاهش نسبت به دیروز',
+    'are_you_sure_logout_account' => 'آیا می‌خواهید از حساب کاربری خود خارج شوید؟',
 
     'dashboard' => 'داشبورد',
     'user' => 'کاربر',

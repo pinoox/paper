@@ -34,6 +34,9 @@
                    <router-link :to="{name:'setting'}" tag="div" class="item">
                        <span class="text">{{LANG.panel.settings}}</span>
                    </router-link>
+                   <div class="item" @click="logout()">
+                       <span class="text">{{LANG.panel.logout}}</span>
+                   </div>
                </div>
            </div>
        </div>
@@ -42,5 +45,18 @@
 
 <script>
     export default {
+        methods:{
+            logout() {
+                this._confirm(PINOOX.LANG.panel.are_you_sure_logout_account, () => {
+                    this.$http.get(this.URL.API + 'user/logout').then((json) => {
+                        if (json.data.status) {
+                            this.USER.user = {isLogin: false};
+                            this.$router.replace({name:'login'});
+                        }
+                    });
+                });
+
+            }
+        }
     }
 </script>
