@@ -12,6 +12,7 @@
 namespace pinoox\app\com_pinoox_paper\controller\panel;
 
 use pinoox\app\com_pinoox_paper\model\LangModel;
+use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Dir;
 use pinoox\component\HelperHeader;
@@ -32,7 +33,11 @@ class MasterConfiguration implements ControllerInterface
     public function __construct()
     {
         $this->initTemplate();
+
+        $lang = Request::getOne('lang', 'en', '!empty');
+        Lang::change($lang);
         $this->setLang();
+        $this->setConfig();
         $this->getAssets();
     }
 
@@ -44,23 +49,20 @@ class MasterConfiguration implements ControllerInterface
         $app = url('panel/');
         self::$template->set('_site', url('~'));
         self::$template->set('_app', $app);
+        self::$template->set('_translate', Lang::current());
         self::$template->set('_direction', rlang('paper.direction'));
-    }
-
-    public function _main()
-    {
-        self::$template->show('index');
-    }
-
-    public function _exception()
-    {
-        self::_main();
     }
 
     private function setLang()
     {
         $lang = LangModel::fetch_all();
         self::$template->set('_lang', HelperString::encodeJson($lang, true));
+    }
+
+    private function setConfig()
+    {
+        $configs = SettingsModel::fetch_all();
+        self::$template->set('_config', HelperString::encodeJson($configs, true));
     }
 
     private function getAssets()
@@ -107,6 +109,16 @@ class MasterConfiguration implements ControllerInterface
             unset($array[$key]);
             $array[$key][] = $copy;
         }
+    }
+
+    public function _exception()
+    {
+        self::_main();
+    }
+
+    public function _main()
+    {
+        self::$template->show('index');
     }
 
     public function error404()

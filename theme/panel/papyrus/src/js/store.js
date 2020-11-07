@@ -7,10 +7,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         user: {},
+        lang: 'en',
         userSettings: {},
         ckEditor: null,
         isLoading: false,
         isTransition: true,
+        viewSettings:[],
+        countTranslate:0,
     },
     getters: {},
     mutations: {

@@ -29,7 +29,6 @@ use pinoox\component\Validation;
 
 class MainController extends MasterConfiguration
 {
-
     public function __construct()
     {
         parent::__construct();

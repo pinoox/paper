@@ -38,10 +38,41 @@ Vue.mixin({
                 this.$store.state.isTransition = val;
             }
         },
+        DIRECTION() {
+            return !!this.LANG.paper.direction ? this.LANG.paper.direction : 'ltr';
+        },
+        countTranslate:{
+            get() {
+                return this.$store.state.countTranslate;
+            },
+            set(val) {
+                this.$store.state.countTranslate = val;
+            }
+        },
+        currentLang:{
+            get() {
+                let lang = !!document.documentElement.lang ? document.documentElement.lang : 'en';
+                return !!this.$store.state.lang? this.$store.state.lang: lang;
+            },
+            set(val) {
+                this.$store.state.lang = val;
+            }
+        },
         LANG: {
             get() {
                 return PINOOX.LANG;
             },
+            set(val) {
+                PINOOX.LANG = val;
+            }
+        },
+        CONFIG: {
+            get() {
+                return PINOOX.CONFIG;
+            },
+            set(val) {
+                PINOOX.CONFIG = val;
+            }
         },
         URL: {
             get() {
@@ -57,6 +88,14 @@ Vue.mixin({
             },
             get() {
                 return this.$store.state.isLoading;
+            }
+        },
+        viewSettings: {
+            set(val) {
+                this.$store.state.viewSettings = val;
+            },
+            get() {
+                return this.$store.state.viewSettings;
             }
         },
         offLoading() {

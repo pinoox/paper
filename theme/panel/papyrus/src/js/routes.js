@@ -11,7 +11,8 @@ import Contacts from '../vue/pages/contacts.vue';
 import Comments from '../vue/pages/comments.vue';
 import Profile from '../vue/pages/profile.vue';
 import Setting from '../vue/pages/setting/main.vue';
-import SettingGeneral from '../vue/pages/setting/general.vue';
+import SettingHome from '../vue/pages/setting/home.vue';
+import SettingConfig from '../vue/pages/setting/config.vue';
 import Error from '../vue/pages/error.vue';
 
 export const routes = [
@@ -96,11 +97,19 @@ export const routes = [
         path: PINOOX.URL.BASE + '/setting',
         name: 'setting',
         component: Setting,
-    },
-    {
-        path: PINOOX.URL.BASE + '/setting/general',
-        name: 'setting-general',
-        component: SettingGeneral,
+        children: [
+            {
+                path: '',
+                name: 'setting',
+                component: SettingHome,
+            },
+            {
+                path: ':setting_key',
+                name: 'setting-config',
+                component: SettingConfig,
+                props: true,
+            },
+        ],
     },
     {
         path: PINOOX.URL.BASE + '/error',
