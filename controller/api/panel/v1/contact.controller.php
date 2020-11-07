@@ -60,7 +60,7 @@ class ContactController extends LoginConfiguration
     private function getInfoContact($contact)
     {
         if (empty($contact)) return $contact;
-        $contact['approx_insert_date'] = Helper::getLocalDate('l d F Y (H:i)', $contact['insert_date']);
+        $contact['approx_insert_date'] = Helper::getLocaleDate('l d F Y (H:i)', $contact['insert_date']);
         return $contact;
     }
 

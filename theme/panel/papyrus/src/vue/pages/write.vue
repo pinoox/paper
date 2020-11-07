@@ -18,6 +18,11 @@
                              :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
                     {{LANG.post.stats}}
                 </router-link>
+                <router-link v-if="!!post_id && post_type==='post'"
+                             :to="{name:'comments',params:{post_id:post.post_id}}" class="item">
+                    {{LANG.post.comments}}
+                </router-link>
+                <div class="item" @click="drawerName = 'settings'">
                 <div v-if="!!post_id" class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
                 </div>

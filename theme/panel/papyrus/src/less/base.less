@@ -33,6 +33,31 @@
   text-shadow: 0 4px 8px rgba(19, 37, 71, @opacity);
 }
 
+/* Make it move */
+@keyframes marquee {
+  0% {
+    transform: translateX(0px)
+  }
+
+  40%, 60% {
+    transform: translateX(calc(40px - 100%))
+  }
+
+  100% {
+    transform: translateX(0px)
+  }
+}
+
+.ltr-text {
+  direction: ltr;
+  display: inline-block;
+}
+
+.rtl-text {
+  direction: rtl;
+  display: inline-block;
+}
+
 .blur-loading {
   position: fixed;
   left: 0;
@@ -444,7 +469,6 @@ body {
       .menu {
         flex-grow: 0.1;
         width: 100%;
-        height: 120px;
         border-top: 1px solid fade(@borderColor, 10%);
         padding-top: 5px;
         padding-bottom: 10px;
@@ -635,6 +659,45 @@ body {
       .simplebar {
         overflow-x: hidden;
         height: calc(100vh - 75px);
+      }
+
+      .section-tab {
+        display: inline-flex;
+        list-style: none;
+        margin-top: 30px;
+        padding: 0;
+        border-radius: 10px;
+
+        li {
+          background: fade(@textColorLight, 30%);
+          font-size: 13px;
+          padding: 10px 20px;
+          color: @textColor;
+          .trans;
+
+          &.active {
+            background: @secondaryColor;
+            color: #fff;
+          }
+
+          &:hover {
+            cursor: pointer;
+            background: @textColorLight;
+            color: @textColor;
+            .trans;
+          }
+
+          &:first-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+          }
+
+          &:last-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+          }
+
+        }
       }
 
       .section {
@@ -948,6 +1011,41 @@ body {
           height: 44px;
           display: flex;
           align-items: center;
+
+          .text {
+            display: flex;
+            flex-wrap: wrap;
+            flex-flow: row;
+            align-items: center;
+            padding: 0 2%;
+            width: calc(100% - @sidebarWidth);
+            font-weight: 500;
+            color: @textColor;
+            font-size: 1rem;
+
+            .icon {
+              border-radius: 4px;
+              padding: 5px 6px;
+              font-weight: 400;
+              font-size: 0.8em;
+              background: fade(@textColorLight, 30%);
+              min-width: 70px;
+              text-align: center;
+
+              .trans;
+
+              &:hover {
+                .trans;
+                cursor: pointer;
+                background: fade(@textColorLight, 50%);
+              }
+            }
+
+            .title {
+              padding: 0 10px;
+              color: #777;
+            }
+          }
 
           .item {
             padding: 12px 20px;
@@ -1364,13 +1462,15 @@ body {
           .footnote {
             font-size: 1em;
 
-            &.green{
+            &.green {
               color: @greenColor;
             }
-            &.red{
+
+            &.red {
               color: @redColor;
             }
-            &.orange{
+
+            &.orange {
               color: @orangeColor;
             }
           }
@@ -1385,31 +1485,39 @@ body {
             border-radius: 50%;
 
             svg {
-              width: 50px!important;
+              width: 50px !important;
               position: relative;
               top: 5px;
 
-              &.fill{
+              &.fill {
                 path {
-                  fill: #849FBE!important;
-                }
-              }
-              &.stroke{
-                path {
-                  stroke: #849FBE!important;
+                  fill: #849FBE !important;
                 }
               }
 
-              &.ic_users{
-                width: 40px!important;
+              &.stroke {
+                path {
+                  stroke: #849FBE !important;
+                }
+              }
+
+              &.ic_users {
+                width: 40px !important;
                 top: 15px;
               }
-              &.ic_comments{
-                width: 40px!important;
+
+              &.ic_comments {
+                width: 40px !important;
                 top: 10px;
               }
             }
           }
+        }
+      }
+
+      a.box-stat {
+        &:hover {
+          .hover-menu;
         }
       }
     }
@@ -2375,11 +2483,24 @@ body {
           }
         }
 
-
         .quick-nav {
           .box {
             .label {
               font-size: 12px;
+            }
+          }
+        }
+
+        .menubar {
+          .items {
+            overflow-y: hidden;
+
+            .text {
+              width: 100%;
+
+              .title {
+                font-size: 0.75rem;
+              }
             }
           }
         }

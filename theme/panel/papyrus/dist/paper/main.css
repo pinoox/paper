@@ -287,6 +287,30 @@
 .nestable-handle {
     display: inline;
 }
+<<<<<<< HEAD
+=======
+/* Make it move */
+@keyframes marquee {
+  0% {
+    transform: translateX(0px);
+  }
+  40%,
+  60% {
+    transform: translateX(calc(40px - 100%));
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+.ltr-text {
+  direction: ltr;
+  display: inline-block;
+}
+.rtl-text {
+  direction: rtl;
+  display: inline-block;
+}
+>>>>>>> esmaeil
 .blur-loading {
   position: fixed;
   left: 0;
@@ -565,7 +589,10 @@ body.ltr .btn {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+<<<<<<< HEAD
   height: 100vh;
+=======
+>>>>>>> esmaeil
 }
 .app-container .sidebar .sidebar-content .brand {
   margin: 20px 0 0 0;
@@ -606,7 +633,10 @@ body.ltr .btn {
   padding: 20px 0 10px 0;
   color: #A5B8CE;
   width: 100%;
+<<<<<<< HEAD
   box-sizing: border-box;
+=======
+>>>>>>> esmaeil
 }
 .app-container .sidebar .sidebar-content .nav .item.active {
   background: #1e4069;
@@ -638,10 +668,15 @@ body.ltr .btn {
 .app-container .sidebar .sidebar-content .menu {
   flex-grow: 0.1;
   width: 100%;
+<<<<<<< HEAD
   height: 120px;
   border-top: 1px solid rgba(226, 226, 226, 0.1);
   padding-top: 5px;
   padding-bottom: 10px;
+=======
+  border-top: 1px solid rgba(226, 226, 226, 0.1);
+  padding-top: 15px;
+>>>>>>> esmaeil
 }
 .app-container .sidebar .sidebar-content .menu .item {
   grid-template-columns: 20px 1fr;
@@ -789,6 +824,49 @@ body.ltr .btn {
   overflow-x: hidden;
   height: calc(100vh - 75px);
 }
+<<<<<<< HEAD
+=======
+.app-container .main .page .section-tab {
+  display: inline-flex;
+  list-style: none;
+  margin-top: 30px;
+  padding: 0;
+  border-radius: 10px;
+}
+.app-container .main .page .section-tab li {
+  background: rgba(165, 184, 206, 0.3);
+  font-size: 13px;
+  padding: 10px 20px;
+  color: #506E93;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.app-container .main .page .section-tab li.active {
+  background: #2a5282;
+  color: #fff;
+}
+.app-container .main .page .section-tab li:hover {
+  cursor: pointer;
+  background: #A5B8CE;
+  color: #506E93;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.app-container .main .page .section-tab li:first-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.app-container .main .page .section-tab li:last-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+>>>>>>> esmaeil
 .app-container .main .page .section {
   margin: 20px 0;
   padding: 20px 20px;
@@ -1066,6 +1144,47 @@ body.ltr .btn {
   display: flex;
   align-items: center;
 }
+<<<<<<< HEAD
+=======
+.app-container .main .page .menubar .items .text {
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: row;
+  align-items: center;
+  padding: 0 2%;
+  width: calc(100% - 120px);
+  font-weight: 500;
+  color: #506E93;
+  font-size: 1rem;
+}
+.app-container .main .page .menubar .items .text .icon {
+  border-radius: 4px;
+  padding: 5px 6px;
+  font-weight: 400;
+  font-size: 0.8em;
+  background: rgba(165, 184, 206, 0.3);
+  min-width: 70px;
+  text-align: center;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.app-container .main .page .menubar .items .text .icon:hover {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+  cursor: pointer;
+  background: rgba(165, 184, 206, 0.5);
+}
+.app-container .main .page .menubar .items .text .title {
+  padding: 0 10px;
+  color: #777;
+}
+>>>>>>> esmaeil
 .app-container .main .page .menubar .items .item {
   padding: 12px 20px;
   font-size: 13px;
@@ -1437,7 +1556,11 @@ body.ltr .btn {
   border-radius: 50%;
 }
 .app-container .main .page .box-stat .icon .bg svg {
+<<<<<<< HEAD
   width: 50px!important;
+=======
+  width: 50px !important;
+>>>>>>> esmaeil
   position: relative;
   top: 5px;
 }
@@ -1448,6 +1571,7 @@ body.ltr .btn {
   stroke: #849FBE !important;
 }
 .app-container .main .page .box-stat .icon .bg svg.ic_users {
+<<<<<<< HEAD
   width: 40px!important;
   top: 15px;
 }
@@ -1455,6 +1579,18 @@ body.ltr .btn {
   width: 40px!important;
   top: 10px;
 }
+=======
+  width: 40px !important;
+  top: 15px;
+}
+.app-container .main .page .box-stat .icon .bg svg.ic_comments {
+  width: 40px !important;
+  top: 10px;
+}
+.app-container .main .page a.box-stat:hover {
+  background: rgba(31, 66, 108, 0.1);
+}
+>>>>>>> esmaeil
 .app-container .main .error .section {
   display: flex;
   align-items: center;
@@ -2194,6 +2330,18 @@ body.ltr .btn {
   .app-container .main .page .quick-nav .box .label {
     font-size: 12px;
   }
+<<<<<<< HEAD
+=======
+  .app-container .main .page .menubar .items {
+    overflow-y: hidden;
+  }
+  .app-container .main .page .menubar .items .text {
+    width: 100%;
+  }
+  .app-container .main .page .menubar .items .text .title {
+    font-size: 0.75rem;
+  }
+>>>>>>> esmaeil
   .form-wrapper footer {
     width: 100%;
     bottom: 40px;
@@ -2269,6 +2417,7 @@ body.ltr .btn {
     font-size: 0.8em;
   }
 }
+<<<<<<< HEAD
 @media screen and (max-height: 520px) {
   .app-container .sidebar .sidebar-content .nav .item {
     padding: 10px 0 5px 0;
@@ -2292,6 +2441,8 @@ body.ltr .btn {
     padding: 5px 5px 5px 0;
   }
 }
+=======
+>>>>>>> esmaeil
 .select-image ul {
   display: flex;
   flex-wrap: wrap;

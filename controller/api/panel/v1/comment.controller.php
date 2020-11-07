@@ -14,6 +14,7 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
+use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -40,7 +41,7 @@ class CommentController extends LoginConfiguration
 
     public function getAll()
     {
-        $form = Request::input('keyword,sort,status,perPage=10,page=1', null, '!empty');
+        $form = Request::input('keyword,sort,status,post_id,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
         $count = CommentModel::fetch_all(null, null, true);
@@ -56,20 +57,26 @@ class CommentController extends LoginConfiguration
             return $comment = $this->getInfoComment($comment);
         }, $comments);
 
-        Response::json(['items' => $comments, 'pages' => $pagination->getInfoPage()['page']]);
+        $post = null;
+        if (!is_null($form['post_id'])) {
+            $post = PostModel::post_draft_fetch_by_id($form['post_id']);
+        }
+
+        Response::json(['items' => $comments, 'pages' => $pagination->getInfoPage()['page'], 'post' => $post]);
     }
 
     private function filterSearch($form)
     {
         CommentModel::where_search($form['keyword']);
         CommentModel::where_status($form['status']);
+        CommentModel::where_post_id($form['post_id']);
         CommentModel::sort($form['sort']);
     }
 
     private function getInfoComment($comment)
     {
         if (empty($comment)) return $comment;
-        $comment['approx_insert_date'] = Helper::getLocalDate('l d F Y (H:i)', $comment['insert_date']);
+        $comment['approx_insert_date'] = Helper::getLocaleDate('l d F Y (H:i)', $comment['insert_date']);
         return $comment;
     }
 
