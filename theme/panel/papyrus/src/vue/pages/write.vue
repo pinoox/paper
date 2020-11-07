@@ -2,13 +2,13 @@
     <section class="page">
         <div class="menubar">
             <div class="items">
-                <div @click="openDrawer('publish')" class="item publish-item">
+                <div v-if="!!post_id" @click="openDrawer('publish')" class="item publish-item">
                     {{!isPageType?LANG.post.post_publication : LANG.post.page_publication}}
                 </div>
                 <div class="item" @click="save()">
                     {{LANG.post.save}}
                 </div>
-                <div v-if="post_type==='post'" class="item" @click="openDrawer('category')">
+                <div v-if="!!post_id && post_type==='post'" class="item" @click="openDrawer('category')">
                     {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
                 </div>
                 <div class="item" @click="drawerName = 'image-manager'">
@@ -23,6 +23,7 @@
                     {{LANG.post.comments}}
                 </router-link>
                 <div class="item" @click="drawerName = 'settings'">
+                <div v-if="!!post_id" class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
                 </div>
             </div>
@@ -34,8 +35,8 @@
                     :status="status"
                     :message="message"
                     v-model="params.editor"
-                    :autosave="settings.autosave.status"
-                    :autosave-time="settings.autosave.time"
+                    :autosave="autosave.status"
+                    :autosave-time="autosave.time"
                     @save="save()"
                     @onHistoryDrawer="openHistory=!openHistory"
                     name="description"
@@ -68,24 +69,25 @@
 
     export default {
         name: 'write',
-        props: {
-            post_id: {
-                default: null,
-            },
-            post_type: {
-                default: 'post',
-            }
-        },
         components: {Preview, Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
         beforeRouteLeave(to, from, next) {
             // this._confirm('confirm?', () => {
             next();
             // });
         },
+        beforeRouteUpdate(to, from, next) {
+            if (to.name === this.$route.name) {
+                window.history.pushState(null, {}, to.path);
+            } else {
+                next();
+            }
+        },
         data() {
             return {
-                preview:{},
-                historyItems:[],
+                countStatus: 0,
+                temp_post_id: null,
+                preview: {},
+                historyItems: [],
                 openHistory: false,
                 isSave: true,
                 isOpenFullscreen: false,
@@ -103,14 +105,17 @@
                     hash_id: null,
                     image: null,
                     post_key: '',
+                    characters: 0,
+                    words: 0,
                 },
                 images: [],
                 status: 'draft',
+                autosave: {
+                    status: false,
+                    time: 10,
+                },
                 settings: {
-                    autosave: {
-                        status: false,
-                        time: 10,
-                    },
+                    comment_status: 'open',
                 },
                 drawerName: false,
                 message: null,
@@ -119,11 +124,22 @@
         computed: {
             isPageType() {
                 return this.post_type === 'page';
-            }
+            },
+            post_type() {
+                return !!this.$route.name && this.$route.name === 'page-write' ? 'page' : 'post';
+            },
+            post_id:
+                {
+                    get() {
+                        return this.temp_post_id;
+                    },
+                    set(val) {
+                        this.temp_post_id = val;
+                    }
+                }
         },
         created() {
-            this.isTransition = true;
-
+            this.setPostId();
             this.getInitData()
                 .then(() => {
                     return this.getImages();
@@ -140,9 +156,12 @@
                 });
         },
         methods: {
+            setPostId() {
+                if (!!this.$route.params.post_id)
+                    this.post_id = this.$route.params.post_id;
+            },
             getInitData() {
                 this.params.post_type = this.post_type;
-                this.getSettings();
                 if (!!this.post_id) {
                     return this.getPost();
                 } else {
@@ -214,11 +233,6 @@
 
                 this.drawerName = drawerName;
             },
-            getSettings() {
-                return this.$http.get(this.URL.API + 'post/getSettings/').then((json) => {
-                    this.settings = !!json.data ? json.data : this.settings;
-                });
-            },
             getImages() {
                 let hash_id = this.params.hash_id;
                 return this.$http.get(this.URL.API + 'post/getImages/' + hash_id).then((json) => {
@@ -247,6 +261,7 @@
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
                     this.params.post_key = !!json.data.post_key ? json.data.post_key : '';
                     this.status = !!json.data.status ? json.data.status : 'draft';
+                    this.settings.comment_status = !!json.data.comment_status ? json.data.comment_status : 'open';
                     this.params.hash_id = json.data.hash_id;
                     this.isSynced = !!json.data.synced ? !!(parseInt(json.data.synced)) : false;
                 });
@@ -275,6 +290,7 @@
                 if (!status)
                     return;
 
+                this.countStatus++;
                 this.status = status;
                 this.post.title = this.params.editor.title;
                 this.post.context = this.params.editor.context;
@@ -291,10 +307,7 @@
                 return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
-                        if (!this.post_id) {
-                            this.isTransition = false;
-                            this._routerReplace({name: this.$route.name, params: {post_id: json.data.result}});
-                        }
+                        this.replaceUrl(json.data.result);
                         this.isSynced = false;
                         this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
                         this.changeStatus(status);
@@ -303,6 +316,16 @@
                     }
 
                     return json.data;
+                });
+            },
+            replaceUrl(post_id) {
+                if (!!this.post_id)
+                    return;
+
+                this.post_id = post_id;
+                this._routerReplace({name: this.$route.name, params: {post_id: post_id}});
+                this.getPost().then(() => {
+                    this.isSave = true;
                 });
             },
             createTags(tags) {

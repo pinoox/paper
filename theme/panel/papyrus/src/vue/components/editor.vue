@@ -14,7 +14,7 @@
         </simplebar>
         <div class="statusbar">
             <div class="item revert">
-                <div class="label history" @click="onHistoryDrawer()">
+                <div v-if="!!$parent.post_id" class="label history" @click="onHistoryDrawer()">
                     <simple-svg :src="_icons.history"
                                 width="14px"
                                 customClassName="icon"/>
@@ -26,8 +26,8 @@
                 <div class="label" :class="status">{{LANG.post.status[status]}}</div>
             </div>
             <div class="item">
-                <div class="label">{{stats.words}} {{LANG.post.word}}</div>
-                <div class="label">{{stats.characters}} {{LANG.post.character}}</div>
+                <div class="label">{{$parent.params.words}} {{LANG.post.word}}</div>
+                <div class="label">{{$parent.params.characters}} {{LANG.post.character}}</div>
             </div>
             <div class="item">
                 <span class="label no-select">{{LANG.post.size_screen}}</span>
@@ -93,7 +93,6 @@
                             '|',
                             'heading',
                             'fontSize',
-                            'fontFamily',
                             'fontColor',
                             '|',
                             'bold',
@@ -122,8 +121,8 @@
                             'italic',
                             'underline',
                             'strikethrough',
-                            'highlight',
                             'fontSize',
+                            'highlight',
                             '|',
                             'alignment',
                             '|',
@@ -138,7 +137,8 @@
                     placeholder: this.placeholder,
                     wordCount: {
                         onUpdate: stats => {
-                            this.stats = stats;
+                            this.$parent.params.characters = stats.characters;
+                            this.$parent.params.words = stats.words;
                         }
                     },
                     image: {
@@ -298,7 +298,7 @@
                 return {
                     waitingTime: parseInt(this.autosaveTime) * 1000,
                     save(editor) {
-                        if (vm.autosave && !vm.$parent.isSave && !vm.$parent.drawerName)
+                        if (vm.autosave && !!vm.$parent.post_id && !vm.$parent.isSave && !vm.$parent.drawerName)
                             return vm.$emit('save');
                         else
                             return false;
@@ -313,18 +313,25 @@
                 let context = !!this.values.context ? this.values.context : '';
                 return '<h1>' + title + '</h1>\n' + context;
             },
+            paperSize: {
+                get() {
+                    return !!this.userSettings.paperSize ? this.userSettings.paperSize : 75;
+                },
+                set(val) {
+                    this.userSettings.paperSize = val;
+                }
+            },
+            marginTop(){
+                return this.paperSize >= 100 ? '28px' : '64px';
+            },
+            marginContent(){
+                return this.paperSize >= 100 ? '30px' : '0';
+            },
         },
         data() {
             return {
                 isLoadEditor: false,
                 initEditor: DecoupledDocumentEditor,
-                paperSize: 75,
-                marginTop: '64px',
-                marginContent: '0',
-                stats: {
-                    characters: 0,
-                    words: 0,
-                },
             };
         },
         methods: {
@@ -365,8 +372,10 @@
             resizePaper(zoom) {
                 if ((zoom === 'in' && this.paperSize < 100)) this.paperSize += 5;
                 if ((zoom === 'out' && this.paperSize > 50)) this.paperSize -= 5;
-                this.marginTop = this.paperSize >= 100 ? '28px' : '64px';
-                this.marginContent = this.paperSize >= 100 ? '30px' : '0';
+
+                this._delay(() => {
+                    this.saveUserSetting(this.paperSize, 'paperSize');
+                }, 3000);
             },
             onHistoryDrawer() {
                 this.$emit('onHistoryDrawer', true);

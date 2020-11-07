@@ -14,6 +14,14 @@ Vue.mixin({
                 this.$store.state.user = val;
             }
         },
+        userSettings: {
+            get() {
+                return this.$store.state.userSettings;
+            },
+            set(val) {
+                this.$store.state.userSettings = val;
+            }
+        },
         ckEditor: {
             get() {
                 return this.$store.state.ckEditor;
@@ -30,10 +38,41 @@ Vue.mixin({
                 this.$store.state.isTransition = val;
             }
         },
+        DIRECTION() {
+            return !!this.LANG.paper.direction ? this.LANG.paper.direction : 'ltr';
+        },
+        countTranslate:{
+            get() {
+                return this.$store.state.countTranslate;
+            },
+            set(val) {
+                this.$store.state.countTranslate = val;
+            }
+        },
+        currentLang:{
+            get() {
+                let lang = !!document.documentElement.lang ? document.documentElement.lang : 'en';
+                return !!this.$store.state.lang? this.$store.state.lang: lang;
+            },
+            set(val) {
+                this.$store.state.lang = val;
+            }
+        },
         LANG: {
             get() {
                 return PINOOX.LANG;
             },
+            set(val) {
+                PINOOX.LANG = val;
+            }
+        },
+        CONFIG: {
+            get() {
+                return PINOOX.CONFIG;
+            },
+            set(val) {
+                PINOOX.CONFIG = val;
+            }
         },
         URL: {
             get() {
@@ -41,7 +80,7 @@ Vue.mixin({
             },
         },
         _dir() {
-            return  !!PINOOX.LANG.paper.direction ? PINOOX.LANG.paper.direction : 'ltr';
+            return !!PINOOX.LANG.paper.direction ? PINOOX.LANG.paper.direction : 'ltr';
         },
         _isLoading: {
             set(val) {
@@ -49,6 +88,14 @@ Vue.mixin({
             },
             get() {
                 return this.$store.state.isLoading;
+            }
+        },
+        viewSettings: {
+            set(val) {
+                this.$store.state.viewSettings = val;
+            },
+            get() {
+                return this.$store.state.viewSettings;
             }
         },
         offLoading() {
@@ -77,15 +124,50 @@ Vue.mixin({
                 zoomOut: require(`@img/svg/ic_zoom_out.svg`),
                 close: require(`@img/svg/ic_close.svg`),
                 save: require(`@img/svg/ic_save.svg`),
-                first_post : require(`@img/svg/first_post.svg`),
-                comment : require(`@img/svg/ic_comment.svg`),
-                call : require(`@img/svg/ic_call.svg`),
-                history : require(`@img/svg/ic_history.svg`),
-                placeholder : require(`@img/placeholder.png`),
-        };
+                first_post: require(`@img/svg/first_post.svg`),
+                comment: require(`@img/svg/ic_comment.svg`),
+                call: require(`@img/svg/ic_call.svg`),
+                history: require(`@img/svg/ic_history.svg`),
+                placeholder: require(`@img/placeholder.png`),
+            };
         },
     },
     methods: {
+        getInitUser() {
+            this.getUser().then(() => {
+                this.getUserSetting();
+            });
+        },
+        getUser() {
+            return this.$http.get(this.URL.API + 'user/get').then((json) => {
+                if (!!json.data && json.data.status && json.data.status !== 404) {
+                    let data = json.data.result;
+                    data.isLogin = true;
+                    this.USER = data;
+                } else {
+                    this.USER = {isLogin: false}
+                }
+            });
+        },
+        getUserSetting() {
+            if (!this.isLogin)
+                return;
+            return this.$http.get(this.URL.API + 'user/getSettings/').then((json) => {
+                this.userSettings = !!json.data ? json.data : this.userSettings;
+            });
+        },
+        saveUserSetting(data, key = null) {
+            key = !!key ? key : null;
+            data = !!data ? data : {};
+            return this.$http.post(this.URL.API + 'user/saveSettings/' + key, {data: data}, this.offLoading).then((json) => {
+                if (!!key)
+                    this.userSettings[key] = data;
+                else
+                    this.userSettings = data;
+
+                return json.data;
+            });
+        },
         tokenAuth() {
             let token = localStorage.pinoox_user;
             if (!!token) {

@@ -14,6 +14,7 @@
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\component\HelperString;
+use pinoox\component\User;
 
 class UserSettingModel extends PaperDatabase
 {
@@ -23,8 +24,9 @@ class UserSettingModel extends PaperDatabase
         return self::$db->delete(self::user_setting);
     }
 
-    public static function get_data($user_id, $state = null)
+    public static function get_data($state = null, $user_id = null)
     {
+        $user_id = !empty($user_id) ? $user_id : User::get('user_id');
         $user_setting = self::fetch_by_id($user_id);
         $setting = ($user_setting) ? HelperString::decodeJson($user_setting['json_data']) : [];
 
@@ -40,8 +42,9 @@ class UserSettingModel extends PaperDatabase
         return self::$db->getOne(self::user_setting);
     }
 
-    public static function save_data($user_id, $data, $state = null)
+    public static function save_data($data, $state = null, $user_id = null)
     {
+        $user_id = !empty($user_id) ? $user_id : User::get('user_id');
         $user_setting = self::fetch_by_id($user_id);
         $setting = ($user_setting) ? HelperString::decodeJson($user_setting['json_data']) : [];
         if (!is_null($state)) {

@@ -15,6 +15,7 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PaperUserModel;
+use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -48,6 +49,21 @@ class UserController extends LoginConfiguration
             'username' => $user['username'],
             'email' => $user['email'],
         ];
+    }
+
+    public function getSettings($state = null)
+    {
+        $settings = UserSettingModel::get_data($state);
+        $settings = !empty($settings) ? $settings : [];
+        Response::json($settings);
+    }
+
+    public function saveSettings($state = null)
+    {
+        $data = Request::inputOne('data', '', '!empty');
+
+        UserSettingModel::save_data($data, $state);
+        Response::json(rlang('post.save_successfully'), true);
     }
 
     public function logout()
@@ -136,6 +152,45 @@ class UserController extends LoginConfiguration
         Response::jsonMessage(rlang('panel.error_happened'), false);
     }
 
+    /**
+     * @param $user_id
+     * @param int|string|null $old_avatar_id
+     * @return bool|Uploader|Upload
+     */
+    private function uploadAvatar($user_id, $old_avatar_id = null)
+    {
+        if (Request::isFile('avatar')) {
+
+            PinooxDatabase::startTransaction();
+
+            $up = Uploader::init('avatar', path('uploads/avatar/'))
+                ->allowedTypes('png,jpg,jpeg', 5)
+                ->changeName('time')
+                ->transaction()
+                ->thumb(['128f', '256f', '512f'], PINOOX_PATH_THUMB)
+                ->insert('none', 'avatar')->finish(true);
+
+            $avatar_id = $up->getInsertId();
+            if ($up->isCommit() && UserModel::update_avatar($user_id, $avatar_id)) {
+                PinooxDatabase::commit();
+                $up->commit();
+                if (!empty($old_avatar_id)) {
+                    $this->deleteAvatar($old_avatar_id);
+                }
+            }
+            return $up;
+        }
+        return false;
+    }
+
+    private function deleteAvatar($avatar_id)
+    {
+        if (empty($avatar_id))
+            return;
+        Uploader::init()->thumb(['128f', '256f', '512f'], PINOOX_PATH_THUMB)->actRemoveRow($avatar_id);
+
+    }
+
     public function edit()
     {
         $input = Request::post('user_id,avatar_id,status,fname,lname,username,email,password,re_password,delete_avatar', null, '!empty');
@@ -181,45 +236,6 @@ class UserController extends LoginConfiguration
         }
 
         Response::jsonMessage(rlang('panel.error_happened'), false);
-    }
-
-    private function deleteAvatar($avatar_id)
-    {
-        if (empty($avatar_id))
-            return;
-        Uploader::init()->thumb(['128f', '256f', '512f'], PINOOX_PATH_THUMB)->actRemoveRow($avatar_id);
-
-    }
-
-    /**
-     * @param $user_id
-     * @param int|string|null $old_avatar_id
-     * @return bool|Uploader|Upload
-     */
-    private function uploadAvatar($user_id, $old_avatar_id = null)
-    {
-        if (Request::isFile('avatar')) {
-
-            PinooxDatabase::startTransaction();
-
-            $up = Uploader::init('avatar', path('uploads/avatar/'))
-                ->allowedTypes('png,jpg,jpeg', 5)
-                ->changeName('time')
-                ->transaction()
-                ->thumb(['128f', '256f', '512f'], PINOOX_PATH_THUMB)
-                ->insert('none', 'avatar')->finish(true);
-
-            $avatar_id = $up->getInsertId();
-            if ($up->isCommit() && UserModel::update_avatar($user_id, $avatar_id)) {
-                PinooxDatabase::commit();
-                $up->commit();
-                if (!empty($old_avatar_id)) {
-                    $this->deleteAvatar($old_avatar_id);
-                }
-            }
-            return $up;
-        }
-        return false;
     }
 
     public function delete()

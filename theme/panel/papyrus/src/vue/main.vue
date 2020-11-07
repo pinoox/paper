@@ -15,46 +15,7 @@
         </notifications>
         <section class="app-container">
             <div v-if="!hasCustomView">
-                <div class="sidebar">
-                    <div class="sidebar-content">
-                        <div class="brand">
-                            <div class="title">PAPER</div>
-                            <div class="subtitle"></div>
-                        </div>
-                        <div class="nav">
-                            <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
-                                <simple-svg :src="_icons.dashboard"
-                                            customClassName="icon"
-                                            fill="#A5B8CE"/>
-                                <span class="text">{{LANG.panel.dashboard}}</span>
-                            </router-link>
-                            <router-link class="item" :to="{name:'write'}" exact-active-class="active">
-                                <simple-svg :src="_icons.pen"
-                                            customClassName="icon stroke"/>
-                                <span class="text">{{LANG.post.write}}</span>
-                            </router-link>
-                            <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
-                                <simple-svg :src="_icons.article"
-                                            customClassName="icon"/>
-                                <span class="text">{{LANG.panel.posts}}</span>
-                            </router-link>
-                        </div>
-                        <div class="menu">
-                            <router-link :to="{name:'profile'}" tag="div" class="item">
-                                <span class="text">{{LANG.panel.profile}}</span>
-                            </router-link>
-                            <router-link :to="{name:'users'}" tag="div" class="item">
-                                <span class="text">{{LANG.panel.users}}</span>
-                            </router-link>
-                            <router-link :to="{name:'setting'}" tag="div" class="item">
-                                <span class="text">{{LANG.panel.settings}}</span>
-                            </router-link>
-                            <div class="item" @click="logout()">
-                                <span class="text">{{LANG.panel.logout}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <sidebar></sidebar>
                 <div class="main">
                     <div v-if="showToolbar" class="toolbar">
                         <div class="account">
@@ -119,11 +80,11 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex';
     import Menu from "./drawers/menu.vue";
+    import Sidebar from "./components/sidebar.vue";
 
     export default {
-        components: {Menu},
+        components: {Menu, Sidebar},
         data() {
             return {
                 defaultTableOpts: {
@@ -153,7 +114,6 @@
             }
         },
         methods: {
-            ...mapMutations(['getUser']),
             customInterceptors() {
                 this.numProcessing = 0;
                 this.$http.interceptors.request.use((request) => {
@@ -211,13 +171,16 @@
         created() {
             this.timestamp = this.getTimeStamp();
             this.customInterceptors();
-            this.getUser();
+            this.getInitUser();
             this.route = this._clone({
                 ...this.$route,
             });
             this._routerReplace({name: 'splash'});
         },
         watch: {
+            countTranslate(){
+              console.log(this.DIRECTION);
+            },
             USER() {
                 if (!!this.$route.name && this.$route.name === 'splash') {
                     let time = this.getTimeStamp() - this.timestamp;
@@ -231,6 +194,17 @@
                 }
 
                 this.checkUser();
+            },
+            DIRECTION: {
+                handler() {
+                    console.log(this.DIRECTION);
+                    $('body').removeClass('rtl');
+                    $('body').removeClass('ltr');
+                    $('body').addClass(this.DIRECTION);
+                    document.dir = this.DIRECTION;
+
+                },
+                immediate: true,
             },
         }
     }

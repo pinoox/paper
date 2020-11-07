@@ -1,7 +1,7 @@
 <template>
     <div class="select-image">
         <ul>
-            <li v-for="(item,index) in items" @click="selectItem(item)" :class="!!item.active? 'active' : ''">
+            <li v-for="(item,index) in items" @dblclick="select(item)" @click="selectItem(item)" :class="!!item.active? 'active' : ''">
                 <img :src="item[link]"/>
             </li>
             <slot></slot>
@@ -40,6 +40,9 @@
                 }
             },
         methods: {
+            select(item){
+                this.$emit('dblclick', item);
+            },
             selectItem(item) {
                 if (!this.multiple) {
                     this.$set(item, 'active', true);
