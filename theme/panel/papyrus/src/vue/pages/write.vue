@@ -22,12 +22,10 @@
                              :to="{name:'comments',params:{post_id:post.post_id}}" class="item">
                     {{LANG.post.comments}}
                 </router-link>
-                <div class="item" @click="drawerName = 'settings'">
                 <div v-if="!!post_id" class="item" @click="drawerName = 'settings'">
                     {{LANG.post.settings}}
                 </div>
             </div>
-        </div>
         </div>
         <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
         <div id="write" class="write-container">
