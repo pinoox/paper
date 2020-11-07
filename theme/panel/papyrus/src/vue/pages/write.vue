@@ -28,6 +28,7 @@
                 </div>
             </div>
         </div>
+        </div>
         <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
         <div id="write" class="write-container">
             <editor class="content"
