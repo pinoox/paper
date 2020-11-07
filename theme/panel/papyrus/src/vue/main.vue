@@ -66,7 +66,7 @@
                     <transition name="fade" mode="out-in"
                                 :enter-active-class="isTransition?'animate__animated animate__fadeInUp animate__faster':''"
                                 :leave-active-class="isTransition?'animate__animated animate__fadeOutDown animate__faster':''">
-                            <router-view :key="$route.fullPath"></router-view>
+                        <router-view :key="$route.fullPath"></router-view>
                     </transition>
                 </div>
             </div>
@@ -80,12 +80,11 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex';
     import Menu from "./drawers/menu.vue";
     import Sidebar from "./components/sidebar.vue";
 
     export default {
-        components: {Menu,Sidebar},
+        components: {Menu, Sidebar},
         data() {
             return {
                 defaultTableOpts: {
@@ -115,7 +114,6 @@
             }
         },
         methods: {
-            ...mapMutations(['getUser']),
             customInterceptors() {
                 this.numProcessing = 0;
                 this.$http.interceptors.request.use((request) => {
@@ -162,13 +160,16 @@
         created() {
             this.timestamp = this.getTimeStamp();
             this.customInterceptors();
-            this.getUser();
+            this.getInitUser();
             this.route = this._clone({
                 ...this.$route,
             });
             this._routerReplace({name: 'splash'});
         },
         watch: {
+            countTranslate(){
+              console.log(this.DIRECTION);
+            },
             USER() {
                 if (!!this.$route.name && this.$route.name === 'splash') {
                     let time = this.getTimeStamp() - this.timestamp;
@@ -182,6 +183,17 @@
                 }
 
                 this.checkUser();
+            },
+            DIRECTION: {
+                handler() {
+                    console.log(this.DIRECTION);
+                    $('body').removeClass('rtl');
+                    $('body').removeClass('ltr');
+                    $('body').addClass(this.DIRECTION);
+                    document.dir = this.DIRECTION;
+
+                },
+                immediate: true,
             },
         }
     }

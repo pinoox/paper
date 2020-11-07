@@ -6,7 +6,9 @@
             </div>
             <div class="drawer-header">
                 <div class="title">{{LANG.post.change_history}}</div>
-                <div v-if="!!historyItems && historyItems.length > 0 " class="clear" @click="deleteAllHistory()">{{LANG.post.delete_all}}</div>
+                <div v-if="!!historyItems && historyItems.length > 0 " class="clear" @click="deleteAllHistory()">
+                    {{LANG.post.delete_all}}
+                </div>
             </div>
             <div class="drawer-content" v-if="historyItems.length > 0">
                 <simplebar class="simplebar">
@@ -75,6 +77,13 @@
                 return this.$http.get(this.URL.API + 'post/getPostHistory/' + this.$parent.post_id).then((json) => {
                     this.historyItems = !!json.data ? json.data : [];
                 });
+            },
+        },
+        watch: {
+            '$parent.countStatus': {
+               handler(){
+                   this.getPostHistory();
+               }
             },
         }
     }

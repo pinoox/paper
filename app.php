@@ -15,7 +15,6 @@ return array (
   'lang' => 'fa',
   'service' => [
       'user',
-      'cache/settings'
   ]
 );
 

@@ -19,21 +19,14 @@
                     <column :sm="2" :md="1">
 
                         <div class="input-wrapper">
-                            <label class="input-label">{{LANG.post.auto_save}}</label>
+                            <label class="input-label">{{LANG.post.comments_section}}</label>
                             <div class="input-group">
-                                <toggle-button v-model="params.autosave.status"
+                                <toggle-button v-model="commentStatus"
                                                :width="70"
-                                               :labels="{checked: LANG.post.active, unchecked: LANG.post.inactive}"/>
+                                               :sync="true"
+                                               :labels="{checked: LANG.post.opened, unchecked: LANG.post.closed}"/>
                             </div>
-                            <span class="sub-label">{{LANG.post.help_auto_save}}</span>
-                        </div>
-                        <div class="input-wrapper" v-if="params.autosave.status">
-                            <label class="input-label">{{LANG.post.auto_save_time}}</label>
-                            <div class="input-group">
-                                <input v-model="params.autosave.time" name="name" type="text"
-                                       :placeholder="LANG.post.enter_auto_save_time" class="input">
-                            </div>
-                            <span class="sub-label">{{LANG.post.help_auto_save_time}}</span>
+                            <span class="sub-label">{{LANG.post.help_comments_section}}</span>
                         </div>
                     </column>
                     <column :sm="2" :md="1">
@@ -53,31 +46,37 @@
 <script>
 
     export default {
-        props:['open'],
+        props: ['open'],
         data() {
             return {
-                params:{
-                    autosave:{
-                        time:10,
-                        status:false,
-                    },
+                params: {},
+            }
+        },
+        computed: {
+            commentStatus: {
+                get() {
+                    return this.params.comment_status === 'open';
+                },
+                set(status) {
+                    status = status ? 'open' : 'closed';
+                    this.params.comment_status = status;
                 }
             }
         },
         methods: {
             openDrawer() {
-                this.$set(this,'params',this._clone(this.$parent.settings));
+                this.$set(this, 'params', this._clone(this.$parent.settings));
             },
             closeDrawer() {
                 this.$emit('close', false);
             },
-            saveSetting(){
-                this.$http.post(this.URL.API + 'post/saveSettings',this.params).then((json)=>{
-                   if(this._statusResponse(json.data))
-                   {
-                       this.$set(this.$parent,'settings',this._clone(this.params));
-                       this.closeDrawer();
-                   }
+            saveSetting() {
+                this.params.post_id = this.$parent.post_id;
+                this.$http.post(this.URL.API + 'post/saveSettings', this.params).then((json) => {
+                    if (this._statusResponse(json.data)) {
+                        this.$set(this.$parent, 'settings', this._clone(this.params));
+                        this.closeDrawer();
+                    }
                 });
             }
         },

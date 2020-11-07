@@ -15,4 +15,6 @@ const PINOOX = {
     },
 
     LANG: <?php echo @$_lang; ?>,
+
+    CONFIG: <?php echo @$_config; ?>,
 };

@@ -30,8 +30,8 @@
                     :status="status"
                     :message="message"
                     v-model="params.editor"
-                    :autosave="settings.autosave.status"
-                    :autosave-time="settings.autosave.time"
+                    :autosave="autosave.status"
+                    :autosave-time="autosave.time"
                     @save="save()"
                     @onHistoryDrawer="openHistory=!openHistory"
                     name="description"
@@ -79,6 +79,7 @@
         },
         data() {
             return {
+                countStatus: 0,
                 temp_post_id: null,
                 preview: {},
                 historyItems: [],
@@ -104,11 +105,12 @@
                 },
                 images: [],
                 status: 'draft',
+                autosave: {
+                    status: false,
+                    time: 10,
+                },
                 settings: {
-                    autosave: {
-                        status: false,
-                        time: 10,
-                    },
+                    comment_status: 'open',
                 },
                 drawerName: false,
                 message: null,
@@ -155,7 +157,6 @@
             },
             getInitData() {
                 this.params.post_type = this.post_type;
-                this.getSettings();
                 if (!!this.post_id) {
                     return this.getPost();
                 } else {
@@ -227,11 +228,6 @@
 
                 this.drawerName = drawerName;
             },
-            getSettings() {
-                return this.$http.get(this.URL.API + 'post/getSettings/').then((json) => {
-                    this.settings = !!json.data ? json.data : this.settings;
-                });
-            },
             getImages() {
                 let hash_id = this.params.hash_id;
                 return this.$http.get(this.URL.API + 'post/getImages/' + hash_id).then((json) => {
@@ -260,6 +256,7 @@
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
                     this.params.post_key = !!json.data.post_key ? json.data.post_key : '';
                     this.status = !!json.data.status ? json.data.status : 'draft';
+                    this.settings.comment_status = !!json.data.comment_status ? json.data.comment_status : 'open';
                     this.params.hash_id = json.data.hash_id;
                     this.isSynced = !!json.data.synced ? !!(parseInt(json.data.synced)) : false;
                 });
@@ -288,6 +285,7 @@
                 if (!status)
                     return;
 
+                this.countStatus++;
                 this.status = status;
                 this.post.title = this.params.editor.title;
                 this.post.context = this.params.editor.context;

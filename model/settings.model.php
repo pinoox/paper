@@ -11,40 +11,55 @@
 
 namespace pinoox\app\com_pinoox_paper\model;
 
-use pinoox\component\Cache;
+use pinoox\app\com_pinoox_paper\component\Setting;
+use pinoox\component\app\AppProvider;
+use pinoox\component\Dir;
+use pinoox\component\Lang;
+use pinoox\component\MagicTrait;
 
 class SettingsModel extends PaperDatabase
 {
+    use MagicTrait;
 
-    public static function fetch_all($group = null)
+    const settings = [
+        'general',
+        'write',
+    ];
+    /**
+     * @var Setting
+     */
+    private static $setting;
+
+    public static function __init()
     {
-        if (!is_null($group))
-            self::$db->where('s_group', $group);
-        self::$db->orderBy('settings_id', 'ASC');
-        return self::$db->get(self::settings);
+        $path = Dir::path('setting');
+        self::$setting = Setting::init($path);
     }
 
-    public static function fetch_all_groups()
+    public static function fetch_all()
     {
-        self::$db->groupBy('s_group');
-        self::$db->orderBy('MIN(settings_id)', 'ASC');
-        return self::$db->get(self::settings, null, 's_group');
+        return self::$setting->getAll();
     }
 
-    public static function update($key, $value)
+    public static function get($name)
     {
-        if (is_numeric($value)) $value = abs(intval($value));
-        self::$db->where('s_key', $key);
-        return self::$db->update(self::settings, array(
-            "s_value" => $value
-        ));
+        return self::$setting->get($name);
     }
 
-
-    public static function getFromCache($s_key, $default = null)
+    public static function fetch_views()
     {
-        $settings = Cache::get('settings');
-        return isset($settings[$s_key])? $settings[$s_key] : null;
+        $views = self::$setting->view()->getAll();
+        return array_values($views);
     }
 
+    public static function save($name, $data)
+    {
+        if ($name === 'general') {
+            Lang::change($data['lang']);
+            AppProvider::set('lang', $data['lang']);
+            AppProvider::save();
+        }
+        self::$setting->set($name, $data);
+        self::$setting->save($name);
+    }
 }

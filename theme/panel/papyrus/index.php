@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fa">
+<html lang="<?php echo $_translate; ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +23,7 @@
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="<?php echo $_url; ?>dist/paper/<?php echo @$assets['vendor_css']; ?>">
     <link rel="stylesheet" href="<?php echo $_url; ?>dist/paper/<?php echo @$assets['main_css']; ?>">
-    <script src="<?php echo url('panel/'); ?>dist/paper/pinoox.js"></script>
+    <script src="<?php echo url('panel/'); ?>dist/paper/pinoox.js?lang=<?php echo $_translate; ?>&v1.2"></script>
 </head>
 
 <body class="<?php echo @$_direction; ?>">

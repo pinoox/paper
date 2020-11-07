@@ -122,6 +122,7 @@
                             'underline',
                             'strikethrough',
                             'fontSize',
+                            'highlight',
                             '|',
                             'alignment',
                             '|',
@@ -312,14 +313,25 @@
                 let context = !!this.values.context ? this.values.context : '';
                 return '<h1>' + title + '</h1>\n' + context;
             },
+            paperSize: {
+                get() {
+                    return !!this.userSettings.paperSize ? this.userSettings.paperSize : 75;
+                },
+                set(val) {
+                    this.userSettings.paperSize = val;
+                }
+            },
+            marginTop(){
+                return this.paperSize >= 100 ? '28px' : '64px';
+            },
+            marginContent(){
+                return this.paperSize >= 100 ? '30px' : '0';
+            },
         },
         data() {
             return {
                 isLoadEditor: false,
                 initEditor: DecoupledDocumentEditor,
-                paperSize: 75,
-                marginTop: '64px',
-                marginContent: '0',
             };
         },
         methods: {
@@ -360,8 +372,10 @@
             resizePaper(zoom) {
                 if ((zoom === 'in' && this.paperSize < 100)) this.paperSize += 5;
                 if ((zoom === 'out' && this.paperSize > 50)) this.paperSize -= 5;
-                this.marginTop = this.paperSize >= 100 ? '28px' : '64px';
-                this.marginContent = this.paperSize >= 100 ? '30px' : '0';
+
+                this._delay(() => {
+                    this.saveUserSetting(this.paperSize, 'paperSize');
+                }, 3000);
             },
             onHistoryDrawer() {
                 this.$emit('onHistoryDrawer', true);
