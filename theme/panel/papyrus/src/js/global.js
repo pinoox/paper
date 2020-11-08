@@ -41,7 +41,7 @@ Vue.mixin({
         DIRECTION() {
             return !!this.LANG.paper.direction ? this.LANG.paper.direction : 'ltr';
         },
-        countTranslate:{
+        countTranslate: {
             get() {
                 return this.$store.state.countTranslate;
             },
@@ -49,10 +49,10 @@ Vue.mixin({
                 this.$store.state.countTranslate = val;
             }
         },
-        currentLang:{
+        currentLang: {
             get() {
                 let lang = !!document.documentElement.lang ? document.documentElement.lang : 'en';
-                return !!this.$store.state.lang? this.$store.state.lang: lang;
+                return !!this.$store.state.lang ? this.$store.state.lang : lang;
             },
             set(val) {
                 this.$store.state.lang = val;
@@ -68,10 +68,10 @@ Vue.mixin({
         },
         CONFIG: {
             get() {
-                return PINOOX.CONFIG;
+                return this.$store.state.configs;
             },
             set(val) {
-                PINOOX.CONFIG = val;
+                this.$store.state.configs = val;
             }
         },
         URL: {
@@ -134,25 +134,41 @@ Vue.mixin({
     },
     methods: {
         getInitUser() {
-            this.getUser().then(() => {
-                this.getUserSetting();
+            this.getUser(false).then((data) => {
+                if (!data)
+                    return;
+                this.getConfigs().then(() => {
+                    return this.getUserSetting();
+                }).then(() => {
+                    this.USER = data;
+                });
             });
         },
-        getUser() {
+        getUser(isUpdate = true) {
             return this.$http.get(this.URL.API + 'user/get').then((json) => {
                 if (!!json.data && json.data.status && json.data.status !== 404) {
                     let data = json.data.result;
                     data.isLogin = true;
-                    this.USER = data;
+                    return data;
+                    if (isUpdate)
+                        this.USER = data;
                 } else {
                     this.USER = {isLogin: false}
                 }
             });
         },
+        getConfigs() {
+            return this.$http.get(this.URL.API + 'setting/getAll/').then((json) => {
+                if (!!json.data && json.data.status && json.data.status !== 404)
+                    return;
+
+                this.CONFIG = !!json.data ? json.data : this.CONFIG;
+            });
+        },
         getUserSetting() {
-            if (!this.isLogin)
-                return;
             return this.$http.get(this.URL.API + 'user/getSettings/').then((json) => {
+                if (!!json.data && json.data.status && json.data.status !== 404)
+                    return;
                 this.userSettings = !!json.data ? json.data : this.userSettings;
             });
         },

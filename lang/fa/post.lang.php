@@ -39,6 +39,7 @@ return [
     'preview_image' => 'تصویر پیش نمایش',
     'change_preview_image' => 'تغییر تصویر پیش نمایش',
     'select_preview_image' => 'انتخاب تصویر پیش نمایش',
+    'confirm_leave_write' => 'آیا میخواهید بدون ذخیره صفحه را ترک کنید؟',
     'publication' => 'انتشار',
     'select' => 'انتخاب',
     'save_changes' => 'ذخیره تغییرات',
