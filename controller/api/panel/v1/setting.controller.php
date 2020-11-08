@@ -28,6 +28,13 @@ class SettingController extends LoginConfiguration
         Response::json($items);
     }
 
+    public function getAll()
+    {
+        $configs = SettingsModel::fetch_all();
+        $configs = !empty($configs) ? $configs : [];
+        Response::json($configs);
+    }
+
     public function save($name)
     {
         $inputs = Request::input('*', null, '!empty');

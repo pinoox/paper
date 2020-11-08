@@ -178,9 +178,6 @@
             this._routerReplace({name: 'splash'});
         },
         watch: {
-            countTranslate(){
-              console.log(this.DIRECTION);
-            },
             USER() {
                 if (!!this.$route.name && this.$route.name === 'splash') {
                     let time = this.getTimeStamp() - this.timestamp;

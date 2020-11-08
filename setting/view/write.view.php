@@ -8,7 +8,7 @@ return [
     'settings' => [
         [
             'key' => 'autosave',
-            'value' => false,
+            'value' => true,
             'label' => rlang('setting.auto_save'),
             'type' => 'toggle',
             'help' => rlang('setting.help_auto_save'),
@@ -20,7 +20,7 @@ return [
             'label' => rlang('setting.auto_save_time'),
             'type' => 'number',
             'help' => rlang('setting.help_auto_save_time'),
-            'attrs' =>[
+            'attrs' => [
                 'placeholder' => rlang('setting.enter_auto_save_time'),
             ]
         ],
