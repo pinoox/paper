@@ -108,6 +108,25 @@
                     </div>
                 </row>
             </div>
+
+            <div class="form-content row">
+                <row :gutter="12" :columns="1">
+                    <div class="header">
+                        <div class="title">
+                            <div class="text">
+                                {{LANG.panel.logout_account}}
+                            </div>
+                        </div>
+                    </div>
+                    <column :sm="2" :md="1">
+                        <div class="input-wrapper">
+                            <div class="btn btn-danger" @click="logout()">{{LANG.panel.logout}}</div>
+                        </div>
+                        <br><br>
+                    </column>
+
+                </row>
+            </div>
         </section>
     </simplebar>
 </template>
@@ -196,6 +215,17 @@
             },
             errorAvatar(error){
                 this._notify('error', error.message);
+            },
+            logout() {
+                this._confirm(PINOOX.LANG.panel.are_you_sure_logout_account, () => {
+                    this.$http.get(this.URL.API + 'user/logout').then((json) => {
+                        if (json.data.status) {
+                            this.USER.user = {isLogin: false};
+                            this.$router.replace({name:'login'});
+                        }
+                    });
+                });
+
             }
         }
     }

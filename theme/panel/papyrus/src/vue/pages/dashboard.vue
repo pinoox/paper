@@ -102,7 +102,7 @@
                         </router-link>
                     </column>
                 </row>
-
+              
                 <div class="container">
                     <section class="section" v-if="monthly!=null">
                         <div class="section-title">
@@ -127,7 +127,6 @@
 </template>
 
 <script>
-
     export default {
         data() {
             return {
