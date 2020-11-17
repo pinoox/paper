@@ -18,10 +18,10 @@
                 <sidebar></sidebar>
                 <div class="main">
                     <div v-if="showToolbar" class="toolbar">
-                        <div class="account">
+                        <router-link tag="div" :to="{name:'profile'}" class="account">
                             <img :src="USER.avatar_thumb" alt="profile">
                             <span class="text">{{USER.full_name}}</span>
-                        </div>
+                        </router-link>
                         <div class="quick-actions">
                             <div class="item">
                                 <simple-svg :src="_icons.eye"
