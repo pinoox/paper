@@ -1,7 +1,6 @@
 import Dashboard from '../vue/pages/dashboard.vue';
 import Posts from '../vue/pages/posts.vue';
 import Pages from '../vue/pages/pages.vue';
-import Stats from '../vue/pages/stats.vue';
 import Splash from '../vue/pages/splash.vue';
 import Login from '../vue/pages/login.vue';
 import Write from '../vue/pages/write.vue';
@@ -33,11 +32,6 @@ export const routes = [
         path: PINOOX.URL.BASE + '/pages',
         name: 'pages',
         component: Pages
-    },
-    {
-        path: PINOOX.URL.BASE + '/stats',
-        name: 'stats',
-        component: Stats
     },
     {
         path: PINOOX.URL.BASE + '/dashboard',

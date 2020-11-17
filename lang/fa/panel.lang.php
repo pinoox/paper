@@ -10,6 +10,7 @@ return [
     'user_key' => 'ایمیل / نام کاربری',
     'password' => 'رمز عبور',
     'logout' => 'خروج',
+    'logout_account' => 'خروج از حساب کاربری',
     'login_to_account' => 'ورود به ناحیه کاربری',
     'welcome_to_account' => 'به ناحیه کاربری خوش آمدید',
     'login' => 'ورود',
