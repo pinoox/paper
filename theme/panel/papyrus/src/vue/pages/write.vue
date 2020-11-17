@@ -34,8 +34,8 @@
                     :status="status"
                     :message="message"
                     v-model="params.editor"
-                    :autosave="autosave.status"
-                    :autosave-time="autosave.time"
+                    :autosave="CONFIG.write.autosave"
+                    :autosave-time="CONFIG.write.autosave_time"
                     @save="save()"
                     @onHistoryDrawer="openHistory=!openHistory"
                     name="description"
@@ -70,9 +70,14 @@
         name: 'write',
         components: {Preview, Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
         beforeRouteLeave(to, from, next) {
-            // this._confirm('confirm?', () => {
-            next();
-            // });
+            if (this.isSave) {
+                next();
+                return;
+            }
+
+            this._confirm(this.LANG.post.confirm_leave_write, () => {
+                next();
+            });
         },
         beforeRouteUpdate(to, from, next) {
             if (to.name === this.$route.name) {
@@ -109,10 +114,6 @@
                 },
                 images: [],
                 status: 'draft',
-                autosave: {
-                    status: false,
-                    time: 10,
-                },
                 settings: {
                     comment_status: 'open',
                 },

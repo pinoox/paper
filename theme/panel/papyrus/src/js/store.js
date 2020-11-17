@@ -9,6 +9,7 @@ export default new Vuex.Store({
         user: {},
         lang: 'en',
         userSettings: {},
+        configs: {},
         ckEditor: null,
         isLoading: false,
         isTransition: true,

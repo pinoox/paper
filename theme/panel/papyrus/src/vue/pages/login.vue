@@ -16,7 +16,7 @@
                 <input v-model="params.password" type="password" :placeholder="LANG.panel.password" name="password">
                 <i class="fa fa-lock"></i>
             </div>
-            <button @click="login()" type="submit" class="ptn ptn-secondary">{{LANG.panel.login}}</button>
+            <button @click="login()" type="submit" class="btn btn-primary">{{LANG.panel.login}}</button>
         </div>
 
     </div>

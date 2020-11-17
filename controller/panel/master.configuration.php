@@ -37,7 +37,7 @@ class MasterConfiguration implements ControllerInterface
         $lang = Request::getOne('lang', 'en', '!empty');
         Lang::change($lang);
         $this->setLang();
-        $this->setConfig();
+        //$this->setConfig();
         $this->getAssets();
     }
 
