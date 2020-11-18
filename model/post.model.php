@@ -129,6 +129,14 @@ class PostModel extends PaperDatabase
         ]);
     }
 
+    public static function update_category($cat_id, $post_id)
+    {
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post, [
+            'cat_id' => $cat_id,
+        ]);
+    }
+
     public static function update_publish_post($post_id)
     {
         $post = self::post_draft_fetch_by_id($post_id);

@@ -9,7 +9,7 @@
                     {{LANG.post.save}}
                 </div>
                 <div v-if="!!post_id && post_type==='post'" class="item" @click="openDrawer('category')">
-                    {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
+                    {{LANG.post.category}} {{category!=null ? '('+category.cat_name+')' : ''}}
                 </div>
                 <div class="item" @click="drawerName = 'image-manager'">
                     {{LANG.post.images}}
@@ -46,7 +46,7 @@
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
         <category v-if="post_type==='post'"
                   :open="drawerName==='category'"
-                  :selected="params.category"
+                  :selected="category"
                   @onClose="drawerName=null"
                   @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
@@ -105,13 +105,13 @@
                     editor: {},
                     summary: '',
                     tags: [],
-                    category: null,
                     hash_id: null,
                     image: null,
                     post_key: '',
                     characters: 0,
                     words: 0,
                 },
+                category: null,
                 images: [],
                 status: 'draft',
                 settings: {
@@ -258,6 +258,7 @@
                         context: json.data.draft_context,
                     });
                     this.params.tags = this.createTags(json.data.tags);
+                    this.category = json.data.category;
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
                     this.params.post_key = !!json.data.post_key ? json.data.post_key : '';
                     this.status = !!json.data.status ? json.data.status : 'draft';
@@ -304,7 +305,7 @@
 
                 this.message = PINOOX.LANG.panel.saving;
 
-                return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
+                return this.$http.post(this.URL.API + 'post/save', params,this.offLoading).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
                         this.replaceUrl(json.data.result);
@@ -364,7 +365,7 @@
                 return formData;
             },
             setCategory(val) {
-                this.params.category = val;
+                this.category = val;
             },
             openFullscreen() {
                 let ckBody = $('#write').find('.ck-body-wrapper');

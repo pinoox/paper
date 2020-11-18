@@ -13,6 +13,7 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
+use pinoox\app\com_pinoox_paper\model\CategoryModel;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
@@ -44,6 +45,10 @@ class PostController extends LoginConfiguration
 
         if (empty($post)) return $post;
         $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
+        if (isset($post['cat_id']))
+            $post['category'] = CategoryModel::fetch_by_id($post['cat_id']);
+        else
+            $post['category'] = null;
         $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
         $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
         $file = FileModel::fetch_by_id($post['image_id']);
@@ -100,6 +105,18 @@ class PostController extends LoginConfiguration
         }, $posts);
 
         Response::json($posts);
+    }
+
+    public function changeCategory()
+    {
+        $input = Request::input('cat_id,post_id', null, '!empty');
+
+        $status = PostModel::update_category($input['cat_id'], $input['post_id']);
+
+        if ($status)
+            Response::json(rlang('post.save_successfully'), true);
+        else
+            Response::json(rlang('post.error_happened'), false);
     }
 
     public function save()
