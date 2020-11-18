@@ -6,7 +6,8 @@
             <row :gutter="12" :columns="1" v-if="isEdit">
                 <column :sm="1" :md="1">
                     <div class="input-wrapper" @keyup.enter="add()">
-                        <label class="input-label">{{LANG.post.add_new_category}}</label>
+                        <label class="input-label" v-if="!!params.cat_id">{{LANG.post.edit_category}}</label>
+                        <label class="input-label" v-else>{{LANG.post.add_new_category}}</label>
                         <div class="input-group">
                             <input v-model="params.cat_name" type="text"
                                    :placeholder="LANG.post.enter_cat_name" class="input">

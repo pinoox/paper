@@ -16,8 +16,6 @@
                 </div>
             </div>
             <div class="drawer-content">
-
-
                 <category-nest v-if="drawerOpen"
                         :selected="$parent.category"
                         @onSelected="setCategory"

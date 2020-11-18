@@ -12,6 +12,7 @@ import Profile from '../vue/pages/profile.vue';
 import Setting from '../vue/pages/setting/main.vue';
 import SettingHome from '../vue/pages/setting/home.vue';
 import SettingConfig from '../vue/pages/setting/config.vue';
+import Category from '../vue/pages/category.vue';
 import Error from '../vue/pages/error.vue';
 
 export const routes = [
@@ -87,6 +88,11 @@ export const routes = [
         path: PINOOX.URL.BASE + '/profile',
         name: 'profile',
         component: Profile,
+    },
+    {
+        path: PINOOX.URL.BASE + '/category',
+        name: 'category',
+        component: Category,
     },
     {
         path: PINOOX.URL.BASE + '/setting',
