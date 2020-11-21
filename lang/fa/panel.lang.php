@@ -86,7 +86,7 @@ return [
     'search_in_contacts' => 'جست و جو بین تماس ها...',
     'subject' => 'موضوع',
     'message' => 'پیام',
-    'contact_status' => ['seen' => 'خوانده شد', 'unseen' => 'خوانده نشده'],
+    'contact_status' => ['seen' => 'خوانده شده', 'unseen' => 'خوانده نشده'],
 
     /* picture input */
     'picture_input' => [

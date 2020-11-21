@@ -13,6 +13,21 @@
         </div>
         <simplebar class="simplebar">
             <div class="container">
+
+                <ul class="section-tab">
+                    <li @click="filter('all')"
+                        :class="[params.status==='all' ? 'active' :'' ]">{{LANG.panel.all}}
+                    </li>
+                    <li @click="filter('seen')"
+                        :class="[params.status==='seen'? 'active' :'']">
+                        {{LANG.panel.contact_status.seen}}
+                    </li>
+                    <li @click="filter('unseen')"
+                        :class="[params.status==='unseen'? 'active' :'']">
+                        {{LANG.panel.contact_status.unseen}}
+                    </li>
+                </ul>
+
                 <div class="section compact-mode">
                     <div class="section-content">
                         <vue-good-table
@@ -120,6 +135,7 @@
                     keyword: null,
                     page: 1,
                     perPage: 10,
+                    status: 'all',
                     sort: {
                         field: '',
                         type: '',
@@ -168,6 +184,10 @@
                         field: first.field,
                     },
                 });
+                this.getItems();
+            },
+            filter(param) {
+                this.updateParams({status: param});
                 this.getItems();
             },
         },
