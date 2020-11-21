@@ -14,6 +14,21 @@
         </div>
         <simplebar class="simplebar">
             <div class="container">
+
+                <ul class="section-tab">
+                    <li @click="filter('all')"
+                        :class="[params.status==='all' ? 'active' :'' ]">{{LANG.panel.all}}
+                    </li>
+                    <li @click="filter('active')"
+                        :class="[params.status==='active'? 'active' :'']">
+                        {{LANG.user.status.active}}
+                    </li>
+                    <li @click="filter('suspend')"
+                        :class="[params.status==='suspend'? 'active' :'']">
+                        {{LANG.user.status.suspend}}
+                    </li>
+                </ul>
+
                 <div class="section compact-mode">
                     <div class="section-content">
                         <vue-good-table
@@ -119,6 +134,7 @@
                 params: {
                     keyword: null,
                     page: 1,
+                    status: 'all',
                     perPage: 10,
                     sort: {
                         field: '',
@@ -176,6 +192,10 @@
                         field: first.field,
                     },
                 });
+                this.getItems();
+            },
+            filter(param) {
+                this.updateParams({status: param});
                 this.getItems();
             },
         },
