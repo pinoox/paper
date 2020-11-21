@@ -80,8 +80,8 @@ class CommentModel extends PaperDatabase
 
     public static function where_status($status)
     {
-        if (!is_null($status))
-            self::$db->where('status', $status);
+        if (!is_null($status) && $status != 'all')
+            self::$db->where('c.status', $status);
     }
 
     public static function where_search($keyword)
