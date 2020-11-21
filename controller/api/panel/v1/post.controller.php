@@ -69,7 +69,7 @@ class PostController extends LoginConfiguration
 
     public function getAll()
     {
-        $form = Request::input('keyword,type,sort,status,perPage=10,page=1', null, '!empty');
+        $form = Request::input('keyword,type,sort,status=all,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
         $count = PostModel::fetch_all(null, true);

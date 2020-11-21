@@ -49,7 +49,7 @@ export const routes = [
         props: true,
     },
     {
-        path: PINOOX.URL.BASE + '/page/write/:post_id?',
+        path: PINOOX.URL.BASE + '/pages/write/:post_id?',
         name: 'page-write',
         component: Write,
         props: true,
