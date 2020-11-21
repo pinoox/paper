@@ -110,6 +110,7 @@
                     post_key: '',
                     characters: 0,
                     words: 0,
+                    time: 0,
                 },
                 category: null,
                 images: [],
@@ -119,6 +120,7 @@
                 },
                 drawerName: false,
                 message: null,
+                timeSleep: 60,
             };
         },
         computed: {
@@ -148,6 +150,8 @@
                     this.getFeaturingImage();
                 })
                 .then(() => {
+                    this.locker();
+                    this.startTimer();
                     this.$watch('params', () => {
                         this.isSave = false;
                     }, {
@@ -156,6 +160,23 @@
                 });
         },
         methods: {
+            locker() {
+                document.onmousemove = () => {
+                    this.timeSleep = 60;
+                };
+
+                document.onkeypress = () => {
+                    this.timeSleep = 60;
+                };
+            },
+            startTimer() {
+                return setInterval(() => {
+                    this.timeSleep--;
+
+                    if (this.timeSleep > 0)
+                        this.params.time++;
+                }, 1000);
+            },
             setPostId() {
                 if (!!this.$route.params.post_id)
                     this.post_id = this.$route.params.post_id;
@@ -305,13 +326,14 @@
 
                 this.message = PINOOX.LANG.panel.saving;
 
-                return this.$http.post(this.URL.API + 'post/save', params,this.offLoading).then((json) => {
+                return this.$http.post(this.URL.API + 'post/save', params, this.offLoading).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
                         this.replaceUrl(json.data.result);
                         this.isSynced = false;
                         this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
                         this.changeStatus(status);
+                        this.params.time = 0;
                     } else {
                         this._notify('error', json.data.message, 'app');
                     }

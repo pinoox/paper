@@ -121,7 +121,7 @@ class PostController extends LoginConfiguration
 
     public function save()
     {
-        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0], null, '!empty');
+        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0,'time'=>0], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],

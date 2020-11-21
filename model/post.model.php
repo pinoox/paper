@@ -39,6 +39,7 @@ class PostModel extends PaperDatabase
             'hash_id' => $data['hash_id'],
             'user_id' => User::get('user_id'),
             'summary' => $data['summary'],
+            'time_tracking' => $data['time'],
             'status' => self::draft_status,
             'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
             'post_type' => !empty($data['post_type']) ? $data['post_type'] : self::post_type,
@@ -202,6 +203,7 @@ class PostModel extends PaperDatabase
             'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'update_date' => $date,
+            'time_tracking' => self::$db->inc($data['time']),
         ]);
     }
 
