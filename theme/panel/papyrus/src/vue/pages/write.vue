@@ -120,7 +120,7 @@
                 },
                 drawerName: false,
                 message: null,
-                timeSleep: 60,
+                timeSleep: 30,
             };
         },
         computed: {
@@ -162,11 +162,11 @@
         methods: {
             locker() {
                 document.onmousemove = () => {
-                    this.timeSleep = 60;
+                    this.timeSleep = 30;
                 };
 
                 document.onkeypress = () => {
-                    this.timeSleep = 60;
+                    this.timeSleep = 30;
                 };
             },
             startTimer() {

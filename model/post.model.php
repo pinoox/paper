@@ -347,11 +347,15 @@ class PostModel extends PaperDatabase
         return self::$db->getOne(self::file);
     }
 
+    public static function fetch_total_time_tracking()
+    {
+        $result = self::$db->getOne(self::post . ' p', 'SUM(p.time_tracking) time_tracking');
+        return (!empty($result))? $result['time_tracking'] : 0;
+    }
+
     public static function fetch_total_words()
     {
-        $result = self::$db->getOne(self::post_draft . ' pd', 'SUM(words) words');
-        if (empty($result)) return 0;
-
-        return $result['words'];
+        $result = self::$db->getOne(self::post_draft . ' pd', 'SUM(pd.words) words');
+        return (!empty($result))? $result['words'] : 0;
     }
 }
