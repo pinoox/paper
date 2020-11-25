@@ -151,7 +151,7 @@
             },
             remove(item) {
                 let params = {cat_id: item.cat_id};
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.post(this.URL.API + 'category/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
                             this.loadCategories();

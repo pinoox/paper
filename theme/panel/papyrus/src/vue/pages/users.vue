@@ -98,37 +98,6 @@
             return {
                 isLoading: false,
                 drawerName: null,
-                columns: [
-                    {
-                        label: PINOOX.LANG.panel.image,
-                        field: 'thumb_128',
-                        sortable: false,
-                    },
-                    {
-                        label: PINOOX.LANG.user.email,
-                        field: 'email',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.user,
-                        field: 'full_name',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.status,
-                        field: 'status',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.date,
-                        field: 'approx_register_date',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.operation,
-                        field: 'operation',
-                        style: 'operation',
-                        sortable: false,
-                    },
-                ],
                 users: [],
                 pages: [],
                 params: {
@@ -142,6 +111,41 @@
                     },
                 },
                 user: null
+            }
+        },
+        computed:{
+            columns(){
+                return [
+                    {
+                        label: this.LANG.panel.image,
+                        field: 'thumb_128',
+                        sortable: false,
+                    },
+                    {
+                        label: this.LANG.user.email,
+                        field: 'email',
+                    },
+                    {
+                        label: this.LANG.panel.user,
+                        field: 'full_name',
+                    },
+                    {
+                        label: this.LANG.panel.status,
+                        field: 'status',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.date,
+                        field: 'approx_register_date',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.operation,
+                        field: 'operation',
+                        style: 'operation',
+                        sortable: false,
+                    },
+                ];
             }
         },
         methods: {
@@ -176,7 +180,7 @@
             },
             remove(row, index) {
                 let params = {user_id: row.user_id};
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.post(this.URL.API + 'user/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
                             this.$delete(this.users, index)

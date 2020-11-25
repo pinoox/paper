@@ -54,11 +54,11 @@ class SettingsModel extends PaperDatabase
 
     public static function save($name, $data)
     {
-        if ($name === 'general') {
-            Lang::change($data['lang']);
-            AppProvider::set('lang', $data['lang']);
-            AppProvider::save();
-        }
+//        if ($name === 'general') {
+//            Lang::change($data['lang']);
+//            AppProvider::set('lang', $data['lang']);
+//            AppProvider::save();
+//        }
         self::$setting->set($name, $data);
         self::$setting->save($name);
     }

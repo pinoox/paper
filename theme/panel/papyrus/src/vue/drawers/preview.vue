@@ -76,7 +76,7 @@
                 this.closeDrawer();
             },
             deleteHistory() {
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.get(this.URL.API + 'post/deleteHistory/' + this.values.ph_id).then((json) => {
                         this.historyItems = this.historyItems.filter((item) => {
                             return item.ph_id !== this.values.ph_id;

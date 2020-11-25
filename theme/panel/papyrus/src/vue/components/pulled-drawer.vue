@@ -64,7 +64,7 @@
                 this.$parent.drawerName = 'preview';
             },
             deleteAllHistory() {
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.get(this.URL.API + 'post/deleteAllHistory/' + this.$parent.post_id).then((json) => {
                         this.historyItems = [];
                     });

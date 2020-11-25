@@ -81,7 +81,12 @@
         },
         beforeRouteUpdate(to, from, next) {
             if (to.name === this.$route.name) {
-                window.history.pushState(null, {}, to.path);
+                {
+                    if (!!to.params && !!to.params.post_id)
+                        window.history.pushState(null, {}, to.path);
+                    else
+                        next();
+                }
             } else {
                 next();
             }
@@ -110,7 +115,6 @@
                     post_key: '',
                     characters: 0,
                     words: 0,
-                    time: 0,
                 },
                 category: null,
                 images: [],
@@ -121,6 +125,7 @@
                 drawerName: false,
                 message: null,
                 timeSleep: 30,
+                time: 0,
             };
         },
         computed: {
@@ -174,7 +179,7 @@
                     this.timeSleep--;
 
                     if (this.timeSleep > 0)
-                        this.params.time++;
+                        this.time++;
                 }, 1000);
             },
             setPostId() {
@@ -324,16 +329,16 @@
                 if (!!status)
                     params.append('status', status);
 
-                this.message = PINOOX.LANG.panel.saving;
+                this.message = this.LANG.panel.saving;
 
                 return this.$http.post(this.URL.API + 'post/save', params, this.offLoading).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
                         this.replaceUrl(json.data.result);
                         this.isSynced = false;
-                        this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
+                        this.message = this.LANG.panel.saved + ' (' + this._timeNow() + ')';
                         this.changeStatus(status);
-                        this.params.time = 0;
+                        this.time = 0;
                     } else {
                         this._notify('error', json.data.message, 'app');
                     }
@@ -383,6 +388,8 @@
                         formData.append(key, value);
                     }
                 }
+
+                formData.append('time', this.time);
 
                 return formData;
             },
