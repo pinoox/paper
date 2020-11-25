@@ -534,6 +534,10 @@ body.rtl .main {
 body.rtl .btn {
   font-family: 'iranSans', 'Estedad', 'Karla', serif;
 }
+body.rtl .vue-notification-group {
+  right: unset !important;
+  left: 1% !important;
+}
 body.ltr {
   direction: ltr;
   font-family: 'Karla', 'iranSans', 'Estedad', serif !important;
@@ -555,6 +559,10 @@ body.ltr .app-container .main .page .encourage-writing .art {
 }
 body.ltr .btn {
   font-family: 'Karla', 'iranSans', 'Estedad', serif;
+}
+body.ltr .vue-notification-group {
+  left: unset !important;
+  right: 1% !important;
 }
 .app-container .splash {
   font-family: 'Karla', 'iranSans', 'Estedad', serif;
@@ -1641,10 +1649,8 @@ body.ltr .btn {
 .vue-notification-group {
   width: 320px !important;
   z-index: 99999 !important;
-  right: unset !important;
-  bottom: unset !important;
-  left: 1% !important;
   top: 1% !important;
+  bottom: unset !important;
 }
 .vue-notification-group .notification {
   position: relative;
@@ -1922,7 +1928,6 @@ body.ltr .btn {
   border-top: 1px solid rgba(31, 66, 108, 0.1);
   background: #f3f5f7;
   position: fixed;
-  left: 0;
   bottom: 0;
   padding: 20px 15px;
   display: -webkit-box;

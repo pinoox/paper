@@ -312,6 +312,11 @@ body {
     .btn {
       font-family: @defaultFontFaceRtl;
     }
+
+    .vue-notification-group {
+      right: unset !important;
+      left: 1% !important;
+    }
   }
 
   &.ltr {
@@ -341,6 +346,11 @@ body {
 
     .btn {
       font-family: @defaultFontFaceLtr;
+    }
+
+    .vue-notification-group {
+      left: unset !important;
+      right: 1% !important;
     }
   }
 }
@@ -1633,10 +1643,8 @@ body {
 .vue-notification-group {
   width: 320px !important;
   z-index: 99999 !important;
-  right: unset !important;
-  bottom: unset !important;
-  left: 1% !important;
   top: 1% !important;
+  bottom: unset !important;
 
   .notification {
     position: relative;
@@ -1992,7 +2000,6 @@ body {
     border-top: 1px solid fade(@primaryColor, 10%);
     background: rgb(243, 245, 247);
     position: fixed;
-    left: 0;
     bottom: 0;
     padding: 20px 15px;
     display: -webkit-box;
