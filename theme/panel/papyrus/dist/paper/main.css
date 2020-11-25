@@ -849,13 +849,21 @@ body.ltr .vue-notification-group {
   -o-transition: 0.2s;
   transition: 0.2s;
 }
-.app-container .main .page .section-tab li:first-child {
+.rtl .app-container .main .page .section-tab li:first-child {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-.app-container .main .page .section-tab li:last-child {
+.rtl .app-container .main .page .section-tab li:last-child {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+.ltr .app-container .main .page .section-tab li:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.ltr .app-container .main .page .section-tab li:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .app-container .main .page .section {
   margin: 20px 0;
@@ -1939,6 +1947,12 @@ body.ltr .vue-notification-group {
   border-top: 1px solid #f0f0f0;
   box-sizing: border-box;
   width: calc(100% - 120px);
+}
+.rtl .form-wrapper footer {
+  left: 0;
+}
+.ltr .form-wrapper footer {
+  right: 0;
 }
 .form-wrapper footer .form-footer .btn {
   margin: 0 5px;
