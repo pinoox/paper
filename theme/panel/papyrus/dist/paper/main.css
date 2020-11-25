@@ -534,6 +534,10 @@ body.rtl .main {
 body.rtl .btn {
   font-family: 'iranSans', 'Estedad', 'Karla', serif;
 }
+body.rtl .vue-notification-group {
+  right: unset !important;
+  left: 1% !important;
+}
 body.ltr {
   direction: ltr;
   font-family: 'Karla', 'iranSans', 'Estedad', serif !important;
@@ -555,6 +559,10 @@ body.ltr .app-container .main .page .encourage-writing .art {
 }
 body.ltr .btn {
   font-family: 'Karla', 'iranSans', 'Estedad', serif;
+}
+body.ltr .vue-notification-group {
+  left: unset !important;
+  right: 1% !important;
 }
 .app-container .splash {
   font-family: 'Karla', 'iranSans', 'Estedad', serif;
@@ -841,13 +849,21 @@ body.ltr .btn {
   -o-transition: 0.2s;
   transition: 0.2s;
 }
-.app-container .main .page .section-tab li:first-child {
+.rtl .app-container .main .page .section-tab li:first-child {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-.app-container .main .page .section-tab li:last-child {
+.rtl .app-container .main .page .section-tab li:last-child {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+.ltr .app-container .main .page .section-tab li:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.ltr .app-container .main .page .section-tab li:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .app-container .main .page .section {
   margin: 20px 0;
@@ -1641,10 +1657,8 @@ body.ltr .btn {
 .vue-notification-group {
   width: 320px !important;
   z-index: 99999 !important;
-  right: unset !important;
-  bottom: unset !important;
-  left: 1% !important;
   top: 1% !important;
+  bottom: unset !important;
 }
 .vue-notification-group .notification {
   position: relative;
@@ -1922,7 +1936,6 @@ body.ltr .btn {
   border-top: 1px solid rgba(31, 66, 108, 0.1);
   background: #f3f5f7;
   position: fixed;
-  left: 0;
   bottom: 0;
   padding: 20px 15px;
   display: -webkit-box;
@@ -1934,6 +1947,12 @@ body.ltr .btn {
   border-top: 1px solid #f0f0f0;
   box-sizing: border-box;
   width: calc(100% - 120px);
+}
+.rtl .form-wrapper footer {
+  left: 0;
+}
+.ltr .form-wrapper footer {
+  right: 0;
 }
 .form-wrapper footer .form-footer .btn {
   margin: 0 5px;

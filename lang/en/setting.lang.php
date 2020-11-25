@@ -6,6 +6,7 @@ return [
     'read' => 'Reading Settings',
     'theme' => 'Template Settings',
     'interface' => 'Interface Settings',
+    'language' => 'Language Settings',
     'privacy' => 'Privacy Settings',
     'user' => 'User Setting',
     'site_title' => 'Site Title',
