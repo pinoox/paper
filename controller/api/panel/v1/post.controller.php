@@ -13,6 +13,7 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
+use pinoox\app\com_pinoox_paper\model\CategoryModel;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
@@ -44,6 +45,10 @@ class PostController extends LoginConfiguration
 
         if (empty($post)) return $post;
         $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
+        if (isset($post['cat_id']))
+            $post['category'] = CategoryModel::fetch_by_id($post['cat_id']);
+        else
+            $post['category'] = null;
         $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
         $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
         $file = FileModel::fetch_by_id($post['image_id']);
@@ -64,7 +69,7 @@ class PostController extends LoginConfiguration
 
     public function getAll()
     {
-        $form = Request::input('keyword,type,sort,status,perPage=10,page=1', null, '!empty');
+        $form = Request::input('keyword,type,sort,status=all,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
         $count = PostModel::fetch_all(null, true);
@@ -102,9 +107,21 @@ class PostController extends LoginConfiguration
         Response::json($posts);
     }
 
+    public function changeCategory()
+    {
+        $input = Request::input('cat_id,post_id', null, '!empty');
+
+        $status = PostModel::update_category($input['cat_id'], $input['post_id']);
+
+        if ($status)
+            Response::json(rlang('post.save_successfully'), true);
+        else
+            Response::json(rlang('post.error_happened'), false);
+    }
+
     public function save()
     {
-        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0], null, '!empty');
+        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0,'time'=>0], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],

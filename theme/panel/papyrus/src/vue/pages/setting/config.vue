@@ -69,6 +69,7 @@
 </template>
 
 <script>
+    import {mapMutations} from 'vuex';
     export default {
         props: ['setting_key'],
         data() {
@@ -85,6 +86,7 @@
             }
         },
         methods: {
+            ...mapMutations(['updateDirections']),
             select(option) {
                 this.params[option.setting_key] = option.key;
             },
@@ -122,14 +124,12 @@
                 this.params = this._clone(params);
             },
             changeLang(lang) {
-                this.$http.get(this.URL.API + 'setting/getLang/' + lang).then((json) => {
+                this.$http.get(this.URL.API + 'setting/changeLang/' + lang).then((json) => {
+                    this.LANG = json.data.lang;
+                    this.updateDirections(json.data.direction);
                     this.currentLang = lang;
-                    this.LANG = json.data;
-                    PINOOX.LANG = json.data;
                     this.countTranslate++;
                     this.$parent.getViews(lang);
-                    this.$forceUpdate();
-                    //location.reload();
                 });
             },
             save() {
@@ -137,9 +137,8 @@
                 let lang = this.params.lang;
                 this.$http.post(this.URL.API + 'setting/save/' + key, this.params).then((json) => {
                     this.CONFIG[key] = this._clone(this.params);
-                    PINOOX.CONFIG[key] = this._clone(this.params);
                     this._statusResponse(json.data);
-                    if (key === 'general')
+                    if (key === 'lang')
                         this.changeLang(lang);
                 });
             }

@@ -87,18 +87,6 @@
         components: {Menu, Sidebar},
         data() {
             return {
-                defaultTableOpts: {
-                    enabled: true,
-                    mode: 'records',
-                    perPage: 10,
-                    perPageDropdown: [5, 10, 20, 50],
-                    nextLabel: PINOOX.LANG.panel.next,
-                    prevLabel: PINOOX.LANG.panel.prev,
-                    rowsPerPageLabel: PINOOX.LANG.panel.rows_per_pages,
-                    ofLabel: PINOOX.LANG.panel.of,
-                    pageLabel: PINOOX.LANG.panel.page, // for 'pages' mode
-                    allLabel: PINOOX.LANG.panel.all,
-                },
                 timestamp: null,
                 route: {},
                 numProcessing: 0,
@@ -106,6 +94,20 @@
             }
         },
         computed: {
+            defaultTableOpts() {
+                return {
+                    enabled: true,
+                    mode: 'records',
+                    perPage: 10,
+                    perPageDropdown: [5, 10, 20, 50],
+                    nextLabel: this.LANG.panel.next,
+                    prevLabel: this.LANG.panel.prev,
+                    rowsPerPageLabel: this.LANG.panel.rows_per_pages,
+                    ofLabel: this.LANG.panel.of,
+                    pageLabel: this.LANG.panel.page, // for 'pages' mode
+                    allLabel: this.LANG.panel.all,
+                }
+            },
             hasCustomView() {
                 return !!this.$route.meta.customView;
             },
@@ -157,11 +159,11 @@
                 return new Date(date).getTime();
             },
             logout() {
-                this._confirm(PINOOX.LANG.panel.are_you_sure_logout_account, () => {
+                this._confirm(this.LANG.panel.are_you_sure_logout_account, () => {
                     this.$http.get(this.URL.API + 'user/logout').then((json) => {
                         if (json.data.status) {
                             this.USER.user = {isLogin: false};
-                            this.$router.replace({name:'login'});
+                            this.$router.replace({name: 'login'});
                         }
                     });
                 });
@@ -191,17 +193,6 @@
                 }
 
                 this.checkUser();
-            },
-            DIRECTION: {
-                handler() {
-                    console.log(this.DIRECTION);
-                    $('body').removeClass('rtl');
-                    $('body').removeClass('ltr');
-                    $('body').addClass(this.DIRECTION);
-                    document.dir = this.DIRECTION;
-
-                },
-                immediate: true,
             },
         }
     }

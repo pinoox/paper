@@ -17,8 +17,8 @@
           }
         },
         methods: {
-            getViews() {
-                this.$http.get(this.URL.API + 'setting/getViews/').then((json) => {
+            getViews(lang = '') {
+                this.$http.get(this.URL.API + 'setting/getViews/' + lang).then((json) => {
                     this.viewSettings = !!json.data ? json.data : {};
                 });
             }

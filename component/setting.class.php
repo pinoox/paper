@@ -153,11 +153,11 @@ class Setting
 
     public function getAll()
     {
-        $files = File::get_files_by_pattern($this->path, '*.config.php');
+        $files = $this->view->getAllFiles();
         $result = [];
         foreach ($files as $file) {
             $name = File::name($file);
-            $name = str_replace('.config', '', $name);
+            $name = str_replace('.view', '', $name);
             $result[$name] = self::get($name);
         }
 
