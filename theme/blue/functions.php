@@ -95,21 +95,21 @@ function showDate($date)
 
 }
 
-function articleLink($article)
+function postLink($post)
 {
-    return Url::app() . 'article/' . $article['article_id'] . '/' . HelperString::replaceSpace($article['title']);
+    return Url::app() . 'post/' . $post['post_id'] . '/' . HelperString::replaceSpace($post['title']);
 }
 
-function socialLink($platform, $article)
+function socialLink($platform, $post)
 {
     if ($platform == 'telegram') {
-        return 'tg://msg_url?url=' . articleLink($article);
+        return 'tg://msg_url?url=' . postLink($post);
     } else if ($platform == 'twitter') {
-        return 'http://www.twitter.com/home?status=' . articleLink($article);
+        return 'http://www.twitter.com/home?status=' . postLink($post);
     } else if ($platform == 'linkedin') {
-        return 'http://www.linkedin.com/shareArticle?mini=true&url=' . articleLink($article);
+        return 'http://www.linkedin.com/shareArticle?mini=true&url=' . postLink($post);
     } else if ($platform == 'whatsapp') {
-        return 'whatsapp://send?text=' . articleLink($article);
+        return 'whatsapp://send?text=' . postLink($post);
     }
 }
 

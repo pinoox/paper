@@ -10,11 +10,10 @@
  */
 namespace pinoox\app\com_pinoox_paper\controller;
 
-use pinoox\app\com_pinoox_paper\model\ArticleModel;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PageModel;
-use pinoox\app\com_pinoox_paper\model\SettingsModel;
+use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\component\Cookie;
 use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
@@ -33,14 +32,12 @@ class MainController extends MasterConfiguration
     {
         parent::__construct();
 
-        $limitMostVisited = SettingsModel::getFromCache('most_visited_count', 0);
-        $limitHotTags = SettingsModel::getFromCache('hot_tags_count', 0);
-        ArticleModel::where_status(ArticleModel::publish);
+        $limitMostVisited = 10;
+        $limitHotTags = 10;
+        PostModel::where_status(PostModel::publish_status);
 
-        self::$template->set('mostVisited', ArticleModel::fetch_most_visited($limitMostVisited));
-        self::$template->set('hotTags', ArticleModel::hot_tags($limitHotTags));
-
-
+        self::$template->set('mostVisited', PostModel::fetch_most_visited($limitMostVisited));
+        self::$template->set('hotTags', PostModel::hot_tags($limitHotTags));
     }
 
     public function _exception()
@@ -69,7 +66,7 @@ class MainController extends MasterConfiguration
 
     public function search($pageIndex = 1)
     {
-        $articles = [];
+        $posts = [];
         $page = null;
         $queryValue = null;
         $resultCount = 0;
@@ -87,19 +84,19 @@ class MainController extends MasterConfiguration
         if (!empty($queryValue)) {
             if ($queryType == 'q') {
                 $this->filterSearch($queryType, $queryValue);
-                $resultCount = ArticleModel::fetch_all(null, true);
+                $resultCount = PostModel::fetch_all(null, true);
                 $page = new Pagination($resultCount, $resultLimit);
                 $page->setCurrentPage($pageIndex);
                 $this->filterSearch($queryType, $queryValue);
-                $articles = ArticleModel::fetch_all($page->getArrayLimit());
+                $posts = PostModel::fetch_all($page->getArrayLimit());
             }
             if ($queryType == 'tag') {
                 $this->filterSearch();
-                $resultCount = ArticleModel::fetch_by_tag_name($queryValue, null, true);
+                $resultCount = PostModel::fetch_by_tag_name($queryValue, null, true);
                 $page = new Pagination($resultCount, $resultLimit);
                 $page->setCurrentPage($pageIndex);
                 $this->filterSearch();
-                $articles = ArticleModel::fetch_by_tag_name($queryValue, $page->getArrayLimit());
+                $posts = PostModel::fetch_by_tag_name($queryValue, $page->getArrayLimit());
             }
         }
 
@@ -107,73 +104,70 @@ class MainController extends MasterConfiguration
         self::$template->set('queryString', $query);
         self::$template->set('queryValue', $queryValue);
         self::$template->set('page', $page);
-        self::$template->set('articles', $articles);
+        self::$template->set('posts', $posts);
         self::$template->show('pages>search');
     }
 
     private function filterSearch($type = null, $query = null)
     {
         if ($type == 'q') {
-            ArticleModel::where_search($query);
+            PostModel::where_search($query);
         }
-        ArticleModel::where_status(ArticleModel::publish);
+        PostModel::where_status(PostModel::publish_status);
     }
 
-    public function article($article_id, $title = null)
+    public function post($post_id, $title = null)
     {
         if(func_num_args() > 2)
             self::error404();
 
-        //check article available for guest users
+        //check post available for guest users
         if (!User::isLoggedIn()) {
-            ArticleModel::where_status(ArticleModel::publish);
+            PostModel::where_status(PostModel::publish_status);
         }
-        $article = ArticleModel::fetch_by_id($article_id);
-        if (empty($article)) self::error404();
-        if (($article_title = HelperString::replaceSpace($article['title'])) != $title)
-            Response::redirect(Url::app() . 'article/' . $article_id . '/' . $article_title);
+        $post = PostModel::fetch_by_id($post_id);
+        if (empty($post)) self::error404();
+        if (($post_title = HelperString::replaceSpace($post['title'])) != $title)
+            Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post_title);
 
         //load tags
-        $tags = ArticleModel::fetch_all_tags_by_article_id($article_id);
+        $tags = PostModel::fetch_all_tags_by_post_id($post_id);
 
         //load comments
-        $comments = CommentModel::fetch_all_by_post($article_id, CommentModel::publish);
+        $comments = CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish);
         $cmCount = count($comments);
         $tree = new Tree();
         $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');
 
         //store visits
-        ArticleModel::update_visit($article_id);
-        $key = '_pinoox_article_' . $article_id;
-        if (Cookie::get($key, false) != 'visited') {
-            ArticleModel::update_visitor($article_id);
+        //PostModel::update_visit($post_id);
+        $key = '_pinoox_post_' . $post_id;
+        if (Cookie::get($key) != 'visited') {
+        //    PostModel::update_visitor($post_id);
             Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
         }
 
-        self::$template->set('_title', $article['title']);
-        self::$template->set('_description', $article['summary']);
+        self::$template->set('_title', $post['title']);
+        self::$template->set('_description', $post['summary']);
 
         self::$template->set('tags', $tags);
         self::$template->set('cmCount', $cmCount);
         self::$template->set('comments', $treeComments);
-        self::$template->set('article', $article);
-        self::$template->show('pages>article');
+        self::$template->set('post', $post);
+        self::$template->show('pages>post');
     }
 
     private function newestArticles()
     {
-        $limitCount = SettingsModel::getFromCache('newest_article_count', 10);
-        ArticleModel::where_status(ArticleModel::publish);
-        $articles = ArticleModel::fetch_all($limitCount);
-        return $articles;
+        $limitCount = 10;
+        PostModel::where_status(PostModel::publish_status );
+        return PostModel::fetch_all($limitCount);
     }
 
     private function featuresArticles()
     {
-        ArticleModel::where_status(ArticleModel::publish);
-        ArticleModel::where_is_feature(1);
-        $articles = ArticleModel::fetch_all(8);
-        return $articles;
+        PostModel::where_status(PostModel::publish_status);
+        return PostModel::fetch_all(8);
     }
 
     public function sendContact(){
@@ -197,13 +191,13 @@ class MainController extends MasterConfiguration
         Response::jsonMessage(rlang('front.error_to_send_contact'), true);
     }
 
-    public function sendComment($article_id)
+    public function sendComment($post_id)
     {
         if (!Request::isPost()) self::error404();
 
-        ArticleModel::where_status(ArticleModel::publish);
-        $article = ArticleModel::fetch_by_id($article_id);
-        if (empty($article)) self::error404();
+        PostModel::where_status(PostModel::publish_status);
+        $post = PostModel::fetch_by_id($post_id);
+        if (empty($post)) self::error404();
 
         $formData = Request::post('parent_id,full_name,email,message', null, '!empty');
         if (User::isLoggedIn()) {
@@ -221,7 +215,7 @@ class MainController extends MasterConfiguration
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
 
-        $formData['article_id'] = $article_id;
+        $formData['post_id'] = $post_id;
         $insert_id = CommentModel::insert($formData);
         if ($insert_id > 0) {
             Response::jsonMessage(rlang('front.comment_inserted_successfully'), true);
@@ -237,7 +231,7 @@ class MainController extends MasterConfiguration
         //store visits
         PageModel::update_visit($page['page_id']);
         $key = '_pinoox_page_' . $page['page_id'];
-        if (Cookie::get($key, false) != 'visited') {
+        if (Cookie::get($key) != 'visited') {
             PageModel::update_visitor($page['page_id']);
             Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
         }

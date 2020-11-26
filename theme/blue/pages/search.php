@@ -10,16 +10,16 @@
                             <b><?php echo $resultCount; ?>&nbsp;<?php lang('front.found_articles'); ?></b>
                         </h2>
                     </form>
-                    <?php if (isset($articles) && !empty($articles)) { ?>
-                        <?php foreach ($articles as $i) { ?>
-                            <?php includeView('pages>article_row',['article'=>$i]); ?>
+                    <?php if (isset($posts) && !empty($posts)) { ?>
+                        <?php foreach ($posts as $i) { ?>
+                            <?php includeView('pages>post_row',['post'=>$i]); ?>
                         <?php } ?>
                     <?php } else{?>
                         <div class="searchResultNotFound"><?php lang('front.search_result_not_found'); ?></div>
                     <?php } ?>
                 </div>
                 <div class="paging">
-                    <?php if (!empty($articles)) { ?>
+                    <?php if (!empty($posts)) { ?>
                         <?php showPage($page, 'href="' . $_app . "search/[page]/?" . $queryString . '"'); ?>
                     <?php } ?>
                 </div>
