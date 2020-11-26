@@ -4,7 +4,7 @@
             <h2 class="section-title"><?php lang('front.most_viewed_articles'); ?></h2>
             <div class="list">
                 <?php foreach ($mostVisited as $i) { ?>
-                    <a href="<?php echo articleLink($i); ?>">
+                    <a href="<?php echo postLink($i); ?>">
                         <span class="title"><?php echo $i['title']; ?></span>
                         <span class="details">
                                             <span><?php echo showDate($i['insert_date']); ?></span>

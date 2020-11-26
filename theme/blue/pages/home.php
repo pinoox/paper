@@ -10,7 +10,7 @@
 
                     <?php if (isset($newest) && !empty($newest)) { ?>
                         <?php foreach ($newest as $i) { ?>
-                            <?php includeView('pages>article_row', ['article' => $i]); ?>
+                            <?php includeView('pages>post_row', ['post' => $i]); ?>
                         <?php } ?>
                     <?php } ?>
                 </div>

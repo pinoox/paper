@@ -2,10 +2,10 @@ $(document).ready(function () {
     $('.comments .form').on('submit', function (e) {
         e.preventDefault();
         let formId = "#" + $(this).attr('id');
-        let article_id = $('.comments').find('#article_id').val();
+        let post_id = $('.comments').find('#post_id').val();
         let formData = getData(formId);
-        $.ajax({
-            url: PINOOX.URL.APP + "sendComment/" + article_id,
+       $.ajax({
+            url: PINOOX.URL.APP + "sendComment/" + post_id,
             type: 'POST',
             data: formData,
             dataType: 'JSON',

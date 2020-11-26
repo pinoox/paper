@@ -344,4 +344,30 @@ class PostModel extends PaperDatabase
 
         return $result['words'];
     }
+
+    public static function where_search($query)
+    {
+        if (!is_null($query)) {
+            $p = '%' . $query . '%';
+            self::$db->where('p.title LIKE ? OR p.summary LIKE ?', [$p, $p]);
+        }
+
+    }
+
+    public static function fetch_all_tags_by_post_id($post_id)
+    {
+
+    }
+
+    public static function fetch_by_tag_name($queryValue, $getArrayLimit)
+    {
+    }
+
+    public static function fetch_most_visited($limitMostVisited)
+    {
+    }
+
+    public static function hot_tags($limitHotTags)
+    {
+    }
 }

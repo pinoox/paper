@@ -6,7 +6,7 @@
                     <img src="<?php echo showImage($s['image_id'], 512); ?>"
                          alt="<?php echo $s['title'] ?>">
                     <div class="content">
-                        <a class="title" href="<?php echo articleLink($s); ?>"><?php echo $s['title'] ?></a>
+                        <a class="title" href="<?php echo postLink($s); ?>"><?php echo $s['title'] ?></a>
                         <span class="publish-date"><?php showDate($s['insert_date']); ?></span>
                     </div>
                     <div class="mask"></div>
