@@ -59,19 +59,9 @@
                                     <span @click="remove(props.row,props.index)" class="btn-action"><i
                                             class="fa fa-trash"></i></span>
                                 </div>
-                                <div v-else-if="props.column.field==='visits'">
-                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    <i class="fa fa-eye"></i> {{props.formattedRow[props.column.field]}}
-                                </span>
-                                </div>
-                                <div v-else-if="props.column.field==='visitors'">
-                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    <i class="fa fa-users"></i> {{props.formattedRow[props.column.field]}}
-                                </span>
-                                </div>
                                 <div v-else>
                                 <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    {{props.formattedRow[props.column.field]}}
+                                    <i v-if="!!props.column.icon" :class="props.column.icon"></i> {{props.formattedRow[props.column.field]}}
                                 </span>
                                 </div>
                             </template>
@@ -113,9 +103,9 @@
                 },
             }
         },
-        computed:{
-            columns(){
-                return  [
+        computed: {
+            columns() {
+                return [
                     {
                         label: this.LANG.panel.id,
                         field: 'post_id',
@@ -153,12 +143,18 @@
                     },
                     {
                         label: this.LANG.post.visits,
-                        field: 'visits',
+                        icon: 'fa fa-eye',
+                        field: (item) => {
+                            return this._isNull(item.visits, '0');
+                        },
                         style: 'light',
                     },
                     {
                         label: this.LANG.post.visitors,
-                        field: 'visitors',
+                        icon: 'fa fa-users',
+                        field: (item) => {
+                            return this._isNull(item.visitors, '0');
+                        },
                         style: 'light',
                     },
                     {
