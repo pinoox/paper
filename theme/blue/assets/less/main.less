@@ -268,6 +268,9 @@ body {
     padding-bottom: 5px;
 
     a {
+      display: flex;
+      align-items: center;
+
       &:hover {
         background: transparent;
       }
@@ -284,7 +287,7 @@ body {
       position: relative;
       margin-right: 5px;
       display: inline-block;
-      font-size: 17px;
+      font-size: 15px;
       top: 10px;
 
       h1 {
@@ -333,6 +336,7 @@ body {
 
   .left-side {
     color: @secondary;
+    display: flex;
 
     .action-item {
       padding: 20px;
@@ -1028,7 +1032,7 @@ body {
 @media screen and (max-width: 992px) {
   .header {
     position: fixed;
-    grid-template-columns: 30px 1fr 33%;
+    grid-template-columns: 30px 1fr 27%;
 
     .drawer-menu {
       display: block;
@@ -1104,8 +1108,7 @@ body {
       grid-template-columns: auto !important;
 
       .image {
-        margin: auto;
-        margin-bottom: 20px;
+        margin: auto auto 20px;
         width: 100% !important;
         max-width: 400px;
 

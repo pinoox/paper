@@ -59,6 +59,7 @@ class CommentModel extends PaperDatabase
     public static function fetch_all_by_post($post_id, $status = self::status_publish, $limit = null)
     {
         self::$db->join(self::user . ' u', 'u.user_id=c.user_id', 'LEFT');
+        self::$db->join(self::post . ' p', 'p.post_id=c.post_id', 'LEFT');
         self::$db->where('c.post_id', $post_id);
         self::$db->where('c.status', $status);
         return self::$db->get(self::comment . ' c', $limit, 'c.*,CONCAT(u.fname," ",u.lname) user_full_name,u.avatar_id,u.email user_email,p.title post_title');

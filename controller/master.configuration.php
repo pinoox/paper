@@ -48,36 +48,30 @@ class MasterConfiguration implements ControllerInterface
     private function loadSettings()
     {
         //general
-        $siteTitle = SettingsModel::getFromCache('site_title', rlang('front.site_title'));
-        $siteDesc = SettingsModel::getFromCache('site_description', rlang('front.site_description'));
+        $siteTitle = 'sample title';
+        $siteDesc = 'sample description';
         self::$template->set('siteTitle', $siteTitle);
         self::$template->set('siteDesc', $siteDesc);
         self::$template->set('_description', $siteDesc);
 
         //seo
-        $seo_title = SettingsModel::getFromCache('seo_title');
-        $seo_description = SettingsModel::getFromCache('seo_description');
+        $seo_title ='seo_title';
+        $seo_description = 'seo_description';
         self::$template->set('seo_title', $seo_title);
         self::$template->set('seo_description', $seo_description);
         self::$template->set('seo_description', $seo_description);
 
         //socials
-        $twitter = SettingsModel::getFromCache('twitter_link');
-        $instagram = SettingsModel::getFromCache('instagram_link');
-        $telegram = SettingsModel::getFromCache('telegram_link');
-
-        self::$template->set('twitter', $twitter);
-        self::$template->set('instagram', $instagram);
-        self::$template->set('telegram', $telegram);
+        self::$template->set('twitter', 'twitter');
+        self::$template->set('instagram', 'instagram');
+        self::$template->set('telegram', 'telegram');
     }
 
     private function loadMenus()
     {
-        $primary = MenuModel::fetch_all('primary');
-        self::$template->set('primaryMenu', $primary);
+        self::$template->set('primaryMenu', []);
 
-        $footer = MenuModel::fetch_all('footer');
-        self::$template->set('footerMenu', $footer);
+        self::$template->set('footerMenu', []);
     }
 
     public function _main()
