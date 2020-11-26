@@ -41,6 +41,7 @@ return [
     'times' => 'مرتبه',
     'persons' => 'نفر',
     'total_written_words' => 'تعداد کلمات نوشته شده',
+    'total_written_time' => 'کل زمان سپری شده برای نوشتن',
     'word' => 'کلمه',
     'asc_progress' => 'افزایش نسبت به دیروز',
     'desc_progress' => 'کاهش نسبت به دیروز',
@@ -59,9 +60,16 @@ return [
     'comments' => 'نظرات',
     'contacts' => 'تماس ها',
     'profile_image' => 'تصویر پروفایل',
+    'type_time_tracking' => [
+        'sec' => 'ثانیه',
+        'minute' => 'دقیقه',
+        'hour' => 'ساعت',
+        'day' => 'روز',
+        'month' => 'ماه',
+        'year' => 'سال',
+    ],
 
     /* table */
-
     'id' => 'شناسه',
     'of' => 'از',
     'next' => 'بعدی',
@@ -86,7 +94,7 @@ return [
     'search_in_contacts' => 'جست و جو بین تماس ها...',
     'subject' => 'موضوع',
     'message' => 'پیام',
-    'contact_status' => ['seen' => 'خوانده شد', 'unseen' => 'خوانده نشده'],
+    'contact_status' => ['seen' => 'خوانده شده', 'unseen' => 'خوانده نشده'],
 
     /* picture input */
     'picture_input' => [

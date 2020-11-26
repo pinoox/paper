@@ -3,7 +3,9 @@
         <div class="menubar">
             <div class="items">
                 <div class="text" v-if="!!post">
-                    <router-link tag="span" :to="{name:'write',params:{post_id:this.post_id}}" class="icon"><i class="fa fa-chevron-right"></i> {{LANG.panel.back}}</router-link>
+                    <router-link tag="span" :to="{name:'write',params:{post_id:this.post_id}}" class="icon"><i
+                            class="fa fa-chevron-right"></i> {{LANG.panel.back}}
+                    </router-link>
                     <span class="title">{{post.draft_title}}</span>
                 </div>
             </div>
@@ -17,6 +19,25 @@
 
         <simplebar class="simplebar">
             <div class="container">
+
+                <ul class="section-tab">
+                    <li @click="filter('all')"
+                        :class="[params.status==='all' ? 'active' :'' ]">{{LANG.panel.all}}
+                    </li>
+                    <li @click="filter('publish')"
+                        :class="[params.status==='publish'? 'active' :'']">
+                        {{LANG.comment.status.publish}}
+                    </li>
+                    <li @click="filter('pending')"
+                        :class="[params.status==='pending'? 'active' :'']">
+                        {{LANG.comment.status.pending}}
+                    </li>
+                    <li @click="filter('suspend')"
+                        :class="[params.status==='suspend'? 'active' :'']">
+                        {{LANG.comment.status.suspend}}
+                    </li>
+                </ul>
+
                 <div class="section compact-mode">
                     <div class="section-content">
                         <vue-good-table
@@ -86,54 +107,13 @@
             return {
                 isLoading: false,
                 drawerName: null,
-                columns: [
-                    {
-                        label: PINOOX.LANG.panel.id,
-                        field: 'comment_id',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.user,
-                        field: 'full_name',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.subject,
-                        field: 'subject',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.message,
-                        field: 'message',
-                    },
-                    {
-                        label: PINOOX.LANG.post.post,
-                        field: 'title',
-                        style: 'link',
-                    },
-                    {
-                        label: PINOOX.LANG.user.mobile,
-                        field: 'mobile',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.date,
-                        field: 'approx_insert_date',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.status,
-                        field: 'status',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.operation,
-                        field: 'operation',
-                        style: 'operation',
-                        sortable: false,
-                    },
-                ],
                 items: [],
                 pages: [],
                 post: null,
                 params: {
                     keyword: null,
                     page: 1,
+                    status: 'all',
                     perPage: 10,
                     post_id: null,
                     sort: {
@@ -141,6 +121,52 @@
                         type: '',
                     },
                 },
+            }
+        },
+        computed: {
+            columns() {
+                return [
+                    {
+                        label: this.LANG.panel.id,
+                        field: 'comment_id',
+                    },
+                    {
+                        label: this.LANG.panel.user,
+                        field: 'full_name',
+                    },
+                    {
+                        label: this.LANG.panel.subject,
+                        field: 'subject',
+                    },
+                    {
+                        label: this.LANG.panel.message,
+                        field: 'message',
+                    },
+                    {
+                        label: this.LANG.post.post,
+                        field: 'title',
+                        style: 'link',
+                    },
+                    {
+                        label: this.LANG.user.mobile,
+                        field: 'mobile',
+                    },
+                    {
+                        label: this.LANG.panel.date,
+                        field: 'approx_insert_date',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.status,
+                        field: 'status',
+                    },
+                    {
+                        label: this.LANG.panel.operation,
+                        field: 'operation',
+                        style: 'operation',
+                        sortable: false,
+                    },
+                ];
             }
         },
         created() {
@@ -179,7 +205,7 @@
             },
             remove(row, index) {
                 let params = {contact_id: row.contact_id};
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.post(this.URL.API + 'comment/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
                             this.$delete(this.items, index)
@@ -195,6 +221,10 @@
                         field: first.field,
                     },
                 });
+                this.getItems();
+            },
+            filter(param) {
+                this.updateParams({status: param});
                 this.getItems();
             },
         },

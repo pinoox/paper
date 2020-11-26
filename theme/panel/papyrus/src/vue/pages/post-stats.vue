@@ -126,7 +126,6 @@
                 stats: null,
                 devices: null,
                 monthly: null,
-
                 miniBoxOpts: {
                     chart: {
                         type: 'line',
@@ -189,46 +188,6 @@
                     },
 
                 },
-                radialOpts: {
-                    chart: {
-                        type: 'radialBar',
-                        fontFamily: 'IranSans',
-                    },
-                    stroke: {
-                        lineCap: 'round'
-                    },
-                    labels: [],
-                    plotOptions: {
-                        radialBar: {
-                            dataLabels: {
-                                name: {
-                                    fontSize: "22px"
-                                },
-                                value: {
-                                    fontSize: "16px"
-                                },
-                                total: {
-                                    show: true,
-                                    label: PINOOX.LANG.panel.total,
-                                    formatter: function (w) {
-                                        return '100%';
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    legend: {
-                        show: true,
-                        floating: true,
-                        fontSize: '10px',
-                        position: 'center',
-                        offsetX: 0,
-                        offsetY: 0,
-                        formatter: function (seriesName, opts) {
-                            return '%' + seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
-                        },
-                    },
-                },
                 monthlyOpts: {
                     chart: {
                         type: 'bar',
@@ -268,6 +227,50 @@
                     }
                 },
             }
+        },
+        computed:{
+            radialOpts(){
+                return {
+                    chart: {
+                        type: 'radialBar',
+                        fontFamily: 'IranSans',
+                    },
+                    stroke: {
+                        lineCap: 'round'
+                    },
+                    labels: [],
+                    plotOptions: {
+                        radialBar: {
+                            dataLabels: {
+                                name: {
+                                    fontSize: "22px"
+                                },
+                                value: {
+                                    fontSize: "16px"
+                                },
+                                total: {
+                                    show: true,
+                                    label: this.LANG.panel.total,
+                                    formatter: function (w) {
+                                        return '100%';
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        floating: true,
+                        fontSize: '10px',
+                        position: 'center',
+                        offsetX: 0,
+                        offsetY: 0,
+                        formatter: function (seriesName, opts) {
+                            return '%' + seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
+                        },
+                    },
+                };
+            },
         },
         methods: {
             getPost() {

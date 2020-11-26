@@ -77,6 +77,11 @@ class View
         return $result;
     }
 
+    public function getAllFiles()
+    {
+        return File::get_files_by_pattern($this->path, '*.view.php');
+    }
+
     public function getAll()
     {
         $files = File::get_files_by_pattern($this->path, '*.view.php');

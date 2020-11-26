@@ -41,7 +41,7 @@ class CommentController extends LoginConfiguration
 
     public function getAll()
     {
-        $form = Request::input('keyword,sort,status,post_id,perPage=10,page=1', null, '!empty');
+        $form = Request::input('keyword,sort,status=all,post_id,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
         $count = CommentModel::fetch_all(null, null, true);

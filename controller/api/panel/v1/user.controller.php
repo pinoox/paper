@@ -26,7 +26,7 @@ use pinoox\component\User;
 use pinoox\component\Validation;
 use pinoox\model\FileModel;
 use pinoox\model\PinooxDatabase;
-use pinoox\model\UserModel;
+use pinoox\app\com_pinoox_paper\model\UserModel;
 
 class UserController extends LoginConfiguration
 {
@@ -74,7 +74,7 @@ class UserController extends LoginConfiguration
 
     public function getAll()
     {
-        $form = Request::input('keyword,sort,status,perPage=10,page=1', null, '!empty');
+        $form = Request::input('keyword,sort,status=all,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
         $count = UserModel::fetch_all(null, true);
@@ -97,7 +97,7 @@ class UserController extends LoginConfiguration
     private function filterSearch($form)
     {
         UserModel::where_search($form['keyword']);
-        PaperUserModel::where_status($form['status']);
+        UserModel::where_status($form['status']);
         PaperUserModel::sort($form['sort']);
     }
 

@@ -9,7 +9,7 @@
                     {{LANG.post.save}}
                 </div>
                 <div v-if="!!post_id && post_type==='post'" class="item" @click="openDrawer('category')">
-                    {{LANG.post.category}} {{params.category!=null ? '('+params.category.cat_name+')' : ''}}
+                    {{LANG.post.category}} {{category!=null ? '('+category.cat_name+')' : ''}}
                 </div>
                 <div class="item" @click="drawerName = 'image-manager'">
                     {{LANG.post.images}}
@@ -46,7 +46,7 @@
         <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
         <category v-if="post_type==='post'"
                   :open="drawerName==='category'"
-                  :selected="params.category"
+                  :selected="category"
                   @onClose="drawerName=null"
                   @onSelected="setCategory"></category>
         <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
@@ -81,7 +81,12 @@
         },
         beforeRouteUpdate(to, from, next) {
             if (to.name === this.$route.name) {
-                window.history.pushState(null, {}, to.path);
+                {
+                    if (!!to.params && !!to.params.post_id)
+                        window.history.pushState(null, {}, to.path);
+                    else
+                        next();
+                }
             } else {
                 next();
             }
@@ -105,13 +110,13 @@
                     editor: {},
                     summary: '',
                     tags: [],
-                    category: null,
                     hash_id: null,
                     image: null,
                     post_key: '',
                     characters: 0,
                     words: 0,
                 },
+                category: null,
                 images: [],
                 status: 'draft',
                 settings: {
@@ -119,6 +124,8 @@
                 },
                 drawerName: false,
                 message: null,
+                timeSleep: 30,
+                time: 0,
             };
         },
         computed: {
@@ -148,6 +155,8 @@
                     this.getFeaturingImage();
                 })
                 .then(() => {
+                    this.locker();
+                    this.startTimer();
                     this.$watch('params', () => {
                         this.isSave = false;
                     }, {
@@ -156,6 +165,23 @@
                 });
         },
         methods: {
+            locker() {
+                document.onmousemove = () => {
+                    this.timeSleep = 30;
+                };
+
+                document.onkeypress = () => {
+                    this.timeSleep = 30;
+                };
+            },
+            startTimer() {
+                return setInterval(() => {
+                    this.timeSleep--;
+
+                    if (this.timeSleep > 0)
+                        this.time++;
+                }, 1000);
+            },
             setPostId() {
                 if (!!this.$route.params.post_id)
                     this.post_id = this.$route.params.post_id;
@@ -258,6 +284,7 @@
                         context: json.data.draft_context,
                     });
                     this.params.tags = this.createTags(json.data.tags);
+                    this.category = json.data.category;
                     this.params.summary = !!json.data.summary ? json.data.summary : '';
                     this.params.post_key = !!json.data.post_key ? json.data.post_key : '';
                     this.status = !!json.data.status ? json.data.status : 'draft';
@@ -302,15 +329,16 @@
                 if (!!status)
                     params.append('status', status);
 
-                this.message = PINOOX.LANG.panel.saving;
+                this.message = this.LANG.panel.saving;
 
-                return this.$http.post(this.URL.API + 'post/save', params).then((json) => {
+                return this.$http.post(this.URL.API + 'post/save', params, this.offLoading).then((json) => {
                     if (json.data.status) {
                         this.isSave = true;
                         this.replaceUrl(json.data.result);
                         this.isSynced = false;
-                        this.message = PINOOX.LANG.panel.saved + ' (' + this._timeNow() + ')';
+                        this.message = this.LANG.panel.saved + ' (' + this._timeNow() + ')';
                         this.changeStatus(status);
+                        this.time = 0;
                     } else {
                         this._notify('error', json.data.message, 'app');
                     }
@@ -361,10 +389,12 @@
                     }
                 }
 
+                formData.append('time', this.time);
+
                 return formData;
             },
             setCategory(val) {
-                this.params.category = val;
+                this.category = val;
             },
             openFullscreen() {
                 let ckBody = $('#write').find('.ck-body-wrapper');

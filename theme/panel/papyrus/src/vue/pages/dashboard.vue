@@ -26,9 +26,9 @@
                     </column>
                     <column :xs="2" :sm="2" :md="2" :lg="1">
                         <div class="single-stat purple">
-                            <div class="caption">کل زمان سپری شده برای نوشتن</div>
-                            <div class="amount">2</div>
-                            <div class="unit">ساعت</div>
+                            <div class="caption">{{LANG.panel.total_written_time}}</div>
+                            <div class="amount">{{stats.timeTracking.value}}</div>
+                            <div class="unit">{{LANG.panel.type_time_tracking[stats.timeTracking.type]}}</div>
                         </div>
                     </column>
                     <column :xs="3" :sm="3" :md="3" :lg="1">
@@ -171,7 +171,13 @@
                     }
                 },
                 unseen: {contacts: null, comments: null},
-                stats: {words: 0},
+                stats: {
+                    words: 0,
+                    timeTracking:{
+                        value:0,
+                        type:'sec',
+                    },
+                },
             }
         },
         computed: {

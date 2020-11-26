@@ -14,6 +14,21 @@
 
         <simplebar class="simplebar">
             <div class="container">
+
+                <ul class="section-tab">
+                    <li @click="filter('all')"
+                        :class="[params.status==='all' ? 'active' :'' ]">{{LANG.panel.all}}
+                    </li>
+                    <li @click="filter('publish')"
+                        :class="[params.status==='publish'? 'active' :'']">
+                        {{LANG.post.status.publish}}
+                    </li>
+                    <li @click="filter('draft')"
+                        :class="[params.status==='draft'? 'active' :'']">
+                        {{LANG.post.status.draft}}
+                    </li>
+                </ul>
+
                 <div class="section">
                     <div class="section-content">
                         <vue-good-table
@@ -71,49 +86,12 @@
         data() {
             return {
                 isLoading: false,
-                columns: [
-                    {
-                        label: PINOOX.LANG.panel.id,
-                        field: 'post_id',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.title,
-                        field: (item) => {
-                            return this._isNull(item.title, this.LANG.post.no_title);
-                        },
-                        style: (item) => {
-                            return !item.title ? 'light' : '';
-                        },
-                    },
-                    {
-                        label: PINOOX.LANG.post.author,
-                        field: 'username',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.date,
-                        field: 'approx_insert_date',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.status,
-                        field: (item) => {
-                            return this.LANG.post.status[item.status];
-                        },
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.operation,
-                        field: 'operation',
-                        style: 'operation',
-                        sortable: false,
-                    },
-                ],
                 posts: [],
                 pages: [],
                 params: {
                     keyword: null,
                     page: 1,
+                    status: 'all',
                     perPage: 10,
                     type: 'page',
                     sort: {
@@ -122,6 +100,48 @@
                     },
                 },
             }
+        },
+        computed:{
+            columns(){
+                return [
+                    {
+                        label: this.LANG.panel.id,
+                        field: 'post_id',
+                    },
+                    {
+                        label: this.LANG.panel.title,
+                        field: (item) => {
+                            return this._isNull(item.title, this.LANG.post.no_title);
+                        },
+                        style: (item) => {
+                            return !item.title ? 'light' : '';
+                        },
+                    },
+                    {
+                        label: this.LANG.post.author,
+                        field: 'username',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.date,
+                        field: 'approx_insert_date',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.status,
+                        field: (item) => {
+                            return this.LANG.post.status[item.status];
+                        },
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.operation,
+                        field: 'operation',
+                        style: 'operation',
+                        sortable: false,
+                    },
+                ];
+            },
         },
         methods: {
             getItems() {
@@ -147,7 +167,7 @@
             },
             remove(row, index) {
                 let params = {post_id: row.post_id};
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.post(this.URL.API + 'post/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
                             this.$delete(this.posts, index);
@@ -163,6 +183,10 @@
                         field: first.field,
                     },
                 });
+                this.getItems();
+            },
+            filter(param) {
+                this.updateParams({status: param});
                 this.getItems();
             },
         },

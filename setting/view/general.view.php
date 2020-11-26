@@ -21,15 +21,5 @@ return [
                 'rows' => 5,
             ],
         ],
-        [
-            'key' => 'lang',
-            'value' => 'en',
-            'label' => rlang('setting.select_lang'),
-            'type' => 'select',
-            'options' => rlang('setting.lang'),
-            'attrs' => [
-                'clearable' => false,
-            ],
-        ],
     ]
 ];

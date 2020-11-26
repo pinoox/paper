@@ -11,6 +11,8 @@
 
 namespace pinoox\app\com_pinoox_paper\model;
 
+use pinoox\component\Response;
+
 class CategoryModel extends PaperDatabase
 {
 
@@ -51,15 +53,15 @@ class CategoryModel extends PaperDatabase
     public static function tree($linear, $parent_id = null)
     {
         $result = [];
-        foreach ($linear as $node) {
+        foreach ($linear as $key=>$node) {
+                $node['children'] = [];
             if ($node['parent_id'] === $parent_id) {
-
                 $children = self::tree($linear, $node['cat_id']);
                 if ($children) {
                     $node['children'] = $children;
                 }
                 $result[] = $node;
-                unset($node);
+                unset($linear[$key]);
             }
         }
         return $result;
