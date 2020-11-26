@@ -17,7 +17,7 @@ import VuejsDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js';
 import VueSimpleSVG from 'vue-simple-svg';
 import VueGoodTablePlugin from 'vue-good-table';
 import ChDrawer from 'ch-drawer';
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import CKEditor from '@ckeditor/ckeditor5-vue2';
 import VueNestable from 'vue-nestable';
 import vSelect from 'vue-select';
 import ToggleButton from 'vue-js-toggle-button';
