@@ -22,6 +22,14 @@ use pinoox\component\Response;
 
 class SettingController extends LoginConfiguration
 {
+    public function __construct()
+    {
+        $headers = apache_request_headers();
+        if (isset($headers['theme_name'])) {
+            SettingsModel::setTheme($headers['theme_name']);
+        }
+    }
+
     public function get($name)
     {
         $items = SettingsModel::get($name);
@@ -45,7 +53,7 @@ class SettingController extends LoginConfiguration
 
     public function getViews($lang = null)
     {
-        $lang = !empty($lang)? strtolower($lang) : Lang::current();
+        $lang = !empty($lang) ? strtolower($lang) : Lang::current();
         Lang::change($lang);
         $views = SettingsModel::fetch_views();
         Response::json($views);
