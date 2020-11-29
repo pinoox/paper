@@ -13,6 +13,7 @@ namespace pinoox\app\com_pinoox_paper\controller;
 
 use pinoox\app\com_pinoox_paper\model\MenuModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
+use pinoox\component\app\AppProvider;
 use pinoox\component\HelperHeader;
 use pinoox\component\interfaces\ControllerInterface;
 use pinoox\component\Lang;
@@ -31,6 +32,7 @@ class MasterConfiguration implements ControllerInterface
     public function __construct()
     {
         $this->initTemplate();
+        $this->loadConfig();
         $this->loadSettings();
         $this->loadMenus();
     }
@@ -43,6 +45,12 @@ class MasterConfiguration implements ControllerInterface
         self::$template->set('_lang', Lang::get('front'));
         self::$template->set('_direction', rlang('paper.direction'));
 
+    }
+
+    private function loadConfig()
+    {
+        $configs = SettingsModel::getConfigs();
+        self::$template->setConfig($configs);
     }
 
     private function loadSettings()

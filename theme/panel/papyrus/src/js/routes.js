@@ -95,8 +95,25 @@ export const routes = [
         component: Category,
     },
     {
+        path: PINOOX.URL.BASE + '/theme/:theme_name/setting',
+        component: Setting,
+        props: true,
+        children: [
+            {
+                path: '',
+                name: 'theme-setting',
+                component: SettingHome,
+            },
+            {
+                path: ':setting_key',
+                name: 'theme-setting-config',
+                component: SettingConfig,
+                props: true,
+            },
+        ],
+    },
+    {
         path: PINOOX.URL.BASE + '/setting',
-        name: 'setting',
         component: Setting,
         children: [
             {
