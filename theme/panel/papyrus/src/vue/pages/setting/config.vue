@@ -61,7 +61,9 @@
         <div class="footer-space"></div>
         <footer>
             <div class="form-footer">
-                <router-link :to="{name:'setting'}" class="btn btn-simple">{{LANG.post.close}}</router-link>
+                <router-link :to="{name:!$parent.isTheme?'setting' : 'theme-setting'}" class="btn btn-simple">
+                    {{LANG.post.close}}
+                </router-link>
                 <div class="btn btn-primary" @click="save()">{{LANG.panel.save}}</div>
             </div>
         </footer>
@@ -70,6 +72,7 @@
 
 <script>
     import {mapMutations} from 'vuex';
+
     export default {
         props: ['setting_key'],
         data() {
@@ -79,7 +82,7 @@
         },
         computed: {
             view() {
-                return this.viewSettings.find(view => view.key === this.setting_key);
+                return this.$parent.views.find(view => view.key === this.setting_key);
             },
             settings() {
                 return !!this.view && !!this.view.settings ? this.view.settings : [];
@@ -120,11 +123,17 @@
             },
             getSettings() {
                 let key = this.view.key;
-                let params = this.CONFIG[key] ? this.CONFIG[key] : [];
-                this.params = this._clone(params);
+                if (!this.$parent.isTheme) {
+                    let params = this.CONFIG[key] ? this.CONFIG[key] : [];
+                    this.params = this._clone(params);
+                } else {
+                    this.$parent.http.get('get/' + key).then((json) => {
+                        this.params = json.data;
+                    });
+                }
             },
             changeLang(lang) {
-                this.$http.get(this.URL.API + 'setting/changeLang/' + lang).then((json) => {
+                this.$parent.http.get('changeLang/' + lang).then((json) => {
                     this.LANG = json.data.lang;
                     this.updateDirections(json.data.direction);
                     this.currentLang = lang;
@@ -135,11 +144,13 @@
             save() {
                 let key = this.view.key;
                 let lang = this.params.lang;
-                this.$http.post(this.URL.API + 'setting/save/' + key, this.params).then((json) => {
-                    this.CONFIG[key] = this._clone(this.params);
+                this.$parent.http.post('save/' + key, this.params).then((json) => {
                     this._statusResponse(json.data);
-                    if (key === 'lang')
-                        this.changeLang(lang);
+                    if (!this.$parent.isTheme) {
+                        this.CONFIG[key] = this._clone(this.params);
+                        if (key === 'lang')
+                            this.changeLang(lang);
+                    }
                 });
             }
         },
