@@ -14,6 +14,7 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
+use pinoox\component\app\AppProvider;
 use pinoox\component\Lang;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -21,6 +22,14 @@ use pinoox\component\Response;
 
 class SettingController extends LoginConfiguration
 {
+    public function __construct()
+    {
+        $headers = apache_request_headers();
+        if (isset($headers['theme_name'])) {
+            SettingsModel::setTheme($headers['theme_name']);
+        }
+    }
+
     public function get($name)
     {
         $items = SettingsModel::get($name);
@@ -42,16 +51,22 @@ class SettingController extends LoginConfiguration
         Response::json(rlang('post.save_successfully'), true);
     }
 
-    public function getViews()
+    public function getViews($lang = null)
     {
+        $lang = !empty($lang) ? strtolower($lang) : Lang::current();
+        Lang::change($lang);
         $views = SettingsModel::fetch_views();
         Response::json($views);
     }
 
-    public function getLang($lang)
+    public function changeLang($lang)
     {
+        $lang = strtolower($lang);
+        AppProvider::set('lang', $lang);
+        AppProvider::save();
         Lang::change($lang);
         $lang = LangModel::fetch_all();
-        Response::json($lang);
+        $direction = $lang['paper']['direction'];
+        Response::json(['lang' => $lang, 'direction' => $direction]);
     }
 }

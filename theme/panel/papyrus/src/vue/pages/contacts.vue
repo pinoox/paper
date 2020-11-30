@@ -13,6 +13,21 @@
         </div>
         <simplebar class="simplebar">
             <div class="container">
+
+                <ul class="section-tab">
+                    <li @click="filter('all')"
+                        :class="[params.status==='all' ? 'active' :'' ]">{{LANG.panel.all}}
+                    </li>
+                    <li @click="filter('seen')"
+                        :class="[params.status==='seen'? 'active' :'']">
+                        {{LANG.panel.contact_status.seen}}
+                    </li>
+                    <li @click="filter('unseen')"
+                        :class="[params.status==='unseen'? 'active' :'']">
+                        {{LANG.panel.contact_status.unseen}}
+                    </li>
+                </ul>
+
                 <div class="section compact-mode">
                     <div class="section-content">
                         <vue-good-table
@@ -73,53 +88,13 @@
             return {
                 isLoading: false,
                 drawerName: null,
-                columns: [
-                    {
-                        label: PINOOX.LANG.panel.id,
-                        field: 'contact_id',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.subject,
-                        field: 'subject',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.message,
-                        field: 'message',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.user,
-                        field: 'full_name',
-                    },
-                    {
-                        label: PINOOX.LANG.user.mobile,
-                        field: 'mobile',
-                    },
-                    {
-                        label: PINOOX.LANG.user.email,
-                        field: 'email',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.date,
-                        field: 'approx_insert_date',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.status,
-                        field: 'status',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.operation,
-                        field: 'operation',
-                        style: 'operation',
-                        sortable: false,
-                    },
-                ],
                 contacts: [],
                 pages: [],
                 params: {
                     keyword: null,
                     page: 1,
                     perPage: 10,
+                    status: 'all',
                     sort: {
                         field: '',
                         type: '',
@@ -127,6 +102,51 @@
                 },
                 user: null
             }
+        },
+        computed:{
+            columns(){
+                return [
+                    {
+                        label: this.LANG.panel.id,
+                        field: 'contact_id',
+                    },
+                    {
+                        label: this.LANG.panel.subject,
+                        field: 'subject',
+                    },
+                    {
+                        label: this.LANG.panel.message,
+                        field: 'message',
+                    },
+                    {
+                        label: this.LANG.panel.user,
+                        field: 'full_name',
+                    },
+                    {
+                        label: this.LANG.user.mobile,
+                        field: 'mobile',
+                    },
+                    {
+                        label: this.LANG.user.email,
+                        field: 'email',
+                    },
+                    {
+                        label: this.LANG.panel.date,
+                        field: 'approx_insert_date',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.status,
+                        field: 'status',
+                    },
+                    {
+                        label: this.LANG.panel.operation,
+                        field: 'operation',
+                        style: 'operation',
+                        sortable: false,
+                    },
+                ];
+            },
         },
         methods: {
             getItems() {
@@ -152,7 +172,7 @@
             },
             remove(row, index) {
                 let params = {contact_id: row.contact_id};
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.post(this.URL.API + 'contact/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
                             this.$delete(this.contacts, index)
@@ -168,6 +188,10 @@
                         field: first.field,
                     },
                 });
+                this.getItems();
+            },
+            filter(param) {
+                this.updateParams({status: param});
                 this.getItems();
             },
         },

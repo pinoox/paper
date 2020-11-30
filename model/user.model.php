@@ -1,4 +1,5 @@
 <?php
+
 /**
  *      ****  *  *     *  ****  ****  *    *
  *      *  *  *  * *   *  *  *  *  *   *  *
@@ -6,15 +7,16 @@
  *      *     *  *   * *  *  *  *  *   *  *
  *      *     *  *    **  ****  ****  *    *
  * @author   Pinoox
+ * @link https://www.pinoox.com/
  * @license  https://opensource.org/licenses/MIT MIT License
  */
 
 namespace pinoox\app\com_pinoox_paper\model;
 
+use pinoox\model\UserModel as UserModelCore;
 
-class PaperUserModel extends PaperDatabase
+class UserModel extends UserModelCore
 {
-
     public static function sort($sort)
     {
         if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
@@ -31,7 +33,6 @@ class PaperUserModel extends PaperDatabase
     public static function where_status($status)
     {
         if (!is_null($status) && $status != 'all')
-            self::$db->where('u.status', $status);
+            self::$db->where('status', $status);
     }
-
 }

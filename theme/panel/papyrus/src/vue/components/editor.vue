@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isLoadEditor">
+    <div >
         <div class="toolbar-editor"></div>
         <simplebar class="simplebar">
             <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">

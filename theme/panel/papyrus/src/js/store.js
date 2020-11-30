@@ -6,8 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        LANG: PINOOX.LANG,
         user: {},
-        lang: 'en',
         userSettings: {},
         configs: {},
         ckEditor: null,
@@ -18,6 +18,9 @@ export default new Vuex.Store({
     },
     getters: {},
     mutations: {
+        updateDirections: (state, direction) => {
+            document.body.className = direction;
+        },
         addImageEditor: (state, image) => {
             image = typeof image === 'object' ? image.link : image;
             state.ckEditor.model.change(writer => {

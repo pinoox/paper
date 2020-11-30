@@ -38,9 +38,6 @@ Vue.mixin({
                 this.$store.state.isTransition = val;
             }
         },
-        DIRECTION() {
-            return !!this.LANG.paper.direction ? this.LANG.paper.direction : 'ltr';
-        },
         countTranslate: {
             get() {
                 return this.$store.state.countTranslate;
@@ -59,11 +56,11 @@ Vue.mixin({
             }
         },
         LANG: {
-            get() {
-                return PINOOX.LANG;
-            },
             set(val) {
-                PINOOX.LANG = val;
+                this.$store.state.LANG = val;
+            },
+            get() {
+                return this.$store.state.LANG;
             }
         },
         CONFIG: {

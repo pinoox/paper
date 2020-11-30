@@ -39,6 +39,7 @@ class PostModel extends PaperDatabase
             'hash_id' => $data['hash_id'],
             'user_id' => User::get('user_id'),
             'summary' => $data['summary'],
+            'time_tracking' => $data['time'],
             'status' => self::draft_status,
             'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
             'post_type' => !empty($data['post_type']) ? $data['post_type'] : self::post_type,
@@ -129,6 +130,14 @@ class PostModel extends PaperDatabase
         ]);
     }
 
+    public static function update_category($cat_id, $post_id)
+    {
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post, [
+            'cat_id' => $cat_id,
+        ]);
+    }
+
     public static function update_publish_post($post_id)
     {
         $post = self::post_draft_fetch_by_id($post_id);
@@ -194,6 +203,7 @@ class PostModel extends PaperDatabase
             'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'update_date' => $date,
+            'time_tracking' => self::$db->inc($data['time']),
         ]);
     }
 
@@ -337,12 +347,16 @@ class PostModel extends PaperDatabase
         return self::$db->getOne(self::file);
     }
 
+    public static function fetch_total_time_tracking()
+    {
+        $result = self::$db->getOne(self::post . ' p', 'SUM(p.time_tracking) time_tracking');
+        return (!empty($result))? $result['time_tracking'] : 0;
+    }
+
     public static function fetch_total_words()
     {
-        $result = self::$db->getOne(self::post_draft . ' pd', 'SUM(words) words');
-        if (empty($result)) return 0;
-
-        return $result['words'];
+        $result = self::$db->getOne(self::post_draft . ' pd', 'SUM(pd.words) words');
+        return (!empty($result))? $result['words'] : 0;
     }
 
     public static function where_search($query)

@@ -59,19 +59,9 @@
                                     <span @click="remove(props.row,props.index)" class="btn-action"><i
                                             class="fa fa-trash"></i></span>
                                 </div>
-                                <div v-else-if="props.column.field==='visits'">
-                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    <i class="fa fa-eye"></i> {{props.formattedRow[props.column.field]}}
-                                </span>
-                                </div>
-                                <div v-else-if="props.column.field==='visitors'">
-                                <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    <i class="fa fa-users"></i> {{props.formattedRow[props.column.field]}}
-                                </span>
-                                </div>
                                 <div v-else>
                                 <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    {{props.formattedRow[props.column.field]}}
+                                    <i v-if="!!props.column.icon" :class="props.column.icon"></i> {{props.formattedRow[props.column.field]}}
                                 </span>
                                 </div>
                             </template>
@@ -98,59 +88,6 @@
         data() {
             return {
                 isLoading: false,
-                columns: [
-                    {
-                        label: PINOOX.LANG.panel.id,
-                        field: 'post_id',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.image,
-                        field: 'thumb_128',
-                        sortable: false,
-                    },
-                    {
-                        label: PINOOX.LANG.panel.title,
-                        field: (item) => {
-                            return this._isNull(item.title, this.LANG.post.no_title);
-                        },
-                        style: (item) => {
-                            return !item.title ? 'light' : '';
-                        },
-                    },
-                    {
-                        label: PINOOX.LANG.post.author,
-                        field: 'username',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.date,
-                        field: 'approx_insert_date',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.status,
-                        field: (item) => {
-                            return this.LANG.post.status[item.status];
-                        },
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.post.visits,
-                        field: 'visits',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.post.visitors,
-                        field: 'visitors',
-                        style: 'light',
-                    },
-                    {
-                        label: PINOOX.LANG.panel.operation,
-                        field: 'operation',
-                        style: 'operation',
-                        sortable: false,
-                    },
-                ],
                 posts: [],
                 pages: [],
                 params: {
@@ -164,6 +101,69 @@
                         type: '',
                     },
                 },
+            }
+        },
+        computed: {
+            columns() {
+                return [
+                    {
+                        label: this.LANG.panel.id,
+                        field: 'post_id',
+                    },
+                    {
+                        label: this.LANG.panel.image,
+                        field: 'thumb_128',
+                        sortable: false,
+                    },
+                    {
+                        label: this.LANG.panel.title,
+                        field: (item) => {
+                            return this._isNull(item.title, this.LANG.post.no_title);
+                        },
+                        style: (item) => {
+                            return !item.title ? 'light' : '';
+                        },
+                    },
+                    {
+                        label: this.LANG.post.author,
+                        field: 'username',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.date,
+                        field: 'approx_insert_date',
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.status,
+                        field: (item) => {
+                            return this.LANG.post.status[item.status];
+                        },
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.post.visits,
+                        icon: 'fa fa-eye',
+                        field: (item) => {
+                            return this._isNull(item.visits, '0');
+                        },
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.post.visitors,
+                        icon: 'fa fa-users',
+                        field: (item) => {
+                            return this._isNull(item.visitors, '0');
+                        },
+                        style: 'light',
+                    },
+                    {
+                        label: this.LANG.panel.operation,
+                        field: 'operation',
+                        style: 'operation',
+                        sortable: false,
+                    },
+                ];
             }
         },
         methods: {
@@ -196,7 +196,7 @@
             },
             remove(row, index) {
                 let params = {post_id: row.post_id};
-                this._confirm(PINOOX.LANG.panel.are_you_sure_to_delete, () => {
+                this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
                     this.$http.post(this.URL.API + 'post/delete/', params).then((json) => {
                         if (this._messageResponse(json.data)) {
                             this.$delete(this.posts, index);
