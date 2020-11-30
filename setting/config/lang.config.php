@@ -1,5 +1,5 @@
 <?php
-//pinoox config file, generated at "2020-11-25 23:42"
+//pinoox config file, generated at "2020-11-26 08:10"
 
 return array (
   'lang' => 'fa',
