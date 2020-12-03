@@ -1,5 +1,5 @@
 <?php
-//pinoox app file, generated at "2020-11-26 08:10"
+//pinoox app file, generated at "2020-12-03 15:58"
 
 return array (
   'package-name' => 'com_pinoox_paper',
@@ -10,13 +10,15 @@ return array (
   'version-name' => '1.4',
   'developer' => 'pinoox',
   'enable' => true,
-  'theme' => 'blue',
+  'theme' => 'toranj',
   'theme-panel' => 'papyrus',
   'lang' => 'fa',
   'service' => 
   array (
-    0 => 'user',
+    0 => 'template',
+    1 => 'user',
   ),
+  'main-controller' => 'api',
 );
 
 //end of app

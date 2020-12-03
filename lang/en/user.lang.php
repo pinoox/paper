@@ -6,6 +6,7 @@ return [
     'edit_user' => 'edit user',
     'fname' => 'first name',
     'lname' => 'last name',
+    'full_name' => 'name',
     'username' => 'username',
     'email' => 'email',
     'user_status' => 'User status',

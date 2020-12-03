@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'direction' => 'rtl'
+    'direction' => 'rtl',
+    'invalid_request'=>'درخواست نامعتبر است',
 ];
