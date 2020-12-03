@@ -281,9 +281,15 @@ class PostModel extends PaperDatabase
         return self::$db->get(self::post_tag . ' pt');
     }
 
-    public static function where_tag_name($keyword)
+    public static function where_tag_name($keyword, $useJoin = false)
     {
         if (!empty($keyword)) {
+            if ($useJoin) {
+                self::$db->join(self::post_tag . ' pt', 'p.post_id=pt.post_id');
+                self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id');
+                self::$db->groupBy('p.post_id');
+            }
+
             $keyword = '%' . $keyword . '%';
             self::$db->where('t.tag_name LIKE ?', [$keyword]);
         }
@@ -350,13 +356,13 @@ class PostModel extends PaperDatabase
     public static function fetch_total_time_tracking()
     {
         $result = self::$db->getOne(self::post . ' p', 'SUM(p.time_tracking) time_tracking');
-        return (!empty($result))? $result['time_tracking'] : 0;
+        return (!empty($result)) ? $result['time_tracking'] : 0;
     }
 
     public static function fetch_total_words()
     {
         $result = self::$db->getOne(self::post_draft . ' pd', 'SUM(pd.words) words');
-        return (!empty($result))? $result['words'] : 0;
+        return (!empty($result)) ? $result['words'] : 0;
     }
 
     public static function where_search($query)
@@ -383,5 +389,19 @@ class PostModel extends PaperDatabase
 
     public static function hot_tags($limitHotTags)
     {
+    }
+
+    public static function fetch_author_info($post_id)
+    {
+        self::$db->join(self::post . ' p', 'p.user_id=u.user_id', 'INNER');
+        self::$db->where('p.post_id', $post_id);
+        return self::$db->getOne(self::user . ' u', 'u.user_id,u.username,u.avatar_id,CONCAT_WS(" ",u.fname,u.lname) full_name');
+    }
+
+    public static function where_author($username)
+    {
+        if (!empty($username)) {
+            self::$db->where('u.username', $username);
+        }
     }
 }
