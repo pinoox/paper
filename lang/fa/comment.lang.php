@@ -7,6 +7,8 @@ return [
     'comments_list' => 'لیست نظرات',
     'latest_comments' => 'آخرین نظرات',
     'changed_status_successfully' => 'وضعیت با موفقیت تغییر کرد',
+    'comment_inserted_successfully' => 'نظر شما ثبت شد بعد از تایید منتشر خواهد شد',
+    'error_happened' => 'خطایی رخ داده است',
 
     'status' => [
         'suspend' => 'تعلیق',

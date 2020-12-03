@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'direction' => 'ltr'
+    'direction' => 'ltr',
+    'invalid_request'=>'درخواست نامعتبر است',
 ];
