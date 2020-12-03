@@ -14,7 +14,7 @@ use pinoox\component\Dir;
 use pinoox\component\HelperHeader;
 use pinoox\component\Router;
 
-class MainController extends MasterConfiguration
+class ApiController extends MasterConfiguration
 {
     public function dist()
     {
