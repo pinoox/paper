@@ -27,6 +27,11 @@
 
 @maxWidth: 85%;
 
+
+.color-primary {
+  color: @primary!important;
+}
+
 .facebook-color {
   color: #3b5998;
 }
@@ -264,28 +269,22 @@ a {
   direction: rtl;
   text-align: right;
 
-  .mini-menu {
-    right: 0;
-    left: initial;
-  }
-
-  .left-side {
-    text-align: left;
-  }
 }
 
 .ltr {
   direction: ltr;
   text-align: left;
 
-  .mini-menu {
-    right: initial;
-    left: 0;
-  }
 
-  .left-side {
+  .header .header-inner nav {
     text-align: right;
   }
+
+  .post-single .post-footer .post-share .social-links:after{
+    right: 0;
+    left: initial;
+  }
+
 }
 
 body.rtl {
@@ -619,6 +618,7 @@ body {
 
       .author-info {
         flex-grow: 1;
+        padding:0 10px ;
 
         .info-name {
           display: inline-block;
@@ -892,6 +892,7 @@ body {
     }
 
   }
+
   .action {
     margin-top: 20px;
   }
@@ -910,6 +911,7 @@ body {
       margin-bottom: 20px;
       border-radius: 5px;
       background: @primary;
+      color: @primary;
 
       .title {
         color: #fff;
@@ -1113,11 +1115,12 @@ body {
     align-items: center;
   }
 
-  .contacts{
-    .form{
-      padding:20px;
+  .contacts {
+    .form {
+      padding: 20px;
     }
-    .layout{
+
+    .layout {
       flex-direction: column;
     }
   }
@@ -1207,6 +1210,7 @@ body {
     &.ltr {
       direction: ltr;
       text-align: left !important;
+
 
       .marker {
         left: -17px;

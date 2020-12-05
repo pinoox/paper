@@ -21,7 +21,7 @@
 
             <div class="post-footer">
                 <div class="post-share">
-                    <div class="caption">اشتراک با دوستان:</div>
+                    <div class="caption">{{LANG.front.share}}</div>
                     <div class="social-links">
                         <a class="item" :href="post.meta.socials.facebook"><i
                                 class="fab fa-facebook facebook-color"></i></a>
@@ -50,10 +50,11 @@
                             فعلی
                             تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
                         <div class="info-social">
-                            <a href="">تویتتر</a>
-                            <a href="">فیسبوک</a>
-                            <a href="">تلگرام</a>
-                            <a href="">اینستاگرام</a>
+                            <a href="">{{LANG.user.telegram}}</a>
+                            <a href="">{{LANG.user.facebook}}</a>
+                            <a href="">{{LANG.user.instagram}}</a>
+                            <a href="">{{LANG.user.telegram}}</a>
+                            <a href="">{{LANG.user.linkedin}}</a>
                         </div>
                     </div>
 

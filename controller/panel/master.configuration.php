@@ -50,7 +50,7 @@ class MasterConfiguration implements ControllerInterface
         self::$template->set('_site', url('~'));
         self::$template->set('_app', $app);
         self::$template->set('_translate', Lang::current());
-        self::$template->set('_direction', rlang('paper.direction'));
+        self::$template->set('_direction', rlang('front.direction'));
     }
 
     private function setLang()

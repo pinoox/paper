@@ -27,6 +27,11 @@ return [
     'enter_old_password' => 'رمز عبور فعلی را وارد کنید',
     'enter_re_new_password' => 'رمز عبور جدید را تکرار کنید',
     'err_old_password' => 'رمز عبور  را اشتباه وارد کرده اید',
+    'twitter'=>'تویتتر',
+    'facebook'=>'فیسبوک',
+    'linkedin'=>'لینکداین',
+    'instagram'=>'اینستاگرام',
+    'telegram'=>'تلگرام',
     'status' => [
         'active' => 'فعال',
         'suspend'=>'تعلیق',

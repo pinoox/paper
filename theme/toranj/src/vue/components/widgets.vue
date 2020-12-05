@@ -5,7 +5,7 @@
                 <div class="col-md-5">
                     <div class="widget">
                         <div class="widget-header">
-                            <h2 class="title">پربازدید ترین نوشته ها</h2>
+                            <h2 class="title">{{LANG.post.most_visited_post}}</h2>
                         </div>
                         <div class="widget-content">
                             <div class="posts">
@@ -27,7 +27,7 @@
                 <div class="col-md-5">
                     <div class="widget">
                         <div class="widget-header">
-                            <h2 class="title">آخرین نظرات</h2>
+                            <h2 class="title">{{LANG.comment.latest_comments}}</h2>
                         </div>
                         <div class="widget-content">
                             <div class="comments">
@@ -46,7 +46,7 @@
                 <div class="col-md-2">
                     <div class="widget">
                         <div class="widget-header no-bg">
-                            <h2 class="title">ما را دنبال کنید</h2>
+                            <h2 class="title color-primary" v-html="LANG.front.follow_us"></h2>
                         </div>
                         <div class="widget-content">
                             <div class="socials">

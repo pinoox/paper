@@ -15,18 +15,12 @@ namespace pinoox\app\com_pinoox_paper\controller\api\v1;
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\CategoryModel;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
-use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
-use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Date;
-use pinoox\component\Dir;
-use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Tree;
-use pinoox\component\Uploader;
 use pinoox\component\Url;
-use pinoox\component\User;
 use pinoox\component\Validation;
 use pinoox\model\FileModel;
 
@@ -141,7 +135,7 @@ class PostController extends MasterConfiguration
             'email' => ['required|email', rlang('user.email')],
             'message' => ['required|length:>10', rlang('comment.message')],
         ], [
-            'post_id:required' => rlang('paper.invalid_request')
+            'post_id:required' => rlang('front.invalid_request')
         ]);
 
         if ($valid->isFail())
@@ -196,8 +190,9 @@ class PostController extends MasterConfiguration
          * Post
          */
         $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
-        $post['publish_date_time'] = Date::j('Y-m-d H:i', $post['publish_date']);
-        $post['publish_date'] = Date::j('d F Y', $post['publish_date']);
+
+        $post['publish_date_time'] = Helper::getLocaleDate('Y-m-d H:i', $post['publish_date']);
+        $post['publish_date'] = Helper::getLocaleDate('d F Y', $post['publish_date']);
         if (isset($post['cat_id']))
             $post['category'] = CategoryModel::fetch_by_id($post['cat_id']);
         else $post['category'] = null;

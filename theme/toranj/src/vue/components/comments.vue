@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="comments">
-                    <div class="cm-caption">نظرات ({{count}})</div>
+                    <div class="cm-caption">{{LANG.comment.comments}} <span v-if="count>0">({{count}})</span></div>
 
                     <CommentForm :post-id="postId"></CommentForm>
 

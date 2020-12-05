@@ -3793,6 +3793,9 @@
   }
 }
 
+.color-primary {
+  color: #f3783e !important;
+}
 .facebook-color {
   color: #3b5998;
 }
@@ -4013,45 +4016,31 @@ a:hover {
   direction: rtl;
   text-align: right;
 }
-.rtl .mini-menu {
-  right: 0;
-  left: initial;
-}
-.rtl .left-side {
-  text-align: left;
-}
 .ltr {
   direction: ltr;
   text-align: left;
 }
-.ltr .mini-menu {
-  right: initial;
-  left: 0;
-}
-.ltr .left-side {
+.ltr .header .header-inner nav {
   text-align: right;
+}
+.ltr .post-single .post-footer .post-share .social-links:after {
+  right: 0;
+  left: initial;
 }
 body.rtl {
   direction: rtl;
   text-align: right;
 }
-body.rtl .mini-menu {
-  right: 0;
-  left: initial;
-}
-body.rtl .left-side {
-  text-align: left;
-}
 body.ltr {
   direction: ltr;
   text-align: left;
 }
-body.ltr .mini-menu {
-  right: initial;
-  left: 0;
-}
-body.ltr .left-side {
+body.ltr .header .header-inner nav {
   text-align: right;
+}
+body.ltr .post-single .post-footer .post-share .social-links:after {
+  right: 0;
+  left: initial;
 }
 body {
   font-family: 'estedad', 'vazir', serif !important;
@@ -4375,6 +4364,7 @@ body {
 }
 .post-single .post-footer .post-author .author-info {
   flex-grow: 1;
+  padding: 0 10px ;
 }
 .post-single .post-footer .post-author .author-info .info-name {
   display: inline-block;
@@ -4592,6 +4582,7 @@ body {
   margin-bottom: 20px;
   border-radius: 5px;
   background: #f3783e;
+  color: #f3783e;
 }
 .widgets-box .widget .widget-header .title {
   color: #fff;
