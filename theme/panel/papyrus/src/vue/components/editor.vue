@@ -290,9 +290,6 @@
                     ]
                 }
             },
-            getTitle() {
-                return window.paperEditor.plugins.get('Title').getTitle();
-            },
             getAutoSave() {
                 let vm = this;
                 return {
@@ -304,9 +301,6 @@
                             return false;
                     }
                 }
-            },
-            getBody() {
-                return window.paperEditor.plugins.get('Title').getBody();
             },
             getValue() {
                 let title = !!this.values.title ? this.values.title : '';
@@ -335,6 +329,12 @@
             };
         },
         methods: {
+            getTitle() {
+                return window.paperEditor.plugins.get('Title').getTitle();
+            },
+            getBody() {
+                return window.paperEditor.plugins.get('Title').getBody();
+            },
             getHashId() {
                 return this.$parent.params.hash_id;
             },
@@ -358,8 +358,8 @@
             },
             callEvents(data = null) {
                 data = !!data ? data : {
-                    title: this.getTitle,
-                    context: this.getBody,
+                    title: this.getTitle(),
+                    context: this.getBody(),
                 };
 
                 this.$emit('input', {
