@@ -100,9 +100,23 @@
   &:focus {
     .trans;
     background: #fff;
-    min-height: 160px;
     border-color: fade(@primary, 60%);
     outline: none;
+  }
+}
+
+.form {
+  padding: 20px 0;
+}
+
+.form-group {
+  margin: 0;
+
+  .label {
+    padding: 4px 0;
+    color: @textColorLight2;
+    display: block;
+    font-size: 0.8rem;
   }
 }
 
@@ -488,7 +502,7 @@ body {
   text-align: center;
   font-size: 1.8rem;
   color: @textColorLight2;
-  padding:20px;
+  padding: 20px;
 }
 
 .post-single {
@@ -849,6 +863,41 @@ body {
   }
 }
 
+.contacts {
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: @textColorLight2;
+    font-size: 1rem;
+  }
+
+  .layout {
+    display: flex;
+
+    .info {
+      flex-grow: .1;
+    }
+
+    .message {
+      flex-grow: .9;
+
+      .textarea {
+        min-height: 130px;
+      }
+    }
+
+  }
+  .action {
+    margin-top: 20px;
+  }
+
+}
+
 .widgets-box {
   border-top: 1px solid @borderColor;
   border-bottom: 1px solid @borderColor;
@@ -1062,6 +1111,15 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+  }
+
+  .contacts{
+    .form{
+      padding:20px;
+    }
+    .layout{
+      flex-direction: column;
+    }
   }
 }
 

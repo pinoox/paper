@@ -3869,9 +3869,20 @@
   -o-transition: 0.2s;
   transition: 0.2s;
   background: #fff;
-  min-height: 160px;
   border-color: rgba(243, 120, 62, 0.6);
   outline: none;
+}
+.form {
+  padding: 20px 0;
+}
+.form-group {
+  margin: 0;
+}
+.form-group .label {
+  padding: 4px 0;
+  color: #868686;
+  display: block;
+  font-size: 0.8rem;
 }
 .instagram-color {
   background-image: linear-gradient(to right top, #d80027, #e4004e, #df007e, #c200b5, #7612eb);
@@ -4545,6 +4556,31 @@ body {
 .error .error-action {
   margin-top: 20px;
 }
+.contacts .title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.contacts .subtitle {
+  text-align: center;
+  color: #868686;
+  font-size: 1rem;
+}
+.contacts .layout {
+  display: flex;
+}
+.contacts .layout .info {
+  flex-grow: 0.1;
+}
+.contacts .layout .message {
+  flex-grow: 0.9;
+}
+.contacts .layout .message .textarea {
+  min-height: 130px;
+}
+.contacts .action {
+  margin-top: 20px;
+}
 .widgets-box {
   border-top: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0;
@@ -4728,6 +4764,12 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+  }
+  .contacts .form {
+    padding: 20px;
+  }
+  .contacts .layout {
+    flex-direction: column;
   }
 }
 .vue-notification-group {
