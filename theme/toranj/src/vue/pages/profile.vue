@@ -13,10 +13,11 @@
                     </div>
                     <div class="profile-meta">
                         <div class="meta-socials">
-                            <a href="">تویتتر</a>
-                            <a href="">فیسبوک</a>
-                            <a href="">تلگرام</a>
-                            <a href="">اینستاگرام</a>
+                            <a href="">{{LANG.user.telegram}}</a>
+                            <a href="">{{LANG.user.facebook}}</a>
+                            <a href="">{{LANG.user.instagram}}</a>
+                            <a href="">{{LANG.user.telegram}}</a>
+                            <a href="">{{LANG.user.linkedin}}</a>
                         </div>
                     </div>
                 </div>

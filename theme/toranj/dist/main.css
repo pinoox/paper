@@ -3793,6 +3793,9 @@
   }
 }
 
+.color-primary {
+  color: #f3783e !important;
+}
 .facebook-color {
   color: #3b5998;
 }
@@ -3869,9 +3872,20 @@
   -o-transition: 0.2s;
   transition: 0.2s;
   background: #fff;
-  min-height: 160px;
   border-color: rgba(243, 120, 62, 0.6);
   outline: none;
+}
+.form {
+  padding: 20px 0;
+}
+.form-group {
+  margin: 0;
+}
+.form-group .label {
+  padding: 4px 0;
+  color: #868686;
+  display: block;
+  font-size: 0.8rem;
 }
 .instagram-color {
   background-image: linear-gradient(to right top, #d80027, #e4004e, #df007e, #c200b5, #7612eb);
@@ -4002,45 +4016,31 @@ a:hover {
   direction: rtl;
   text-align: right;
 }
-.rtl .mini-menu {
-  right: 0;
-  left: initial;
-}
-.rtl .left-side {
-  text-align: left;
-}
 .ltr {
   direction: ltr;
   text-align: left;
 }
-.ltr .mini-menu {
-  right: initial;
-  left: 0;
-}
-.ltr .left-side {
+.ltr .header .header-inner nav {
   text-align: right;
+}
+.ltr .post-single .post-footer .post-share .social-links:after {
+  right: 0;
+  left: initial;
 }
 body.rtl {
   direction: rtl;
   text-align: right;
 }
-body.rtl .mini-menu {
-  right: 0;
-  left: initial;
-}
-body.rtl .left-side {
-  text-align: left;
-}
 body.ltr {
   direction: ltr;
   text-align: left;
 }
-body.ltr .mini-menu {
-  right: initial;
-  left: 0;
-}
-body.ltr .left-side {
+body.ltr .header .header-inner nav {
   text-align: right;
+}
+body.ltr .post-single .post-footer .post-share .social-links:after {
+  right: 0;
+  left: initial;
 }
 body {
   font-family: 'estedad', 'vazir', serif !important;
@@ -4364,6 +4364,7 @@ body {
 }
 .post-single .post-footer .post-author .author-info {
   flex-grow: 1;
+  padding: 0 10px ;
 }
 .post-single .post-footer .post-author .author-info .info-name {
   display: inline-block;
@@ -4545,6 +4546,31 @@ body {
 .error .error-action {
   margin-top: 20px;
 }
+.contacts .title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.contacts .subtitle {
+  text-align: center;
+  color: #868686;
+  font-size: 1rem;
+}
+.contacts .layout {
+  display: flex;
+}
+.contacts .layout .info {
+  flex-grow: 0.1;
+}
+.contacts .layout .message {
+  flex-grow: 0.9;
+}
+.contacts .layout .message .textarea {
+  min-height: 130px;
+}
+.contacts .action {
+  margin-top: 20px;
+}
 .widgets-box {
   border-top: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0;
@@ -4556,6 +4582,7 @@ body {
   margin-bottom: 20px;
   border-radius: 5px;
   background: #f3783e;
+  color: #f3783e;
 }
 .widgets-box .widget .widget-header .title {
   color: #fff;
@@ -4728,6 +4755,12 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+  }
+  .contacts .form {
+    padding: 20px;
+  }
+  .contacts .layout {
+    flex-direction: column;
   }
 }
 .vue-notification-group {

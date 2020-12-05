@@ -17,7 +17,7 @@
                     :leave-active-class="'animated faster fadeOut'">
             <router-view :key="$route.fullPath"></router-view>
         </transition>
-        <Widgets></Widgets>
+        <Widgets v-if="!$route.meta.hideWidgets"></Widgets>
         <Footer></Footer>
 
     </div>

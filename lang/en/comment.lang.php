@@ -9,6 +9,9 @@ return [
     'changed_status_successfully' => 'status changed successfully',
     'comment_inserted_successfully' => 'your comment will be published after confirmation',
     'error_happened' => 'An error has occurred',
+    'send_comment' => 'send comment',
+    'write_comment_about_post' => 'write your comment about this post ...',
+    'latest_comments' => 'latest comments',
 
     'status' => [
         'suspend' => 'suspend',

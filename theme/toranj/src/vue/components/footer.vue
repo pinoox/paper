@@ -9,7 +9,9 @@
             </div>
 
             <div class="copyright">
-                تمام حقوق مادی و معنوی برای پینوکس محفوظ است © 1399
+                © {{LANG.front.copyright_text1}}
+                <a target="_blank" href="https://pinoox.com/">{{LANG.front.pinoox}}</a>
+                {{LANG.front.copyright_text2}}
             </div>
         </div>
     </div>

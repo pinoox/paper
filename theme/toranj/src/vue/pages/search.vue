@@ -5,7 +5,7 @@
             <div class="page">
                 <div class="search-box">
                     <input v-model="keyword" @keyup="searchPosts()" type="text"
-                           placeholder="دنبال چی میگردی؟ اینجا بنویس...">
+                           :placeholder="LANG.front.searching_for_what_write_down_here">
                 </div>
             </div>
         </div>

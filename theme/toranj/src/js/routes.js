@@ -3,6 +3,7 @@ import Profile from '../vue/pages/profile.vue';
 import Post from '../vue/pages/post.vue';
 import Search from '../vue/pages/search.vue';
 import Tag from '../vue/pages/tag.vue';
+import Contact from '../vue/pages/contact.vue';
 
 export const routes = [
     {
@@ -32,6 +33,14 @@ export const routes = [
         name: 'tag',
         component: Tag,
         props: true
+    },
+    {
+        path: PINOOX.URL.BASE + 'contact',
+        name: 'contact',
+        component: Contact,
+        meta: {
+            hideWidgets: true
+        }
     },
     {
         path: PINOOX.URL.BASE + 'error',

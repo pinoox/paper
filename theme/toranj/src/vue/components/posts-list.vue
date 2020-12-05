@@ -18,35 +18,14 @@
                     <h2 class="post-title"><a :href="p.meta.url">{{p.title}}</a></h2>
                     <p class="post-summary">{{p.summary}}</p>
                     <p class="post-bottom" v-if="isFirst && index===0">
-                        <a :href="p.meta.url">بیشتر بخوانید</a>
+                        <a :href="p.meta.url">{{LANG.post.read_more}}</a>
                     </p>
                 </div>
-            </div>
-            <div v-if="false" class="post">
-                <div class="post-content">
-                    <div class="post-meta">
-                        <div class="post-tags">
-                            <a href="#" class="item">ماری جوانا</a>
-                            <a href="#" class="item">مواد مخدر</a>
-                        </div>
-                        <time datetime="2020-11-19" class="post-date">1399/05/02</time>
-                    </div>
-                    <h2 class="post-title"><a href="#">آیا مصرف ماری جوانا بر قدرت باروری مردان تاثیر دارد ؟</a></h2>
-                    <p class="post-summary">اری جوانا (Marijuana) از گلها و برگهای شاهدانه تهیه می شود و در بسیاری از
-                        نقاط
-                        دنیا شایعترین...</p>
-                    <p class="post-bottom">
-                        <a href="#">ادامه مطلب</a>
-                    </p>
-                </div>
-                <a href="#" class="post-image">
-                    <img src="res/01.jpg" alt="">
-                </a>
             </div>
         </div>
         <div v-else class="posts-list-empty">
             <div class="icon"><i class="fa fa-sad-tear"></i></div>
-            <div class="text">مطلبی پیدا نشد</div>
+            <div class="text">{{LAGN.front.search_result_not_found}}</div>
         </div>
     </div>
 </template>

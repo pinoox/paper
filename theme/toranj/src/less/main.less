@@ -27,6 +27,11 @@
 
 @maxWidth: 85%;
 
+
+.color-primary {
+  color: @primary!important;
+}
+
 .facebook-color {
   color: #3b5998;
 }
@@ -100,9 +105,23 @@
   &:focus {
     .trans;
     background: #fff;
-    min-height: 160px;
     border-color: fade(@primary, 60%);
     outline: none;
+  }
+}
+
+.form {
+  padding: 20px 0;
+}
+
+.form-group {
+  margin: 0;
+
+  .label {
+    padding: 4px 0;
+    color: @textColorLight2;
+    display: block;
+    font-size: 0.8rem;
   }
 }
 
@@ -250,28 +269,22 @@ a {
   direction: rtl;
   text-align: right;
 
-  .mini-menu {
-    right: 0;
-    left: initial;
-  }
-
-  .left-side {
-    text-align: left;
-  }
 }
 
 .ltr {
   direction: ltr;
   text-align: left;
 
-  .mini-menu {
-    right: initial;
-    left: 0;
-  }
 
-  .left-side {
+  .header .header-inner nav {
     text-align: right;
   }
+
+  .post-single .post-footer .post-share .social-links:after{
+    right: 0;
+    left: initial;
+  }
+
 }
 
 body.rtl {
@@ -488,7 +501,7 @@ body {
   text-align: center;
   font-size: 1.8rem;
   color: @textColorLight2;
-  padding:20px;
+  padding: 20px;
 }
 
 .post-single {
@@ -605,6 +618,7 @@ body {
 
       .author-info {
         flex-grow: 1;
+        padding:0 10px ;
 
         .info-name {
           display: inline-block;
@@ -849,6 +863,42 @@ body {
   }
 }
 
+.contacts {
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: @textColorLight2;
+    font-size: 1rem;
+  }
+
+  .layout {
+    display: flex;
+
+    .info {
+      flex-grow: .1;
+    }
+
+    .message {
+      flex-grow: .9;
+
+      .textarea {
+        min-height: 130px;
+      }
+    }
+
+  }
+
+  .action {
+    margin-top: 20px;
+  }
+
+}
+
 .widgets-box {
   border-top: 1px solid @borderColor;
   border-bottom: 1px solid @borderColor;
@@ -861,6 +911,7 @@ body {
       margin-bottom: 20px;
       border-radius: 5px;
       background: @primary;
+      color: @primary;
 
       .title {
         color: #fff;
@@ -1063,6 +1114,16 @@ body {
     justify-content: center;
     align-items: center;
   }
+
+  .contacts {
+    .form {
+      padding: 20px;
+    }
+
+    .layout {
+      flex-direction: column;
+    }
+  }
 }
 
 
@@ -1149,6 +1210,7 @@ body {
     &.ltr {
       direction: ltr;
       text-align: left !important;
+
 
       .marker {
         left: -17px;
