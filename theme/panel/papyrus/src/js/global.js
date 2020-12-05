@@ -22,14 +22,6 @@ Vue.mixin({
                 this.$store.state.userSettings = val;
             }
         },
-        ckEditor: {
-            get() {
-                return this.$store.state.ckEditor;
-            },
-            set(val) {
-                this.$store.state.ckEditor = val;
-            }
-        },
         isTransition: {
             get() {
                 return this.$store.state.isTransition;

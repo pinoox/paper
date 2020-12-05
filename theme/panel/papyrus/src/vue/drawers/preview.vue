@@ -72,7 +72,7 @@
                 this.$emit('close', false);
             },
             restorePost() {
-                this.ckEditor.setData(this.editor.getData());
+                window.paperEditor.setData(this.editor.getData());
                 this.closeDrawer();
             },
             deleteHistory() {

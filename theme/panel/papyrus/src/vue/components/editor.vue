@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div v-if="isLoadEditor">
         <div class="toolbar-editor"></div>
         <simplebar class="simplebar">
             <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">
@@ -291,7 +291,7 @@
                 }
             },
             getTitle() {
-                return this.ckEditor.plugins.get('Title').getTitle();
+                return window.paperEditor.plugins.get('Title').getTitle();
             },
             getAutoSave() {
                 let vm = this;
@@ -306,7 +306,7 @@
                 }
             },
             getBody() {
-                return this.ckEditor.plugins.get('Title').getBody();
+                return window.paperEditor.plugins.get('Title').getBody();
             },
             getValue() {
                 let title = !!this.values.title ? this.values.title : '';
@@ -342,9 +342,9 @@
                 this.callEvents();
             },
             onReady(editor) {
-                this.ckEditor = editor;
+                window.paperEditor = editor;
                 document.querySelector('.toolbar-editor').prepend(editor.ui.view.toolbar.element);
-                this.ckEditor.plugins.get('Notification').on('show:warning', (evt, data) => {
+                editor.plugins.get('Notification').on('show:warning', (evt, data) => {
                     let message = !!data.message ? data.message : data.title;
                     this._notify('warn', message);
                     evt.stop();

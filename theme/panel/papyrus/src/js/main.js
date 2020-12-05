@@ -45,6 +45,8 @@ Vue.component('picture-input', PictureInput);
 
 __webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
 
+window.paperEditor = null;
+
 new Vue({
     el: '#app',
     render: h => h(Main),
