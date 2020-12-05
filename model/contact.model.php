@@ -24,10 +24,10 @@ class ContactModel extends PaperDatabase
     {
         return self::$db->insert(self::contact, [
             'full_name' => $data['full_name'],
-            'mobile' => $data['mobile'],
-            'subject' => $data['subject'],
+            'email' => $data['email'],
+            'subject' => isset($data['subject']) ? $data['subject'] : null,
             'message' => $data['message'],
-            'status' => self::unseen,
+            'status' => self::status_unseen,
             'insert_date' => Date::g('Y-m-d H:i:s'),
         ]);
     }
