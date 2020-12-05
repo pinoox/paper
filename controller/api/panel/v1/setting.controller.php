@@ -13,6 +13,7 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\model\LangModel;
+use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Lang;
@@ -24,6 +25,8 @@ class SettingController extends LoginConfiguration
 {
     public function __construct()
     {
+        parent::__construct();
+
         $headers = apache_request_headers();
         if (isset($headers['theme_name'])) {
             SettingsModel::setTheme($headers['theme_name']);
@@ -68,5 +71,14 @@ class SettingController extends LoginConfiguration
         $lang = LangModel::fetch_all();
         $direction = $lang['paper']['direction'];
         Response::json(['lang' => $lang, 'direction' => $direction]);
+    }
+
+    public function getPosts($keyword = null)
+    {
+        PostModel::where_post_type(PostModel::post_type);
+        PostModel::where_status(PostModel::publish_status);
+        PostModel::where_search($keyword);
+        $items = PostModel::fetch_all(20);
+        Response::json($items);
     }
 }

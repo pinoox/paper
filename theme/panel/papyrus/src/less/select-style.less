@@ -1,0 +1,121 @@
+.select-image {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+
+    li {
+      background: fade(@primaryColor, 20%);
+      border-radius: 6px;
+      width: 150px;
+      height: 150px;
+      margin: 0 5px 10px 5px;
+      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      .trans;
+
+      &.active {
+        border: 3px solid @blueColor;
+      }
+
+      &:hover {
+        transform: scale(1.01);
+        background: fade(@primaryColor, 40%);
+        .trans;
+        .boxShadow();
+      }
+
+      img {
+        max-width: 90%;
+        max-height: 90%;
+      }
+
+      &.add-item {
+        color: @primaryColor;
+        opacity: 0.6;
+        font-size: 3rem;
+      }
+    }
+  }
+}
+
+.select-container{
+  background: #f0f7ff;;
+  border-radius: 10px;
+
+  .select-header{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px 15px;
+    display: flex;
+
+    .revert {
+      margin-right: auto;
+    }
+  }
+
+  .select-post{
+    height: 300px;
+  }
+
+  .select-items{
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    text-align: center;
+    grid-gap: 1rem;
+    padding: 10px 15px;
+
+    .item {
+      position: relative;
+      padding: 20px;
+      background: fade(@primaryColor, 4%);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &:hover {
+        cursor: pointer;
+        .hover-menu;
+      }
+
+      img{
+        width: 90px;
+        height: 90px;
+      }
+
+      .text {
+        font-size: .85em;
+        padding: 10px 0;
+        font-weight: 500;
+        color: @primaryColor;
+      }
+
+      .close{
+        padding: 5px 10px 3px 10px;
+        background: #000;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        position: absolute;
+        cursor: pointer;
+        opacity: .4;
+        top: -5px;
+        left: -5px;
+
+        &:hover{
+          opacity: 1;
+        }
+
+        i{
+          color: #fff;
+        }
+      }
+    }
+  }
+}

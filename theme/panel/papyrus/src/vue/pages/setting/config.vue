@@ -1,5 +1,5 @@
 <template>
-    <div class="form-wrapper" v-if="!!view">
+    <simplebar class="form-wrapper" v-if="!!view">
         <header>
             <div class="form-header">
                 <div class="title">
@@ -12,7 +12,7 @@
         <div class="form-content" @keyup.enter="save()" v-if="!!settings && settings.length >= 0">
             <row :gutter="12" :columns="4">
 
-                <column :sm="3" :lg="2">
+                <column :sm="4" :lg="3">
                     <div class="input-wrapper" v-for="setting in settings" v-show="hidden(setting)">
                         <label class="input-label">{{setting.label}}</label>
 
@@ -47,6 +47,29 @@
                             </v-select>
                         </div>
 
+                        <!-- select post -->
+                        <div v-else-if="!!setting.type && setting.type === 'select:post'">
+                            <div class="select-container">
+                                <div class="select-header">
+                                    <button type="submit" class="btn btn-primary">انتخاب نوشته</button>
+                                    <div class="revert">
+                                        <button type="submit" class="btn btn-primary revert">انتخاب نوشته</button>
+                                    </div>
+                                </div>
+                                <simplebar class="select-post">
+                                    <sortable>
+                                        <div class="select-items">
+                                            <div v-for="item in posts" class="item">
+                                                <img src="https://www.pinoox.com/apps/com_pinoox_hub/theme/blueberry/dist/images/128.de685b7e9f4a0312239b71815fe502ff.png">
+                                                <span class="text">{{item.title}}</span>
+                                                <span class="close"><i class="fa fa-times"></i></span>
+                                            </div>
+                                        </div>
+                                    </sortable>
+                                </simplebar>
+                            </div>
+                        </div>
+
                         <!-- input view -->
                         <div class="input-group" v-else>
                             <input v-bind="getAttrs(setting)" v-model="params[setting.key]"
@@ -67,17 +90,20 @@
                 <div class="btn btn-primary" @click="save()">{{LANG.panel.save}}</div>
             </div>
         </footer>
-    </div>
+    </simplebar>
 </template>
 
 <script>
     import {mapMutations} from 'vuex';
+    import Sortable from "../../components/sortable.vue";
 
     export default {
+        components: {Sortable},
         props: ['setting_key'],
         data() {
             return {
-                params: {}
+                params: {},
+                posts: [],
             }
         },
         computed: {
@@ -141,6 +167,16 @@
                     this.$parent.getViews(lang);
                 });
             },
+            searchPosts(keyword = '', loading) {
+                this._delay(() => {
+                    keyword = (keyword === undefined) ? null : keyword;
+                    if (!!loading) loading(true);
+                    this.$http.get(this.URL.API + 'setting/getPosts/' + keyword, this.offLoading).then((json) => {
+                        this.posts = !!json.data ? json.data : [];
+                        if (!!loading) loading(false);
+                    });
+                }, 350);
+            },
             save() {
                 let key = this.view.key;
                 let lang = this.params.lang;
@@ -159,6 +195,10 @@
                 handler(val) {
                     if (!!val) {
                         this.getSettings();
+
+                        this.$http.get(this.URL.API + 'setting/getPosts/', this.offLoading).then((json) => {
+                            this.posts = !!json.data ? json.data : [];
+                        });
                     }
                 },
                 immediate: true,
