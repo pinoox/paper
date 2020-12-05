@@ -43,7 +43,7 @@
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.contacts}}</span>
                     </div>
-                    <div class="item" @click="goTo('settings')">
+                    <div class="item" @click="goTo('setting')">
                         <simple-svg :src="_icons.setting"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
