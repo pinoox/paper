@@ -333,7 +333,7 @@ class PostModel extends PaperDatabase
     {
         if (!empty($keyword)) {
             $p = '%' . $keyword . '%';
-            self::$db->where('p.title LIKE ? OR p.summary', [$p]);
+            self::$db->where('(p.title LIKE ? OR p.summary LIKE ?)', [$p,$p]);
         }
     }
 
