@@ -90,6 +90,7 @@ const config = {
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
+            'sortablejs': 'sortablejs',
         }),
         new CopyPlugin([
             {

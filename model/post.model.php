@@ -14,7 +14,9 @@ namespace pinoox\app\com_pinoox_paper\model;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Date;
 use pinoox\component\HelperString;
+use pinoox\component\Url;
 use pinoox\component\User;
+use pinoox\model\FileModel;
 
 class PostModel extends PaperDatabase
 {
@@ -207,6 +209,24 @@ class PostModel extends PaperDatabase
         ]);
     }
 
+    public static function getInfoPost($post)
+    {
+        $placeHolder = Url::file('resources/image-placeholder.jpg');
+
+        if (empty($post)) return $post;
+        $post['tags'] = self::fetch_tags_by_post_id($post['post_id']);
+        if (isset($post['cat_id']))
+            $post['category'] = CategoryModel::fetch_by_id($post['cat_id']);
+        else
+            $post['category'] = null;
+        $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
+        $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
+        $file = FileModel::fetch_by_id($post['image_id']);
+        $post['image'] = Url::upload($file, $placeHolder);
+        $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
+        return $post;
+    }
+
     public static function delete($post_id)
     {
         self::$db->where('post_id', $post_id);
@@ -218,6 +238,17 @@ class PostModel extends PaperDatabase
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->where('p.post_id', $post_id);
         return self::$db->getOne(self::post . ' p', 'p.*,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
+    }
+
+    public static function fetch_by_ids($posts)
+    {
+        if (empty($posts) || !is_array($posts))
+            return [];
+
+        self::$db->orderBy('p.post_id', 'ASC',$posts);
+        self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
+        self::$db->where('p.post_id', $posts, 'IN');
+        return self::$db->get(self::post . ' p',null, 'p.*,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
     }
 
     public static function fetch_all($limit = null, $isCount = false)
@@ -333,7 +364,7 @@ class PostModel extends PaperDatabase
     {
         if (!empty($keyword)) {
             $p = '%' . $keyword . '%';
-            self::$db->where('(p.title LIKE ? OR p.summary LIKE ?)', [$p,$p]);
+            self::$db->where('(p.title LIKE ? OR p.summary LIKE ?)', [$p, $p]);
         }
     }
 
@@ -350,13 +381,13 @@ class PostModel extends PaperDatabase
     public static function fetch_total_time_tracking()
     {
         $result = self::$db->getOne(self::post . ' p', 'SUM(p.time_tracking) time_tracking');
-        return (!empty($result))? $result['time_tracking'] : 0;
+        return (!empty($result)) ? $result['time_tracking'] : 0;
     }
 
     public static function fetch_total_words()
     {
         $result = self::$db->getOne(self::post_draft . ' pd', 'SUM(pd.words) words');
-        return (!empty($result))? $result['words'] : 0;
+        return (!empty($result)) ? $result['words'] : 0;
     }
 
     public static function where_search($query)

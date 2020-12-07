@@ -8,10 +8,8 @@ return [
     'settings' => [
         [
             'key' => 'posts',
-            'value' => 'en',
             'label' => rlang('setting.site_title'),
             'type' => 'select:post',
-            'options' => rlang('setting.lang'),
         ],
     ]
 ];

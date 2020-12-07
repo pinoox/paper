@@ -49,25 +49,7 @@
 
                         <!-- select post -->
                         <div v-else-if="!!setting.type && setting.type === 'select:post'">
-                            <div class="select-container">
-                                <div class="select-header">
-                                    <button type="submit" class="btn btn-primary">انتخاب نوشته</button>
-                                    <div class="revert">
-                                        <button type="submit" class="btn btn-primary revert">انتخاب نوشته</button>
-                                    </div>
-                                </div>
-                                <simplebar class="select-post">
-                                    <sortable>
-                                        <div class="select-items">
-                                            <div v-for="item in posts" class="item">
-                                                <img src="https://www.pinoox.com/apps/com_pinoox_hub/theme/blueberry/dist/images/128.de685b7e9f4a0312239b71815fe502ff.png">
-                                                <span class="text">{{item.title}}</span>
-                                                <span class="close"><i class="fa fa-times"></i></span>
-                                            </div>
-                                        </div>
-                                    </sortable>
-                                </simplebar>
-                            </div>
+                            <select-post v-model="params[setting.key]" v-bind="getAttrs(setting)"></select-post>
                         </div>
 
                         <!-- input view -->
@@ -95,15 +77,14 @@
 
 <script>
     import {mapMutations} from 'vuex';
-    import Sortable from "../../components/sortable.vue";
+    import SelectPost from "../../components/select-post.vue";
 
     export default {
-        components: {Sortable},
+        components: {SelectPost},
         props: ['setting_key'],
         data() {
             return {
                 params: {},
-                posts: [],
             }
         },
         computed: {
@@ -120,9 +101,17 @@
                 this.params[option.setting_key] = option.key;
             },
             option(setting) {
-                let key = this.params[setting.key];
-                let options = this.options(setting);
-                return options.find(option => option.key === key);
+                let value = this.params[setting.key];
+                if(setting.type === 'select:post')
+                {
+                    return  typeof value === 'object'? value : [];
+                }
+                else
+                {
+                    let options = this.options(setting);
+                    return options.find(option => option.key === value);
+                }
+
             },
             options(setting) {
                 return $.map(setting.options, function (value, index) {
@@ -167,20 +156,39 @@
                     this.$parent.getViews(lang);
                 });
             },
-            searchPosts(keyword = '', loading) {
-                this._delay(() => {
-                    keyword = (keyword === undefined) ? null : keyword;
-                    if (!!loading) loading(true);
-                    this.$http.get(this.URL.API + 'setting/getPosts/' + keyword, this.offLoading).then((json) => {
-                        this.posts = !!json.data ? json.data : [];
-                        if (!!loading) loading(false);
-                    });
-                }, 350);
+            createParams()
+            {
+                let params = this._clone(this.params);
+                for(const item of this.settings)
+                {
+                    let value =  params[item.key];
+
+                    if(!!item.type && item.type === 'select:post')
+                        params[item.key] = this.getParamPost(value);
+                    else
+                        params[item.key] =  value;
+                }
+
+                return params;
+            },
+            getParamPost(value)
+            {
+                let values = value.filter((item)=>{
+                    return !!item.post_id;
+                }).map((item)=>{
+                    return item.post_id;
+                });
+
+                return {
+                    type:'select:post',
+                    values:values,
+                };
             },
             save() {
+                let params = this.createParams();
                 let key = this.view.key;
                 let lang = this.params.lang;
-                this.$parent.http.post('save/' + key, this.params).then((json) => {
+                this.$parent.http.post('save/' + key, params).then((json) => {
                     this._statusResponse(json.data);
                     if (!this.$parent.isTheme) {
                         this.CONFIG[key] = this._clone(this.params);
@@ -195,10 +203,6 @@
                 handler(val) {
                     if (!!val) {
                         this.getSettings();
-
-                        this.$http.get(this.URL.API + 'setting/getPosts/', this.offLoading).then((json) => {
-                            this.posts = !!json.data ? json.data : [];
-                        });
                     }
                 },
                 immediate: true,

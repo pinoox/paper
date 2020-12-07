@@ -23,11 +23,17 @@ class SettingsModel extends PaperDatabase
     private static $setting;
     private static $theme = null;
 
+
+    private static function getTheme()
+    {
+        return !empty(self::$theme) ? self::$theme : '~';
+    }
+
     public static function saveMain($name, $data)
     {
         $themeDefault = self::$theme;
         self::setTheme('~');
-        $mainView = self::fetch_view($name);
+        $mainView = self::getView($name);
         $settings = !empty($mainView['setting']) ? $mainView['setting'] : [];
         $settings = array_column($settings, 'key');
         $mainSettings = [];
@@ -50,7 +56,7 @@ class SettingsModel extends PaperDatabase
         self::$theme = $theme;
     }
 
-    public static function fetch_view($name)
+    public static function getView($name)
     {
         $views = self::getSetting()->view()->get($name);
         return array_values($views);
@@ -93,45 +99,78 @@ class SettingsModel extends PaperDatabase
 
     public static function get($name)
     {
-        return self::getSetting()->get($name);
+        $values = self::getSetting()->get($name);
+        $values = self::getValuesByPattern($values);
+        return $values;
     }
 
-    public static function getMainConfigs()
+    private static function getValuesByPattern($values)
+    {
+        foreach ($values as $key => $value) {
+            if (is_array($value) && isset($value['type'])) {
+                if ($value['type'] == 'select:post') {
+                    $values[$key] = self::getPostValue($value);
+                }
+            }
+        }
+
+        return $values;
+    }
+
+    private static function getPostValue($value)
+    {
+        if (empty($value['values'])) {
+            return [];
+        } else {
+            $posts = PostModel::fetch_by_ids($value['values']);
+            $posts = array_map(function ($post) {
+                return PostModel::getInfoPost($post);
+            }, $posts);
+            return $posts;
+        }
+    }
+
+    public static function getAllMain()
     {
         $themeDefault = self::$theme;
         $theme = AppProvider::get('theme');
         self::setTheme($theme);
-        $themeSetting = self::fetch_all();
+        $themeSetting = self::getAll();
         $themeSetting = !empty($themeSetting) ? $themeSetting : [];
         self::setTheme('~');
-        $mainSetting = self::fetch_all();
+        $mainSetting = self::getAll();
         $mainSetting = !empty($mainSetting) ? $mainSetting : [];
         $configs = array_merge($themeSetting, $mainSetting);
         self::setTheme($themeDefault);
         return $configs;
     }
 
-    public static function fetch_all()
+    public static function getAll()
     {
         return self::getSetting()->getAll();
     }
 
-    public static function getMainViews()
+    public static function getViewsMain()
     {
         $themeDefault = self::$theme;
         $theme = AppProvider::get('theme');
         self::setTheme($theme);
-        $themeViews = self::fetch_views();
+        $themeViews = self::getViews();
         $themeViews = !empty($themeViews) ? $themeViews : [];
+        $themeViews = array_map(function ($view) {
+            $view['sort'] = !empty($view['sort']) ? $view['sort'] : 0;
+            $view['sort'] = 100 + intval($view['sort']);
+            return $view;
+        }, $themeViews);
         self::setTheme('~');
-        $mainViews = self::fetch_views();
+        $mainViews = self::getViews();
         $mainViews = !empty($mainViews) ? $mainViews : [];
         $views = array_merge($themeViews, $mainViews);
         self::setTheme($themeDefault);
         return $views;
     }
 
-    public static function fetch_views()
+    public static function getViews()
     {
         $views = self::getSetting()->view()->getAll();
         return array_values($views);

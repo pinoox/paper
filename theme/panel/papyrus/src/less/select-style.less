@@ -46,6 +46,139 @@
 .select-container{
   background: #f0f7ff;;
   border-radius: 10px;
+  position: relative;
+
+  &.section-select{
+  background: #f2f2f2;
+  }
+
+  .select-table{
+    padding: 20px 20px;
+    .table {
+      background: transparent;
+      border: none;
+
+      tbody {
+        margin-top: 30px;
+      }
+
+      th {
+        padding: 10px 15px 1em 0;
+        border-bottom: 1px solid @borderColor;
+        font-size: 12px;
+        font-weight: 300;
+        color: @textColor;
+        background: transparent;
+
+        &:last-child{
+          text-align: center;
+        }
+      }
+
+      td {
+        padding: 0.4em;
+        font-size: 14px;
+        font-weight: 400;
+        vertical-align: middle;
+
+        &:last-child{
+        text-align: center;
+        }
+
+        .thumb {
+          width: 82px;
+          height: 72px;
+
+          &.thumb-round {
+            border-radius: 0.5rem;
+            .boxShadow();
+          }
+
+          &.thumb-circle {
+            border-radius: 50%;
+            .boxShadow();
+          }
+        }
+
+        .light {
+          font-size: 0.85em;
+          font-weight: 400;
+          color: #8a8989;
+        }
+
+        .checked{
+          color: @greenColorDark;
+        }
+
+        .btn-action {
+          border-radius: 50%;
+          border: 1px solid @borderColor;
+          width: 24px;
+          height: 24px;
+          display: inline-block;
+          text-align: center;
+          padding: 7px 5px 3px 5px;
+          color: fade(@textColor, 60%);
+          margin: 5px;
+          .trans;
+
+          &:hover {
+            .trans;
+            cursor: pointer;
+            color: fade(@textColor, 100%);
+            background: @textColorLight;
+          }
+        }
+
+        .link {
+          font-weight: 500;
+          font-size: 12px;
+          color: @textColor;
+
+          &:hover {
+            color: @textColorLight;
+          }
+        }
+      }
+
+      .empty-data {
+        text-align: center;
+        color: @textColorLight;
+      }
+
+    }
+  }
+
+  .search-bar {
+    position: relative;
+    overflow: hidden;
+    width: 95%;
+    border-top: 1px solid @borderColor;
+    border-bottom: 1px solid @borderColor;
+    background: #fff;
+
+    .icon {
+      position: absolute;
+      font-size: 1.3rem;
+      color: @textColorLight;
+      min-width: 40px;
+      display: block;
+      padding: 5px 10px;
+      text-align: center;
+
+    }
+
+    .search-input {
+      font-family: @defaultFontFaceRtl;
+      width: 90%;
+      padding: 10px 50px 10px 50px;
+      height: @toolbarHeight/2;
+      outline: none;
+      font-size: 0.9em;
+      border-style: none;
+      color: @textColor;
+    }
+  }
 
   .select-header{
     border-top-left-radius: 10px;
@@ -53,13 +186,44 @@
     padding: 10px 15px;
     display: flex;
 
+    .disabled{
+      cursor: not-allowed;
+    }
+
     .revert {
       margin-right: auto;
+    }
+
+    .cancel{
+      padding: 5px 10px 3px 10px;
+      background: #000;
+      -moz-border-radius: 50%;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
+      position: absolute;
+      cursor: pointer;
+      opacity: .4;
+      top: -5px;
+      left: -5px;
+
+      &:hover{
+        opacity: 1;
+      }
+
+      i{
+        color: #fff;
+      }
     }
   }
 
   .select-post{
     height: 300px;
+  }
+
+  .no-selected{
+    padding: 100px 0;
+    text-align: center;
+    color: #8199b4;
   }
 
   .select-items{
@@ -80,7 +244,7 @@
       align-items: center;
 
       &:hover {
-        cursor: pointer;
+        cursor: move;
         .hover-menu;
       }
 

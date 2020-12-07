@@ -42,7 +42,7 @@ class SettingController extends LoginConfiguration
 
     public function getAll()
     {
-        $configs = SettingsModel::fetch_all();
+        $configs = SettingsModel::getAll();
         $configs = !empty($configs) ? $configs : [];
         Response::json($configs);
     }
@@ -58,7 +58,7 @@ class SettingController extends LoginConfiguration
     {
         $lang = !empty($lang) ? strtolower($lang) : Lang::current();
         Lang::change($lang);
-        $views = SettingsModel::fetch_views();
+        $views = SettingsModel::getViews();
         Response::json($views);
     }
 
@@ -71,14 +71,5 @@ class SettingController extends LoginConfiguration
         $lang = LangModel::fetch_all();
         $direction = $lang['paper']['direction'];
         Response::json(['lang' => $lang, 'direction' => $direction]);
-    }
-
-    public function getPosts($keyword = null)
-    {
-        PostModel::where_post_type(PostModel::post_type);
-        PostModel::where_status(PostModel::publish_status);
-        PostModel::where_search($keyword);
-        $items = PostModel::fetch_all(20);
-        Response::json($items);
     }
 }

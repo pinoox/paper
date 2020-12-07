@@ -25,6 +25,7 @@ import { Row, Column,Hidden } from 'vue-grid-responsive';
 import VueApexCharts from 'vue-apexcharts';
 import simplebar from 'simplebar-vue';
 import PictureInput from 'vue-picture-input';
+import Draggable from 'vuedraggable';
 
 Vue.component('simplebar', simplebar);
 Vue.component('apexchart', VueApexCharts);
@@ -42,6 +43,7 @@ Vue.component('row', Row);
 Vue.component('column', Column);
 Vue.component('hidden', Hidden);
 Vue.component('picture-input', PictureInput);
+Vue.component('draggable', Draggable);
 
 __webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
 
