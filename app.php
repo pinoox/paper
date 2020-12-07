@@ -1,5 +1,5 @@
 <?php
-//pinoox app file, generated at "2020-12-05 13:22"
+//pinoox app file, generated at "2020-12-07 15:04"
 
 return array (
   'package-name' => 'com_pinoox_paper',

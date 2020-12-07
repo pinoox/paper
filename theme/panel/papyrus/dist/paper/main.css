@@ -973,7 +973,7 @@ body.ltr .vue-notification-group {
   vertical-align: middle;
 }
 .app-container .main .page .table td .thumb {
-  width: 82px;
+  width: 72px;
   height: 72px;
 }
 .app-container .main .page .table td .thumb.thumb-round {
@@ -1771,6 +1771,21 @@ body.ltr .vue-notification-group {
 }
 .drawer-wrapper .drawer-content .btn-add {
   margin-bottom: 20px;
+}
+.drawer-wrapper .drawer-content .comment .meta {
+  display: block;
+  padding: 20px 0;
+}
+.drawer-wrapper .drawer-content .comment .meta .item {
+  display: block;
+  color: #506E93;
+}
+.drawer-wrapper .drawer-content .comment .message {
+  font-size: 1.2rem;
+}
+.drawer-wrapper .drawer-content .comment .message .author {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 .category-actions {
   max-width: 500px;

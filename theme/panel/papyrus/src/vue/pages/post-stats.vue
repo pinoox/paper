@@ -1,7 +1,24 @@
 <template>
     <div class="page">
+        <div class="menubar">
+            <div class="items">
+                <div class="text">
+                    <router-link tag="span" :to="{name:'posts'}" class="icon">
+                        <i class="fa fa-chevron-right"></i> {{LANG.post.posts_list}}
+                    </router-link>
+                </div>
+            </div>
+        </div>
+
         <simplebar class="simplebar">
-            <div class="container" v-if=" post!=null && stats!=null">
+            <div class="menubar">
+                <div class="items">
+                    <router-link :to="{name:'write'}" tag="div" class="item">
+                        {{LANG.post.write}}
+                    </router-link>
+                </div>
+            </div>
+            <div class="container" v-if=" post!=null">
                 <div class="post-stats">
 
                     <section class="section">
@@ -30,7 +47,7 @@
                             </div>
                         </section>
 
-                        <section class="section">
+                        <section class="section" v-if="stats!=null">
                             <div class="section-title">
                                 <h2>{{LANG.post.stats_7_days}}</h2>
                             </div>
@@ -100,16 +117,14 @@
                             </div>
                         </section>
                     </div>
-                    <div class="section">
+                    <div v-else class="section">
                         <div class="empty-message">
-                            <div class="text"><span class="icon"><i class="fas fa-chart-line"></i></span> {{LANG.post.empty_stats}}</div>
+                            <div class="text"><span class="icon"><i class="fas fa-chart-line"></i></span>
+                                {{LANG.post.empty_stats}}
+                            </div>
                             <div @click="$router.go(-1)" class="btn btn-simple btn-sm">{{LANG.panel.back}}</div>
                         </div>
-
-
                     </div>
-
-
                 </div>
             </div>
         </simplebar>
@@ -129,6 +144,7 @@
                 miniBoxOpts: {
                     chart: {
                         type: 'line',
+
                         sparkline: {
                             enabled: true
                         },
@@ -201,7 +217,7 @@
                     plotOptions: {
                         bar: {
                             horizontal: false,
-                            columnWidth: '40%',
+                            columnWidth: '75%',
                         },
                     },
                     dataLabels: {
@@ -228,8 +244,8 @@
                 },
             }
         },
-        computed:{
-            radialOpts(){
+        computed: {
+            radialOpts() {
                 return {
                     chart: {
                         type: 'radialBar',
@@ -297,19 +313,21 @@
             },
             getHasStats() {
                 return this.$http.post(this.URL.API + 'post/hasStats/' + this.post_id).then((json) => {
-                    this.hasStats = json.data;
+                    return this.hasStats = json.data;
                 });
             },
         },
         created() {
             this.getPost().then(() => {
-                this.getHasStats();
-            }).then(() => {
-                this.getMonthly();
-            }).then(() => {
-                this.getStats();
-            }).then(() => {
-                this.getDevices();
+                return this.getHasStats();
+            }).then((hasStats) => {
+                if (!hasStats) return false;
+
+                this.getMonthly().then(() => {
+                    return this.getStats();
+                }).then(() => {
+                    return this.getDevices();
+                })
             });
         },
     }

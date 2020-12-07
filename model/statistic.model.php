@@ -263,19 +263,27 @@ class StatisticModel extends PaperDatabase
         if (empty($rows)) return [null, null];
 
         $result = [];
-        foreach ($rows as $r) {
-            $json = json_decode($r['json_data'], true);
-            foreach ($json as $k => $item) {
-                if ($k != 'device') continue;
-                foreach ($item as $device => $count) {
-                    $result[$device] = isset($result[$device]) ? $result[$device] + $count : $count;
+        if(!empty($rows)){
+            foreach ($rows as $r) {
+                $json = json_decode($r['json_data'], true);
+                if(empty($json)) continue;
+
+                foreach ($json as $k => $item) {
+                    if ($k != 'device') continue;
+                    foreach ($item as $device => $count) {
+                        $result[$device] = isset($result[$device]) ? $result[$device] + $count : $count;
+                    }
                 }
             }
         }
+
         $total = 0;
-        foreach ($result as $i) {
-            $total += $i;
+        if(!empty($result)){
+            foreach ($result as $i) {
+                $total += $i;
+            }
         }
+
 
         return [$result, $total];
     }
@@ -294,9 +302,9 @@ class StatisticModel extends PaperDatabase
 
     public static function has_stats($post_id)
     {
-        self::$db->where('s.stat_id', $post_id);
-        self::$db->getOne(self::statistic . ' s');
-        return self::$db->count > 0;
+        self::$db->where('s.post_id', $post_id);
+        $result = self::$db->getOne(self::statistic . ' s');
+        return !empty($result);
     }
 
     public static function createStatsObject()
