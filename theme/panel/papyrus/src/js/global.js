@@ -77,7 +77,7 @@ Vue.mixin({
             },
         },
         _dir() {
-            return !!PINOOX.LANG.paper.direction ? PINOOX.LANG.paper.direction : 'ltr';
+            return !!PINOOX.LANG.front.direction ? PINOOX.LANG.front.direction : 'ltr';
         },
         _isLoading: {
             set(val) {

@@ -845,7 +845,7 @@ body {
           vertical-align: middle;
 
           .thumb {
-            width: 82px;
+            width: 72px;
             height: 72px;
 
             &.thumb-round {
@@ -1810,6 +1810,26 @@ body {
       margin-bottom: 20px;
     }
 
+    .comment {
+      .meta {
+        display: block;
+        padding: 20px 0;
+
+        .item {
+          display: block;
+          color: @textColor;
+        }
+      }
+
+      .message {
+        font-size: 1.2rem;
+        .author {
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+      }
+    }
+
   }
 
 }
@@ -2028,12 +2048,12 @@ body {
     box-sizing: border-box;
     width: calc(100% - @sidebarWidth);
 
-    .rtl &{
-      left:0;
+    .rtl & {
+      left: 0;
     }
 
-    .ltr &{
-      right:0;
+    .ltr & {
+      right: 0;
     }
 
     .form-footer {
