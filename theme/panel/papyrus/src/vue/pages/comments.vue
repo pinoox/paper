@@ -8,6 +8,9 @@
                     </router-link>
                     <span class="title">{{post.draft_title}}</span>
                 </div>
+                <div v-else class="text">
+                    <span class="title">{{LANG.comment.comments_list}}</span>
+                </div>
             </div>
         </div>
 
@@ -62,11 +65,15 @@
                                     <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                                 </div>
                                 <div v-else-if="props.column.field === 'operation'">
-                                <span @click="toggleStatus(props.row,props.index)" class="btn-action">
-                                    <i class="fas"
-                                       :class="[props.row.status==='publish' ? 'fa-comment-slash' : 'fa-check']"></i></span>
-                                    <span @click="remove(props.row,props.index)" class="btn-action">
-                                    <i class="fa fa-trash"></i></span>
+                                    <div @click="read(props.row)" class="btn-action">
+                                        <i class="fa fa-eye"></i></div>
+                                    <div @click="toggleStatus(props.row,props.index)" class="btn-action">
+                                        <i class="fas"
+                                           :class="[props.row.status==='publish' ? 'fa-comment-slash' : 'fa-check']"></i>
+                                    </div>
+                                    <div @click="remove(props.row,props.index)" class="btn-action">
+                                        <i class="fa fa-trash"></i></div>
+
                                 </div>
                                 <div v-else-if="props.column.field === 'status'">
                                     <span class="light">{{LANG.comment.status[props.row.status]}}</span>
@@ -75,6 +82,9 @@
                                     <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
                                         <span :class="props.column.style">{{props.row.title}}</span>
                                     </router-link>
+                                </div>
+                                <div v-else-if="props.column.field === 'message'">
+                                    {{props.row.message | truncate(100, '...')}}
                                 </div>
                                 <div v-else>
                                 <span :class="props.column.style">
@@ -96,12 +106,17 @@
                 </div>
             </div>
         </simplebar>
+
+        <CommentDrawer @close="readComment = null" :comment="readComment" :open="readComment!=null"></CommentDrawer>
     </div>
 </template>
 
 <script>
 
+    import CommentDrawer from '../drawers/comment.vue';
+
     export default {
+        components: {CommentDrawer},
         props: ['post_id'],
         data() {
             return {
@@ -110,6 +125,7 @@
                 items: [],
                 pages: [],
                 post: null,
+                readComment: null,
                 params: {
                     keyword: null,
                     page: 1,
@@ -133,23 +149,22 @@
                     {
                         label: this.LANG.panel.user,
                         field: 'full_name',
-                    },
-                    {
-                        label: this.LANG.panel.subject,
-                        field: 'subject',
+                        width: '70px',
                     },
                     {
                         label: this.LANG.panel.message,
                         field: 'message',
+                        width: '300px',
                     },
                     {
                         label: this.LANG.post.post,
                         field: 'title',
                         style: 'link',
+                        width: '200px',
                     },
                     {
-                        label: this.LANG.user.mobile,
-                        field: 'mobile',
+                        label: this.LANG.user.email,
+                        field: 'email',
                     },
                     {
                         label: this.LANG.panel.date,
@@ -227,6 +242,16 @@
                 this.updateParams({status: param});
                 this.getItems();
             },
+            read(comment, index) {
+                this.readComment = comment;
+            }
+
         },
+        watch: {
+            readComment() {
+                $('.app-container').toggleClass('drawer--blur');
+                $('body').toggleClass('toggle-over-flow');
+            },
+        }
     }
 </script>

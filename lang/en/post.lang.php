@@ -15,6 +15,7 @@ return [
     'change_history' => 'Change history',
     'delete_all' => 'Delete all',
     'posts' => 'posts',
+    'posts_list' => 'posts list',
     'save' => 'save',
     'category' => 'category',
     'post_publication' => 'Publish Post',
