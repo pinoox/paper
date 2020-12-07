@@ -14,6 +14,8 @@
         <simplebar class="select-post">
             <div v-if="!isSelectSection && !!value && value.length > 0">
                 <draggable
+                        :scroll-sensitivity="200"
+                        :force-fallback="true"
                         :list="value"
                         :animation="10"
                         class="select-items"

@@ -3,12 +3,12 @@
 return [
     'key' => 'home',
     'label' => '{setting.home}',
-    'icon' => 'fa fa-cog',
+    'icon' => 'fa fa-home',
     'sort' => 0,
     'settings' => [
         [
             'key' => 'posts',
-            'label' => rlang('setting.site_title'),
+            'label' => '{setting.select_post}',
             'type' => 'select:post',
         ],
     ]

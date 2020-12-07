@@ -1,5 +1,5 @@
 <?php
-//pinoox config file, generated at "2020-12-07 14:35"
+//pinoox config file, generated at "2020-12-07 14:40"
 
 return array (
   'posts' => 
@@ -7,9 +7,6 @@ return array (
     'type' => 'select:post',
     'values' => 
     array (
-      0 => 129,
-      1 => 135,
-      2 => 151,
     ),
   ),
 );
