@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script type="text/javascript" src="<?php echo $_app ?>dist/pinoox.js"></script>
-    <link rel="stylesheet" href="<?php echo $_url ?>dist/main.css">
+    <link rel="stylesheet" href="<?php echo $_url ?>dist/main.css?v=1.0">
     <title><?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?></title>
     <meta property="og:title" content="<?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?>"/>
     <meta property="og:type" content="website"/>

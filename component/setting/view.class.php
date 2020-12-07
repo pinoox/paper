@@ -56,10 +56,19 @@ class View
             $settings = $settings['settings'];
             foreach ($settings as $setting) {
                 $key = $setting['key'];
-                $result[$key] = isset($setting['value']) ? $setting['value'] : null;
+                $result[$key] = $this->getValueSetting($setting);
             }
         }
         return $result;
+    }
+
+    private function getValueSetting($setting)
+    {
+        $value = isset($setting['value']) ? $setting['value'] : null;
+        if($setting['type'] === 'select:post')
+            $value = is_array($value)? $value : [];
+
+        return $value;
     }
 
     public function get($value)

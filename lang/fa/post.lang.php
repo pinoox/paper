@@ -42,6 +42,8 @@ return [
     'confirm_leave_write' => 'آیا میخواهید بدون ذخیره صفحه را ترک کنید؟',
     'publication' => 'انتشار',
     'select' => 'انتخاب',
+    'select_post' => 'انتخاب نوشته',
+    'no_selected_post' => 'نوشته‌ای انتخاب نشده است!',
     'save_changes' => 'ذخیره تغییرات',
     'cancel' => 'لغو',
     'edit' => 'ویرایش',

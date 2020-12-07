@@ -1,5 +1,5 @@
 <template>
-    <div class="form-wrapper" v-if="!!view">
+    <simplebar class="form-wrapper" v-if="!!view">
         <header>
             <div class="form-header">
                 <div class="title">
@@ -12,7 +12,7 @@
         <div class="form-content" @keyup.enter="save()" v-if="!!settings && settings.length >= 0">
             <row :gutter="12" :columns="4">
 
-                <column :sm="3" :lg="2">
+                <column :sm="4" :lg="3">
                     <div class="input-wrapper" v-for="setting in settings" v-show="hidden(setting)">
                         <label class="input-label">{{setting.label}}</label>
 
@@ -47,6 +47,11 @@
                             </v-select>
                         </div>
 
+                        <!-- select post -->
+                        <div v-else-if="!!setting.type && setting.type === 'select:post'">
+                            <select-post v-model="params[setting.key]" v-bind="getAttrs(setting)"></select-post>
+                        </div>
+
                         <!-- input view -->
                         <div class="input-group" v-else>
                             <input v-bind="getAttrs(setting)" v-model="params[setting.key]"
@@ -67,17 +72,19 @@
                 <div class="btn btn-primary" @click="save()">{{LANG.panel.save}}</div>
             </div>
         </footer>
-    </div>
+    </simplebar>
 </template>
 
 <script>
     import {mapMutations} from 'vuex';
+    import SelectPost from "../../components/select-post.vue";
 
     export default {
+        components: {SelectPost},
         props: ['setting_key'],
         data() {
             return {
-                params: {}
+                params: {},
             }
         },
         computed: {
@@ -94,9 +101,17 @@
                 this.params[option.setting_key] = option.key;
             },
             option(setting) {
-                let key = this.params[setting.key];
-                let options = this.options(setting);
-                return options.find(option => option.key === key);
+                let value = this.params[setting.key];
+                if(setting.type === 'select:post')
+                {
+                    return  typeof value === 'object'? value : [];
+                }
+                else
+                {
+                    let options = this.options(setting);
+                    return options.find(option => option.key === value);
+                }
+
             },
             options(setting) {
                 return $.map(setting.options, function (value, index) {
@@ -141,10 +156,39 @@
                     this.$parent.getViews(lang);
                 });
             },
+            createParams()
+            {
+                let params = this._clone(this.params);
+                for(const item of this.settings)
+                {
+                    let value =  params[item.key];
+
+                    if(!!item.type && item.type === 'select:post')
+                        params[item.key] = this.getParamPost(value);
+                    else
+                        params[item.key] =  value;
+                }
+
+                return params;
+            },
+            getParamPost(value)
+            {
+                let values = value.filter((item)=>{
+                    return !!item.post_id;
+                }).map((item)=>{
+                    return item.post_id;
+                });
+
+                return {
+                    type:'select:post',
+                    values:values,
+                };
+            },
             save() {
+                let params = this.createParams();
                 let key = this.view.key;
                 let lang = this.params.lang;
-                this.$parent.http.post('save/' + key, this.params).then((json) => {
+                this.$parent.http.post('save/' + key, params).then((json) => {
                     this._statusResponse(json.data);
                     if (!this.$parent.isTheme) {
                         this.CONFIG[key] = this._clone(this.params);

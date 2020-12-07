@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div v-if="isLoadEditor">
         <div class="toolbar-editor"></div>
         <simplebar class="simplebar">
             <div :style="{'width':paperSize + '%', 'margin-top':marginTop}" class="paper">
@@ -290,9 +290,6 @@
                     ]
                 }
             },
-            getTitle() {
-                return this.ckEditor.plugins.get('Title').getTitle();
-            },
             getAutoSave() {
                 let vm = this;
                 return {
@@ -304,9 +301,6 @@
                             return false;
                     }
                 }
-            },
-            getBody() {
-                return this.ckEditor.plugins.get('Title').getBody();
             },
             getValue() {
                 let title = !!this.values.title ? this.values.title : '';
@@ -335,6 +329,12 @@
             };
         },
         methods: {
+            getTitle() {
+                return window.paperEditor.plugins.get('Title').getTitle();
+            },
+            getBody() {
+                return window.paperEditor.plugins.get('Title').getBody();
+            },
             getHashId() {
                 return this.$parent.params.hash_id;
             },
@@ -342,9 +342,9 @@
                 this.callEvents();
             },
             onReady(editor) {
-                this.ckEditor = editor;
+                window.paperEditor = editor;
                 document.querySelector('.toolbar-editor').prepend(editor.ui.view.toolbar.element);
-                this.ckEditor.plugins.get('Notification').on('show:warning', (evt, data) => {
+                editor.plugins.get('Notification').on('show:warning', (evt, data) => {
                     let message = !!data.message ? data.message : data.title;
                     this._notify('warn', message);
                     evt.stop();
@@ -358,8 +358,8 @@
             },
             callEvents(data = null) {
                 data = !!data ? data : {
-                    title: this.getTitle,
-                    context: this.getBody,
+                    title: this.getTitle(),
+                    context: this.getBody(),
                 };
 
                 this.$emit('input', {
