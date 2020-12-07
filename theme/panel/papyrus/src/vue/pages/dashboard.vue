@@ -50,7 +50,8 @@
                                      :class="{'green' : stats.postProgress.visits>0,'red': stats.postProgress.visits<0 }"
                                      v-if="stats.postProgress.visits !== 0">
                                     <i class="fas fa-chart-line"></i>
-                                    <span class="ltr-text">% {{stats.postProgress.visits}}</span>    {{stats.postProgress.visits > 0 ?
+                                    <span class="ltr-text">% {{stats.postProgress.visits}}</span>
+                                    {{stats.postProgress.visits > 0 ?
                                     LANG.panel.asc_progress : LANG.panel.desc_progress }}
                                 </div>
                             </div>
@@ -71,7 +72,8 @@
                                      :class="{'green' : stats.postProgress.visitors>0,'red': stats.postProgress.visitors<0 }"
                                      v-if="stats.postProgress.visitors !== 0">
                                     <i class="fas fa-chart-line"></i>
-                                    <span class="ltr-text">% {{stats.postProgress.visitors}}</span>  {{stats.postProgress.visitors > 0 ?
+                                    <span class="ltr-text">% {{stats.postProgress.visitors}}</span>
+                                    {{stats.postProgress.visitors > 0 ?
                                     LANG.panel.asc_progress : LANG.panel.desc_progress }}
                                 </div>
                             </div>
@@ -102,7 +104,7 @@
                         </router-link>
                     </column>
                 </row>
-              
+
                 <div class="container">
                     <section class="section" v-if="monthly!=null">
                         <div class="section-title">
@@ -145,7 +147,7 @@
                     plotOptions: {
                         bar: {
                             horizontal: false,
-                            columnWidth: '40%',
+                            columnWidth: '75%',
                         },
                     },
                     dataLabels: {
@@ -173,9 +175,9 @@
                 unseen: {contacts: null, comments: null},
                 stats: {
                     words: 0,
-                    timeTracking:{
-                        value:0,
-                        type:'sec',
+                    timeTracking: {
+                        value: 0,
+                        type: 'sec',
                     },
                 },
             }
@@ -184,7 +186,7 @@
             isNight: {
                 get() {
                     let hour = new Date().getHours();
-                    return hour < 6 && hour > 18
+                    return hour <= 6 || hour >= 18
                 }
             }
         },
