@@ -47,9 +47,14 @@
                             </v-select>
                         </div>
 
-                        <!-- select post -->
+                        <!-- select post view -->
                         <div v-else-if="!!setting.type && setting.type === 'select:post'">
                             <select-post v-model="params[setting.key]" v-bind="getAttrs(setting)"></select-post>
+                        </div>
+
+                        <!-- color picker view -->
+                        <div v-else-if="!!setting.type && setting.type === 'color-picker'">
+                            <color-picker class="input" v-model="params[setting.key]" :color="params[setting.key]" v-bind="getAttrs(setting)"></color-picker>
                         </div>
 
                         <!-- input view -->
@@ -78,9 +83,10 @@
 <script>
     import {mapMutations} from 'vuex';
     import SelectPost from "../../components/select-post.vue";
+    import ColorPicker from "../../components/color-picker.vue";
 
     export default {
-        components: {SelectPost},
+        components: {SelectPost,ColorPicker},
         props: ['setting_key'],
         data() {
             return {

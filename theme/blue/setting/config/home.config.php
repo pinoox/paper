@@ -1,5 +1,5 @@
 <?php
-//pinoox config file, generated at "2020-12-07 14:40"
+//pinoox config file, generated at "2020-12-08 15:28"
 
 return array (
   'posts' => 
@@ -9,6 +9,7 @@ return array (
     array (
     ),
   ),
+  'color' => '#FF0000',
 );
 
 //end of config
