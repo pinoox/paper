@@ -61,7 +61,7 @@ class MasterConfiguration implements ControllerInterface
 
     private function setConfig()
     {
-        $configs = SettingsModel::fetch_all();
+        $configs = SettingsModel::getAll();
         self::$template->set('_config', HelperString::encodeJson($configs, true));
     }
 

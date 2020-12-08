@@ -10,7 +10,6 @@ export default new Vuex.Store({
         user: {},
         userSettings: {},
         configs: {},
-        ckEditor: null,
         isLoading: false,
         isTransition: true,
         viewSettings:[],
@@ -23,16 +22,16 @@ export default new Vuex.Store({
         },
         addImageEditor: (state, image) => {
             image = typeof image === 'object' ? image.link : image;
-            state.ckEditor.model.change(writer => {
+            window.paperEditor.model.change(writer => {
                 const imageElement = writer.createElement('image', {
                     src: image,
                 });
 
-                state.ckEditor.model.insertContent(imageElement, state.ckEditor.model.document.selection.getLastPosition());
+                window.paperEditor.model.insertContent(imageElement, window.paperEditor.model.document.selection.getLastPosition());
             });
         },
         deleteImageEditor(state, image) {
-            let context = state.ckEditor.getData();
+            let context = window.paperEditor.getData();
             const regex = /(?<tag><figure(.*?)<img[^>]+src="(?<link>[^">]+)"(.*?)<\/figure>)/gm;
             let m;
             while ((m = regex.exec(context)) !== null) {
@@ -45,7 +44,7 @@ export default new Vuex.Store({
                 }
             }
 
-            state.ckEditor.setData(context);
+            window.paperEditor.setData(context);
         },
     },
     actions: {

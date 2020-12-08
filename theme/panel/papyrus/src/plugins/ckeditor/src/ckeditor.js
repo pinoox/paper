@@ -11,12 +11,8 @@ import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat.js';
 import Autolink from '@ckeditor/ckeditor5-link/src/autolink.js';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote.js';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold.js';
-import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder.js';
-import CKFinderUploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter.js';
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code.js';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials.js';
-import ExportToPDF from '@ckeditor/ckeditor5-export-pdf/src/exportpdf.js';
-import ExportToWord from '@ckeditor/ckeditor5-export-word/src/exportword.js';
 import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor.js';
 import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily.js';
 import FontSize from '@ckeditor/ckeditor5-font/src/fontsize.js';
@@ -44,7 +40,6 @@ import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation.js';
 import Title from '@ckeditor/ckeditor5-heading/src/title.js';
-import TodoList from '@ckeditor/ckeditor5-list/src/todolist';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
 import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount.js';
 import balloonToolbar from '@ckeditor/ckeditor5-ui/src/toolbar/balloon/balloontoolbar';
@@ -66,12 +61,8 @@ Editor.builtinPlugins = [
 	Autolink,
 	BlockQuote,
 	Bold,
-	CKFinder,
-	CKFinderUploadAdapter,
 	Code,
 	Essentials,
-	ExportToPDF,
-	ExportToWord,
 	FontColor,
 	FontFamily,
 	FontSize,
@@ -97,7 +88,6 @@ Editor.builtinPlugins = [
 	TableToolbar,
 	TextTransformation,
 	Title,
-	TodoList,
 	Underline,
 	WordCount,
 	balloonToolbar,

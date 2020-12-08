@@ -59,7 +59,7 @@
                                 @on-per-page-change="onPerPageChange"
                                 :isLoading.sync="isLoading"
                                 :totalRows="pages.count"
-                                :pagination-options="$parent.defaultTableOpts">
+                                :pagination-options="defaultTableOpts">
                             <template slot="table-row" slot-scope="props">
                                 <div v-if="props.column.field === 'thumb_128'">
                                     <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">

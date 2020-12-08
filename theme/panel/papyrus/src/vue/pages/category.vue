@@ -1,5 +1,5 @@
 <template>
-    <div class="form-wrapper">
+    <simplebar class="form-wrapper">
         <header>
             <div class="form-header">
                 <div class="title">
@@ -8,17 +8,18 @@
                 </div>
             </div>
         </header>
-        <div class="form-content" >
+        <div class="form-content">
             <category-nest :is-edit="true">
             </category-nest>
+
         </div>
-    </div>
+    </simplebar>
 </template>
 
 <script>
     import CategoryNest from '../components/category-nest.vue';
 
     export default {
-        components:{CategoryNest},
+        components: {CategoryNest},
     }
 </script>

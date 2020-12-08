@@ -94,20 +94,6 @@
             }
         },
         computed: {
-            defaultTableOpts() {
-                return {
-                    enabled: true,
-                    mode: 'records',
-                    perPage: 10,
-                    perPageDropdown: [5, 10, 20, 50],
-                    nextLabel: this.LANG.panel.next,
-                    prevLabel: this.LANG.panel.prev,
-                    rowsPerPageLabel: this.LANG.panel.rows_per_pages,
-                    ofLabel: this.LANG.panel.of,
-                    pageLabel: this.LANG.panel.page, // for 'pages' mode
-                    allLabel: this.LANG.panel.all,
-                }
-            },
             hasCustomView() {
                 return !!this.$route.meta.customView;
             },
@@ -191,7 +177,6 @@
                         return;
                     }
                 }
-
                 this.checkUser();
             },
         }

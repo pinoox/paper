@@ -24,7 +24,7 @@
                         <img src="<?php echo showImage($post['image_id']); ?>"
                              alt="<?php echo $post['title']; ?>">
                     </div>
-                    <div class="content"><?php echo $post['context']; ?></div>
+                    <div class="content paper-article"><?php echo $post['context']; ?></div>
                     <div class="tags">
 
                         <?php if (isset($tags) && !empty($tags)) { ?>

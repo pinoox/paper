@@ -42,6 +42,8 @@ return [
     'select_preview_image' => 'select the preview image',
     'publication' => 'publish',
     'select' => 'select',
+    'select_post' => 'Post selection',
+    'no_selected_post' => 'No post selected!',
     'save_changes' => 'save changes',
     'cancel' => 'cancel',
     'edit' => 'edit',

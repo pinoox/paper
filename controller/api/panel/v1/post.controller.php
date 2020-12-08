@@ -35,26 +35,8 @@ class PostController extends LoginConfiguration
     {
         PostModel::where_post_type($post_type);
         $post = PostModel::post_draft_fetch_by_id($post_id);
-        $post = $this->getInfoPost($post);
+        $post = PostModel::getInfoPost($post);
         Response::json($post);
-    }
-
-    private function getInfoPost($post)
-    {
-        $placeHolder = Url::file('resources/image-placeholder.jpg');
-
-        if (empty($post)) return $post;
-        $post['tags'] = PostModel::fetch_tags_by_post_id($post['post_id']);
-        if (isset($post['cat_id']))
-            $post['category'] = CategoryModel::fetch_by_id($post['cat_id']);
-        else
-            $post['category'] = null;
-        $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
-        $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
-        $file = FileModel::fetch_by_id($post['image_id']);
-        $post['image'] = Url::upload($file, $placeHolder);
-        $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
-        return $post;
     }
 
     public function getPostHistory($post_id)
@@ -82,7 +64,7 @@ class PostController extends LoginConfiguration
         $posts = PostModel::fetch_all($pagination->getArrayLimit());
 
         $posts = array_map(function ($post) {
-            return $post = $this->getInfoPost($post);
+            return $post = PostModel::getInfoPost($post);
         }, $posts);
 
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
@@ -101,7 +83,7 @@ class PostController extends LoginConfiguration
         $posts = PostModel::fetch_all(10);
 
         $posts = array_map(function ($post) {
-            return $post = $this->getInfoPost($post);
+            return $post = PostModel::getInfoPost($post);
         }, $posts);
 
         Response::json($posts);

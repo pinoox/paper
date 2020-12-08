@@ -42,6 +42,8 @@
                 });
 
                 this.http.defaults.headers.common['theme_name'] = this.isTheme ? this.theme_name : '~';
+                this.http.defaults.headers.common['Authorization'] = this.tokenAuth();
+
             },
             getViews(lang = '') {
                 this.http.get('getViews/' + lang).then((json) => {

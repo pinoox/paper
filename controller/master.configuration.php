@@ -55,7 +55,7 @@ class MasterConfiguration implements ControllerInterface
 
     private function loadConfig()
     {
-        $configs = SettingsModel::getConfigs();
+        $configs = SettingsModel::getAllMain();
         self::$template->setConfig($configs);
     }
 

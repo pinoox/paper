@@ -22,14 +22,6 @@ Vue.mixin({
                 this.$store.state.userSettings = val;
             }
         },
-        ckEditor: {
-            get() {
-                return this.$store.state.ckEditor;
-            },
-            set(val) {
-                this.$store.state.ckEditor = val;
-            }
-        },
         isTransition: {
             get() {
                 return this.$store.state.isTransition;
@@ -128,6 +120,20 @@ Vue.mixin({
                 placeholder: require(`@img/placeholder.png`),
             };
         },
+        defaultTableOpts() {
+            return {
+                enabled: true,
+                mode: 'records',
+                perPage: 10,
+                perPageDropdown: [5, 10, 20, 50],
+                nextLabel: this.LANG.panel.next,
+                prevLabel: this.LANG.panel.prev,
+                rowsPerPageLabel: this.LANG.panel.rows_per_pages,
+                ofLabel: this.LANG.panel.of,
+                pageLabel: this.LANG.panel.page, // for 'pages' mode
+                allLabel: this.LANG.panel.all,
+            }
+        },
     },
     methods: {
         getInitUser() {
@@ -147,7 +153,7 @@ Vue.mixin({
                     let data = json.data.result;
                     data.isLogin = true;
                     return data;
-                    if (isUpdate)
+                    if(isUpdate)
                         this.USER = data;
                 } else {
                     this.USER = {isLogin: false}
