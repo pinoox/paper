@@ -177,7 +177,6 @@
                         return;
                     }
                 }
-
                 this.checkUser();
             },
         }

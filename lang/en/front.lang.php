@@ -46,4 +46,5 @@ return [
      */
     'not_found_page' => 'the page you are looking for does not exist',
     'return_to_home' => 'return to home',
+    'error_happened' => 'an error has occurred',
 ];

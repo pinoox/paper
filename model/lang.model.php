@@ -21,11 +21,13 @@ class LangModel extends PinooxDatabase
     {
         return [
             'paper' => rlang('paper'),
+            'front' => rlang('front'),
             'panel' => rlang('panel'),
             'category' => rlang('category'),
             'post' => rlang('post'),
             'user' => rlang('user'),
             'comment' => rlang('comment'),
+            'contact' => rlang('contact'),
         ];
     }
 }

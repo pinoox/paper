@@ -15,6 +15,7 @@ return [
     'change_history' => 'Change history',
     'delete_all' => 'Delete all',
     'posts' => 'posts',
+    'posts_list' => 'posts list',
     'save' => 'save',
     'category' => 'category',
     'post_publication' => 'Publish Post',
@@ -96,6 +97,9 @@ return [
     'yesterday' => 'yesterday',
     'today' => 'today',
     'empty_stats' => 'no statistics have been recorded for this post so far',
+    'read_more' => 'read more',
+    'most_visited_post' => 'most visited posts',
+
     /** category **/
     'add' => 'add',
     'category_info' => 'categorize your posts',

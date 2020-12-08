@@ -30,7 +30,7 @@ import Draggable from 'vuedraggable';
 Vue.component('simplebar', simplebar);
 Vue.component('apexchart', VueApexCharts);
 Vue.use(VueNestable);
-Vue.use(ChDrawer, {zIndex: 1000});
+Vue.use(ChDrawer, {zIndex: 99999});
 Vue.use(VueGoodTablePlugin);
 Vue.use(VueSimpleSVG);
 Vue.use(Notifications);
@@ -55,4 +55,14 @@ new Vue({
     router: router,
     store: store,
 });
+
+let filter = function(text, length, clamp){
+    clamp = clamp || '...';
+    let node = document.createElement('div');
+    node.innerHTML = text;
+    let content = node.textContent;
+    return content.length > length ? content.slice(0, length) + clamp : content;
+};
+
+Vue.filter('truncate', filter);
 

@@ -1,0 +1,51 @@
+
+@font-face {
+    font-family: Estedad;
+    font-style: normal;
+    font-weight: 900;
+    src: url('Estedad-Black.ttf');
+    src: url('Estedad-Black.ttf?#iefix') format('embedded-opentype'),  /* IE6-8 */
+    url('Estedad-Black.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+    url('Estedad-Black.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('Estedad-Black.ttf') format('truetype');
+}
+@font-face {
+    font-family: Estedad;
+    font-style: normal;
+    font-weight: bold;
+    src: url('Estedad-Bold.ttf');
+    src: url('Estedad-Bold.ttf?#iefix') format('embedded-opentype'),  /* IE6-8 */
+    url('Estedad-Bold.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+    url('Estedad-Bold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('Estedad-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: Estedad;
+    font-style: normal;
+    font-weight: 500;
+    src: url('Estedad-Medium.ttf');
+    src: url('Estedad-Medium.ttf?#iefix') format('embedded-opentype'),  /* IE6-8 */
+    url('Estedad-Medium.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+    url('Estedad-Medium.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('Estedad-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: Estedad;
+    font-style: normal;
+    font-weight: 300;
+    src: url('Estedad-Light.ttf');
+    src: url('Estedad-Light.ttf?#iefix') format('embedded-opentype'),  /* IE6-8 */
+    url('Estedad-Light.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+    url('Estedad-Light.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('Estedad-Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: Estedad;
+    font-style: normal;
+    font-weight: 200;
+    src: url('Estedad-Thin.ttf');
+    src: url('Estedad-Thin.ttf?#iefix') format('embedded-opentype'),  /* IE6-8 */
+    url('Estedad-Thin.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+    url('Estedad-Thin.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('Estedad-Thin.ttf') format('truetype');
+}

@@ -154,14 +154,10 @@
             }
         },
         methods: {
-            save() {
-
-            },
             saveUserProfile() {
                 this.$http.post(this.URL.API + 'user/saveUserProfile', this.paramsUserProfile).then((json) => {
                     if (this._statusResponse(json.data))
                         this.setUserProfile();
-
                 });
             },
             changePassword() {
@@ -180,10 +176,13 @@
                     this.avatar = this.USER.avatar;
             },
             setUserProfile() {
-                this.USER = {
-                    ...this.USER,
-                    ...this.paramsUserProfile,
-                };
+                let params = this._clone(this.paramsUserProfile);
+                params.full_name = params.fname + ' '+ params.lname;
+                for(let key in params)
+                {
+                    let value = params[key];
+                    this.USER[key] = value;
+                }
             },
             changeAvatar(file) {
                 let data = new FormData();

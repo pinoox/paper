@@ -35,7 +35,6 @@ return [
     'comments' => 'دیدگاه ها',
     'full_name' => 'نام و نام خانوادگی',
     'email' => 'ایمیل',
-    'message' => 'پیام',
     'send' => 'ارسال دیدگاه',
     'cancel_reply' => 'لغو پاسخ',
     'comment_inserted_successfully' => 'دیدگاه شما ثبت شد، بعد از تایید منتشر خواهد شد',
@@ -46,4 +45,5 @@ return [
      */
     'not_found_page' => 'صفحه مورد نظر وجود ندارد',
     'return_to_home' => 'بازگشت به خانه',
+    'error_happened' => 'خطایی رخ داده است',
 ];
