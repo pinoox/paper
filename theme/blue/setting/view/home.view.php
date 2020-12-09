@@ -10,12 +10,15 @@ return [
             'key' => 'color',
             'label' => 'انتخاب رنگ',
             'type' => 'color-picker',
-            'value' => '#682323',
+            'value' => '#454545',
         ],
         [
             'key' => 'posts',
             'label' => '{setting.select_post}',
             'type' => 'select:post',
+            'attrs' => [
+                'limit' => 5,
+            ]
         ],
     ]
 ];
