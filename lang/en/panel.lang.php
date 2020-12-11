@@ -1,5 +1,6 @@
 <?php
 return [
+    'direction' => 'ltr',
     'PM' => 'PM',
     'AM' => 'AM',
     'invalid_request' => 'invalid request',
@@ -46,7 +47,7 @@ return [
     'desc_progress' => 'Decrease compared to yesterday',
     'are_you_sure_logout_account' => 'Do you want to log out of your account?',
     'pages' => 'pages',
-
+    'list_builder' => 'List Builder',
     'dashboard' => 'dashboard',
     'user' => 'user',
     'users' => 'users',
@@ -59,6 +60,8 @@ return [
     'comments' => 'comments',
     'contacts' => 'contacts',
     'profile_image' => 'Profile image',
+    'name_list' => 'List name (required)',
+    'enter_name' => 'Enter name',
     'type_time_tracking' => [
         'sec' => 'sec',
         'minute' => 'minute',

@@ -69,7 +69,7 @@ class SettingController extends LoginConfiguration
         AppProvider::save();
         Lang::change($lang);
         $lang = LangModel::fetch_all();
-        $direction = $lang['paper']['direction'];
+        $direction = $lang['panel']['direction'];
         Response::json(['lang' => $lang, 'direction' => $direction]);
     }
 }

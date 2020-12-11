@@ -456,6 +456,15 @@
   color: #fff;
   background: #32629d;
 }
+.btn-list {
+  background: #edf2f7;
+  border: 1px solid #1f426c;
+  color: #1f426c;
+}
+.btn-list:hover {
+  color: #fff;
+  background: #32629d;
+}
 .btn-outline-secondary {
   background: #fff;
   border: 2px solid #2a5282;
@@ -1822,6 +1831,15 @@ body.ltr .vue-notification-group {
   padding: 10px 0;
   color: #506E93;
 }
+.category-actions .back-btn {
+  display: block;
+  padding: 10px 0;
+  color: rgba(31, 66, 108, 0.6);
+}
+.category-actions .back-btn:hover {
+  color: #1f426c;
+  cursor: pointer;
+}
 .nestable-category {
   max-width: 500px;
   margin: auto;
@@ -2641,6 +2659,10 @@ body.ltr .vue-notification-group {
 }
 .select-container .select-header .revert {
   margin-right: auto;
+}
+.select-container .select-header .revert .text {
+  color: #a1a1a1;
+  font-size: 12px;
 }
 .select-container .select-header .cancel {
   padding: 5px 10px 3px 10px;
