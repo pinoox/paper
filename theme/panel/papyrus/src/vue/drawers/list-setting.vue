@@ -11,6 +11,7 @@
             <div slot='header' class="drawer-header">
                 <div class="title">
                     <div class="text">{{LANG.panel.list_builder}}</div>
+                    <div class="subtext">{{$parent.setting.label}}</div>
                 </div>
             </div>
             <div class="drawer-content" v-if="open">

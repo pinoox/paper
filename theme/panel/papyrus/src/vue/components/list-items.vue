@@ -30,7 +30,6 @@
                     <div slot="placeholder">
                         <div>
                             <b>{{LANG.panel.empty_table}}</b>
-                            <p>{{LANG.post.add_category_by_click}}</p>
                         </div>
                     </div>
 
@@ -93,7 +92,7 @@
             }
         },
         created() {
-            this.items = this.value;
+            this.items = !!this.value? this.value : [];
             this.items = this.items.map((item) => {
                 item._id = this.getId();
                 return item;

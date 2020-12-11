@@ -2739,6 +2739,20 @@ body.ltr .vue-notification-group {
 .select-container .select-items .item .close i {
   color: #fff;
 }
+.setting-image-view .select-image-setting {
+  width: 200px;
+  height: 200px;
+  background: #f0f7ff;
+  position: relative;
+}
+.setting-image-view .select-image-setting span {
+  position: absolute;
+  top: 82px;
+  right: 48px;
+}
+.setting-image-view img {
+  cursor: crosshair;
+}
 .splash {
   position: absolute;
   width: 600px;
@@ -3120,6 +3134,18 @@ body.ltr .vue-notification-group {
 .input-wrapper .sub-label.center {
   text-align: center;
 }
+.input-wrapper .thumb {
+  width: 180px;
+  height: 180px;
+}
+.input-wrapper .thumb.thumb-round {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
+}
+.input-wrapper .thumb.thumb-circle {
+  border-radius: 50%;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
+}
 .input-wrapper .input-group {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3249,6 +3275,12 @@ body.ltr .vue-notification-group {
 }
 .picture-input .picture-inner {
   background-color: #edf2f7;
+}
+.setting-image-view .preview-container {
+  margin: initial !important;
+}
+.setting-image-view .picture-input {
+  text-align: initial;
 }
 @media screen and (max-width: 576px) {
   .col-xs-order {

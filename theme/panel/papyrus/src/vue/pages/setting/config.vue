@@ -28,17 +28,19 @@
                 </div>
             </footer>
         </simplebar>
-        <list-manage @close="drawerName = null" :open="drawerName === 'list'"></list-manage>
+        <list-setting @close="drawerName = null" :open="drawerName === 'list'"></list-setting>
+        <image-setting @close="drawerName = null" :open="drawerName === 'image'"></image-setting>
     </div>
 </template>
 
 <script>
     import {mapMutations} from 'vuex';
-    import ListManage from "../../drawers/list-manage.vue";
+    import ListSetting from "../../drawers/list-setting.vue";
+    import ImageSetting from "../../drawers/image-setting.vue";
     import FormBuilder from "../../components/form-builder.vue";
 
     export default {
-        components: {FormBuilder, ListManage},
+        components: {FormBuilder, ListSetting,ImageSetting},
         props: ['setting_key'],
         data() {
             return {
@@ -60,9 +62,13 @@
         },
         methods: {
             ...mapMutations(['updateDirections']),
-            openList(setting) {
+            openListDrawer(setting) {
                 this.setting = setting;
                 this.drawerName = 'list';
+            },
+            openImageDrawer(setting) {
+                this.setting = setting;
+                this.drawerName = 'image';
             },
             getSettings() {
                 let key = this.view.key;

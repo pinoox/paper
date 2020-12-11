@@ -7,6 +7,12 @@ return [
     'sort' => 0,
     'settings' => [
         [
+            'key' => 'logo',
+            'label' => 'تصویر',
+            'type' => 'image',
+            'value' => 'assets/images/logo/logo-256.png'
+        ],
+        [
             'key' => 'color',
             'label' => 'انتخاب رنگ',
             'type' => 'color-picker',
@@ -14,7 +20,7 @@ return [
         ],
         [
             'key' => 'menu',
-            'label' => 'لیست',
+            'label' => 'منو بالای صفحه',
             'type' => 'list',
             'settings' => [
                 [

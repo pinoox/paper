@@ -60,6 +60,7 @@ return [
     'comments' => 'comments',
     'contacts' => 'contacts',
     'profile_image' => 'Profile image',
+    'select_image' => 'Image selection',
     'name_list' => 'List name (required)',
     'enter_name' => 'Enter name',
     'type_time_tracking' => [
@@ -88,6 +89,7 @@ return [
     'status' => 'status',
     'add' => 'add',
     'edit' => 'edit',
+    'delete' => 'delete',
     'cancel' => 'cancel',
     'added_successfully' => 'added successfully',
     'edited_successfully' => 'edited successfully',
