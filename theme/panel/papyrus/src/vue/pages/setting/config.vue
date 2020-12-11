@@ -1,93 +1,58 @@
 <template>
-    <simplebar class="form-wrapper" v-if="!!view">
-        <header>
-            <div class="form-header">
-                <div class="title">
-                    <div class="text">
-                        {{view.label}}
+    <div>
+        <simplebar class="form-wrapper" v-if="!!view">
+            <header>
+                <div class="form-header">
+                    <div class="title">
+                        <div class="text">
+                            {{view.label}}
+                        </div>
                     </div>
                 </div>
+            </header>
+            <div class="form-content" @keyup.enter="save()" v-if="!!settings && settings.length >= 0">
+                <row :gutter="12" :columns="4">
+
+                    <column :sm="4" :lg="3">
+                        <form-builder :parent="parent" :settings="settings" v-model="params"></form-builder>
+                    </column>
+                </row>
             </div>
-        </header>
-        <div class="form-content" @keyup.enter="save()" v-if="!!settings && settings.length >= 0">
-            <row :gutter="12" :columns="4">
-
-                <column :sm="4" :lg="3">
-                    <div class="input-wrapper" v-for="setting in settings" v-show="hidden(setting)">
-                        <label class="input-label">{{setting.label}}</label>
-
-                        <!-- textarea view -->
-                        <div class="input-group" v-if="!!setting.type && setting.type === 'textarea'">
-                            <textarea v-bind="getAttrs(setting)" class="input" v-model="params[setting.key]"></textarea>
-                        </div>
-
-                        <!-- toggle view -->
-                        <div class="input-group" v-else-if="!!setting.type && setting.type === 'toggle'">
-                            <toggle-button v-bind="getAttrs(setting)"
-                                           v-model="params[setting.key]"
-                                           :sync="true"
-                                           :width="70"
-                                           :labels="{checked: LANG.post.active, unchecked: LANG.post.inactive}"/>
-                        </div>
-
-                        <!-- select view -->
-                        <div v-else-if="!!setting.type && setting.type === 'select'">
-                            <v-select
-                                    class="input"
-                                    dir="rtl"
-                                    index="label"
-                                    label="label"
-                                    :options="options(setting)"
-                                    :value="option(setting)"
-                                    @input="select"
-                                    v-bind="getAttrs(setting)">
-                                <template slot="no-options">
-                                    {{LANG.panel.nothing_found}}
-                                </template>
-                            </v-select>
-                        </div>
-
-                        <!-- select post -->
-                        <div v-else-if="!!setting.type && setting.type === 'select:post'">
-                            <select-post v-model="params[setting.key]" v-bind="getAttrs(setting)"></select-post>
-                        </div>
-
-                        <!-- input view -->
-                        <div class="input-group" v-else>
-                            <input v-bind="getAttrs(setting)" v-model="params[setting.key]"
-                                   :type="!!setting.type?setting.type : 'text'" class="input">
-                        </div>
-
-                        <span v-if="!!setting.help" class="sub-label">{{setting.help}}</span>
-                    </div>
-                </column>
-            </row>
-        </div>
-        <div class="footer-space"></div>
-        <footer>
-            <div class="form-footer">
-                <router-link :to="{name:!$parent.isTheme?'setting' : 'theme-setting'}" class="btn btn-simple">
-                    {{LANG.post.close}}
-                </router-link>
-                <div class="btn btn-primary" @click="save()">{{LANG.panel.save}}</div>
-            </div>
-        </footer>
-    </simplebar>
+            <div class="footer-space"></div>
+            <footer>
+                <div class="form-footer">
+                    <router-link :to="{name:!$parent.isTheme?'setting' : 'theme-setting'}" class="btn btn-simple">
+                        {{LANG.post.close}}
+                    </router-link>
+                    <div class="btn btn-primary" @click="save()">{{LANG.panel.save}}</div>
+                </div>
+            </footer>
+        </simplebar>
+        <list-setting @close="drawerName = null" :open="drawerName === 'list'"></list-setting>
+        <image-setting @close="drawerName = null" :open="drawerName === 'image'"></image-setting>
+    </div>
 </template>
 
 <script>
     import {mapMutations} from 'vuex';
-    import SelectPost from "../../components/select-post.vue";
+    import ListSetting from "../../drawers/list-setting.vue";
+    import ImageSetting from "../../drawers/image-setting.vue";
+    import FormBuilder from "../../components/form-builder.vue";
 
     export default {
-        components: {SelectPost},
+        components: {FormBuilder, ListSetting,ImageSetting},
         props: ['setting_key'],
         data() {
             return {
                 params: {},
+                setting: {},
+                drawerName: null,
             }
         },
         computed: {
+            parent(){
+              return this;
+            },
             view() {
                 return this.$parent.views.find(view => view.key === this.setting_key);
             },
@@ -97,44 +62,13 @@
         },
         methods: {
             ...mapMutations(['updateDirections']),
-            select(option) {
-                this.params[option.setting_key] = option.key;
+            openListDrawer(setting) {
+                this.setting = setting;
+                this.drawerName = 'list';
             },
-            option(setting) {
-                let value = this.params[setting.key];
-                if(setting.type === 'select:post')
-                {
-                    return  typeof value === 'object'? value : [];
-                }
-                else
-                {
-                    let options = this.options(setting);
-                    return options.find(option => option.key === value);
-                }
-
-            },
-            options(setting) {
-                return $.map(setting.options, function (value, index) {
-                    return {
-                        key: index,
-                        label: value,
-                        setting_key: setting.key,
-                    };
-                });
-            },
-            hidden(setting) {
-                if (!!setting.hiddenBy) {
-                    let key = setting.hiddenBy;
-                    return this.params[key];
-                }
-
-                return true;
-            },
-            getAttrs(setting) {
-                let attrs = !!setting.attrs ? setting.attrs : {};
-                if (!attrs.placeholder)
-                    attrs.placeholder = setting.label;
-                return attrs;
+            openImageDrawer(setting) {
+                this.setting = setting;
+                this.drawerName = 'image';
             },
             getSettings() {
                 let key = this.view.key;
@@ -156,33 +90,36 @@
                     this.$parent.getViews(lang);
                 });
             },
-            createParams()
-            {
+            createParams() {
                 let params = this._clone(this.params);
-                for(const item of this.settings)
-                {
-                    let value =  params[item.key];
+                for (const item of this.settings) {
+                    let value = params[item.key];
 
-                    if(!!item.type && item.type === 'select:post')
+                    if (!!item.type && item.type === 'select:post')
                         params[item.key] = this.getParamPost(value);
                     else
-                        params[item.key] =  value;
+                        params[item.key] = value;
                 }
 
                 return params;
             },
-            getParamPost(value)
-            {
-                let values = value.filter((item)=>{
+            getParamPost(value) {
+                let values = value.filter((item) => {
                     return !!item.post_id;
-                }).map((item)=>{
+                }).map((item) => {
                     return item.post_id;
                 });
 
                 return {
-                    type:'select:post',
-                    values:values,
+                    type: 'select:post',
+                    values: values,
                 };
+            },
+            getAttrs(setting) {
+                let attrs = !!setting.attrs ? setting.attrs : {};
+                if (!attrs.placeholder)
+                    attrs.placeholder = setting.label;
+                return attrs;
             },
             save() {
                 let params = this.createParams();
@@ -206,7 +143,11 @@
                     }
                 },
                 immediate: true,
-            }
+            },
+            drawerName() {
+                $('.app-container').toggleClass('drawer--blur');
+                $('body').toggleClass('toggle-over-flow');
+            },
         }
     }
 </script>

@@ -1,7 +1,12 @@
 <?php
-//pinoox config file, generated at "2020-12-07 14:40"
+//pinoox config file, generated at "2020-12-11 23:09"
 
 return array (
+  'logo' => NULL,
+  'color' => '#454545',
+  'menu' => 
+  array (
+  ),
   'posts' => 
   array (
     'type' => 'select:post',

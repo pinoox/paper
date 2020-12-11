@@ -1,5 +1,6 @@
 <?php
 return [
+    'direction' => 'rtl',
     'PM' => 'ب.ظ',
     'AM' => 'ق.ظ',
     'invalid_request' => 'درخواست معتبر نیست',
@@ -46,7 +47,7 @@ return [
     'asc_progress' => 'افزایش نسبت به دیروز',
     'desc_progress' => 'کاهش نسبت به دیروز',
     'are_you_sure_logout_account' => 'آیا می‌خواهید از حساب کاربری خود خارج شوید؟',
-
+    'list_builder' => 'لیست ساز',
     'dashboard' => 'داشبورد',
     'user' => 'کاربر',
     'users' => 'کاربران',
@@ -61,6 +62,9 @@ return [
     'comments' => 'نظرات',
     'contacts' => 'تماس ها',
     'profile_image' => 'تصویر پروفایل',
+    'select_image' => 'انتخاب تصویر',
+    'name_list' => 'نام لیست (ضروری)',
+    'enter_name' => 'نام را وارد کنید',
     'type_time_tracking' => [
         'sec' => 'ثانیه',
         'minute' => 'دقیقه',
@@ -87,6 +91,7 @@ return [
     'status' => 'وضعیت',
     'add' => 'افزودن',
     'edit' => 'ویرایش',
+    'delete' => 'حذف',
     'cancel' => 'لغو',
     'added_successfully' => 'با موفقیت اضافه شد',
     'edited_successfully' => 'با موفقیت ویرایش شد',
