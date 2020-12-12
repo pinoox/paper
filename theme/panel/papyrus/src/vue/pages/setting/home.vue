@@ -28,7 +28,9 @@
         <simplebar class="simplebar">
             <div class="form-content">
                 <div class="menus setting">
-                    <router-link tag="div" class="item" :to="{name:!$parent.isTheme? 'setting-config' : 'theme-setting-config',params:{setting_key:view.key}}" v-for="view in menus">
+                    <router-link tag="div" class="item"
+                                 :to="{name:!$parent.isTheme? 'setting-config' : 'theme-setting-config',params:{setting_key:view.key}}"
+                                 v-for="view in menus">
                         <i :class="view.icon"></i>
                         <span class="text">{{view.label}}</span>
                     </router-link>
@@ -36,33 +38,13 @@
                         <i class="fa fa-cog"></i>
                         <span class="text">{{LANG.panel.general_settings}}</span>
                     </div>
-                    <div class="item">
-                        <i class="fa fa-user"></i>
-                        <span class="text">{{LANG.panel.user_settings}}</span>
-                    </div>
                     <div class="item" @click="goTo('write')">
                         <i class="fa fa-keyboard"></i>
                         <span class="text">{{LANG.panel.write_settings}}</span>
                     </div>
-                    <div class="item">
-                        <i class="fa fa-book-open"></i>
-                        <span class="text">{{LANG.panel.read_settings}}</span>
-                    </div>
-                    <div class="item">
-                        <i class="fa fa-mountain"></i>
-                        <span class="text">{{LANG.panel.theme_settings}}</span>
-                    </div>
-                    <div class="item">
-                        <i class="fa fa-language"></i>
-                        <span class="text">{{LANG.panel.lang_settings}}</span>
-                    </div>
-                    <div class="item">
-                        <i class="fa fa-quidditch"></i>
-                        <span class="text">{{LANG.panel.interface_settings}}</span>
-                    </div>
-                    <div class="item">
-                        <i class="fa fa-user-secret"></i>
-                        <span class="text">{{LANG.panel.privacy_settings}}</span>
+                    <div @click="goTo('themes')" class="item">
+                        <i class="fas fa-palette"></i>
+                        <span class="text">{{LANG.panel.themes}}</span>
                     </div>
                 </div>
             </div>
@@ -77,12 +59,12 @@
                 params: {}
             }
         },
-        computed:{
-            menus(){
-                return this.$parent.views.sort(function(a, b) {
-                    let sortA = !!a.sort? a.sort : 0;
-                    let sortB = !!b.sort? b.sort : 0;
-                    return sortA - sortB ;
+        computed: {
+            menus() {
+                return this.$parent.views.sort(function (a, b) {
+                    let sortA = !!a.sort ? a.sort : 0;
+                    let sortB = !!b.sort ? b.sort : 0;
+                    return sortA - sortB;
                 });
             }
         },

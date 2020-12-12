@@ -19,17 +19,17 @@
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.dashboard}}</span>
                     </div>
+                    <div class="item" @click="goTo('write')">
+                        <simple-svg :src="_icons.pen"
+                                    customClassName="icon stroke"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.post.write}}</span>
+                    </div>
                     <div class="item" @click="goTo('posts')">
                         <simple-svg :src="_icons.article"
                                     customClassName="icon"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.posts}}</span>
-                    </div>
-                    <div class="item" @click="goTo('posts')">
-                        <simple-svg :src="_icons.pen"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.post.write}}</span>
                     </div>
                     <div class="item" @click="goTo('comments')">
                         <simple-svg :src="_icons.comment"
@@ -43,13 +43,50 @@
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.contacts}}</span>
                     </div>
+                    <div class="item" @click="goTo('pages')">
+                        <simple-svg :src="_icons.page"
+                                    customClassName="icon stroke"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.panel.pages}}</span>
+                    </div>
+                    <div class="item" @click="goTo('users')">
+                        <simple-svg :src="_icons.users"
+                                    height="22px"
+                                    customClassName="icon"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.panel.users}}</span>
+                    </div>
+                    <div class="item" @click="goTo('template')">
+                        <simple-svg :src="_icons.image"
+                                    height="22px"
+                                    customClassName="icon stroke"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.panel.templates}}</span>
+                    </div>
+                    <div class="item" @click="goTo('profile')">
+                        <simple-svg :src="_icons.profile"
+                                    customClassName="icon"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.panel.profile}}</span>
+                    </div>
+                    <div class="item" @click="goTo('category')">
+                        <simple-svg :src="_icons.category"
+                                    customClassName="icon stroke"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.panel.category}}</span>
+                    </div>
                     <div class="item" @click="goTo('setting')">
                         <simple-svg :src="_icons.setting"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.settings}}</span>
                     </div>
-
+                    <div class="item" @click="goTo('')">
+                        <simple-svg :src="_icons.logout"
+                                    customClassName="icon stroke"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.panel.logout}}</span>
+                    </div>
 
                 </div>
             </div>
