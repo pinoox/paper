@@ -2,7 +2,7 @@
     <div class="page">
         <div class="menubar">
             <div class="items">
-                <div class="text">
+                <div class="text m1-rl">
                     <router-link tag="span" :to="{name:'posts'}" class="icon">
                         <i class="fa fa-chevron-right"></i> {{LANG.post.posts_list}}
                     </router-link>
