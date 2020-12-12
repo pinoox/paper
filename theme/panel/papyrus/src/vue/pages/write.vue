@@ -340,6 +340,7 @@
                         this.changeStatus(status);
                         this.time = 0;
                     } else {
+                        this.message = json.data.message;
                         this._notify('error', json.data.message, 'app');
                     }
 

@@ -1,5 +1,5 @@
 <?php
-//pinoox config file, generated at "2020-12-03 09:29"
+//pinoox config file, generated at "2020-12-08 20:54"
 
 return array (
   'site_title' => 'تست',

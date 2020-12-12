@@ -23,16 +23,11 @@
                             <span class="text">{{USER.full_name}}</span>
                         </router-link>
                         <div class="quick-actions">
-                            <div class="item">
+                            <div class="item" @click="showFront()">
                                 <simple-svg :src="_icons.eye"
                                             width="25px"
                                             customClassName="icon"/>
                             </div>
-                            <router-link tag="div" :to="{name:'write'}" class="item">
-                                <simple-svg :src="_icons.pen"
-                                            width="22px"
-                                            customClassName="icon"/>
-                            </router-link>
                         </div>
                     </div>
                     <div class="toolbar-drawer">
@@ -154,6 +149,9 @@
                     });
                 });
 
+            },
+            showFront() {
+                window.open(PINOOX.URL.SITE, '_blank');
             }
         },
         created() {

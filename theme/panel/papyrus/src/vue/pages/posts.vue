@@ -2,6 +2,9 @@
     <div class="page">
         <div class="menubar">
             <div class="items">
+                <div class="text">
+                    <span class="title">{{LANG.panel.list + ' '+ LANG.panel.posts}}</span>
+                </div>
                 <router-link :to="{name:'write'}" tag="div" class="item">
                     {{LANG.post.write}}
                 </router-link>
@@ -53,6 +56,8 @@
                                 <div v-else-if="props.column.field === 'operation'">
                                     <router-link :to="{name:'post-stats',params:{post_id:props.row.post_id}}"
                                                  class="btn-action"><i class="fa fa-chart-pie"></i></router-link>
+                                    <router-link :to="{name:'comments',params:{post_id:props.row.post_id}}"
+                                                 class="btn-action"><i class="fa fa-comments"></i></router-link>
                                     <router-link :to="{name:'write',params:{post_id:props.row.post_id}}"
                                                  class="btn-action">
                                         <i class="fa fa-edit"></i></router-link>

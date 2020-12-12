@@ -1,8 +1,8 @@
 <?php
-//pinoox config file, generated at "2020-11-26 08:10"
+//pinoox config file, generated at "2020-12-08 20:41"
 
 return array (
-  'lang' => 'fa',
+  'lang' => 'en',
 );
 
 //end of config
