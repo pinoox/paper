@@ -95,6 +95,7 @@ return [
     'cancel' => 'لغو',
     'added_successfully' => 'با موفقیت اضافه شد',
     'edited_successfully' => 'با موفقیت ویرایش شد',
+    'err_empty_name_list' => 'نام لیست نباید خالی باشد',
 
     /* contacts */
     'search_in_contacts' => 'جست و جو بین تماس ها...',

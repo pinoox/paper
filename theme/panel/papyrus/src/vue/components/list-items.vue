@@ -38,36 +38,41 @@
         </div>
         <div v-else-if="state === 'add'">
             <div class="category-actions">
-                <span class="back-btn" @click="goToListState()"><i class="fa fa-angle-right"></i> {{LANG.panel.back}}</span>
+                <span class="back-btn" @click="goToListState()"><i
+                        class="fa fa-angle-right"></i> {{LANG.panel.back}}</span>
                 <div class="form-content" @keyup.enter="add()">
                     <div class="input-wrapper">
                         <label class="input-label"> {{LANG.panel.name_list}}</label>
                         <div class="input-group">
-                            <input :placeholder="LANG.panel.enter_name" v-model="paramsAdd.label" type="text" class="input">
+                            <input :placeholder="LANG.panel.enter_name" v-model="paramsAdd.label" type="text"
+                                   class="input">
                         </div>
                     </div>
                     <form-builder :list-disable="true" :settings="settings" v-model="paramsAdd"></form-builder>
                     <div class="input-wrapper">
-                            <span @click="goToListState()" class="btn btn-outline-primary">{{LANG.panel.cancel}}</span>
-                            <span @click="add()" class="btn btn-primary">{{LANG.panel.add}}</span>
+                        <span @click="goToListState()" class="btn btn-outline-primary">{{LANG.panel.cancel}}</span>
+                        <span @click="add()" class="btn btn-primary">{{LANG.panel.add}}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div v-else-if="state === 'edit'">
             <div class="category-actions">
-                <span class="back-btn" @click="goToListState()"><i class="fa fa-angle-right"></i>  {{LANG.panel.back}}</span>
+                <span class="back-btn" @click="goToListState()"><i
+                        class="fa fa-angle-right"></i>  {{LANG.panel.back}}</span>
                 <div class="form-content" @keyup.enter="edit()">
                     <div class="input-wrapper">
                         <label class="input-label"> {{LANG.panel.name_list}}</label>
                         <div class="input-group">
-                            <input :placeholder="LANG.panel.enter_name" v-model="paramsEdit.label" type="text" class="input">
+                            <input :placeholder="LANG.panel.enter_name" v-model="paramsEdit.label" type="text"
+                                   class="input">
                         </div>
                     </div>
-                    <form-builder :list-disable="true" :settings="settings" v-model="paramsEdit"></form-builder>
+                    <form-builder :list-disable="true" :settings="settings"
+                                  v-model="paramsEdit"></form-builder>
                     <div class="input-wrapper">
-                            <span @click="goToListState()" class="btn btn-outline-primary">{{LANG.panel.cancel}}</span>
-                            <span @click="edit()" class="btn btn-primary">{{LANG.panel.save_changes}}</span>
+                        <span @click="goToListState()" class="btn btn-outline-primary">{{LANG.panel.cancel}}</span>
+                        <span @click="edit()" class="btn btn-primary">{{LANG.panel.save_changes}}</span>
                     </div>
                 </div>
             </div>
@@ -87,12 +92,12 @@
             setting: {
                 default: {},
             },
-            depth:{
-                default:3,
+            depth: {
+                default: 3,
             }
         },
         created() {
-            this.items = !!this.value? this.value : [];
+            this.items = !!this.value ? this.value : [];
             this.items = this.items.map((item) => {
                 item._id = this.getId();
                 return item;
@@ -121,7 +126,7 @@
         computed: {
             settings() {
                 return !!this.setting && !!this.setting.settings ? this.setting.settings : [];
-            }
+            },
         },
         methods: {
             add() {
@@ -142,13 +147,12 @@
                     this.goToListState();
                 }
             },
-            deleteItem(index)
-            {
-                this.$delete(this.items,index);
+            deleteItem(index) {
+                this.$delete(this.items, index);
             },
             checkLabel(params) {
                 if (!params.label) {
-                    this._notify('error', 'نام لیست نباید خالی باشد');
+                    this._notify('error',this.LANG.panel.err_empty_name_list);
                     return false;
                 }
                 return true;
@@ -165,6 +169,7 @@
             trigger(item, pathTo) {
             },
             goToAddState() {
+                this._resetInitialData('paramsAdd');
                 this.state = 'add';
             },
             goToEditState(index) {
