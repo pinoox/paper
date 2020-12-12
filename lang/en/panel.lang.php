@@ -91,8 +91,10 @@ return [
     'edit' => 'edit',
     'delete' => 'delete',
     'cancel' => 'cancel',
+    'manage' => 'manage',
     'added_successfully' => 'added successfully',
     'edited_successfully' => 'edited successfully',
+    'err_empty_name_list' => 'Last name should not be empty',
 
     /* contacts */
     'search_in_contacts' => 'search in contacts ...',

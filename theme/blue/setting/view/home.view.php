@@ -10,7 +10,25 @@ return [
             'key' => 'logo',
             'label' => 'تصویر',
             'type' => 'image',
-            'value' => 'assets/images/logo/logo-256.png'
+            'value' => 'icon.png'
+        ],
+        [
+            'key' => 'slideshow',
+            'label' => 'اسلاید شو',
+            'type' => 'list',
+            'settings' => [
+                [
+                    'key' => 'logo',
+                    'label' => 'تصویر',
+                    'type' => 'image',
+                ],
+                [
+                    'key' => 'link',
+                    'label' => 'لینک',
+                    'type' => 'text',
+                    'value' => 'link url',
+                ],
+            ]
         ],
         [
             'key' => 'color',

@@ -36,8 +36,7 @@
             </div>
             <!-- list view -->
             <div v-else-if="!listDisable && !!setting.type && setting.type === 'list'">
-            <span @click="_parent.openListDrawer(setting)" class="btn btn-list"> {{LANG.panel.list_builder}} <i
-                    class="fa fa-cog"></i></span>
+            <span @click="_parent.openListDrawer(setting)" class="btn btn-list"><i class="fa fa-cog"></i> {{LANG.panel.manage}} {{setting.label}}</span>
             </div>
 
             <!-- select post view -->
@@ -48,16 +47,15 @@
             <!-- select post view -->
             <div v-else-if="!!setting.type && setting.type === 'image'" class="setting-image-view">
                 <div class="select-image-setting" v-if="!value[setting.key]">
-                    <span @click="_parent.openImageDrawer(setting)" class="btn btn-sm btn-primary">{{LANG.panel.select_image}}</span>
+                    <span @click="openImageDrawer(setting)" class="btn btn-sm btn-primary">{{LANG.panel.select_image}}</span>
                 </div>
                 <div v-else>
-                    <img @click="_parent.openImageDrawer(setting)" class="thumb thumb-round" :src="imagePreview(setting)">
+                    <img @click="openImageDrawer(setting)" class="thumb thumb-round" :src="imagePreview(setting)">
                     <div>
-                        <span class="btn btn-sm btn-primary" @click="_parent.openImageDrawer(setting)">{{LANG.panel.edit}}</span>
+                        <span class="btn btn-sm btn-primary" @click="openImageDrawer(setting)">{{LANG.panel.edit}}</span>
                         <span @click="imageDelete(setting)" class="btn btn-sm btn-danger">{{LANG.panel.delete}}</span>
                     </div>
                 </div>
-
             </div>
 
             <!-- color picker view -->
@@ -74,16 +72,20 @@
 
             <span v-if="!!setting.help" class="sub-label">{{setting.help}}</span>
         </div>
+
+        <image-setting @close="imageDrawer = false" :open="imageDrawer"></image-setting>
+
     </div>
 </template>
 
 <script>
     import SelectPost from "./select-post.vue";
     import ColorPicker from "./color-picker.vue";
+    import ImageSetting from "../drawers/image-setting.vue";
 
     export default {
         name: "form-builder",
-        components: {SelectPost, ColorPicker},
+        components: {ImageSetting, SelectPost, ColorPicker},
         props: {
             settings: {
                 default: [],
@@ -104,10 +106,26 @@
         },
         data() {
             return {
+                imageDrawer:false,
                 _parent: null,
+                setting:null,
             }
         },
+        computed:{
+          params:{
+              get(){
+                  return this.value;
+              },
+              set(val){
+                  this.value = val;
+              }
+          }
+        },
         methods: {
+            openImageDrawer(setting) {
+                this.setting = setting;
+                this.imageDrawer = true;
+            },
             select(option) {
                 this.value[option.setting_key] = option.key;
             },
