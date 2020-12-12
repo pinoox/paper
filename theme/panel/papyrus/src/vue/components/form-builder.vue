@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="input-wrapper" v-for="setting in _settings" v-show="hidden(setting)">
+        <div class="input-wrapper" v-for="setting in settings" v-show="hidden(setting)">
             <label class="input-label">{{setting.label}}</label>
 
             <!-- textarea view -->
@@ -56,7 +56,6 @@
                         <span @click="imageDelete(setting)" class="btn btn-sm btn-danger">{{LANG.panel.delete}}</span>
                     </div>
                 </div>
-
             </div>
 
             <!-- color picker view -->
@@ -103,13 +102,11 @@
 
         },
         created() {
-            this._settings = this._clone(this.settings);
             this._parent = !!this.parent ? this.parent : this.$parent;
         },
         data() {
             return {
                 imageDrawer:false,
-                _settings:[],
                 _parent: null,
             }
         },
