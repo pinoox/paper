@@ -229,6 +229,17 @@
   }
 }
 
+.btn-list {
+  background: #edf2f7;
+  border: 1px solid @primaryColor;
+  color: @primaryColor;
+
+  &:hover {
+    color: #fff;
+    background: rgb(50, 98, 157);
+  }
+}
+
 .btn-outline-secondary {
   background: #fff;
   border: 2px solid @secondaryColor;
@@ -1868,6 +1879,17 @@ body {
     display: block;
     padding: 10px 0;
     color: @textColor
+  }
+
+  .back-btn{
+    display: block;
+    padding: 10px 0;
+    color: fade(@primaryColor, 60%);
+
+    &:hover{
+      color: @primaryColor;
+      cursor: pointer;
+    }
   }
 
 }

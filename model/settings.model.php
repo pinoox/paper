@@ -14,6 +14,7 @@ namespace pinoox\app\com_pinoox_paper\model;
 use pinoox\app\com_pinoox_paper\component\Setting;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Dir;
+use pinoox\component\Url;
 
 class SettingsModel extends PaperDatabase
 {
@@ -22,12 +23,6 @@ class SettingsModel extends PaperDatabase
      */
     private static $setting;
     private static $theme = null;
-
-
-    private static function getTheme()
-    {
-        return !empty(self::$theme) ? self::$theme : '~';
-    }
 
     public static function saveMain($name, $data)
     {
@@ -70,10 +65,17 @@ class SettingsModel extends PaperDatabase
         $theme = !empty(self::$theme) ? self::$theme : '~';
 
         if (empty(self::$setting[$theme])) {
-            $path = ($theme === '~') ? Dir::path('setting') : Dir::path('theme/' . $theme . '/setting');
+            $path = self::getPath();
             self::$setting[$theme] = Setting::init($path);
         }
         return self::$setting[$theme];
+    }
+
+    private static function getPath()
+    {
+        $theme = !empty(self::$theme) ? self::$theme : '~';
+        return ($theme === '~') ? Dir::path('setting') : Dir::path('theme/' . $theme . '/setting');
+
     }
 
     public static function save($name, $data)
@@ -147,7 +149,11 @@ class SettingsModel extends PaperDatabase
 
     public static function getAll()
     {
-        return self::getSetting()->getAll();
+        $settings = self::getSetting()->getAll();
+        foreach ($settings as $key => $values) {
+            $settings[$key] = self::getValuesByPattern($values);
+        }
+        return $settings;
     }
 
     public static function getViewsMain()
@@ -174,5 +180,25 @@ class SettingsModel extends PaperDatabase
     {
         $views = self::getSetting()->view()->getAll();
         return array_values($views);
+    }
+
+    public static function fetch_images()
+    {
+        self::$db->where('app', AppProvider::get('package-name'));
+        self::$db->where('file_group', 'setting');
+        return self::$db->get(self::file);
+    }
+
+    private static function getImageValue($value)
+    {
+        $value = str_replace('/', DIRECTORY_SEPARATOR, $value);
+        $path = dirname(self::getPath());
+        $path = $path . DIRECTORY_SEPARATOR . $value;
+        return is_file($path) ? Url::link($path) : null;
+    }
+
+    private static function getTheme()
+    {
+        return !empty(self::$theme) ? self::$theme : '~';
     }
 }
