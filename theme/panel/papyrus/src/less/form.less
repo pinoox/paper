@@ -96,6 +96,21 @@
     }
   }
 
+  .thumb {
+    width: 180px;
+    height: 180px;
+
+    &.thumb-round {
+      border-radius: 0.5rem;
+      .boxShadow();
+    }
+
+    &.thumb-circle {
+      border-radius: 50%;
+      .boxShadow();
+    }
+  }
+
   .input-group {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -154,6 +169,7 @@
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
     }
+
   }
 }
 
@@ -258,6 +274,14 @@
 }
 
 
+.setting-image-view{
+  .preview-container{
+    margin : initial !important;
+  }
+  .picture-input{
+    text-align: initial;
+  }
+}
 
 @media screen and (max-width: 576px) {
   .col-xs-order {

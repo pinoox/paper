@@ -1,5 +1,6 @@
 <?php
 return [
+    'direction' => 'ltr',
     'PM' => 'PM',
     'AM' => 'AM',
     'invalid_request' => 'invalid request',
@@ -52,6 +53,7 @@ return [
     'active' => 'active',
     'developer' => 'developer',
     'version' => 'version',
+    'list_builder' => 'List Builder',
     'dashboard' => 'dashboard',
     'user' => 'user',
     'users' => 'users',
@@ -67,6 +69,9 @@ return [
     'comments' => 'comments',
     'contacts' => 'contacts',
     'profile_image' => 'Profile image',
+    'select_image' => 'Image selection',
+    'name_list' => 'List name (required)',
+    'enter_name' => 'Enter name',
     'type_time_tracking' => [
         'sec' => 'sec',
         'minute' => 'minute',
@@ -93,9 +98,12 @@ return [
     'status' => 'status',
     'add' => 'add',
     'edit' => 'edit',
+    'delete' => 'delete',
     'cancel' => 'cancel',
+    'manage' => 'manage',
     'added_successfully' => 'added successfully',
     'edited_successfully' => 'edited successfully',
+    'err_empty_name_list' => 'Last name should not be empty',
 
     /* contacts */
     'search_in_contacts' => 'search in contacts ...',

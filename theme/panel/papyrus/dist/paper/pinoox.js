@@ -8,6 +8,7 @@ const PINOOX = {
         APP: '<?php echo url("panel"); ?>',
         API: '<?php echo url("^api/panel/v1/"); ?>',
         SITE: '<?php echo url("~"); ?>',
+        APP_PATH: '<?php echo furl(); ?>',
         PANEL: '<?php echo url("~panel"); ?>',
         THEME: '<?php echo $_url; ?>',
         AVATAR: '<?php echo furl("resources/avatar.png"); ?>',

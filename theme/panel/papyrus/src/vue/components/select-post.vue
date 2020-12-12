@@ -2,6 +2,9 @@
     <div :id="getId" class="select-container" :class="isSelectSection? 'section-select':''">
         <div class="select-header" v-if="!isSelectSection">
             <span class="btn btn-primary" :class="!isAllowSelect? 'disabled' : ''" @click="openSectionSelect()">{{LANG.post.select_post}}</span>
+            <div class="revert" v-if="!!limit && limit >= 0">
+                <span class="text">{{!!value? value.length : 0}} {{LANG.panel.of}} {{limit}}</span>
+            </div>
         </div>
         <div class="select-header" v-else-if="isSelectSection">
             <span class="cancel" @click="cancelSectionSelect()"><i class="fa fa-times"></i></span>
@@ -111,7 +114,8 @@
         computed: {
             isAllowSelect()
             {
-                return this.limit < 0 || (this.limit > 0 && this.limit > this.value.length);
+                let length = !!this.value? this.value.length : 0;
+                return this.limit < 0 || (this.limit > 0 && this.limit > length);
             },
             getId()
             {
