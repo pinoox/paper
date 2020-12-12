@@ -10,6 +10,7 @@
 @borderColor: #E2E2E2;
 @textColorLight: #A5B8CE;
 @textColor: #506E93;
+@textColor2: #7e9cbf;
 @orangeColor: #ed9703;
 @orangeColorDark: #b37102;
 @greenColor: #05b36f;
@@ -41,6 +42,22 @@
 .rightRadius(@size:10px) {
   border-top-right-radius: @size;
   border-bottom-right-radius: @size;
+}
+
+.m1-tb {
+  margin: 1% 0;
+}
+
+.m1-rl {
+  margin: 0 1%;
+}
+
+.m1 {
+  margin: 1%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /* Make it move */
@@ -725,6 +742,7 @@ body {
 
         }
       }
+
       .section {
         margin: 20px 0;
         padding: 20px 20px;
@@ -925,7 +943,7 @@ body {
 
           .content-editor {
             .ck-content {
-              padding: 20px 40px !important;
+              padding: 20px 20px !important;
             }
           }
         }
@@ -1039,14 +1057,12 @@ body {
           align-items: center;
 
           .text {
-            display: flex;
+            display: inline-flex;
             flex-wrap: wrap;
             flex-flow: row;
             align-items: center;
-            padding: 0 2%;
-            width: calc(100% - @sidebarWidth);
             font-weight: 500;
-            color: @textColor;
+            color: @textColor2;
             font-size: 1rem;
 
             .icon {
@@ -1057,7 +1073,6 @@ body {
               background: fade(@textColorLight, 30%);
               min-width: 70px;
               text-align: center;
-
               .trans;
 
               &:hover {
@@ -1068,8 +1083,8 @@ body {
             }
 
             .title {
-              padding: 0 10px;
-              color: #777;
+              background: rgba(177, 212, 255, 0.2);
+              padding: 10px;
             }
           }
 
@@ -1627,7 +1642,7 @@ body {
     }
 
     .icon {
-      width: 60px !important;
+      //width: 60px !important;
       height: 60px !important;
 
       path {
@@ -1823,6 +1838,7 @@ body {
 
       .message {
         font-size: 1.2rem;
+
         .author {
           font-size: 1.5rem;
           font-weight: bold;
@@ -2139,6 +2155,108 @@ body {
     .btn-add {
       margin-bottom: 20px;
     }
+
+    .templates-list {
+      .item {
+        background: fade(@textColor, 5%);
+        padding: 20px;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        margin-bottom: 2%;
+        justify-content: space-around;
+
+        .image {
+          width: 148px;
+
+          img {
+            width: 100%;
+            border-radius: 0.5rem;
+            .boxShadow();
+          }
+        }
+
+        .info {
+          display: flex;
+          flex-direction: column;
+
+          padding: 0 2%;
+          flex-grow: 1;
+
+          .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: @secondaryColor;
+          }
+
+          .meta {
+            padding: 5px 0;
+            color: @textColor2;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+          }
+
+          .description {
+            font-size: 1rem;
+            flex-grow: 1;
+          }
+        }
+
+        .actions {
+          padding-left: 2%;
+          display: flex;
+          align-items: center;
+
+          .btn-action {
+            display: inline-block;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            .boxShadow();
+            border: 2px solid fade(@textColorLight, 40%);
+            background: fade(@textColorLight, 30%);
+            text-align: center;
+            color: @textColor;
+            font-size: 1rem;
+            margin: 0 5px;
+
+            i {
+              position: relative;
+              top: 10px;
+            }
+
+            &.enable {
+              background: fade(@greenColor, 30%);
+              border-color: @greenColor;
+
+              span {
+                position: relative;
+                top: 8px;
+                color: @greenColorDark;
+              }
+
+              &:hover {
+                cursor: initial;
+                background: fade(@greenColor, 30%);
+              }
+            }
+
+            .trans;
+
+            &:hover {
+              .trans;
+              cursor: pointer;
+              background: fade(@textColorLight, 60%);
+            }
+          }
+
+        }
+
+      }
+    }
+
   }
 }
 
@@ -2461,6 +2579,7 @@ body {
             margin-top: 20px;
           }
         }
+
       }
     }
   }
@@ -2583,6 +2702,30 @@ body {
       }
     }
   }
+
+  .app-container {
+    .main {
+      .page {
+        .menubar .items .text .title {
+          padding: 12px;
+        }
+      }
+    }
+  }
+
+  .form-wrapper .form-content .templates-list {
+
+    .item {
+      flex-direction: column;
+      text-align: center;
+
+      .actions {
+        margin-top: 20px;
+        padding: 0;
+      }
+    }
+  }
+
 }
 
 @media screen and (max-width: 576px) {
