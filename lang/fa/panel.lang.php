@@ -93,6 +93,7 @@ return [
     'edit' => 'ویرایش',
     'delete' => 'حذف',
     'cancel' => 'لغو',
+    'manage' => 'مدیریت',
     'added_successfully' => 'با موفقیت اضافه شد',
     'edited_successfully' => 'با موفقیت ویرایش شد',
     'err_empty_name_list' => 'نام لیست نباید خالی باشد',

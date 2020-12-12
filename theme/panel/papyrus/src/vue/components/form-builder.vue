@@ -36,7 +36,7 @@
             </div>
             <!-- list view -->
             <div v-else-if="!listDisable && !!setting.type && setting.type === 'list'">
-            <span @click="_parent.openListDrawer(setting)" class="btn btn-list"> {{LANG.panel.list_builder}} <i class="fa fa-cog"></i></span>
+            <span @click="_parent.openListDrawer(setting)" class="btn btn-list"><i class="fa fa-cog"></i> {{LANG.panel.manage}} {{setting.label}}</span>
             </div>
 
             <!-- select post view -->
@@ -108,6 +108,7 @@
             return {
                 imageDrawer:false,
                 _parent: null,
+                setting:null,
             }
         },
         computed:{
