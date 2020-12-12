@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg"  preserveAspectRatio="none" viewBox="0 0 20 20">
+  <g id="More_Square" data-name="More Square" transform="translate(-2.001 -2)">
+    <path id="Path_1" data-name="Path 1" d="M16.335,2.75H7.666c-3.021,0-4.915,2.139-4.915,5.166v8.168c0,3.027,1.884,5.166,4.915,5.166h8.668c3.031,0,4.917-2.139,4.917-5.166V7.916C21.251,4.889,19.365,2.75,16.335,2.75Z" fill="none" stroke="#200e32" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" fill-rule="evenodd"/>
+    <path id="Path_2" data-name="Path 2" d="M7.521,13.2a1.2,1.2,0,1,1,1.2-1.2A1.2,1.2,0,0,1,7.521,13.2Z" fill="#200e32"/>
+    <path id="Path_3" data-name="Path 3" d="M12,13.2A1.2,1.2,0,1,1,13.2,12,1.2,1.2,0,0,1,12,13.2Z" fill="#200e32"/>
+    <path id="Path_4" data-name="Path 4" d="M16.479,13.2a1.2,1.2,0,1,1,1.2-1.2A1.2,1.2,0,0,1,16.479,13.2Z" fill="#200e32"/>
+  </g>
+</svg>
