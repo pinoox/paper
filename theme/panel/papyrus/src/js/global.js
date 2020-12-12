@@ -117,6 +117,10 @@ Vue.mixin({
                 comment: require(`@img/svg/ic_comment.svg`),
                 call: require(`@img/svg/ic_call.svg`),
                 history: require(`@img/svg/ic_history.svg`),
+                more_square: require(`@img/svg/ic_more_square.svg`),
+                page: require(`@img/svg/ic_page.svg`),
+                image: require(`@img/svg/ic_image.svg`),
+                logout: require(`@img/svg/ic_logout.svg`),
                 placeholder: require(`@img/placeholder.png`),
             };
         },

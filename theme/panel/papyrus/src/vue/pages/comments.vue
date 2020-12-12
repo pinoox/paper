@@ -2,14 +2,11 @@
     <div class="page">
         <div class="menubar">
             <div class="items">
-                <div class="text" v-if="!!post">
-                    <router-link tag="span" :to="{name:'write',params:{post_id:this.post_id}}" class="icon"><i
-                            class="fa fa-chevron-right"></i> {{LANG.panel.back}}
-                    </router-link>
-                    <span class="title">{{post.draft_title}}</span>
+                <div class="text cursor-pointer" v-if="!!post">
+                    <span @click="$router.go(-1)" class="title">{{LANG.panel.list + ' '+ LANG.panel.comments}}: <b> {{post.draft_title}}</b>    </span>
                 </div>
                 <div v-else class="text">
-                    <span class="title">{{LANG.comment.comments_list}}</span>
+                    <span class="title">{{LANG.panel.list + ' '+ LANG.panel.comments}}</span>
                 </div>
             </div>
         </div>

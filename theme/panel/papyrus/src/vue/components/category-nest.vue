@@ -55,8 +55,7 @@
             </vue-nestable-handle>
             <div slot="placeholder">
                 <div v-if="isEdit">
-                    <b>{{LANG.panel.empty_table}}</b>
-                    <p>{{LANG.post.add_category_by_click}}</p>
+                    <p>{{LANG.panel.empty_table}}</p>
                 </div>
             </div>
 

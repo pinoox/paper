@@ -12,6 +12,8 @@ import Profile from '../vue/pages/profile.vue';
 import Setting from '../vue/pages/setting/main.vue';
 import SettingHome from '../vue/pages/setting/home.vue';
 import SettingConfig from '../vue/pages/setting/config.vue';
+import Template from '../vue/pages/template/main.vue';
+import TemplateHome from '../vue/pages/template/home.vue';
 import Category from '../vue/pages/category.vue';
 import Error from '../vue/pages/error.vue';
 
@@ -126,6 +128,17 @@ export const routes = [
                 name: 'setting-config',
                 component: SettingConfig,
                 props: true,
+            },
+        ],
+    },
+    {
+        path: PINOOX.URL.BASE + '/templates',
+        component: Template,
+        children: [
+            {
+                path: '',
+                name: 'template',
+                component: TemplateHome,
             },
         ],
     },

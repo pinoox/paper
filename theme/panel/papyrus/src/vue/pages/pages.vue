@@ -2,6 +2,9 @@
     <div class="page">
         <div class="menubar">
             <div class="items">
+                <div class="text">
+                    <span class="title">{{LANG.panel.list + ' '+ LANG.panel.pages}}</span>
+                </div>
                 <router-link :to="{name:'page-write'}" tag="div" class="item">
                     {{LANG.post.page_write}}
                 </router-link>
@@ -101,8 +104,8 @@
                 },
             }
         },
-        computed:{
-            columns(){
+        computed: {
+            columns() {
                 return [
                     {
                         label: this.LANG.panel.id,

@@ -2,6 +2,9 @@
     <div class="page">
         <div class="menubar">
             <div class="items">
+                <div class="text">
+                    <span class="title">{{LANG.panel.list + ' '+ LANG.panel.contacts}}</span>
+                </div>
             </div>
         </div>
 

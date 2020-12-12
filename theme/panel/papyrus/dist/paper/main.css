@@ -22,6 +22,8 @@
 .center .apexcharts-canvas {
   margin: auto;
 }
+<<<<<<< HEAD
+=======
 
 
 .vc-chrome {
@@ -41,6 +43,7 @@
 .color-picker.space{
     margin-bottom: 240px;
 }
+>>>>>>> develop
 
 /*!
  * Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com
@@ -306,6 +309,21 @@
 .nestable-handle {
     display: inline;
 }
+<<<<<<< HEAD
+.m1-tb {
+  margin: 1% 0;
+}
+.m1-rl {
+  margin: 0 1%;
+}
+.m1 {
+  margin: 1%;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+=======
+>>>>>>> develop
 /* Make it move */
 @keyframes marquee {
   0% {
@@ -456,6 +474,8 @@
   color: #fff;
   background: #32629d;
 }
+<<<<<<< HEAD
+=======
 .btn-list {
   background: #edf2f7;
   border: 1px solid #1f426c;
@@ -465,6 +485,7 @@
   color: #fff;
   background: #32629d;
 }
+>>>>>>> develop
 .btn-outline-secondary {
   background: #fff;
   border: 2px solid #2a5282;
@@ -1069,7 +1090,11 @@ body.ltr .vue-notification-group {
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
 }
 .app-container .main .page .write-container .paper .content-editor .ck-content {
+<<<<<<< HEAD
+  padding: 20px 20px !important;
+=======
   padding: 20px 40px !important;
+>>>>>>> develop
 }
 .app-container .main .page .write-container .statusbar {
   position: fixed;
@@ -1171,6 +1196,14 @@ body.ltr .vue-notification-group {
   align-items: center;
 }
 .app-container .main .page .menubar .items .text {
+<<<<<<< HEAD
+  display: inline-flex;
+  flex-wrap: wrap;
+  flex-flow: row;
+  align-items: center;
+  font-weight: 500;
+  color: #7e9cbf;
+=======
   display: flex;
   flex-wrap: wrap;
   flex-flow: row;
@@ -1179,6 +1212,7 @@ body.ltr .vue-notification-group {
   width: calc(100% - 120px);
   font-weight: 500;
   color: #506E93;
+>>>>>>> develop
   font-size: 1rem;
 }
 .app-container .main .page .menubar .items .text .icon {
@@ -1205,8 +1239,13 @@ body.ltr .vue-notification-group {
   background: rgba(165, 184, 206, 0.5);
 }
 .app-container .main .page .menubar .items .text .title {
+<<<<<<< HEAD
+  background: rgba(177, 212, 255, 0.2);
+  padding: 10px;
+=======
   padding: 0 10px;
   color: #777;
+>>>>>>> develop
 }
 .app-container .main .page .menubar .items .item {
   padding: 12px 20px;
@@ -1661,7 +1700,10 @@ body.ltr .vue-notification-group {
   background: rgba(31, 66, 108, 0.1);
 }
 .menus .item .icon {
+<<<<<<< HEAD
+=======
   width: 60px !important;
+>>>>>>> develop
   height: 60px !important;
 }
 .menus .item .icon path {
@@ -1831,6 +1873,8 @@ body.ltr .vue-notification-group {
   padding: 10px 0;
   color: #506E93;
 }
+<<<<<<< HEAD
+=======
 .category-actions .back-btn {
   display: block;
   padding: 10px 0;
@@ -1840,6 +1884,7 @@ body.ltr .vue-notification-group {
   color: #1f426c;
   cursor: pointer;
 }
+>>>>>>> develop
 .nestable-category {
   max-width: 500px;
   margin: auto;
@@ -2070,6 +2115,98 @@ body.ltr .vue-notification-group {
 .form-wrapper .form-content .btn-add {
   margin-bottom: 20px;
 }
+<<<<<<< HEAD
+.form-wrapper .form-content .templates-list .item {
+  background: rgba(80, 110, 147, 0.05);
+  padding: 20px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2%;
+  justify-content: space-around;
+}
+.form-wrapper .form-content .templates-list .item .image {
+  width: 148px;
+}
+.form-wrapper .form-content .templates-list .item .image img {
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
+}
+.form-wrapper .form-content .templates-list .item .info {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2%;
+  flex-grow: 1;
+}
+.form-wrapper .form-content .templates-list .item .info .title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2a5282;
+}
+.form-wrapper .form-content .templates-list .item .info .meta {
+  padding: 5px 0;
+  color: #7e9cbf;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+}
+.form-wrapper .form-content .templates-list .item .info .description {
+  font-size: 1rem;
+  flex-grow: 1;
+}
+.form-wrapper .form-content .templates-list .item .actions {
+  padding-left: 2%;
+  display: flex;
+  align-items: center;
+}
+.form-wrapper .form-content .templates-list .item .actions .btn-action {
+  display: inline-block;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
+  border: 2px solid rgba(165, 184, 206, 0.4);
+  background: rgba(165, 184, 206, 0.3);
+  text-align: center;
+  color: #506E93;
+  font-size: 1rem;
+  margin: 0 5px;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.form-wrapper .form-content .templates-list .item .actions .btn-action i {
+  position: relative;
+  top: 10px;
+}
+.form-wrapper .form-content .templates-list .item .actions .btn-action.enable {
+  background: rgba(5, 179, 111, 0.3);
+  border-color: #05b36f;
+}
+.form-wrapper .form-content .templates-list .item .actions .btn-action.enable span {
+  position: relative;
+  top: 8px;
+  color: #09985f;
+}
+.form-wrapper .form-content .templates-list .item .actions .btn-action.enable:hover {
+  cursor: initial;
+  background: rgba(5, 179, 111, 0.3);
+}
+.form-wrapper .form-content .templates-list .item .actions .btn-action:hover {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+  cursor: pointer;
+  background: rgba(165, 184, 206, 0.6);
+}
+=======
+>>>>>>> develop
 .vgt-loading {
   backdrop-filter: blur(3px);
   height: 100%;
@@ -2392,6 +2529,20 @@ body.ltr .vue-notification-group {
   .form-wrapper .page .form-content {
     padding-bottom: 100px;
   }
+<<<<<<< HEAD
+  .app-container .main .page .menubar .items .text .title {
+    padding: 12px;
+  }
+  .form-wrapper .form-content .templates-list .item {
+    flex-direction: column;
+    text-align: center;
+  }
+  .form-wrapper .form-content .templates-list .item .actions {
+    margin-top: 20px;
+    padding: 0;
+  }
+=======
+>>>>>>> develop
 }
 @media screen and (max-width: 576px) {
   .vgt-compact td:before {
@@ -2660,10 +2811,13 @@ body.ltr .vue-notification-group {
 .select-container .select-header .revert {
   margin-right: auto;
 }
+<<<<<<< HEAD
+=======
 .select-container .select-header .revert .text {
   color: #a1a1a1;
   font-size: 12px;
 }
+>>>>>>> develop
 .select-container .select-header .cancel {
   padding: 5px 10px 3px 10px;
   background: #000;
@@ -2739,6 +2893,8 @@ body.ltr .vue-notification-group {
 .select-container .select-items .item .close i {
   color: #fff;
 }
+<<<<<<< HEAD
+=======
 .setting-image-view .select-image-setting {
   width: 200px;
   height: 200px;
@@ -2753,6 +2909,7 @@ body.ltr .vue-notification-group {
 .setting-image-view img {
   cursor: crosshair;
 }
+>>>>>>> develop
 .splash {
   position: absolute;
   width: 600px;
@@ -3134,6 +3291,8 @@ body.ltr .vue-notification-group {
 .input-wrapper .sub-label.center {
   text-align: center;
 }
+<<<<<<< HEAD
+=======
 .input-wrapper .thumb {
   width: 180px;
   height: 180px;
@@ -3146,6 +3305,7 @@ body.ltr .vue-notification-group {
   border-radius: 50%;
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
 }
+>>>>>>> develop
 .input-wrapper .input-group {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3276,12 +3436,15 @@ body.ltr .vue-notification-group {
 .picture-input .picture-inner {
   background-color: #edf2f7;
 }
+<<<<<<< HEAD
+=======
 .setting-image-view .preview-container {
   margin: initial !important;
 }
 .setting-image-view .picture-input {
   text-align: initial;
 }
+>>>>>>> develop
 @media screen and (max-width: 576px) {
   .col-xs-order {
     flex-direction: row;
