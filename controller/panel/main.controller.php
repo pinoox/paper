@@ -24,11 +24,6 @@ use pinoox\model\UserModel;
 
 class MainController extends MasterConfiguration
 {
-    public function test()
-    {
-        self::$template->view('test');
-    }
-
     public function dist()
     {
         $url = implode('/', Router::params());

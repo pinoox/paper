@@ -67,7 +67,6 @@ class View
         $value = isset($setting['value']) ? $setting['value'] : null;
         if($setting['type'] === 'select:post')
             $value = is_array($value)? $value : [];
-
         return $value;
     }
 
