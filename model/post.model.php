@@ -56,9 +56,9 @@ class PostModel extends PaperDatabase
         if (empty($post_key))
             return null;
         if (!empty($no_post_id))
-            self::$db->where('post_id', $no_post_id, '!=');
-        self::$db->where('post_key', $post_key);
-        return self::$db->getOne(self::post);
+            self::$db->where('p.post_id', $no_post_id, '!=');
+        self::$db->where('p.post_key', $post_key);
+        return self::$db->getOne(self::post . ' p');
     }
 
     public static function save_draft($data)

@@ -14,6 +14,7 @@ use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PageModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
+use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Cookie;
 use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
@@ -223,18 +224,14 @@ class MainController extends MasterConfiguration
         Response::jsonMessage(rlang('front.error_to_insert_comment'), true);
     }
 
-    public function page($page_key)
+    private function page($page_key)
     {
-        $page = PageModel::fetch_by_page_key($page_key, PageModel::publish);
+        PostModel::where_post_type(PostModel::page_type);
+        $page = PostModel::fetch_by_key($page_key, PostModel::publish_status);
         if (empty($page)) self::error404();
 
         //store visits
-        PageModel::update_visit($page['page_id']);
-        $key = '_pinoox_page_' . $page['page_id'];
-        if (Cookie::get($key) != 'visited') {
-            PageModel::update_visitor($page['page_id']);
-            Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
-        }
+        StatisticModel::visit($page['post_id']);
 
         self::$template->set('page', $page);
         self::$template->show('pages>page');
