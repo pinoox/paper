@@ -2048,8 +2048,6 @@ eval("var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeo
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/vue-color/dist/vue-color.min.js":
 /*!******************************************************!*\
   !*** ./node_modules/vue-color/dist/vue-color.min.js ***!
@@ -2061,7 +2059,6 @@ eval("/* WEBPACK VAR INJECTION */(function(global) {!function(e,t){ true?module.
 
 /***/ }),
 
->>>>>>> develop
 /***/ "./node_modules/vue-good-table/dist/vue-good-table.esm.js":
 /*!****************************************************************!*\
   !*** ./node_modules/vue-good-table/dist/vue-good-table.esm.js ***!

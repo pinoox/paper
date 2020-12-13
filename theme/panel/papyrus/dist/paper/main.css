@@ -22,8 +22,6 @@
 .center .apexcharts-canvas {
   margin: auto;
 }
-<<<<<<< HEAD
-=======
 
 
 .vc-chrome {
@@ -43,7 +41,6 @@
 .color-picker.space{
     margin-bottom: 240px;
 }
->>>>>>> develop
 
 /*!
  * Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com
@@ -309,7 +306,6 @@
 .nestable-handle {
     display: inline;
 }
-<<<<<<< HEAD
 .m1-tb {
   margin: 1% 0;
 }
@@ -322,8 +318,6 @@
 .cursor-pointer {
   cursor: pointer;
 }
-=======
->>>>>>> develop
 /* Make it move */
 @keyframes marquee {
   0% {
@@ -474,8 +468,6 @@
   color: #fff;
   background: #32629d;
 }
-<<<<<<< HEAD
-=======
 .btn-list {
   background: #edf2f7;
   border: 1px solid #1f426c;
@@ -485,7 +477,6 @@
   color: #fff;
   background: #32629d;
 }
->>>>>>> develop
 .btn-outline-secondary {
   background: #fff;
   border: 2px solid #2a5282;
@@ -597,6 +588,14 @@ body.ltr .main {
 body.ltr .fa-chevron-left {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+body.ltr .fa-chevron-right {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+body.ltr .app-container .main .page .greeting .action {
+  right: 15px;
+  left: initial;
 }
 body.ltr .app-container .main .page .post-stats .post-title .label {
   right: 0;
@@ -831,7 +830,7 @@ body.ltr .vue-notification-group {
 }
 .app-container .main .toolbar-drawer .items .item .text {
   color: #1f426c;
-  margin-right: 5px;
+  margin: 0 5px;
   display: none;
 }
 .app-container .main .toolbar-drawer .items .item .icon {
@@ -1090,11 +1089,7 @@ body.ltr .vue-notification-group {
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
 }
 .app-container .main .page .write-container .paper .content-editor .ck-content {
-<<<<<<< HEAD
   padding: 20px 20px !important;
-=======
-  padding: 20px 40px !important;
->>>>>>> develop
 }
 .app-container .main .page .write-container .statusbar {
   position: fixed;
@@ -1194,25 +1189,15 @@ body.ltr .vue-notification-group {
   height: 44px;
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 .app-container .main .page .menubar .items .text {
-<<<<<<< HEAD
   display: inline-flex;
   flex-wrap: wrap;
   flex-flow: row;
   align-items: center;
   font-weight: 500;
   color: #7e9cbf;
-=======
-  display: flex;
-  flex-wrap: wrap;
-  flex-flow: row;
-  align-items: center;
-  padding: 0 2%;
-  width: calc(100% - 120px);
-  font-weight: 500;
-  color: #506E93;
->>>>>>> develop
   font-size: 1rem;
 }
 .app-container .main .page .menubar .items .text .icon {
@@ -1239,13 +1224,8 @@ body.ltr .vue-notification-group {
   background: rgba(165, 184, 206, 0.5);
 }
 .app-container .main .page .menubar .items .text .title {
-<<<<<<< HEAD
   background: rgba(177, 212, 255, 0.2);
-  padding: 10px;
-=======
-  padding: 0 10px;
-  color: #777;
->>>>>>> develop
+  padding: 15px;
 }
 .app-container .main .page .menubar .items .item {
   padding: 12px 20px;
@@ -1700,10 +1680,6 @@ body.ltr .vue-notification-group {
   background: rgba(31, 66, 108, 0.1);
 }
 .menus .item .icon {
-<<<<<<< HEAD
-=======
-  width: 60px !important;
->>>>>>> develop
   height: 60px !important;
 }
 .menus .item .icon path {
@@ -1873,8 +1849,6 @@ body.ltr .vue-notification-group {
   padding: 10px 0;
   color: #506E93;
 }
-<<<<<<< HEAD
-=======
 .category-actions .back-btn {
   display: block;
   padding: 10px 0;
@@ -1884,7 +1858,6 @@ body.ltr .vue-notification-group {
   color: #1f426c;
   cursor: pointer;
 }
->>>>>>> develop
 .nestable-category {
   max-width: 500px;
   margin: auto;
@@ -2115,7 +2088,6 @@ body.ltr .vue-notification-group {
 .form-wrapper .form-content .btn-add {
   margin-bottom: 20px;
 }
-<<<<<<< HEAD
 .form-wrapper .form-content .templates-list .item {
   background: rgba(80, 110, 147, 0.05);
   padding: 20px;
@@ -2181,7 +2153,7 @@ body.ltr .vue-notification-group {
 }
 .form-wrapper .form-content .templates-list .item .actions .btn-action i {
   position: relative;
-  top: 10px;
+  top: 12px;
 }
 .form-wrapper .form-content .templates-list .item .actions .btn-action.enable {
   background: rgba(5, 179, 111, 0.3);
@@ -2189,8 +2161,10 @@ body.ltr .vue-notification-group {
 }
 .form-wrapper .form-content .templates-list .item .actions .btn-action.enable span {
   position: relative;
-  top: 8px;
   color: #09985f;
+  top: 12px;
+  font-size: 12px;
+  font-weight: 600;
 }
 .form-wrapper .form-content .templates-list .item .actions .btn-action.enable:hover {
   cursor: initial;
@@ -2205,8 +2179,6 @@ body.ltr .vue-notification-group {
   cursor: pointer;
   background: rgba(165, 184, 206, 0.6);
 }
-=======
->>>>>>> develop
 .vgt-loading {
   backdrop-filter: blur(3px);
   height: 100%;
@@ -2514,10 +2486,10 @@ body.ltr .vue-notification-group {
     overflow-y: hidden;
   }
   .app-container .main .page .menubar .items .text {
-    width: 100%;
+    width: 80%;
   }
   .app-container .main .page .menubar .items .text .title {
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
   .form-wrapper footer {
     width: 100%;
@@ -2529,10 +2501,6 @@ body.ltr .vue-notification-group {
   .form-wrapper .page .form-content {
     padding-bottom: 100px;
   }
-<<<<<<< HEAD
-  .app-container .main .page .menubar .items .text .title {
-    padding: 12px;
-  }
   .form-wrapper .form-content .templates-list .item {
     flex-direction: column;
     text-align: center;
@@ -2541,11 +2509,23 @@ body.ltr .vue-notification-group {
     margin-top: 20px;
     padding: 0;
   }
-=======
->>>>>>> develop
 }
 @media screen and (max-width: 576px) {
-  .vgt-compact td:before {
+  .ltr .vgt-compact td:before {
+    float: right;
+    right: initial;
+    left: 0;
+    padding-right: 10px;
+    padding-left: initial;
+    text-align: left;
+  }
+  .ltr .vgt-compact td {
+    direction: ltr;
+  }
+  .ltr .vgt-compact td div {
+    text-align: left;
+  }
+  .rtl .vgt-compact td:before {
     float: right;
     right: 0;
     left: initial;
@@ -2811,13 +2791,10 @@ body.ltr .vue-notification-group {
 .select-container .select-header .revert {
   margin-right: auto;
 }
-<<<<<<< HEAD
-=======
 .select-container .select-header .revert .text {
   color: #a1a1a1;
   font-size: 12px;
 }
->>>>>>> develop
 .select-container .select-header .cancel {
   padding: 5px 10px 3px 10px;
   background: #000;
@@ -2893,8 +2870,6 @@ body.ltr .vue-notification-group {
 .select-container .select-items .item .close i {
   color: #fff;
 }
-<<<<<<< HEAD
-=======
 .setting-image-view .select-image-setting {
   width: 200px;
   height: 200px;
@@ -2909,7 +2884,6 @@ body.ltr .vue-notification-group {
 .setting-image-view img {
   cursor: crosshair;
 }
->>>>>>> develop
 .splash {
   position: absolute;
   width: 600px;
@@ -3291,8 +3265,6 @@ body.ltr .vue-notification-group {
 .input-wrapper .sub-label.center {
   text-align: center;
 }
-<<<<<<< HEAD
-=======
 .input-wrapper .thumb {
   width: 180px;
   height: 180px;
@@ -3305,7 +3277,6 @@ body.ltr .vue-notification-group {
   border-radius: 50%;
   box-shadow: 0 4px 8px 0 rgba(19, 37, 71, 0.1);
 }
->>>>>>> develop
 .input-wrapper .input-group {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3436,15 +3407,12 @@ body.ltr .vue-notification-group {
 .picture-input .picture-inner {
   background-color: #edf2f7;
 }
-<<<<<<< HEAD
-=======
 .setting-image-view .preview-container {
   margin: initial !important;
 }
 .setting-image-view .picture-input {
   text-align: initial;
 }
->>>>>>> develop
 @media screen and (max-width: 576px) {
   .col-xs-order {
     flex-direction: row;
