@@ -27,6 +27,11 @@ return [
     'enter_old_password' => 'Enter current password',
     'enter_re_new_password' => 'Repeat new password',
     'err_old_password' => 'You entered the wrong password',
+    'twitter'=>'twitter',
+    'facebook'=>'facebook',
+    'linkedin'=>'linkedin',
+    'instagram'=>'instagram',
+    'telegram'=>'telegram',
     'status' => [
         'active' => 'active',
         'suspend' => 'suspend',

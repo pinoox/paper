@@ -1,10 +1,9 @@
 <?php
 return [
-    'suspend' => 'unapproved',
-    'publish' => 'published',
-    'pending' => 'awaiting approval',
+    'search_in_comments' => 'search in comments...',
     'comments' => 'comments',
     'message' => 'message',
+    'comment' => 'comment',
     'comments_list' => 'list of comments',
     'changed_status_successfully' => 'status changed successfully',
     'comment_inserted_successfully' => 'your comment will be published after confirmation',
