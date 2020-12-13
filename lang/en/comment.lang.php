@@ -11,6 +11,7 @@ return [
     'send_comment' => 'send comment',
     'write_comment_about_post' => 'write your comment about this post ...',
     'latest_comments' => 'latest comments',
+    'comment_count'=>'comments',
 
     'status' => [
         'suspend' => 'suspend',

@@ -173,10 +173,10 @@ class MainController extends MasterConfiguration
     public function sendContact(){
         if (!Request::isPost()) self::error404();
 
-        $formData = Request::post('full_name,mobile,subject,message', null, '!empty');
+        $formData = Request::post('full_name,email,subject,message', null, '!empty');
         $valid = Validation::check($formData, [
             'full_name' => ['required', rlang('front.full_name')],
-            'mobile' => ['required|mobile', rlang('front.mobile')],
+            'email' => ['required|email', rlang('front.email')],
             'subject' => ['required', rlang('front.subject')],
             'message' => ['required|length:>5', rlang('front.message')],
         ]);

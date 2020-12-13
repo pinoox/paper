@@ -89,7 +89,7 @@
                         <router-link :to="{name:'comments'}" class="box-stat box">
                             <div class="text">
                                 <div class="caption">{{LANG.comment.comments}}</div>
-                                <div class="amount">{{stats.commentStats.total}} {{LANG.comment.comment}}</div>
+                                <div class="amount">{{stats.commentStats.total}} {{LANG.comment.comment_count}}</div>
                                 <div class="footnote orange" v-show="stats.commentStats.pending>0">
                                     {{stats.commentStats.pending}} {{LANG.comment.comment}}
                                     {{LANG.comment.status.pending}}

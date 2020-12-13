@@ -102,8 +102,6 @@ return [
     'comments_count' => 'نظرات',
     'contacts_count' => 'تماس ها',
     'empty_stats' => 'تاکنون هیچ آماری برای این نوشته ثبت نشده است',
-    'read_more' => 'بیشتر بخوانید',
-    'most_visited_post' => 'پربازدید ترین نوشته ها',
 
     /** category **/
     'add' => 'افزودن',

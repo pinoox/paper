@@ -13,11 +13,11 @@
                     </div>
                     <div class="profile-meta">
                         <div class="meta-socials">
-                            <a href="">{{LANG.user.telegram}}</a>
-                            <a href="">{{LANG.user.facebook}}</a>
-                            <a href="">{{LANG.user.instagram}}</a>
-                            <a href="">{{LANG.user.telegram}}</a>
-                            <a href="">{{LANG.user.linkedin}}</a>
+                            <a href="">{{LANG.front.telegram}}</a>
+                            <a href="">{{LANG.front.facebook}}</a>
+                            <a href="">{{LANG.front.instagram}}</a>
+                            <a href="">{{LANG.front.telegram}}</a>
+                            <a href="">{{LANG.front.linkedin}}</a>
                         </div>
                     </div>
                 </div>

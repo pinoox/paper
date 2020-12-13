@@ -23,9 +23,9 @@ class ApiController extends MasterConfiguration
     {
         $form = Request::input('full_name,email,message', null, '!empty');
         $valid = Validation::check($form, [
-            'full_name' => ['required|length:>2', rlang('contact.full_name')],
-            'email' => ['required|email', rlang('contact.email')],
-            'message' => ['required|length:>10', rlang('contact.message')],
+            'full_name' => ['required|length:>2', rlang('front.full_name')],
+            'email' => ['required|email', rlang('front.email')],
+            'message' => ['required|length:>10', rlang('front.message')],
         ]);
 
         if ($valid->isFail())
@@ -33,7 +33,7 @@ class ApiController extends MasterConfiguration
 
         $contact_id = ContactModel::insert($form);
         if ($contact_id > 0)
-            Response::jsonMessage(rlang('contact.message_received_successfully'), true);
+            Response::jsonMessage(rlang('front.contact_message_received_successfully'), true);
 
         Response::jsonMessage(rlang('front.error_happened'), false);
     }

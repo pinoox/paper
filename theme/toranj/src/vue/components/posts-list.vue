@@ -18,7 +18,7 @@
                     <h2 class="post-title"><a :href="p.meta.url">{{p.title}}</a></h2>
                     <p class="post-summary">{{p.summary}}</p>
                     <p class="post-bottom" v-if="isFirst && index===0">
-                        <a :href="p.meta.url">{{LANG.post.read_more}}</a>
+                        <a :href="p.meta.url">{{LANG.front.read_more}}</a>
                     </p>
                 </div>
             </div>

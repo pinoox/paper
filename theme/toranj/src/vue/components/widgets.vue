@@ -5,7 +5,7 @@
                 <div class="col-md-5">
                     <div class="widget">
                         <div class="widget-header">
-                            <h2 class="title">{{LANG.post.most_visited_post}}</h2>
+                            <h2 class="title">{{LANG.front.most_visited_post}}</h2>
                         </div>
                         <div class="widget-content">
                             <div class="posts">
@@ -27,7 +27,7 @@
                 <div class="col-md-5">
                     <div class="widget">
                         <div class="widget-header">
-                            <h2 class="title">{{LANG.comment.latest_comments}}</h2>
+                            <h2 class="title">{{LANG.front.latest_comments}}</h2>
                         </div>
                         <div class="widget-content">
                             <div class="comments">
