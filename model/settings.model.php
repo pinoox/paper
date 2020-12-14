@@ -183,9 +183,6 @@ class SettingsModel extends PaperDatabase
     public static function getAll()
     {
         $settings = self::getSetting()->getAll();
-        foreach ($settings as $key => $values) {
-            $settings[$key] = self::getValuesByPattern($values);
-        }
         return $settings;
     }
 

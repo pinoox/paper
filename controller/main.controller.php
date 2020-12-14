@@ -35,7 +35,6 @@ class MainController extends MasterConfiguration
     public function __construct()
     {
         parent::__construct();
-        var_dump(setting('home.posts'));exit;
     }
 
     public function _exception($page_key = null)
