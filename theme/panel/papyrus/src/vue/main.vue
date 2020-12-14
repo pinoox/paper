@@ -151,7 +151,7 @@
 
             },
             showFront() {
-                window.open(PINOOX.URL.SITE, '_blank');
+                window.open(PINOOX.URL.FRONT, '_blank');
             }
         },
         created() {
