@@ -13,7 +13,7 @@
             <div class="form-content" @keyup.enter="save()" v-if="!!settings && settings.length >= 0">
                 <row :gutter="12" :columns="4">
 
-                    <column :sm="4" :lg="3">
+                    <column :sm="4" :lg="3" v-if="isLoadConfig">
                         <form-builder :parent="parent" :settings="settings" v-model="params"></form-builder>
                     </column>
                 </row>
@@ -46,6 +46,7 @@
                 setting: {},
                 paramsImage:{},
                 listDrawer: false,
+                isLoadConfig:false,
             }
         },
         computed: {
@@ -70,14 +71,16 @@
                 if (!this.$parent.isTheme) {
                     let params = this.CONFIG[key] ? this.CONFIG[key] : [];
                     this.params = this._clone(params);
+                    this.isLoadConfig = true;
                 } else {
-                    this.$parent.http.get('get/' + key).then((json) => {
+                    this.$http.get(this.URL.API+'setting/get/' + key,this.$parent.addThemeToHeader).then((json) => {
                         this.params = json.data;
+                        this.isLoadConfig = true;
                     });
                 }
             },
             changeLang(lang) {
-                this.$parent.http.get('changeLang/' + lang).then((json) => {
+                this.$http.get(this.URL.API+'setting/changeLang/' + lang,this.$parent.addThemeToHeader).then((json) => {
                     this.LANG = json.data.lang;
                     this.updateDirections(json.data.direction);
                     this.currentLang = lang;
@@ -86,29 +89,7 @@
                 });
             },
             createParams() {
-                let params = this._clone(this.params);
-                for (const item of this.settings) {
-                    let value = params[item.key];
-
-                    if (!!item.type && item.type === 'select:post')
-                        params[item.key] = this.getParamPost(value);
-                    else
-                        params[item.key] = value;
-                }
-
-                return params;
-            },
-            getParamPost(value) {
-                let values = value.filter((item) => {
-                    return !!item.post_id;
-                }).map((item) => {
-                    return item.post_id;
-                });
-
-                return {
-                    type: 'select:post',
-                    values: values,
-                };
+                return this._clone(this.params);
             },
             getAttrs(setting) {
                 let attrs = !!setting.attrs ? setting.attrs : {};
@@ -120,7 +101,7 @@
                 let params = this.createParams();
                 let key = this.view.key;
                 let lang = this.params.lang;
-                this.$parent.http.post('save/' + key, params).then((json) => {
+                this.$http.post(this.URL.API+'setting/save/' + key, params,this.$parent.addThemeToHeader).then((json) => {
                     this._statusResponse(json.data);
                     if (!this.$parent.isTheme) {
                         this.CONFIG[key] = this._clone(this.params);

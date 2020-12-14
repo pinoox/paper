@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'paper_title' => 'paper',
     'general' => 'General Settings',
     'write' => 'Writing Settings',
     'read' => 'Reading Settings',
@@ -9,7 +10,9 @@ return [
     'language' => 'Language Settings',
     'privacy' => 'Privacy Settings',
     'user' => 'User Setting',
+    'site_logo' => 'Site Logo',
     'site_title' => 'Site Title',
+    'site_subtitle' => 'Site slogan',
     'site_description' => 'Site Description',
     'auto_save' => 'auto save',
     'help_auto_save' => 'when this option is enabled, page information is automatically saved after each change in the text',
@@ -20,5 +23,13 @@ return [
     'lang' => [
         'en' => 'English',
         'fa' => 'Farsi',
-    ]
+    ],
+    'contact' => 'Ways of communication',
+    'socials' => 'Social Networks',
+    'font_icon' => 'Icon font',
+    'link' => 'link',
+    'image' => 'image',
+    'tel' => 'tel',
+    'email' => 'email',
+    'address' => 'address',
 ];

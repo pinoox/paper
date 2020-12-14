@@ -23,6 +23,7 @@ class SettingsModel extends PaperDatabase
      */
     private static $setting;
     private static $theme = null;
+    private static $data = null;
 
     public static function saveMain($name, $data)
     {
@@ -102,58 +103,7 @@ class SettingsModel extends PaperDatabase
     public static function get($name)
     {
         $values = self::getSetting()->get($name);
-        $values = self::getValuesByPattern($values);
         return $values;
-    }
-
-    private static function getValuesByPattern($values)
-    {
-        foreach ($values as $key => $value) {
-            if (is_array($value) && isset($value['type'])) {
-                if ($value['type'] == 'select:post') {
-                    $values[$key] = self::getPostValue($value);
-                }
-            }
-        }
-
-        return $values;
-    }
-
-    private static function getPostValue($value)
-    {
-        if (empty($value['values'])) {
-            return [];
-        } else {
-            $posts = PostModel::fetch_by_ids($value['values']);
-            $posts = array_map(function ($post) {
-                return PostModel::getInfoPost($post);
-            }, $posts);
-            return $posts;
-        }
-    }
-
-    public static function getAllMain()
-    {
-        $themeDefault = self::$theme;
-        $theme = AppProvider::get('theme');
-        self::setTheme($theme);
-        $themeSetting = self::getAll();
-        $themeSetting = !empty($themeSetting) ? $themeSetting : [];
-        self::setTheme('~');
-        $mainSetting = self::getAll();
-        $mainSetting = !empty($mainSetting) ? $mainSetting : [];
-        $configs = array_merge($themeSetting, $mainSetting);
-        self::setTheme($themeDefault);
-        return $configs;
-    }
-
-    public static function getAll()
-    {
-        $settings = self::getSetting()->getAll();
-        foreach ($settings as $key => $values) {
-            $settings[$key] = self::getValuesByPattern($values);
-        }
-        return $settings;
     }
 
     public static function getViewsMain()
@@ -187,6 +137,53 @@ class SettingsModel extends PaperDatabase
         self::$db->where('app', AppProvider::get('package-name'));
         self::$db->where('file_group', 'setting');
         return self::$db->get(self::file);
+    }
+
+    public static function getData($name = null, $theme = null)
+    {
+        if (empty($theme)) {
+             self::$data = (empty(self::$data)) ? self::getAllMain() : self::$data;
+            $result = self::$data;
+            if(!empty($name))
+            {
+                $name = explode('.',$name);
+                foreach ($name as $value) {
+                    if (isset($result[$value])) {
+                        $result = $result[$value];
+                    } else {
+                        $result = null;
+                        break;
+                    }
+                }
+            }
+
+        } else {
+            self::setTheme($theme);
+            $result = self::get($name);
+        }
+
+        return $result;
+    }
+
+    public static function getAllMain()
+    {
+        $themeDefault = self::$theme;
+        $theme = AppProvider::get('theme');
+        self::setTheme($theme);
+        $themeSetting = self::getAll();
+        $themeSetting = !empty($themeSetting) ? $themeSetting : [];
+        self::setTheme('~');
+        $mainSetting = self::getAll();
+        $mainSetting = !empty($mainSetting) ? $mainSetting : [];
+        $configs = array_merge($themeSetting, $mainSetting);
+        self::setTheme($themeDefault);
+        return $configs;
+    }
+
+    public static function getAll()
+    {
+        $settings = self::getSetting()->getAll();
+        return $settings;
     }
 
     private static function getImageValue($value)

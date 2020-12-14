@@ -18,8 +18,8 @@
             </div>
             <div class="col-md-3 offset-md-1">
                 <?php includeView('pages>sidebar', [
-                    'mostVisited' => $mostVisited,
-                    'hotTags' => $hotTags,
+                    'mostVisited' => [],
+                    'hotTags' => [],
                 ]); ?>
             </div>
         </div>

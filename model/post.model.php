@@ -56,9 +56,9 @@ class PostModel extends PaperDatabase
         if (empty($post_key))
             return null;
         if (!empty($no_post_id))
-            self::$db->where('post_id', $no_post_id, '!=');
-        self::$db->where('post_key', $post_key);
-        return self::$db->getOne(self::post);
+            self::$db->where('p.post_id', $no_post_id, '!=');
+        self::$db->where('p.post_key', $post_key);
+        return self::$db->getOne(self::post . ' p');
     }
 
     public static function save_draft($data)
@@ -407,19 +407,22 @@ class PostModel extends PaperDatabase
 
     public static function fetch_all_tags_by_post_id($post_id)
     {
-
+        return [];
     }
 
     public static function fetch_by_tag_name($queryValue, $getArrayLimit)
     {
+        return [];
     }
 
     public static function fetch_most_visited($limitMostVisited)
     {
+        return [];
     }
 
     public static function hot_tags($limitHotTags)
     {
+        return [];
     }
 
     public static function fetch_author_info($post_id)

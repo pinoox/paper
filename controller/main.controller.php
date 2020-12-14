@@ -10,10 +10,13 @@
  */
 namespace pinoox\app\com_pinoox_paper\controller;
 
+use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PageModel;
+use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
+use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Cookie;
 use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
@@ -25,24 +28,19 @@ use pinoox\component\Tree;
 use pinoox\component\Url;
 use pinoox\component\User;
 use pinoox\component\Validation;
+use pinoox\model\PinooxDatabase;
 
 class MainController extends MasterConfiguration
 {
     public function __construct()
     {
         parent::__construct();
-
-        $limitMostVisited = 10;
-        $limitHotTags = 10;
-        PostModel::where_status(PostModel::publish_status);
-
-        self::$template->set('mostVisited', PostModel::fetch_most_visited($limitMostVisited));
-        self::$template->set('hotTags', PostModel::hot_tags($limitHotTags));
     }
 
-    public function _exception()
+    public function _exception($page_key = null)
     {
-        $page_key = Request::params(0);
+        if(empty($page_key))
+
         $this->page($page_key);
     }
 
@@ -125,9 +123,11 @@ class MainController extends MasterConfiguration
         if (!User::isLoggedIn()) {
             PostModel::where_status(PostModel::publish_status);
         }
+
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) self::error404();
-        if (($post_title = HelperString::replaceSpace($post['title'])) != $title)
+        $post_title = HelperString::replaceSpace($post['title']);
+        if ($post_title != $title)
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post_title);
 
         //load tags
@@ -147,9 +147,7 @@ class MainController extends MasterConfiguration
             Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
         }
 
-        self::$template->set('_title', $post['title']);
-        self::$template->set('_description', $post['summary']);
-
+        TemplateHelper::title($post['title']);
         self::$template->set('tags', $tags);
         self::$template->set('cmCount', $cmCount);
         self::$template->set('comments', $treeComments);
@@ -223,18 +221,14 @@ class MainController extends MasterConfiguration
         Response::jsonMessage(rlang('front.error_to_insert_comment'), true);
     }
 
-    public function page($page_key)
+    private function page($page_key)
     {
-        $page = PageModel::fetch_by_page_key($page_key, PageModel::publish);
+        PostModel::where_post_type(PostModel::page_type);
+        $page = PostModel::fetch_by_key($page_key, PostModel::publish_status);
         if (empty($page)) self::error404();
 
         //store visits
-        PageModel::update_visit($page['page_id']);
-        $key = '_pinoox_page_' . $page['page_id'];
-        if (Cookie::get($key) != 'visited') {
-            PageModel::update_visitor($page['page_id']);
-            Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
-        }
+        StatisticModel::visit($page['post_id']);
 
         self::$template->set('page', $page);
         self::$template->show('pages>page');
