@@ -11,7 +11,7 @@
                         <?php } ?>
                     </h1>
 
-                    <div class="content"><?php echo $page['content']; ?></div>
+                    <div class="content"><?php echo $page['context']; ?></div>
 
                 </div>
 

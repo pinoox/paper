@@ -65,8 +65,6 @@ class View
     private function getValueSetting($setting)
     {
         $value = isset($setting['value']) ? $setting['value'] : null;
-        if($setting['type'] === 'select:post')
-            $value = is_array($value)? $value : [];
         return $value;
     }
 

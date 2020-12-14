@@ -34,7 +34,7 @@ class StatisticModel extends PaperDatabase
         ]);
 
         self::$db->where('post_id', $post_id);
-        $status = self::$db->update(self::post_type, [
+        $status = self::$db->update(self::post, [
             'visits' => self::$db->inc(),
             'visitors' => self::$db->inc(),
         ]);
@@ -61,7 +61,7 @@ class StatisticModel extends PaperDatabase
         ]);
 
         self::$db->where('post_id', $post_id);
-        $status = self::$db->update(self::post_type, [
+        $status = self::$db->update(self::post, [
             'visits' => self::$db->inc(),
         ]);
         if ($status && $isOK)
@@ -83,7 +83,7 @@ class StatisticModel extends PaperDatabase
         ]);
 
         self::$db->where('post_id', $post_id);
-        $status = self::$db->update(self::post_type, [
+        $status = self::$db->update(self::post, [
             'visits' => self::$db->inc(),
             'visitors' => self::$db->inc(),
         ]);
@@ -144,7 +144,7 @@ class StatisticModel extends PaperDatabase
         ]);
 
         self::$db->where('p.post_id', $post_id);
-        self::$db->update(self::post_type . ' p', [
+        self::$db->update(self::post . ' p', [
             'visitors' => self::$db->inc()
         ]);
     }

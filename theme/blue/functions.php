@@ -1,8 +1,8 @@
 <?php
 
+use pinoox\component\Date;
 use pinoox\component\HelperString;
 use pinoox\component\Template;
-use pinoox\component\Date;
 use pinoox\component\Url;
 use pinoox\component\User;
 

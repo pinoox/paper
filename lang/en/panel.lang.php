@@ -8,6 +8,7 @@ return [
     'yes' => 'yes',
     'no' => 'no',
     'warning' => 'warning',
+    'list' => 'list',
     'user_key' => 'username or email',
     'password' => 'password',
     'logout' => 'logout',

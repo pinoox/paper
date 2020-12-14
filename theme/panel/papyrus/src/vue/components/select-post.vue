@@ -3,7 +3,7 @@
         <div class="select-header" v-if="!isSelectSection">
             <span class="btn btn-primary" :class="!isAllowSelect? 'disabled' : ''" @click="openSectionSelect()">{{LANG.post.select_post}}</span>
             <div class="revert" v-if="!!limit && limit >= 0">
-                <span class="text">{{!!value? value.length : 0}} {{LANG.panel.of}} {{limit}}</span>
+                <span class="text">{{!!items? items.length : 0}} {{LANG.panel.of}} {{limit}}</span>
             </div>
         </div>
         <div class="select-header" v-else-if="isSelectSection">
@@ -15,19 +15,19 @@
             </div>
         </div>
         <simplebar class="select-post">
-            <div v-if="!isSelectSection && !!value && value.length > 0">
+            <div v-if="!isSelectSection && !!items && items.length > 0">
                 <draggable
                         :scroll-sensitivity="200"
                         :force-fallback="true"
-                        :list="value"
+                        :list="items"
                         :animation="10"
                         class="select-items"
                         ghost-class="ghost">
-                        <div v-for="(item,index) in value" class="item">
-                            <img :src="item.thumb_128">
-                            <span class="text">{{item.title}}</span>
-                            <span class="close" @click="removeItem(index)"><i class="fa fa-times"></i></span>
-                        </div>
+                    <div v-for="(item,index) in items" class="item">
+                        <img :src="item.thumb_128">
+                        <span class="text">{{item.title}}</span>
+                        <span class="close" @click="removeItem(index)"><i class="fa fa-times"></i></span>
+                    </div>
                 </draggable>
             </div>
 
@@ -56,7 +56,8 @@
                             <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                         </div>
                         <div v-else-if="props.column.field === 'operation'">
-                            <span v-if="checkSelectable(props.row.post_id)"@click="selectPost(props.row)" class="btn btn-primary">{{LANG.post.select}}</span>
+                            <span v-if="checkSelectable(props.row.post_id)" @click="selectPost(props.row)"
+                                  class="btn btn-primary">{{LANG.post.select}}</span>
                             <span v-else class="checked"><i class="fa fa-check"></i></span>
                         </div>
                         <div v-else-if="props.column.field === 'status'">
@@ -84,21 +85,24 @@
     export default {
         name: "select-post",
         props: {
-            value: {
-                type:Array,
+            rows:{
                 default: null,
             },
-            limit:{
-                type:Number,
-                default:-1,
+            value: {
+                default: null,
+            },
+            limit: {
+                type: Number,
+                default: -1,
             }
         },
         data() {
             return {
                 isLoading: false,
-                isSelectSection:false,
+                isSelectSection: false,
                 posts: [],
                 pages: [],
+                items:[],
                 params: {
                     keyword: null,
                     page: 1,
@@ -112,18 +116,16 @@
             }
         },
         computed: {
-            isAllowSelect()
-            {
-                let length = !!this.value? this.value.length : 0;
+            isAllowSelect() {
+                let length = !!this.items ? this.items.length : 0;
                 return this.limit < 0 || (this.limit > 0 && this.limit > length);
             },
-            getId()
-            {
-              return 'select-post-'+this._uid;
+            getId() {
+                return 'select-post-' + this._uid;
             },
-            items(){
-              return this.posts.map((item)=>{
-
+            getIds(){
+              return this.items.map((item)=>{
+                 return item.post_id;
               });
             },
             columns() {
@@ -156,45 +158,58 @@
                 ];
             }
         },
+        created(){
+          this.getValue();
+        },
         methods: {
-            checkSelectable(post_id)
-            {
-                for (let item of this.value)
-                {
-                    if(!!item.post_id && item.post_id === post_id)
+            checkSelectable(post_id) {
+                for (let item of this.items) {
+                    if (!!item.post_id && item.post_id === post_id)
                         return false;
                 }
 
                 return true;
             },
-            selectPost(row){
-              this.value.push({
-                  post_id:row.post_id,
-                  title:row.title,
-                  thumb_128:row.thumb_128,
-              });
-              this.$emit('input',this.value);
-              this.cancelSectionSelect();
+            selectPost(row) {
+                this.addPost(row);
+                this.cancelSectionSelect();
             },
-            movePaginationToFooter()
-            {
-                this.$nextTick(()=>{
-                    $('#'+this.getId+' .vgt-wrap__footer').appendTo('#'+this.getId+' .select-footer');
+            addPost(row) {
+                this.items.push({
+                    post_id: row.post_id,
+                    title: row.title,
+                    thumb_128: row.thumb_128,
                 });
             },
-            openSectionSelect()
-            {
-                if(!this.isAllowSelect)
+            movePaginationToFooter() {
+                this.$nextTick(() => {
+                    $('#' + this.getId + ' .vgt-wrap__footer').appendTo('#' + this.getId + ' .select-footer');
+                });
+            },
+            openSectionSelect() {
+                if (!this.isAllowSelect)
                     return;
                 this.isSelectSection = true;
                 this.movePaginationToFooter();
             },
-            cancelSectionSelect(){
-               $('#'+this.getId+' .select-footer').empty();
+            cancelSectionSelect() {
+                $('#' + this.getId + ' .select-footer').empty();
                 this.isSelectSection = false;
             },
             removeItem(index) {
-                this.$delete(this.value, index);
+                this.$delete(this.items, index);
+            },
+            getValue() {
+                this.$http.post(this.URL.API + 'setting/getPosts/', {
+                    posts: this.value,
+                }).then((json) => {
+                    let data = json.data;
+                    if (!!data && data.length > 0) {
+                        for (const row of data) {
+                            this.addPost(row);
+                        }
+                    }
+                });
             },
             getItems() {
                 this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
@@ -215,10 +230,10 @@
                 this.getItems();
             },
             onSearch(params) {
-               this._delay(()=>{
-                   this.updateParams({keyword: params.searchTerm});
-                   this.getItems();
-               },500)
+                this._delay(() => {
+                    this.updateParams({keyword: params.searchTerm});
+                    this.getItems();
+                }, 500)
             },
             onSortChange(params) {
                 let first = params.slice(0, 1).shift();
@@ -235,5 +250,12 @@
                 this.getItems();
             },
         },
+        watch:{
+            items:{
+                handler(){
+                    this.$emit('input', this.getIds);
+                }
+            }
+        }
     }
 </script>

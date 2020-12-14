@@ -1,4 +1,4 @@
-<?php includeView('pages>slider', ['slides' => $features]) ?>
+<?php includeView('pages>slider', ['slides' => posts(setting('home.posts'))]) ?>
 <div class="page-content">
 
     <div class="container-fluid">
@@ -18,8 +18,8 @@
             </div>
             <div class="col-md-3 offset-md-1">
                 <?php includeView('pages>sidebar', [
-                    'mostVisited' => $mostVisited,
-                    'hotTags' => $hotTags,
+                    'mostVisited' => [],
+                    'hotTags' => [],
                 ]); ?>
             </div>
         </div>

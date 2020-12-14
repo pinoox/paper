@@ -8,7 +8,7 @@
     export default {
         props: ['theme_name'],
         created() {
-            this.initHttp();
+            this.isTheme = !!this.theme_name;
 
             if (!this.views || this.views.length <= 0)
                 this.getViews();
@@ -32,21 +32,20 @@
                     else
                         this.viewSettings = val;
                 }
-            }
+            },
+            addThemeToHeader()
+            {
+                let theme = this.isTheme ? this.theme_name : '~';
+                return  {
+                    headers: {
+                        "theme_name" : `${theme}`,
+                    }
+                };
+            },
         },
         methods: {
-            initHttp() {
-                this.isTheme = !!this.theme_name;
-                this.http = this.$http.create({
-                    baseURL: this.URL.API + 'setting/',
-                });
-
-                this.http.defaults.headers.common['theme_name'] = this.isTheme ? this.theme_name : '~';
-                this.http.defaults.headers.common['Authorization'] = this.tokenAuth();
-
-            },
             getViews(lang = '') {
-                this.http.get('getViews/' + lang).then((json) => {
+                this.$http.get(this.URL.API+'setting/getViews/' + lang,this.addThemeToHeader).then((json) => {
                     this.views = !!json.data ? json.data : {};
                 });
             }

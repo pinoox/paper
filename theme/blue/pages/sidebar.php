@@ -1,5 +1,5 @@
 <div class="sidebar">
-    <?php if (isset($mostVisited) && !empty($mostVisited)) { ?>
+    <?php if (false) { ?>
         <div class="most-visit">
             <h2 class="section-title"><?php lang('front.most_viewed_articles'); ?></h2>
             <div class="list">
@@ -19,7 +19,7 @@
 
 
     <div class="hot-tags">
-        <?php if (isset($hotTags) && !empty($hotTags)) { ?>
+        <?php if (false) { ?>
             <h2 class="section-title"><?php lang('front.hot_tags'); ?></h2>
             <div class="list">
                 <?php foreach ($hotTags as $i) { ?>
@@ -32,9 +32,15 @@
     <div class="follow-us">
         <h2 class="section-title"> <?php lang('front.follow_us'); ?></h2>
         <div class="list">
-            <a target="_blank" href="<?php echo $telegram; ?>" class="telegram"><i class="fab fa-telegram-plane"></i></a>
-            <a target="_blank" href="<?php echo $twitter; ?>" class="twitter"><i class="fab fa-twitter"></i></a>
-            <a target="_blank" href="<?php echo $instagram; ?>" class="instagram"><i class="fab fa-instagram"></i></a>
+            <?php foreach (setting('contact.socials') as $item) { ?>
+                <a target="_blank" href="<?php echo @$item['link']; ?>" class="<?php echo @$item['label']; ?>">
+                    <?php if (!empty($item['icon'])) { ?>
+                        <i class="<?php echo @$item['icon']; ?>"></i>
+                    <?php } else { ?>
+                        <img alt="<?php echo @$item['label']; ?>" src="<?php echo furl($item['image']); ?>"/>
+                    <?php } ?>
+                </a>
+            <?php } ?>
         </div>
     </div>
 </div>
