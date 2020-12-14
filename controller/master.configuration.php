@@ -70,7 +70,7 @@ class MasterConfiguration implements ControllerInterface
 
     private function setLang()
     {
-        $lang = LangModel::fetch_all();
+        $lang = ['front' => Lang::get('front')];
         self::$template->set('_lang', HelperString::encodeJson($lang, true));
     }
 

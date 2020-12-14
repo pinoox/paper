@@ -47,7 +47,6 @@ return [
     'asc_progress' => 'Increase compared to yesterday',
     'desc_progress' => 'Decrease compared to yesterday',
     'are_you_sure_logout_account' => 'Do you want to log out of your account?',
-    'facility' => 'facility',
     'pages' => 'pages',
     'list' => 'list',
 
@@ -62,6 +61,7 @@ return [
     'menus' => 'menus',
     'category' => 'category',
     'settings' => 'settings',
+    'theme_settings' => 'template settings',
     'templates' => 'templates',
     'template_subtext' => 'paper templates list',
     'subtitle_settings' => 'Simply manage the settings for that page by selecting an option',
