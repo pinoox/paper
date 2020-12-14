@@ -28,7 +28,6 @@ use pinoox\component\Tree;
 use pinoox\component\Url;
 use pinoox\component\User;
 use pinoox\component\Validation;
-use pinoox\model\PinooxDatabase;
 
 class MainController extends MasterConfiguration
 {

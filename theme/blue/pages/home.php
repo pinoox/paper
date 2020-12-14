@@ -1,4 +1,4 @@
-<?php includeView('pages>slider', ['slides' => $features]) ?>
+<?php includeView('pages>slider', ['slides' => posts(setting('home.posts'))]) ?>
 <div class="page-content">
 
     <div class="container-fluid">
