@@ -6,16 +6,6 @@ use pinoox\component\Template;
 use pinoox\component\Url;
 use pinoox\component\User;
 
-function getTitle()
-{
-
-}
-
-function getDescription()
-{
-
-}
-
 function showPage($page, $url, $getPattern = '')
 {
     $sample = '<a [add] class="no-border item" [url]>[name]</a>';

@@ -204,7 +204,7 @@ class PostController extends LoginConfiguration
         $path = Dir::path('uploads/post/' . htmlspecialchars($hash_id) . '/');
         $up = Uploader::init('upload', $path)
             ->insert($hash_id, 'post', User::get('user_id'))
-            ->thumb('128')
+            ->thumb(['128f', '512f'], PINOOX_PATH_THUMB)
             ->allowedTypes('jpg,jfif,jpeg,pjpeg,pjp,png,gif,bmp,webp,tiff,tif', 10)
             ->changeName('none')
             ->finish(true);
@@ -285,7 +285,7 @@ class PostController extends LoginConfiguration
             self::error();
 
         Uploader::init()
-            ->thumb('128')
+            ->thumb(['128f', '512f'], PINOOX_PATH_THUMB)
             ->actRemoveRow($input['file_id']);
         Response::json(rlang('post.delete_successfully'), true);
     }

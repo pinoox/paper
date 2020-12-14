@@ -224,6 +224,7 @@ class PostModel extends PaperDatabase
         $file = FileModel::fetch_by_id($post['image_id']);
         $post['image'] = Url::upload($file, $placeHolder);
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
+        $post['thumb_512'] = Url::thumb($file, 512, $placeHolder);
         return $post;
     }
 
