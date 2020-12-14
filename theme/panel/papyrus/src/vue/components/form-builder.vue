@@ -36,7 +36,7 @@
             </div>
             <!-- list view -->
             <div v-else-if="!listDisable && !!setting.type && setting.type === 'list'">
-            <span @click="_parent.openListDrawer(setting)" class="btn btn-list"><i class="fa fa-cog"></i> {{LANG.panel.manage}} {{setting.label}}</span>
+                <span @click="_parent.openListDrawer(setting)" class="btn btn-list"><i class="fa fa-cog"></i> {{LANG.panel.manage}} {{setting.label}}</span>
             </div>
 
             <!-- select post view -->
@@ -44,15 +44,17 @@
                 <select-post v-model="value[setting.key]" v-bind="getAttrs(setting)"></select-post>
             </div>
 
-            <!-- select post view -->
+            <!-- image view -->
             <div v-else-if="!!setting.type && setting.type === 'image'" class="setting-image-view">
                 <div class="select-image-setting" v-if="!value[setting.key]">
-                    <span @click="openImageDrawer(setting)" class="btn btn-sm btn-primary">{{LANG.panel.select_image}}</span>
+                    <span @click="openImageDrawer(setting)"
+                          class="btn btn-sm btn-primary">{{LANG.panel.select_image}}</span>
                 </div>
                 <div v-else>
                     <img @click="openImageDrawer(setting)" class="thumb thumb-round" :src="imagePreview(setting)">
                     <div>
-                        <span class="btn btn-sm btn-primary" @click="openImageDrawer(setting)">{{LANG.panel.edit}}</span>
+                        <span class="btn btn-sm btn-primary"
+                              @click="openImageDrawer(setting)">{{LANG.panel.edit}}</span>
                         <span @click="imageDelete(setting)" class="btn btn-sm btn-danger">{{LANG.panel.delete}}</span>
                     </div>
                 </div>
@@ -106,20 +108,20 @@
         },
         data() {
             return {
-                imageDrawer:false,
+                imageDrawer: false,
                 _parent: null,
-                setting:null,
+                setting: null,
             }
         },
-        computed:{
-          params:{
-              get(){
-                  return this.value;
-              },
-              set(val){
-                  this.value = val;
-              }
-          }
+        computed: {
+            params: {
+                get() {
+                    return this.value;
+                },
+                set(val) {
+                    this.value = val;
+                }
+            }
         },
         methods: {
             openImageDrawer(setting) {
@@ -131,13 +133,8 @@
             },
             option(setting) {
                 let value = this.value[setting.key];
-                if (setting.type === 'select:post') {
-                    return typeof value === 'object' ? value : [];
-                } else {
-                    let options = this.options(setting);
-                    return options.find(option => option.key === value);
-                }
-
+                let options = this.options(setting);
+                return options.find(option => option.key === value);
             },
             options(setting) {
                 return $.map(setting.options, function (value, index) {
@@ -162,13 +159,11 @@
                     attrs.placeholder = setting.label;
                 return attrs;
             },
-            imagePreview(setting)
-            {
-                let img = !!this.value[setting.key]? this.value[setting.key] : 'resources/image-placeholder.jpg';
+            imagePreview(setting) {
+                let img = !!this.value[setting.key] ? this.value[setting.key] : 'resources/image-placeholder.jpg';
                 return this.URL.APP_PATH + img;
             },
-            imageDelete(setting)
-            {
+            imageDelete(setting) {
                 this.value[setting.key] = null;
             }
         },

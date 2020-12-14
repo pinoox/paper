@@ -5,25 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script type="text/javascript" src="<?php echo $_app ?>dist/pinoox.js"></script>
     <link rel="stylesheet" href="<?php echo $_url ?>dist/main.css?v=1.0">
-    <title><?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?></title>
-    <meta property="og:title" content="<?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?>"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:description" content="<?php echo $_description; ?>"/>
-    <meta property="og:url" content="<?php echo url(); ?>"/>
-    <meta property="og:site_name" content="<?php echo $siteTitle ?>"/>
-    <meta name="description" content="<?php echo $_description; ?>"/>
-    <link rel="canonical" href="<?php echo url(); ?>" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="<?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?>" />
-    <meta property="og:description" content="<?php echo $_description; ?>" />
-    <meta property="og:url" content="<?php echo url(); ?>" />
-    <meta property="og:image" content="<?php echo $_url; ?>dist/images/icon-paper.png" />
-    <meta property="og:site_name" content="<?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?>" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:description" content="<?php echo $_description; ?>" />
-    <meta name="twitter:title" content="<?php echo $siteTitle ?> <?php if(!empty($_title)) echo '- '.$_title?>" />
-    <meta name="robots" content="index, follow">
 
+    <?php paper_head(); ?>
 </head>
 
 <body class="<?php echo @$_direction; ?>">
@@ -41,10 +24,10 @@
     <div class="drawer-menu"><i class="fas fa-bars"></i></div>
     <div class="logo">
         <a href="<?php echo $_app; ?>">
-            <img src="<?php echo $_url ?>dist/images/icon-paper.png" alt="logo">
+            <img src="<?php echo furl(setting('general.site_logo')); ?>" alt="logo">
             <div class="title">
-                <h1><?php echo $siteTitle; ?></h1>
-                <h2><?php echo $siteDesc; ?></h2>
+                <h1><?php echo setting('general.site_title'); ?></h1>
+                <h2><?php echo setting('general.site_subtitle'); ?></h2>
             </div>
         </a>
     </div>

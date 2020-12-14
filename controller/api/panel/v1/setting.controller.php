@@ -13,6 +13,7 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\model\LangModel;
+use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Lang;
@@ -119,5 +120,17 @@ class SettingController extends LoginConfiguration
     {
         Uploader::init()->actRemoveRow($file_id);
         Response::json(null, true);
+    }
+
+    public function getPosts()
+    {
+        $posts = Request::inputOne('posts', null, '!empty');
+        $posts = PostModel::fetch_by_ids($posts);
+        $posts = !empty($posts)? $posts : [];
+        $posts = array_map(function ($post) {
+            return PostModel::getInfoPost($post);
+        }, $posts);
+        Response::json($posts);
+
     }
 }

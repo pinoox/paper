@@ -10,9 +10,11 @@
  */
 namespace pinoox\app\com_pinoox_paper\controller;
 
+use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PageModel;
+use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Cookie;
@@ -26,24 +28,20 @@ use pinoox\component\Tree;
 use pinoox\component\Url;
 use pinoox\component\User;
 use pinoox\component\Validation;
+use pinoox\model\PinooxDatabase;
 
 class MainController extends MasterConfiguration
 {
     public function __construct()
     {
         parent::__construct();
-
-        $limitMostVisited = 10;
-        $limitHotTags = 10;
-        PostModel::where_status(PostModel::publish_status);
-
-        self::$template->set('mostVisited', PostModel::fetch_most_visited($limitMostVisited));
-        self::$template->set('hotTags', PostModel::hot_tags($limitHotTags));
+        var_dump(setting('home.posts'));exit;
     }
 
-    public function _exception()
+    public function _exception($page_key = null)
     {
-        $page_key = Request::params(0);
+        if(empty($page_key))
+
         $this->page($page_key);
     }
 
@@ -126,9 +124,11 @@ class MainController extends MasterConfiguration
         if (!User::isLoggedIn()) {
             PostModel::where_status(PostModel::publish_status);
         }
+
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) self::error404();
-        if (($post_title = HelperString::replaceSpace($post['title'])) != $title)
+        $post_title = HelperString::replaceSpace($post['title']);
+        if ($post_title != $title)
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post_title);
 
         //load tags
@@ -148,9 +148,7 @@ class MainController extends MasterConfiguration
             Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
         }
 
-        self::$template->set('_title', $post['title']);
-        self::$template->set('_description', $post['summary']);
-
+        TemplateHelper::title($post['title']);
         self::$template->set('tags', $tags);
         self::$template->set('cmCount', $cmCount);
         self::$template->set('comments', $treeComments);

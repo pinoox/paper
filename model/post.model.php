@@ -407,19 +407,22 @@ class PostModel extends PaperDatabase
 
     public static function fetch_all_tags_by_post_id($post_id)
     {
-
+        return [];
     }
 
     public static function fetch_by_tag_name($queryValue, $getArrayLimit)
     {
+        return [];
     }
 
     public static function fetch_most_visited($limitMostVisited)
     {
+        return [];
     }
 
     public static function hot_tags($limitHotTags)
     {
+        return [];
     }
 
     public static function fetch_author_info($post_id)

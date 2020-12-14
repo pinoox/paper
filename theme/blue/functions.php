@@ -1,10 +1,20 @@
 <?php
 
+use pinoox\component\Date;
 use pinoox\component\HelperString;
 use pinoox\component\Template;
-use pinoox\component\Date;
 use pinoox\component\Url;
 use pinoox\component\User;
+
+function getTitle()
+{
+
+}
+
+function getDescription()
+{
+
+}
 
 function showPage($page, $url, $getPattern = '')
 {

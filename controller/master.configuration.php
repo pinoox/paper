@@ -12,6 +12,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller;
 
+use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\component\app\AppProvider;
@@ -23,6 +24,7 @@ use pinoox\component\Lang;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Template;
+use pinoox\component\User;
 
 class MasterConfiguration implements ControllerInterface
 {
@@ -30,15 +32,16 @@ class MasterConfiguration implements ControllerInterface
      * @var Template
      */
     protected static $template;
+    /**
+     * @var array
+     */
+    protected static $config;
 
     public function __construct()
     {
         $this->initTemplate();
         $this->setLang();
         $this->getAssets();
-
-        $this->loadConfig();
-        $this->loadSettings();
         $this->loadMenus();
     }
 
@@ -47,38 +50,10 @@ class MasterConfiguration implements ControllerInterface
         self::$template = new Template();
         self::$template->set('_site', url('~'));
         self::$template->set('_app', url());
-        self::$template->set('_lang', Lang::get('front'));
         self::$template->set('_direction', rlang('front.direction'));
         self::$template->set('_translate', Lang::current());
-
-    }
-
-    private function loadConfig()
-    {
-        $configs = SettingsModel::getAllMain();
-        self::$template->setConfig($configs);
-    }
-
-    private function loadSettings()
-    {
-        //general
-        $siteTitle = 'sample title';
-        $siteDesc = 'sample description';
-        self::$template->set('siteTitle', $siteTitle);
-        self::$template->set('siteDesc', $siteDesc);
-        self::$template->set('_description', $siteDesc);
-
-        //seo
-        $seo_title = 'seo_title';
-        $seo_description = 'seo_description';
-        self::$template->set('seo_title', $seo_title);
-        self::$template->set('seo_description', $seo_description);
-        self::$template->set('seo_description', $seo_description);
-
-        //socials
-        self::$template->set('twitter', 'twitter');
-        self::$template->set('instagram', 'instagram');
-        self::$template->set('telegram', 'telegram');
+        self::$template->setPageTitle(setting('general.site_title'));
+        TemplateHelper::initData();
     }
 
     private function loadMenus()
