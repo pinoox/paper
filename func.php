@@ -20,9 +20,12 @@ function paper_footer()
 
 }
 
-function posts($ids)
+function posts($value,$option = [])
 {
-    $posts = PostModel::fetch_by_ids($ids);
+    PostModel::where_post_type(PostModel::post_type);
+    PostModel::where_status(PostModel::publish_status);
+    $posts = PostModel::fetcher($value,$option);
+    $posts = !empty($posts)? $posts : [];
     $posts = array_map(function ($post) {
         return PostModel::getInfoPost($post);
     }, $posts);
