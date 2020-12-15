@@ -10,6 +10,7 @@ return [
     'language' => 'Language Settings',
     'privacy' => 'Privacy Settings',
     'user' => 'User Setting',
+    'developer' => 'Developer Setting',
     'site_logo' => 'Site Logo',
     'site_title' => 'Site Title',
     'site_subtitle' => 'Site slogan',
@@ -32,4 +33,10 @@ return [
     'tel' => 'tel',
     'email' => 'email',
     'address' => 'address',
-];
+    'main_menu' => 'Main Menu',
+    'home_menu' => 'Home',
+    'about_menu' => 'About us',
+    'contact_menu' => 'Contact us',
+    'header_code' => 'Add code to head',
+    'footer_code' => 'Add code to footer',
+    ];

@@ -189,7 +189,7 @@ class PostController extends LoginConfiguration
 
     public function searchTags($keyword = null)
     {
-        PostModel::where_tag_name($keyword);
+        PostModel::search_tag_name($keyword);
         $tags = PostModel::fetch_all_tags(8);
         $tags = empty($tags) ? [] : $tags;
         Response::json($tags);
@@ -346,7 +346,7 @@ class PostController extends LoginConfiguration
             if (empty($post)) return null;
         }
 
-        $days = 10;
+        $days = 6;
 
         $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-' . $days . ' days'), Date::g('Y-m-d', '+1 days'));
         $rangeDate = array_map(function ($d) {
@@ -358,11 +358,11 @@ class PostController extends LoginConfiguration
 
         //visits
         $visits = StatisticModel::fetch_visits($post_id, $days);
-        $visitsSeries = StatisticModel::createRangeData($visits['series'], $days - 1, true);
+        $visitsSeries = StatisticModel::createRangeData($visits['series'], $days, true);
 
         //visitors
         $visitors = StatisticModel::fetch_visitors($post_id, $days);
-        $visitorsSeries = StatisticModel::createRangeData($visitors['series'], $days - 1, true);
+        $visitorsSeries = StatisticModel::createRangeData($visitors['series'], $days, true);
 
         $result = [
             [

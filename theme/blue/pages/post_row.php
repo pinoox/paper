@@ -8,7 +8,8 @@
         <h3 class="title">
             <a href="<?php echo postLink($post); ?>"><?php echo $post['title'] ?></a>
         </h3>
-        <p class="summary"><?php echo \pinoox\component\HelperString::truncateText($post['summary'], 500, true); ?></p>
+
+        <p class="summary"><?php echo $post['summary']; ?></p>
         <div class="details">
             <div class="author">
                 <img src="<?php echo showImage($post['avatar_id'],128,true); ?>"

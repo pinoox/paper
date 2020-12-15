@@ -13,11 +13,8 @@ namespace pinoox\app\com_pinoox_paper\controller;
 use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
-use pinoox\app\com_pinoox_paper\model\PageModel;
-use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
-use pinoox\component\Cookie;
 use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
 use pinoox\component\Pagination;
@@ -61,56 +58,38 @@ class MainController extends MasterConfiguration
         self::$template->show('pages>home');
     }
 
-    public function search($pageIndex = 1)
+    public function search($page = 1)
     {
-        $posts = [];
-        $page = null;
-        $queryValue = null;
-        $resultCount = 0;
+        $form = Request::get('q,tag',null,'!empty',true);
+
+        $this->filterSearch($form);
+        $count = posts('all',[
+            'count' => true,
+        ]);
+
+        $pagination = new Pagination($count, 10);
+        $pagination->setCurrentPage($page);
+
+        $this->filterSearch($form);
+        $posts = posts('all');
+
         $query = Url::queryString();
+        $query = !empty($query)? '?'.$query : $query;
 
-        $parts = explode('=', $query);
-        if (empty($query)) self::error404();
-
-        if (!is_numeric($pageIndex))
-            $query = $pageIndex;
-
-        $resultLimit = 4;
-        $queryType = $parts[0];
-        $queryValue = $parts[1];
-        if (!empty($queryValue)) {
-            if ($queryType == 'q') {
-                $this->filterSearch($queryType, $queryValue);
-                $resultCount = PostModel::fetch_all(null, true);
-                $page = new Pagination($resultCount, $resultLimit);
-                $page->setCurrentPage($pageIndex);
-                $this->filterSearch($queryType, $queryValue);
-                $posts = PostModel::fetch_all($page->getArrayLimit());
-            }
-            if ($queryType == 'tag') {
-                $this->filterSearch();
-                $resultCount = PostModel::fetch_by_tag_name($queryValue, null, true);
-                $page = new Pagination($resultCount, $resultLimit);
-                $page->setCurrentPage($pageIndex);
-                $this->filterSearch();
-                $posts = PostModel::fetch_by_tag_name($queryValue, $page->getArrayLimit());
-            }
-        }
-
-        self::$template->set('resultCount', $resultCount);
-        self::$template->set('queryString', $query);
-        self::$template->set('queryValue', $queryValue);
-        self::$template->set('page', $page);
+        self::$template->set('fields', $form);
+        self::$template->set('count', $count);
+        self::$template->set('query', $query);
+        self::$template->set('page', $pagination);
         self::$template->set('posts', $posts);
         self::$template->show('pages>search');
     }
 
-    private function filterSearch($type = null, $query = null)
+    private function filterSearch($form)
     {
-        if ($type == 'q') {
-            PostModel::where_search($query);
-        }
-        PostModel::where_status(PostModel::publish_status);
+        if(isset($form['tag']))
+            PostModel::where_tag_name($form['tag']);
+        if(isset($form['q']))
+            PostModel::where_search($form['q']);
     }
 
     public function post($post_id, $title = null)
@@ -138,15 +117,14 @@ class MainController extends MasterConfiguration
         $tree = new Tree();
         $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');
 
-        //store visits
-        //PostModel::update_visit($post_id);
-        $key = '_pinoox_post_' . $post_id;
-        if (Cookie::get($key) != 'visited') {
-        //    PostModel::update_visitor($post_id);
-            Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
-        }
+        if(!StatisticModel::is_visited($post_id))
+            $post['visitors']++;
 
+        $post['visits']++;
+
+        StatisticModel::visit($post_id);
         TemplateHelper::title($post['title']);
+
         self::$template->set('tags', $tags);
         self::$template->set('cmCount', $cmCount);
         self::$template->set('comments', $treeComments);

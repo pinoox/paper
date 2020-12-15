@@ -1,5 +1,5 @@
 <?php
-//pinoox config file, generated at "2020-12-14 20:33"
+//pinoox config file, generated at "2020-12-15 09:26"
 
 return array (
   'logo' => 'icon.png',
@@ -9,9 +9,9 @@ return array (
   ),
   'posts' => 
   array (
-    0 => 154,
-    1 => 153,
-    2 => 152,
+    0 => 151,
+    1 => 135,
+    2 => 142,
   ),
   'slideshow' => 
   array (

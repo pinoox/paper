@@ -123,3 +123,8 @@ function isLoggedIn()
 {
     return User::isLoggedIn();
 }
+
+function checkUrl($url)
+{
+    return filter_var($url, FILTER_VALIDATE_URL);
+}
