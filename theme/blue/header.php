@@ -32,14 +32,7 @@
         </a>
     </div>
     <div class="menu">
-        <?php if (isset($primaryMenu) && !empty($primaryMenu)) { ?>
-            <?php foreach ($primaryMenu as $menu) { ?>
-                <a href="<?php echo empty($menu['link']) ? $_app : $menu['link']; ?>">
-                    <?php echo !empty($menu['icon']) ? "<i class='" . $menu['icon'] . "'></i>" : ""; ?>
-                    <?php echo $menu['title']; ?>
-                </a>
-            <?php } ?>
-        <?php } ?>
+        <?php paper_menu(); ?>
     </div>
     <div class="left-side">
         <a href="<?php echo $_app ?>contact" class="action-item"><i class="fa fa-phone"></i></a>
@@ -49,13 +42,6 @@
     </div>
 </div>
 <div class="mini-menu">
-    <?php if (isset($primaryMenu) && !empty($primaryMenu)) { ?>
-        <?php foreach ($primaryMenu as $menu) { ?>
-            <a href="<?php echo empty($menu['link']) ? $_app : $menu['link']; ?>">
-                <?php echo !empty($menu['icon']) ? "<i class='" . $menu['icon'] . "'></i>" : ""; ?>
-                <?php echo $menu['title']; ?>
-            </a>
-        <?php } ?>
-    <?php } ?>
+    <?php paper_menu(); ?>
 </div>
 <div class="overlay"></div>
