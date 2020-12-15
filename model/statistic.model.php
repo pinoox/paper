@@ -21,6 +21,8 @@ use pinoox\component\HelperString;
 class StatisticModel extends PaperDatabase
 {
 
+    const keyVisited = 'paper_visited_';
+
     public static function insert($post, $data)
     {
         self::startTransaction();
@@ -152,7 +154,7 @@ class StatisticModel extends PaperDatabase
 
     public static function is_visited($post_id)
     {
-        $value = Cookie::get('visited_' . $post_id);
+        $value = Cookie::get(self::keyVisited . $post_id);
         if (empty($value)) return false;
 
         return true;
@@ -160,8 +162,11 @@ class StatisticModel extends PaperDatabase
 
     public static function set_visited($post_id)
     {
-        $endToday = strtotime(Date::g('Y-m-d 0:0:0', '+1 days'));
-        Cookie::set('visited_' . $post_id, '1', $endToday);
+        if(self::is_visited($post_id))
+            return;
+        $endToday = Date::g('Y-m-d 00:00:00','+1 days');
+        $endToday = strtotime($endToday) - time();
+        Cookie::set(self::keyVisited . $post_id, '1', $endToday);
     }
 
     public static function fetch_visits($post_id, $days = null)

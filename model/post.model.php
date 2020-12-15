@@ -281,6 +281,7 @@ class PostModel extends PaperDatabase
         self::$db->groupBy($columns);
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->join(self::post_tag . ' pt', 'pt.post_id=p.post_id', 'LEFT');
+        self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id', 'LEFT');
         $result = self::$db->get(self::post . ' p', $limit, $columns . ',CONCAT(u.fname," ",u.lname) full_name');
         if ($isCount) return self::$db->count;
         return $result;
@@ -301,14 +302,14 @@ class PostModel extends PaperDatabase
             $keys = [];
             $values = [];
             foreach ($key as $k) {
-                $keys[] = ($k === 'tag_id') ? 'pt.' . $k : 'p.' . $k;
+                $keys[] = ($k === 'tag_id' || $k === 'tag_name') ? 't.' . $k : 'p.' . $k;
                 $values[] = $ids;
             }
             $key = implode(' ' . $where . ' ? OR ', $keys);
             $key = '(' . $key;
             $key .= ' ' . $where . ' ?)';
         } else {
-            $key = ($key === 'tag_id') ? 'pt.' . $key : 'p.' . $key;
+            $key = ($key === 'tag_id' || $key === 'tag_name') ? 't.' . $key : 'p.' . $key;
             $values = $ids;
         }
 
@@ -366,7 +367,7 @@ class PostModel extends PaperDatabase
         return $isCount ? self::$db->count : $tags;
     }
 
-    public static function where_tag_name($keyword, $useJoin = false)
+    public static function search_tag_name($keyword, $useJoin = false)
     {
         if (!empty($keyword)) {
             if ($useJoin) {
@@ -378,6 +379,11 @@ class PostModel extends PaperDatabase
             $keyword = '%' . $keyword . '%';
             self::$db->where('t.tag_name LIKE ?', [$keyword]);
         }
+    }
+
+    public static function where_tag_name($tag)
+    {
+        self::$db->where('t.tag_name', $tag);
     }
 
     public static function getHashId($length = 6)
@@ -464,19 +470,17 @@ class PostModel extends PaperDatabase
         return [];
     }
 
-    public static function fetch_by_tag_name($queryValue, $getArrayLimit)
-    {
-        return [];
-    }
-
     public static function fetch_most_visited($limitMostVisited)
     {
         return [];
     }
 
-    public static function hot_tags($limitHotTags)
+    public static function hot_tags($limit = null)
     {
-        return [];
+        self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id', 'INNER');
+        self::$db->orderBy('count_use', 'DESC');
+        self::$db->groupBy('t.tag_id,t.tag_name');
+        return self::$db->get(self::post_tag . ' pt', $limit, 't.tag_id,t.tag_name,count(t.tag_id) count_use');
     }
 
     public static function fetch_author_info($post_id)

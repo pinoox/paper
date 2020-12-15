@@ -102,7 +102,7 @@ class PostController extends MasterConfiguration
     {
         $tagName = Request::inputOne('tag_name', null, '!empty');
         PostModel::where_status(PostModel::publish_status);
-        PostModel::where_tag_name($tagName, true);
+        PostModel::search_tag_name($tagName, true);
         $posts = PostModel::fetch_all(20);
         $posts = array_map(function ($post) {
             $post = $this->getPostInfo($post);

@@ -21,7 +21,7 @@ return [
      */
     'tags' => 'بر چسب ها',
     'share' => 'اشتراک گذاری',
-    'found_articles' => 'نتیجه پیدا شد ',
+    'found_articles' => 'نتیجه پیدا شد',
     'search' => 'جست و جو',
     'err_search_enter_somethings' => 'برای جست و جو چیزی بنویسید',
     'search_result_not_found' => 'نتیجه ای پیدا نشد کلمات دیگر را جست و جو کنید',

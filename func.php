@@ -25,10 +25,18 @@ function posts($value,$option = [])
     PostModel::where_post_type(PostModel::post_type);
     PostModel::where_status(PostModel::publish_status);
     $posts = PostModel::fetcher($value,$option);
-    $posts = !empty($posts)? $posts : [];
+
+    if(!is_array($posts))
+        return $posts;
+
     $posts = array_map(function ($post) {
         return PostModel::getInfoPost($post);
     }, $posts);
 
     return $posts;
+}
+
+function hot_tags($limit = 10)
+{
+    return PostModel::hot_tags($limit);
 }

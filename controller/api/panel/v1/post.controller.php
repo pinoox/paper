@@ -189,7 +189,7 @@ class PostController extends LoginConfiguration
 
     public function searchTags($keyword = null)
     {
-        PostModel::where_tag_name($keyword);
+        PostModel::search_tag_name($keyword);
         $tags = PostModel::fetch_all_tags(8);
         $tags = empty($tags) ? [] : $tags;
         Response::json($tags);
