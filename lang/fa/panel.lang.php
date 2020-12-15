@@ -49,7 +49,7 @@ return [
     'desc_progress' => 'کاهش نسبت به دیروز',
     'are_you_sure_logout_account' => 'آیا می‌خواهید از حساب کاربری خود خارج شوید؟',
     'list_builder' => 'لیست ساز',
-
+    'list' => 'لیست',
     'active' => 'فعال',
     'developer' => 'توسعه دهنده',
     'version' => 'ورژن',

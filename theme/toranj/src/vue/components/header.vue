@@ -7,7 +7,6 @@
                     <a class="item" href="#">خانه</a>
                     <a class="item" href="#">درباره ما</a>
                     <router-link :to="{name:'contact'}" class="item">تماس با ما</router-link>
-                    <a class="item" href="#">ورود</a>
                     <router-link :to="{name:'search'}" class="item"><i class="fa fa-search"></i></router-link>
                 </nav>
             </div>

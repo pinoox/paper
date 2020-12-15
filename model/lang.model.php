@@ -30,4 +30,6 @@ class LangModel extends PinooxDatabase
             'contact' => rlang('contact'),
         ];
     }
+
+
 }

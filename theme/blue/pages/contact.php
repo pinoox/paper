@@ -11,7 +11,7 @@
                         <input name="full_name" type="text" class="pin-input" placeholder="<?php lang('front.full_name'); ?>">
                     </div>
                     <div class="form-group">
-                        <input name="mobile" type="text" class="pin-input" placeholder="<?php lang('front.mobile'); ?>">
+                        <input name="email" type="text" class="pin-input" placeholder="<?php lang('front.email'); ?>">
                     </div>
                     <div class="form-group">
                         <input name="subject" type="text" class="pin-input" placeholder="<?php lang('front.subject'); ?>">

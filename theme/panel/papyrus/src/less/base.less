@@ -369,8 +369,17 @@ body {
       -webkit-transform: rotate(180deg);
       transform: rotate(180deg);
     }
+    .fa-chevron-right {
+      -webkit-transform: rotate(180deg);
+      transform: rotate(180deg);
+    }
 
     .app-container .main .page {
+      .greeting .action {
+        right: 15px;
+        left: initial;
+      }
+
       .post-stats .post-title .label {
         right: 0;
         left: initial;
@@ -662,7 +671,7 @@ body {
 
           .text {
             color: @primaryColor;
-            margin-right: 5px;
+            margin: 0 5px;
             display: none;
 
           }
@@ -1066,6 +1075,7 @@ body {
           height: 44px;
           display: flex;
           align-items: center;
+          overflow: hidden;
 
           .text {
             display: inline-flex;
@@ -1095,7 +1105,7 @@ body {
 
             .title {
               background: rgba(177, 212, 255, 0.2);
-              padding: 10px;
+              padding: 15px;
             }
           }
 
@@ -1882,12 +1892,12 @@ body {
     color: @textColor
   }
 
-  .back-btn{
+  .back-btn {
     display: block;
     padding: 10px 0;
     color: fade(@primaryColor, 60%);
 
-    &:hover{
+    &:hover {
       color: @primaryColor;
       cursor: pointer;
     }
@@ -2245,9 +2255,10 @@ body {
             font-size: 1rem;
             margin: 0 5px;
 
+
             i {
               position: relative;
-              top: 10px;
+              top: 12px;
             }
 
             &.enable {
@@ -2256,8 +2267,10 @@ body {
 
               span {
                 position: relative;
-                top: 8px;
                 color: @greenColorDark;
+                top: 12px;
+                font-size: 12px;
+                font-weight: 600;
               }
 
               &:hover {
@@ -2697,10 +2710,10 @@ body {
             overflow-y: hidden;
 
             .text {
-              width: 100%;
+              width: 80%;
 
               .title {
-                font-size: 0.75rem;
+                font-size: 1rem;
               }
             }
           }
@@ -2726,16 +2739,6 @@ body {
     }
   }
 
-  .app-container {
-    .main {
-      .page {
-        .menubar .items .text .title {
-          padding: 12px;
-        }
-      }
-    }
-  }
-
   .form-wrapper .form-content .templates-list {
 
     .item {
@@ -2752,13 +2755,34 @@ body {
 }
 
 @media screen and (max-width: 576px) {
-  .vgt-compact td:before {
-    float: right;
-    right: 0;
-    left: initial;
-    padding-right: 10px;
-    padding-left: initial;
-    text-align: right;
+  &.ltr {
+    .vgt-compact td:before {
+      float: right;
+      right: initial;
+      left: 0;
+      padding-right: 10px;
+      padding-left: initial;
+      text-align: left;
+    }
+
+    .vgt-compact td  {
+      direction: ltr;
+      div{
+        text-align: left;
+      }
+
+    }
+  }
+
+  &.rtl {
+    .vgt-compact td:before {
+      float: right;
+      right: 0;
+      left: initial;
+      padding-right: 10px;
+      padding-left: initial;
+      text-align: right;
+    }
   }
 
   .vgt-compact {

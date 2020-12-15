@@ -7,6 +7,7 @@
                     <div class="subtitle"></div>
                 </div>
                 <div class="nav">
+
                     <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
                         <simple-svg :src="_icons.dashboard"
                                     customClassName="icon"

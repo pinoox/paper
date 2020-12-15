@@ -1,13 +1,13 @@
 <template>
     <div class="enter-comment" @keyup.enter="newComment()">
         <input v-model="sendComment.full_name" class="input" type="text"
-               :placeholder="LANG.user.full_name">
-        <input v-model="sendComment.email" class="input" type="email" :placeholder="LANG.user.email">
+               :placeholder="LANG.front.full_name">
+        <input v-model="sendComment.email" class="input" type="email" :placeholder="LANG.front.email">
         <textarea v-model="sendComment.message" class="textarea"
-                  :placeholder="LANG.comment.write_comment_about_post"></textarea>
+                  :placeholder="LANG.front.write_comment_about_post"></textarea>
 
         <div class="btn-leave-comment">
-            <div @click="newComment()" class="btn btn-primary btn-round">{{LANG.comment.send_comment}}</div>
+            <div @click="newComment()" class="btn btn-primary btn-round">{{LANG.front.send_comment}}</div>
         </div>
     </div>
 </template>

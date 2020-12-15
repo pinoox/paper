@@ -131,9 +131,9 @@ class PostController extends MasterConfiguration
         $form = Request::input('post_id,parent_id,full_name,email,message', null, '!empty');
         $valid = Validation::check($form, [
             'post_id' => ['required', ''],
-            'full_name' => ['required|length:>2', rlang('user.full_name')],
-            'email' => ['required|email', rlang('user.email')],
-            'message' => ['required|length:>10', rlang('comment.message')],
+            'full_name' => ['required|length:>2', rlang('front.full_name')],
+            'email' => ['required|email', rlang('front.email')],
+            'message' => ['required|length:>10', rlang('front.message')],
         ], [
             'post_id:required' => rlang('front.invalid_request')
         ]);
@@ -143,9 +143,9 @@ class PostController extends MasterConfiguration
 
         $comment_id = CommentModel::insert($form);
         if ($comment_id > 0)
-            Response::jsonMessage(rlang('comment.comment_inserted_successfully'), true);
+            Response::jsonMessage(rlang('front.comment_inserted_successfully'), true);
 
-        Response::jsonMessage(rlang('comment.error_happened'), false);
+        Response::jsonMessage(rlang('front.error_happened'), false);
 
     }
 
