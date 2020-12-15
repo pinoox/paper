@@ -21,19 +21,20 @@ use pinoox\component\HelperString;
 class StatisticModel extends PaperDatabase
 {
 
-    public static function insert($post_id, $data)
+    public static function insert($post, $data)
     {
         self::startTransaction();
 
         $insert_id = self::$db->insert(self::statistic, [
-            'post_id' => $post_id,
+            'post_id' => $post['post_id'],
+            'post_type' => $post['post_type'],
             'visitors' => 1,
             'visits' => 1,
             'insert_date' => Date::g('Y-m-d'),
             'json_data' => isset($data['json_data']) ? $data['json_data'] : null,
         ]);
 
-        self::$db->where('post_id', $post_id);
+        self::$db->where('post_id', $post['post_id']);
         $status = self::$db->update(self::post, [
             'visits' => self::$db->inc(),
             'visitors' => self::$db->inc(),
@@ -131,7 +132,7 @@ class StatisticModel extends PaperDatabase
                 self::update_stats($post_id, $data);
             }
         } else {
-            self::insert($post_id, $data);
+            self::insert($post, $data);
         }
         self::set_visited($post_id);
     }
@@ -168,6 +169,8 @@ class StatisticModel extends PaperDatabase
         if (!is_null($post_id))
             self::$db->where('s.post_id', $post_id);
 
+        self::$db->where('s.post_type', PostModel::post_type);
+
         if (!is_null($days)) {
             $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
             self::$db->where('s.insert_date', $fromDate, '>=');
@@ -188,6 +191,8 @@ class StatisticModel extends PaperDatabase
         $q = is_null($post_id) ? 'SUM(s.visitors) value' : 'COUNT(s.stat_id) value';
         if (!is_null($post_id))
             self::$db->where('s.post_id', $post_id);
+
+        self::$db->where('s.post_type', PostModel::post_type);
 
         if (!is_null($days)) {
             $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
