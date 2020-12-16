@@ -111,11 +111,11 @@ class MainController extends MasterConfiguration
 
         $data = $this->getPosts($page, $form);
 
-        $title =  rlang('front.search');
-        if(isset($form['tag']) && !empty($form['tag']))
-            $title .=  " (#".$form['tag'].")";
+        $title = rlang('front.search');
+        if (isset($form['tag']) && !empty($form['tag']))
+            $title .= " (#" . $form['tag'] . ")";
         else if (isset($form['q']) && !empty($form['q']))
-            $title .=  " (".$form['q'].")";
+            $title .= " (" . $form['q'] . ")";
 
         TemplateHelper::title($title);
 
@@ -145,12 +145,13 @@ class MainController extends MasterConfiguration
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post_title);
 
         $post = PostModel::getInfoPost($post);
+        $isOpenComment = $post['comment_status'] === PostModel::open_status;
 
         //load comments
-        $comments = CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish);
-        $cmCount = count($comments);
+        $comments = $isOpenComment ? CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish) : null;
+        $cmCount = $isOpenComment ? count($comments) : 0;
         $tree = new Tree();
-        $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');
+        $treeComments = $isOpenComment ? $tree->createTree($comments, 'parent_id', 'comment_id') : null;
 
         if (!StatisticModel::is_visited($post_id))
             $post['visitors']++;
