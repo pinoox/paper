@@ -81,7 +81,7 @@
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.settings}}</span>
                     </div>
-                    <div class="item" @click="goTo('')">
+                    <div class="item" @click="logoutPanel()">
                         <simple-svg :src="_icons.logout"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
@@ -122,6 +122,12 @@
             }
         },
         methods: {
+            logoutPanel()
+            {
+                this.logout(()=>{
+                    this.toggleDrawer();
+                })
+            },
             toggleDrawer() {
                 this.drawerOpen = !this.drawerOpen;
             },
