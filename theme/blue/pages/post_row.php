@@ -1,7 +1,7 @@
 <div class="article-row">
     <div class="image">
         <a href="<?php echo postLink($post); ?>"><img
-                src="<?php echo showImage($post['image_id']) ?>"
+                src="<?php echo $post['image']; ?>"
                 alt="<?php echo $post['title'] ?>"></a>
     </div>
     <div class="content">
@@ -12,11 +12,11 @@
         <p class="summary"><?php echo $post['summary']; ?></p>
         <div class="details">
             <div class="author">
-                <img src="<?php echo showImage($post['avatar_id'],128,true); ?>"
+                <img src="<?php echo $post['thumb_128']; ?>"
                      alt="<?php echo $post['full_name']; ?>">
                 <span><?php echo $post['full_name']; ?></span>
             </div>
-            <div class="publish-date"><?php echo showDate($post['insert_date']); ?></div>
+            <div class="publish-date"><?php showDate($post['insert_date']); ?></div>
             <div><?php echo $post['visits']; ?>&nbsp;<?php lang('front.visit') ?></div>
         </div>
     </div>

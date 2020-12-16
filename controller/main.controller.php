@@ -144,8 +144,7 @@ class MainController extends MasterConfiguration
         if ($post_title != $title)
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post_title);
 
-        //load tags
-        $tags = PostModel::fetch_all_tags_by_post_id($post_id);
+        $post = PostModel::getInfoPost($post);
 
         //load comments
         $comments = CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish);
@@ -161,8 +160,9 @@ class MainController extends MasterConfiguration
         StatisticModel::visit($post_id);
         TemplateHelper::title($post['title']);
         TemplateHelper::description($post['summary']);
+        TemplateHelper::setProperty('og:image', $post['thumb_512']);
 
-        self::$template->set('tags', $tags);
+        self::$template->set('tags', $post['tags']);
         self::$template->set('cmCount', $cmCount);
         self::$template->set('comments', $treeComments);
         self::$template->set('post', $post);
