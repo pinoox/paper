@@ -47,7 +47,7 @@ function paper_menu($items = null)
     if (isset($items) && !empty($items)) {
         foreach ($items as $menu) {
 
-            $link = filter_var($menu['link'], FILTER_VALIDATE_URL)? url($menu['link']) : $menu['link'];
+            $link = !filter_var($menu['link'], FILTER_VALIDATE_URL)? url($menu['link']) : $menu['link'];
             echo '<a href="'.$link.'">'."\n";
                 if (!empty($menu['icon'])) {
                     echo '<i class="'.@$menu['icon'].'"></i>'."\n";

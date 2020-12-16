@@ -8,6 +8,7 @@
  * @author   Pinoox
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+
 namespace pinoox\app\com_pinoox_paper\controller;
 
 use pinoox\app\com_pinoox_paper\component\TemplateHelper;
@@ -35,9 +36,20 @@ class MainController extends MasterConfiguration
 
     public function _exception($page_key = null)
     {
-        if(empty($page_key))
-
         $this->page($page_key);
+    }
+
+    private function page($page_key)
+    {
+        PostModel::where_post_type(PostModel::page_type);
+        $page = PostModel::fetch_by_key($page_key, PostModel::publish_status);
+        if (empty($page)) self::error404();
+
+        //store visits
+        StatisticModel::visit($page['post_id']);
+
+        self::$template->set('page', $page);
+        self::$template->show('pages>page');
     }
 
     public function dist()
@@ -53,17 +65,16 @@ class MainController extends MasterConfiguration
 
     public function _main()
     {
-        self::$template->set('features', $this->featuresArticles());
-        self::$template->set('newest', $this->newestArticles());
+        $data = $this->getPosts();
+        self::$template->set('posts', $data['posts']);
+        self::$template->set('page', $data['page']);
         self::$template->show('pages>home');
     }
 
-    public function search($page = 1)
+    private function getPosts($page = 1, $form = null)
     {
-        $form = Request::get('q,tag',null,'!empty',true);
-
         $this->filterSearch($form);
-        $count = posts('all',[
+        $count = posts('all', [
             'count' => true,
         ]);
 
@@ -71,30 +82,41 @@ class MainController extends MasterConfiguration
         $pagination->setCurrentPage($page);
 
         $this->filterSearch($form);
-        $posts = posts('all');
+        $posts = posts('all',[
+            'limit' => $pagination->getArrayLimit(),
+        ]);
 
-        $query = Url::queryString();
-        $query = !empty($query)? '?'.$query : $query;
-
-        self::$template->set('fields', $form);
-        self::$template->set('count', $count);
-        self::$template->set('query', $query);
-        self::$template->set('page', $pagination);
-        self::$template->set('posts', $posts);
-        self::$template->show('pages>search');
+        return ['posts' => $posts, 'page' => $pagination, 'count' => $count];
     }
 
     private function filterSearch($form)
     {
-        if(isset($form['tag']))
+        if (isset($form['tag']))
             PostModel::where_tag_name($form['tag']);
-        if(isset($form['q']))
+        if (isset($form['q']))
             PostModel::where_search($form['q']);
+    }
+
+    public function search($page = 1)
+    {
+        $form = Request::get('q,tag', null, '!empty', true);
+
+        $query = Url::queryString();
+        $query = !empty($query) ? '?' . $query : $query;
+
+        $data = $this->getPosts($page, $form);
+
+        self::$template->set('fields', $form);
+        self::$template->set('count', $data['count']);
+        self::$template->set('query', $query);
+        self::$template->set('page', $data['page']);
+        self::$template->set('posts', $data['posts']);
+        self::$template->show('pages>search');
     }
 
     public function post($post_id, $title = null)
     {
-        if(func_num_args() > 2)
+        if (func_num_args() > 2)
             self::error404();
 
         //check post available for guest users
@@ -117,7 +139,7 @@ class MainController extends MasterConfiguration
         $tree = new Tree();
         $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');
 
-        if(!StatisticModel::is_visited($post_id))
+        if (!StatisticModel::is_visited($post_id))
             $post['visitors']++;
 
         $post['visits']++;
@@ -132,20 +154,8 @@ class MainController extends MasterConfiguration
         self::$template->show('pages>post');
     }
 
-    private function newestArticles()
+    public function sendContact()
     {
-        $limitCount = 10;
-        PostModel::where_status(PostModel::publish_status );
-        return PostModel::fetch_all($limitCount);
-    }
-
-    private function featuresArticles()
-    {
-        PostModel::where_status(PostModel::publish_status);
-        return PostModel::fetch_all(8);
-    }
-
-    public function sendContact(){
         if (!Request::isPost()) self::error404();
 
         $formData = Request::post('full_name,email,subject,message', null, '!empty');
@@ -198,22 +208,16 @@ class MainController extends MasterConfiguration
         Response::jsonMessage(rlang('front.error_to_insert_comment'), true);
     }
 
-    private function page($page_key)
-    {
-        PostModel::where_post_type(PostModel::page_type);
-        $page = PostModel::fetch_by_key($page_key, PostModel::publish_status);
-        if (empty($page)) self::error404();
-
-        //store visits
-        StatisticModel::visit($page['post_id']);
-
-        self::$template->set('page', $page);
-        self::$template->show('pages>page');
-    }
-
     public function contact()
     {
         self::$template->show('pages>contact');
+    }
+
+    private function newestArticles()
+    {
+        $limitCount = 10;
+        PostModel::where_status(PostModel::publish_status);
+        return PostModel::fetch_all($limitCount);
     }
 
 }
