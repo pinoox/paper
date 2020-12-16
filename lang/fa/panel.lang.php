@@ -61,6 +61,7 @@ return [
     'category' => 'دسته بندی',
     'menus' => 'فهرست',
     'settings' => 'تنظیمات',
+    'theme' => 'قالب',
     'theme_settings' => 'تنظیمات قالب',
     'templates' => 'قالب ها',
     'template_subtext' => 'لیست قالب های پیپر',

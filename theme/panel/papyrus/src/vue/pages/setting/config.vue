@@ -5,7 +5,7 @@
                 <div class="form-header">
                     <div class="title">
                         <div class="text">
-                            {{view.label}}
+                            {{view.label}} <span class="subtext">({{LANG.panel.theme}} {{$parent.theme_name}})</span>
                         </div>
                     </div>
                 </div>

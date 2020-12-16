@@ -61,6 +61,7 @@ return [
     'menus' => 'menus',
     'category' => 'category',
     'settings' => 'settings',
+    'theme' => 'template',
     'theme_settings' => 'template settings',
     'templates' => 'templates',
     'template_subtext' => 'paper templates list',
