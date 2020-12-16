@@ -306,6 +306,34 @@
 .nestable-handle {
     display: inline;
 }
+.badge-status {
+  padding: 4px !important;
+  white-space: nowrap !important;
+  color: #fff !important;
+  border-radius: 5px !important;
+  font-size: 0.7em !important;
+}
+.badge-status.publish {
+  background: #05b36f !important;
+}
+.badge-status.active {
+  background: #05b36f !important;
+}
+.badge-status.seen {
+  background: #05b36f !important;
+}
+.badge-status.draft {
+  background: #A5B8CE !important;
+}
+.badge-status.unseen {
+  background: #ed9703 !important;
+}
+.badge-status.pending {
+  background: #ed9703 !important;
+}
+.badge-status.suspend {
+  background: #db335a !important;
+}
 .m1-tb {
   margin: 1% 0;
 }

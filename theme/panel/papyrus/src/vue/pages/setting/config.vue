@@ -5,7 +5,7 @@
                 <div class="form-header">
                     <div class="title">
                         <div class="text">
-                            {{view.label}} <span class="subtext">({{LANG.panel.theme}} {{$parent.theme_name}})</span>
+                            {{view.label}} <span class="subtext" v-if="$parent.isTheme">({{LANG.panel.theme}} {{$parent.theme_name}})</span>
                         </div>
                     </div>
                 </div>

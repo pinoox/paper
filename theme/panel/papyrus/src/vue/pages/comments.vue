@@ -73,7 +73,7 @@
 
                                 </div>
                                 <div v-else-if="props.column.field === 'status'">
-                                    <span class="light">{{LANG.comment.status[props.row.status]}}</span>
+                                    <span class="badge-status" :class="props.row.status">{{LANG.comment.status[props.row.status]}}</span>
                                 </div>
                                 <div v-else-if="props.column.field === 'title'">
                                     <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
