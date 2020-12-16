@@ -39,4 +39,5 @@ return [
     'contact_menu' => 'تماس با ما',
     'header_code' => 'افزودن کد در هد سایت',
     'footer_code' => 'افزودن کد در فوتر سایت',
+    'auto_approval_comment' => 'تایید خودکار نظرات',
 ];

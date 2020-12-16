@@ -24,5 +24,11 @@ return [
                 'placeholder' => rlang('setting.enter_auto_save_time'),
             ]
         ],
+        [
+            'key' => 'comment_status',
+            'value' => false,
+            'label' => rlang('setting.auto_approval_comment'),
+            'type' => 'toggle',
+        ],
     ]
 ];
