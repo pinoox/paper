@@ -43,19 +43,19 @@ function hot_tags($limit = 10)
 
 function paper_menu($items = null)
 {
-    $items = empty($items)? setting('general.menu') : $items;
+    $items = empty($items) ? setting('general.menu') : $items;
     if (isset($items) && !empty($items)) {
         foreach ($items as $menu) {
 
-            $link = !filter_var($menu['link'], FILTER_VALIDATE_URL)? url($menu['link']) : $menu['link'];
-            echo '<a href="'.$link.'">'."\n";
-                if (!empty($menu['icon'])) {
-                    echo '<i class="'.@$menu['icon'].'"></i>'."\n";
-                } else if (!empty($menu['image'])) {
-                    echo '<img alt="'.@$menu['label'].'" src="'.furl($menu['image']).'"/>'."\n";
-               }
-                echo $menu['label']."\n";
-                echo '</a>'."\n";
-         }
+            $link = !filter_var($menu['link'], FILTER_VALIDATE_URL) ? url($menu['link']) : $menu['link'];
+            echo '<a href="' . $link . '">' . "\n";
+            if (!empty($menu['icon'])) {
+                echo '<i class="' . @$menu['icon'] . '"></i>' . "\n";
+            } else if (!empty($menu['image'])) {
+                echo '<img alt="' . @$menu['label'] . '" src="' . furl($menu['image']) . '"/>' . "\n";
+            }
+            echo $menu['label'] . "\n";
+            echo '</a>' . "\n";
+        }
     }
 }

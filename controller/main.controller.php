@@ -48,6 +48,10 @@ class MainController extends MasterConfiguration
         //store visits
         StatisticModel::visit($page['post_id']);
 
+        TemplateHelper::title($page['title']);
+        TemplateHelper::description($page['summary']);
+
+        TemplateHelper::title($page['title']);
         self::$template->set('page', $page);
         self::$template->show('pages>page');
     }
@@ -82,7 +86,7 @@ class MainController extends MasterConfiguration
         $pagination->setCurrentPage($page);
 
         $this->filterSearch($form);
-        $posts = posts('all',[
+        $posts = posts('all', [
             'limit' => $pagination->getArrayLimit(),
         ]);
 
@@ -104,7 +108,17 @@ class MainController extends MasterConfiguration
         $query = Url::queryString();
         $query = !empty($query) ? '?' . $query : $query;
 
+
         $data = $this->getPosts($page, $form);
+
+        $title =  rlang('front.search');
+        if(isset($form['tag']) && !empty($form['tag']))
+            $title .=  " (#".$form['tag'].")";
+        else if (isset($form['q']) && !empty($form['q']))
+            $title .=  " (".$form['q'].")";
+
+        TemplateHelper::title($title);
+
 
         self::$template->set('fields', $form);
         self::$template->set('count', $data['count']);
@@ -146,6 +160,7 @@ class MainController extends MasterConfiguration
 
         StatisticModel::visit($post_id);
         TemplateHelper::title($post['title']);
+        TemplateHelper::description($post['summary']);
 
         self::$template->set('tags', $tags);
         self::$template->set('cmCount', $cmCount);
@@ -210,14 +225,7 @@ class MainController extends MasterConfiguration
 
     public function contact()
     {
+        TemplateHelper::title(rlang('front.contact_us'));
         self::$template->show('pages>contact');
     }
-
-    private function newestArticles()
-    {
-        $limitCount = 10;
-        PostModel::where_status(PostModel::publish_status);
-        return PostModel::fetch_all($limitCount);
-    }
-
 }
