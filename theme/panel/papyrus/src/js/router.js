@@ -13,6 +13,13 @@ const router = new VueRouter({
     },
 });
 
+router.beforeEach((to, from, next) => {
+  if(!to.name)
+      next({name: 'dashboard'});
+  else
+      next();
+});
+
 // router.beforeEach((to, from, next) => {
 //     let token = localStorage.getItem('pinoox_user');
 //     console.log(to.name);
