@@ -62,7 +62,7 @@
                                             class="fa fa-trash"></i></span>
                                 </div>
                                 <div v-else-if="props.column.field === 'status'">
-                                    <span class="light">{{LANG.user.status[props.row.status]}}</span>
+                                    <span class="badge-status" :class="props.row.status">{{LANG.user.status[props.row.status]}}</span>
                                 </div>
                                 <div v-else>
                                 <span :class="props.column.style">

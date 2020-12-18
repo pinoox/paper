@@ -14,7 +14,6 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
-use pinoox\app\com_pinoox_paper\model\PaperUserModel;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
@@ -98,7 +97,7 @@ class UserController extends LoginConfiguration
     {
         UserModel::where_search($form['keyword']);
         UserModel::where_status($form['status']);
-        PaperUserModel::sort($form['sort']);
+        UserModel::sort($form['sort']);
     }
 
     private function getUserInfo($user)

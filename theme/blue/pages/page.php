@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
-                <div class="article">
+                <div class="article paper-article">
                     <h1 class="title" href=""><?php echo $page['title']; ?>
                         <?php if ($page['status'] !== 'publish') { ?>
                             <a href="<?php echo url('panel/page/edit/') ?><?php echo $page['page_id']; ?>"
@@ -17,7 +17,7 @@
 
             </div>
             <div class="col-md-3 offset-md-1">
-                <?php includeView('pages>sidebar', ['mostVisited' => $mostVisited]); ?>
+                <?php includeView('pages>sidebar'); ?>
             </div>
         </div>
 

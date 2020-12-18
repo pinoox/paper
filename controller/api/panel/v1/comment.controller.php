@@ -80,10 +80,8 @@ class CommentController extends LoginConfiguration
         return $comment;
     }
 
-    public function delete()
+    public function delete($comment_id)
     {
-        $comment_id = Request::inputOne('comment_id', null, '!empty');
-
         if (CommentModel::fetch_by_id($comment_id) != false) {
             $status = CommentModel::delete($comment_id);
             if ($status)

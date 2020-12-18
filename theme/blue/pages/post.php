@@ -52,10 +52,12 @@
                 <?php includeView('pages>sidebar'); ?>
             </div>
         </div>
+        <?php if($post['comment_status'] === 'open') {?>
         <div class="row">
             <div class="col-md-8">
                 <?php includeView('pages>comment>list', ['post_id' => $post['post_id']]); ?>
             </div>
         </div>
+        <?php } ?>
     </div>
 </div>
