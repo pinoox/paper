@@ -1,182 +1,178 @@
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-
 -- ----------------------------
--- Table article
+-- Table category
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}article`;
-CREATE TABLE `{dbprefix}article`  (
-  `article_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) UNSIGNED NULL DEFAULT NULL,
-  `image_id` int(11) NULL DEFAULT NULL,
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `summary` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
-  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `insert_date` datetime(0) NULL DEFAULT NULL,
-  `feature` tinyint(1) NULL DEFAULT 0,
-  `visitors` int(11) NULL DEFAULT 0,
-  `visits` int(11) NULL DEFAULT 0,
-  PRIMARY KEY (`article_id`) USING BTREE,
-  INDEX `{dbprefix}article_user_id`(`user_id`) USING BTREE,
-  INDEX `{dbprefix}artilce_image_id`(`image_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records article
--- ----------------------------
-INSERT INTO `{dbprefix}article` VALUES (1, NULL, 0, 'سلاااام به پینوکس خوش اومدی :)', 'اینجا اپلیکیشن paper پینوکس هست', '<p>اپلیکیشن paper با پلتفرم اوپن سورس توسعه وب پینوکس به منظور ایجاد وبسایت محتوایی، خبری، شخصی و وبسایت هایی از این دست توسعه داده شده و شما می توانید از تمامی امکانات آن به رایگان بهره مند شوید.</p>', 'publish', NULL, 0, 0, 0);
-
--- ----------------------------
--- Table tag
--- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}tag`;
-CREATE TABLE `{dbprefix}tag`  (
-  `tag_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `tag_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`tag_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table article_tag
--- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}article_tag`;
-CREATE TABLE `{dbprefix}article_tag`  (
-  `tag_id` int(10) UNSIGNED NOT NULL,
-  `article_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`tag_id`, `article_id`) USING BTREE,
-  INDEX `article_tag_article_id`(`article_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `{dbprefix}category`;
+CREATE TABLE `{dbprefix}category`  (
+  `cat_id` int(0) NOT NULL AUTO_INCREMENT,
+  `cat_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `parent_id` int(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`cat_id`) USING BTREE,
+  INDEX `{dbprefix}category_parent_id`(`parent_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}category_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}category` (`cat_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table comment
 -- ----------------------------
 DROP TABLE IF EXISTS `{dbprefix}comment`;
 CREATE TABLE `{dbprefix}comment`  (
-  `comment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) UNSIGNED NULL DEFAULT NULL,
-  `article_id` int(10) UNSIGNED NULL DEFAULT NULL,
-  `user_id` int(10) UNSIGNED NULL DEFAULT NULL,
-  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `mobile` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `comment_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `parent_id` int(0) UNSIGNED NULL DEFAULT NULL,
+  `user_id` int(0) UNSIGNED NULL DEFAULT NULL,
+  `post_id` int(0) UNSIGNED NULL DEFAULT NULL,
   `full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `message` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `mobile` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `subject` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `message` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `insert_date` datetime(0) NULL DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   PRIMARY KEY (`comment_id`) USING BTREE,
+  INDEX `{dbprefix}comment_post_id`(`post_id`) USING BTREE,
   INDEX `{dbprefix}comment_user_id`(`user_id`) USING BTREE,
-  INDEX `{dbprefix}comment_parent_id`(`parent_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+  INDEX `{dbprefix}comment_parent_id`(`parent_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}comment_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `{dbprefix}comment_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `{dbprefix}comment_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table contact
 -- ----------------------------
 DROP TABLE IF EXISTS `{dbprefix}contact`;
 CREATE TABLE `{dbprefix}contact`  (
-  `contact_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `contact_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `subject` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `mobile` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `message` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `message` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `insert_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`contact_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table post
+-- ----------------------------
+DROP TABLE IF EXISTS `{dbprefix}post`;
+CREATE TABLE `{dbprefix}post`  (
+  `post_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `hash_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `user_id` int(0) UNSIGNED NULL DEFAULT NULL,
+  `cat_id` int(0) NULL DEFAULT NULL,
+  `image_id` int(0) NULL DEFAULT NULL,
+  `post_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `summary` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `context` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
+  `post_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `comment_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'open',
+  `insert_date` datetime(0) NULL DEFAULT NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL,
+  `publish_date` datetime(0) NULL DEFAULT NULL,
+  `characters` int(0) UNSIGNED NOT NULL DEFAULT 0,
+  `words` int(0) UNSIGNED NOT NULL DEFAULT 0,
+  `visits` bigint(0) UNSIGNED NOT NULL DEFAULT 0,
+  `visitors` bigint(0) UNSIGNED NOT NULL DEFAULT 0,
+  `time_tracking` int(0) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`post_id`) USING BTREE,
+  INDEX `{dbprefix}post_image_id`(`image_id`) USING BTREE,
+  INDEX `{dbprefix}post_user_id`(`user_id`) USING BTREE,
+  INDEX `{dbprefix}post_cat_id`(`cat_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}post_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `{dbprefix}category` (`cat_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `{dbprefix}post_ibfk_2` FOREIGN KEY (`image_id`) REFERENCES `pincore_file` (`file_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `{dbprefix}post_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table page
+-- Table post_draft
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}page`;
-CREATE TABLE `{dbprefix}page`  (
-  `page_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `page_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
-  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+DROP TABLE IF EXISTS `{dbprefix}post_draft`;
+CREATE TABLE `{dbprefix}post_draft`  (
+  `post_id` int(0) UNSIGNED NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `context` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL,
+  `synced` tinyint(1) NOT NULL DEFAULT 0,
+  `characters` int(0) NOT NULL DEFAULT 0,
+  `words` int(0) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`post_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}post_draft_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table post_history
+-- ----------------------------
+DROP TABLE IF EXISTS `{dbprefix}post_history`;
+CREATE TABLE `{dbprefix}post_history`  (
+  `ph_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `post_id` int(0) UNSIGNED NULL DEFAULT NULL,
+  `user_id` int(0) UNSIGNED NULL DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `context` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
   `insert_date` datetime(0) NULL DEFAULT NULL,
-  `visitors` int(11) NULL DEFAULT 0,
-  `visits` int(11) NULL DEFAULT 0,
-  PRIMARY KEY (`page_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ph_id`) USING BTREE,
+  INDEX `{dbprefix}post_history_post_id`(`post_id`) USING BTREE,
+  INDEX `{dbprefix}post_history_user_id`(`user_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}post_history_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `{dbprefix}post_history_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records page
+-- Table post_tag
 -- ----------------------------
-INSERT INTO `{dbprefix}page` VALUES (1, 'about', 'درباره ما', '<p>با اپلیکیشن paper می توانید وبلاگ شخصی خود را به رایگان و به آسانی ایجاد کنید.</p><p>این صفحه را می توانید از طریق پنل مدیریت و منوی<strong> برگه ها</strong> ویرایش کنید</p>', 'publish', null, 0, 0);
+DROP TABLE IF EXISTS `{dbprefix}post_tag`;
+CREATE TABLE `{dbprefix}post_tag`  (
+  `post_id` int(0) UNSIGNED NOT NULL,
+  `tag_id` int(0) UNSIGNED NOT NULL,
+  PRIMARY KEY (`post_id`, `tag_id`) USING BTREE,
+  INDEX `{dbprefix}post_tag_tag_id`(`tag_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}post_tag_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `{dbprefix}post_tag_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `{dbprefix}tag` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table settings
+-- Table structure for {dbprefix}statistic
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}settings`;
-CREATE TABLE `{dbprefix}settings`  (
-  `settings_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `s_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `s_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
-  `s_dataset` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
-  `s_view` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `s_order` int(11) NULL DEFAULT NULL,
-  `s_group` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  PRIMARY KEY (`settings_id`) USING BTREE,
-  UNIQUE INDEX `s_key`(`s_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records settings
--- ----------------------------
-INSERT INTO `{dbprefix}settings` VALUES (1, 'site_title', 'paper',null,'input', 1, 'general');
-INSERT INTO `{dbprefix}settings` VALUES (2, 'site_description', 'launch a personal blog',null,'input', 2, 'general');
-INSERT INTO `{dbprefix}settings` VALUES (3, 'newest_article_count', '10',null,'input:number', 1, 'articles');
-INSERT INTO `{dbprefix}settings` VALUES (4, 'most_visited_count', '4',null, 'input:number', 2, 'articles');
-INSERT INTO `{dbprefix}settings` VALUES (5, 'hot_tags_count', '12',null, 'input:number', 3, 'articles');
-INSERT INTO `{dbprefix}settings` VALUES (6, 'twitter_link', 'https://twitter.com/pinoox_com', null, 'input', 1, 'social');
-INSERT INTO `{dbprefix}settings` VALUES (7, 'instagram_link', 'https://instagram.com/pinoox_fa/',null, 'input', 2, 'social');
-INSERT INTO `{dbprefix}settings` VALUES (8, 'telegram_link', 'https://t.me/s/pinoox',null, 'input', 3, 'social');
-INSERT INTO `{dbprefix}settings` VALUES (9, 'site_lang', 'fa','{"fa":"فارسی","en":"english"}', 'select', 3, 'general');
+DROP TABLE IF EXISTS `{dbprefix}statistic`;
+CREATE TABLE `{dbprefix}statistic`  (
+  `stat_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `post_id` int(0) UNSIGNED NULL DEFAULT NULL,
+  `post_type` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `visitors` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '1',
+  `visits` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '0',
+  `insert_date` date NULL DEFAULT NULL,
+  `json_data` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
+  PRIMARY KEY (`stat_id`) USING BTREE,
+  INDEX `{dbprefix}statistic_post_id`(`post_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}statistic_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table menu
+-- Table tag
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}menu`;
-CREATE TABLE `{dbprefix}menu`  (
-  `menu_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `menu_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `link` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `{dbprefix}tag`;
+CREATE TABLE `{dbprefix}tag`  (
+  `tag_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `tag_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`tag_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records menu
+-- Table user_setting
 -- ----------------------------
-INSERT INTO `{dbprefix}menu` VALUES (1, 'primary', 'صفحه اصلی', '', 'fa fa-home');
-INSERT INTO `{dbprefix}menu` VALUES (2, 'primary', 'درباره ما', 'about', 'fa fa-info');
-INSERT INTO `{dbprefix}menu` VALUES (3, 'primary', 'تماس با ما', 'contact', 'fa fa-phone');
-INSERT INTO `{dbprefix}menu` VALUES (5, 'footer', 'تماس با ما', 'contact', '');
-INSERT INTO `{dbprefix}menu` VALUES (6, 'footer', 'درباره ما', 'about', '');
-
-
--- ----------------------------
--- Foreign keys
--- ----------------------------
-ALTER TABLE `{dbprefix}article`
-    ADD CONSTRAINT `{dbprefix}article_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
-ALTER TABLE `{dbprefix}article`
-    ADD CONSTRAINT `{dbprefix}artilce_image_id` FOREIGN KEY (`image_id`) REFERENCES `pincore_file` (`file_id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
-ALTER TABLE `{dbprefix}comment`
-    ADD CONSTRAINT `{dbprefix}comment_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `{dbprefix}comment`
-    ADD CONSTRAINT `{dbprefix}comment_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `{dbprefix}article_tag`
-    ADD CONSTRAINT `{dbprefix}article_tag_article_id` FOREIGN KEY (`article_id`) REFERENCES `{dbprefix}article` (`article_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-    ALTER TABLE `{dbprefix}article_tag`
-    ADD CONSTRAINT `{dbprefix}article_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `{dbprefix}tag` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+DROP TABLE IF EXISTS `{dbprefix}user_setting`;
+CREATE TABLE `{dbprefix}user_setting`  (
+  `user_id` int(0) UNSIGNED NOT NULL,
+  `json_data` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE,
+  CONSTRAINT `{dbprefix}user_setting_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

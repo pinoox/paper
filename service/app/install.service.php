@@ -13,8 +13,8 @@
 namespace pinoox\app\com_pinoox_paper\service\app;
 
 use pinoox\app\com_pinoox_paper\model\PostModel;
+use pinoox\app\com_pinoox_paper\model\UserModel;
 use pinoox\component\interfaces\ServiceInterface;
-use pinoox\component\Url;
 use pinoox\component\User;
 use pinoox\model\FileModel;
 
@@ -38,7 +38,7 @@ class InstallService implements ServiceInterface
         ]);
 
         // add post
-        $image = Url::upload($image_id);
+        //$image = Url::upload($image_id);
         //$context = '<figure class="image image_resized" style="width:60%;"><img src="' . $image . '"></figure>';
         $context = '';
         $texts = rlang('db.welcome_post.context');
@@ -51,10 +51,12 @@ class InstallService implements ServiceInterface
         $characters = rlang('db.welcome_post.characters');
         $status = PostModel::publish_status;
 
+        $user = UserModel::fetch_by_app();
         $data = [
             'title' => $title,
             'context' => $context,
             'hash_id' => $hash_id,
+            'user_id' => isset($user['user_id']) ? $user['user_id'] : User::get('user_id'),
             'summary' => null,
             'time' => 0,
             'characters' => $characters,
