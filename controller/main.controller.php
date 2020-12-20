@@ -17,7 +17,6 @@ use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\HelperHeader;
-use pinoox\component\HelperString;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -140,11 +139,12 @@ class MainController extends MasterConfiguration
 
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) self::error404();
-        $post_title = HelperString::replaceSpace($post['title']);
-        if ($post_title != $title)
-            Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post_title);
 
         $post = PostModel::getInfoPost($post);
+
+        if ($post['post_key'] != $title)
+            Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post['post_key']);
+
         $isOpenComment = $post['comment_status'] === PostModel::open_status;
 
         //load comments
