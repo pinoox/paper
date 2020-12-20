@@ -39,6 +39,7 @@ class MasterConfiguration implements ControllerInterface
 
     public function __construct()
     {
+        User::type(User::COOKIE);
         $this->initTemplate();
         $this->setLang();
         $this->getAssets();
