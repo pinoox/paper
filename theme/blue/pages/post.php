@@ -18,7 +18,7 @@
                             <span><?php echo $post['full_name']; ?></span>
                         </div>
                         <div class="publish-date"><?php echo showDate($post['insert_date']); ?></div>
-                        <div><?php echo $post['visits'] + 1; ?>&nbsp;<?php lang('front.visit') ?></div>
+                        <div><?php echo $post['visits']; ?>&nbsp;<?php lang('front.visit') ?></div>
                     </div>
                     <div class="image">
                         <img src="<?php echo showImage($post['image_id']); ?>"
@@ -49,13 +49,15 @@
 
             </div>
             <div class="col-md-3 offset-md-1">
-                <?php includeView('pages>sidebar', ['mostVisited' => $mostVisited]); ?>
+                <?php includeView('pages>sidebar'); ?>
             </div>
         </div>
+        <?php if($post['comment_status'] === 'open') {?>
         <div class="row">
             <div class="col-md-8">
                 <?php includeView('pages>comment>list', ['post_id' => $post['post_id']]); ?>
             </div>
         </div>
+        <?php } ?>
     </div>
 </div>

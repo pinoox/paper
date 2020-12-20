@@ -31,7 +31,7 @@ class CommentModel extends PaperDatabase
             'email' => isset($data['email']) ? $data['email'] : null,
             'mobile' => isset($data['mobile']) ? $data['mobile'] : null,
             'message' => $data['message'],
-            'status' => self::status_pending,
+            'status' => setting('write.comment_status')? self::status_publish : self::status_pending,
             'insert_date' => Date::g('Y-m-d H:i:s'),
         ]);
     }

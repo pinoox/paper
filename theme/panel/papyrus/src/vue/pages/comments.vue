@@ -73,7 +73,7 @@
 
                                 </div>
                                 <div v-else-if="props.column.field === 'status'">
-                                    <span class="light">{{LANG.comment.status[props.row.status]}}</span>
+                                    <span class="badge-status" :class="props.row.status">{{LANG.comment.status[props.row.status]}}</span>
                                 </div>
                                 <div v-else-if="props.column.field === 'title'">
                                     <router-link :to="{name:'write',params:{'post_id':props.row.post_id}}">
@@ -216,9 +216,9 @@
                 });
             },
             remove(row, index) {
-                let params = {contact_id: row.contact_id};
+                console.log(row);
                 this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
-                    this.$http.post(this.URL.API + 'comment/delete/', params).then((json) => {
+                    this.$http.get(this.URL.API + 'comment/delete/'+row.comment_id).then((json) => {
                         if (this._messageResponse(json.data)) {
                             this.$delete(this.items, index)
                         }

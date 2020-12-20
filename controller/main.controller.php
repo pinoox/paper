@@ -8,16 +8,14 @@
  * @author   Pinoox
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+
 namespace pinoox\app\com_pinoox_paper\controller;
 
 use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
-use pinoox\app\com_pinoox_paper\model\PageModel;
-use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
-use pinoox\component\Cookie;
 use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
 use pinoox\component\Pagination;
@@ -38,9 +36,24 @@ class MainController extends MasterConfiguration
 
     public function _exception($page_key = null)
     {
-        if(empty($page_key))
-
         $this->page($page_key);
+    }
+
+    private function page($page_key)
+    {
+        PostModel::where_post_type(PostModel::page_type);
+        $page = PostModel::fetch_by_key($page_key, PostModel::publish_status);
+        if (empty($page)) self::error404();
+
+        //store visits
+        StatisticModel::visit($page['post_id']);
+
+        TemplateHelper::title($page['title']);
+        TemplateHelper::description($page['summary']);
+
+        TemplateHelper::title($page['title']);
+        self::$template->set('page', $page);
+        self::$template->show('pages>page');
     }
 
     public function dist()
@@ -56,66 +69,68 @@ class MainController extends MasterConfiguration
 
     public function _main()
     {
-        self::$template->set('features', $this->featuresArticles());
-        self::$template->set('newest', $this->newestArticles());
+        $data = $this->getPosts();
+        self::$template->set('posts', $data['posts']);
+        self::$template->set('page', $data['page']);
         self::$template->show('pages>home');
     }
 
-    public function search($pageIndex = 1)
+    private function getPosts($page = 1, $form = null)
     {
-        $posts = [];
-        $page = null;
-        $queryValue = null;
-        $resultCount = 0;
-        $query = Url::queryString();
+        $this->filterSearch($form);
+        $count = posts('all', [
+            'count' => true,
+        ]);
 
-        $parts = explode('=', $query);
-        if (empty($query)) self::error404();
+        $pagination = new Pagination($count, 10);
+        $pagination->setCurrentPage($page);
 
-        if (!is_numeric($pageIndex))
-            $query = $pageIndex;
+        $this->filterSearch($form);
+        $posts = posts('all', [
+            'limit' => $pagination->getArrayLimit(),
+        ]);
 
-        $resultLimit = 4;
-        $queryType = $parts[0];
-        $queryValue = $parts[1];
-        if (!empty($queryValue)) {
-            if ($queryType == 'q') {
-                $this->filterSearch($queryType, $queryValue);
-                $resultCount = PostModel::fetch_all(null, true);
-                $page = new Pagination($resultCount, $resultLimit);
-                $page->setCurrentPage($pageIndex);
-                $this->filterSearch($queryType, $queryValue);
-                $posts = PostModel::fetch_all($page->getArrayLimit());
-            }
-            if ($queryType == 'tag') {
-                $this->filterSearch();
-                $resultCount = PostModel::fetch_by_tag_name($queryValue, null, true);
-                $page = new Pagination($resultCount, $resultLimit);
-                $page->setCurrentPage($pageIndex);
-                $this->filterSearch();
-                $posts = PostModel::fetch_by_tag_name($queryValue, $page->getArrayLimit());
-            }
-        }
-
-        self::$template->set('resultCount', $resultCount);
-        self::$template->set('queryString', $query);
-        self::$template->set('queryValue', $queryValue);
-        self::$template->set('page', $page);
-        self::$template->set('posts', $posts);
-        self::$template->show('pages>search');
+        return ['posts' => $posts, 'page' => $pagination, 'count' => $count];
     }
 
-    private function filterSearch($type = null, $query = null)
+    private function filterSearch($form)
     {
-        if ($type == 'q') {
-            PostModel::where_search($query);
-        }
-        PostModel::where_status(PostModel::publish_status);
+        if (isset($form['tag']))
+            PostModel::where_tag_name($form['tag']);
+        if (isset($form['q']))
+            PostModel::where_search($form['q']);
+    }
+
+    public function search($page = 1)
+    {
+        $form = Request::get('q,tag', null, '!empty', true);
+
+        $query = Url::queryString();
+        $query = !empty($query) ? '?' . $query : $query;
+
+
+        $data = $this->getPosts($page, $form);
+
+        $title = rlang('front.search');
+        if (isset($form['tag']) && !empty($form['tag']))
+            $title .= " (#" . $form['tag'] . ")";
+        else if (isset($form['q']) && !empty($form['q']))
+            $title .= " (" . $form['q'] . ")";
+
+        TemplateHelper::title($title);
+
+
+        self::$template->set('fields', $form);
+        self::$template->set('count', $data['count']);
+        self::$template->set('query', $query);
+        self::$template->set('page', $data['page']);
+        self::$template->set('posts', $data['posts']);
+        self::$template->show('pages>search');
     }
 
     public function post($post_id, $title = null)
     {
-        if(func_num_args() > 2)
+        if (func_num_args() > 2)
             self::error404();
 
         //check post available for guest users
@@ -129,45 +144,34 @@ class MainController extends MasterConfiguration
         if ($post_title != $title)
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post_title);
 
-        //load tags
-        $tags = PostModel::fetch_all_tags_by_post_id($post_id);
+        $post = PostModel::getInfoPost($post);
+        $isOpenComment = $post['comment_status'] === PostModel::open_status;
 
         //load comments
-        $comments = CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish);
-        $cmCount = count($comments);
+        $comments = $isOpenComment ? CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish) : null;
+        $cmCount = $isOpenComment ? count($comments) : 0;
         $tree = new Tree();
-        $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');
+        $treeComments = $isOpenComment ? $tree->createTree($comments, 'parent_id', 'comment_id') : null;
 
-        //store visits
-        //PostModel::update_visit($post_id);
-        $key = '_pinoox_post_' . $post_id;
-        if (Cookie::get($key) != 'visited') {
-        //    PostModel::update_visitor($post_id);
-            Cookie::set($key, 'visited', 60 * 24);//expire after 1 day
-        }
+        if (!StatisticModel::is_visited($post_id))
+            $post['visitors']++;
 
+        $post['visits']++;
+
+        StatisticModel::visit($post_id);
         TemplateHelper::title($post['title']);
-        self::$template->set('tags', $tags);
+        TemplateHelper::description($post['summary']);
+        TemplateHelper::setProperty('og:image', $post['thumb_512']);
+
+        self::$template->set('tags', $post['tags']);
         self::$template->set('cmCount', $cmCount);
         self::$template->set('comments', $treeComments);
         self::$template->set('post', $post);
         self::$template->show('pages>post');
     }
 
-    private function newestArticles()
+    public function sendContact()
     {
-        $limitCount = 10;
-        PostModel::where_status(PostModel::publish_status );
-        return PostModel::fetch_all($limitCount);
-    }
-
-    private function featuresArticles()
-    {
-        PostModel::where_status(PostModel::publish_status);
-        return PostModel::fetch_all(8);
-    }
-
-    public function sendContact(){
         if (!Request::isPost()) self::error404();
 
         $formData = Request::post('full_name,email,subject,message', null, '!empty');
@@ -220,22 +224,9 @@ class MainController extends MasterConfiguration
         Response::jsonMessage(rlang('front.error_to_insert_comment'), true);
     }
 
-    private function page($page_key)
-    {
-        PostModel::where_post_type(PostModel::page_type);
-        $page = PostModel::fetch_by_key($page_key, PostModel::publish_status);
-        if (empty($page)) self::error404();
-
-        //store visits
-        StatisticModel::visit($page['post_id']);
-
-        self::$template->set('page', $page);
-        self::$template->show('pages>page');
-    }
-
     public function contact()
     {
+        TemplateHelper::title(rlang('front.contact_us'));
         self::$template->show('pages>contact');
     }
-
 }

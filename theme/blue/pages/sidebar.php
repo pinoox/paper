@@ -1,9 +1,11 @@
 <div class="sidebar">
-    <?php if (false) { ?>
         <div class="most-visit">
             <h2 class="section-title"><?php lang('front.most_viewed_articles'); ?></h2>
             <div class="list">
-                <?php foreach ($mostVisited as $i) { ?>
+                <?php foreach (posts('*',[
+                        'limit' => 6,
+                        'order' => 'visits',
+                ]) as $i) { ?>
                     <a href="<?php echo postLink($i); ?>">
                         <span class="title"><?php echo $i['title']; ?></span>
                         <span class="details">
@@ -15,18 +17,15 @@
 
             </div>
         </div>
-    <?php } ?>
 
 
     <div class="hot-tags">
-        <?php if (false) { ?>
             <h2 class="section-title"><?php lang('front.hot_tags'); ?></h2>
             <div class="list">
-                <?php foreach ($hotTags as $i) { ?>
+                <?php foreach (hot_tags(16) as $i) { ?>
                     <a href="<?php echo $_app ?>search/?tag=<?php echo $i['tag_name']; ?>">#<?php echo $i['tag_name']; ?></a>
                 <?php } ?>
             </div>
-        <?php } ?>
     </div>
 
     <div class="follow-us">

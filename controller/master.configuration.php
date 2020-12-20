@@ -52,6 +52,7 @@ class MasterConfiguration implements ControllerInterface
         self::$template->set('_app', url());
         self::$template->set('_direction', rlang('front.direction'));
         self::$template->set('_translate', Lang::current());
+        self::$template->set('_menu', setting('general.menu'));
         self::$template->setPageTitle(setting('general.site_title'));
         TemplateHelper::initData();
     }

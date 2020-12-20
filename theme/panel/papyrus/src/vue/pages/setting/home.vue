@@ -1,15 +1,5 @@
 <template>
     <div class="page p-0">
-        <div v-if="false" class="menubar">
-            <div class="items">
-                <router-link exact-active-class="active" :to="{name:'setting'}" tag="div" class="item">
-                    {{LANG.post.write}}
-                </router-link>
-                <router-link exact-active-class="active" :to="{name:'write'}" tag="div" class="item">
-                    {{LANG.post.write}}
-                </router-link>
-            </div>
-        </div>
         <header>
             <div class="form-header">
                 <div class="title">
@@ -34,18 +24,6 @@
                         <i :class="view.icon"></i>
                         <span class="text">{{view.label}}</span>
                     </router-link>
-                    <div class="item" @click="goTo('general')">
-                        <i class="fa fa-cog"></i>
-                        <span class="text">{{LANG.panel.general_settings}}</span>
-                    </div>
-                    <div class="item" @click="goTo('write')">
-                        <i class="fa fa-keyboard"></i>
-                        <span class="text">{{LANG.panel.write_settings}}</span>
-                    </div>
-                    <div @click="goTo('themes')" class="item">
-                        <i class="fas fa-palette"></i>
-                        <span class="text">{{LANG.panel.themes}}</span>
-                    </div>
                 </div>
             </div>
         </simplebar>

@@ -228,6 +228,13 @@ class PostModel extends PaperDatabase
         return $post;
     }
 
+    public static function fetch_tags_by_post_id($post_id)
+    {
+        self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id');
+        self::$db->where('pt.post_id', $post_id);
+        return self::$db->get(self::post_tag . ' pt');
+    }
+
     public static function delete($post_id)
     {
         self::$db->where('post_id', $post_id);
@@ -246,10 +253,10 @@ class PostModel extends PaperDatabase
         if (empty($posts) || !is_array($posts))
             return [];
 
-        self::$db->orderBy('p.post_id', 'ASC',$posts);
+        self::$db->orderBy('p.post_id', 'ASC', $posts);
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->where('p.post_id', $posts, 'IN');
-        return self::$db->get(self::post . ' p',null, 'p.*,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
+        return self::$db->get(self::post . ' p', null, 'p.*,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
     }
 
     public static function fetch_all($limit = null, $isCount = false)
@@ -259,6 +266,60 @@ class PostModel extends PaperDatabase
         $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.visits,p.visitors,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
         if ($isCount) return self::$db->count;
         return $result;
+    }
+
+    public static function fetcher($ids = [], $option = [])
+    {
+        $limit = isset($option['limit']) ? $option['limit'] : null;
+        $isCount = isset($option['count']) ? $option['count'] : false;
+
+        if ($ids !== 'ALL' && $ids !== 'all' && $ids !== '*')
+            self::buildWhereForFetcher($ids, $option);
+
+        $columns = 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.cat_id,p.characters,p.words,p.visits,p.visitors,u.username,u.avatar_id';
+
+        self::$db->groupBy($columns);
+        self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
+        self::$db->join(self::post_tag . ' pt', 'pt.post_id=p.post_id', 'LEFT');
+        self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id', 'LEFT');
+        $result = self::$db->get(self::post . ' p', $limit, $columns . ',CONCAT(u.fname," ",u.lname) full_name');
+        if ($isCount) return self::$db->count;
+        return $result;
+    }
+
+    private static function buildWhereForFetcher($ids, $option)
+    {
+        $key = isset($option['key']) ? $option['key'] : 'post_id';
+        $where = isset($option['where']) ? $option['where'] : 'IN';
+        $default_order = ($key === 'post_id') ? 'post_id' : 'insert_date';
+        $default_order_type = ($key === 'post_id') ? 'ASC' : 'DESC';
+        $order = isset($option['order']) ? $option['order'] : $default_order;
+        $order = 'p.' . $order;
+        $order_type = isset($option['order_type']) ? $option['order_type'] : $default_order_type;
+        if (HelperString::has(strtoupper($where), 'IN'))
+            $ids = is_array($ids) ? $ids : [$ids];
+        if (is_array($key)) {
+            $keys = [];
+            $values = [];
+            foreach ($key as $k) {
+                $keys[] = ($k === 'tag_id' || $k === 'tag_name') ? 't.' . $k : 'p.' . $k;
+                $values[] = $ids;
+            }
+            $key = implode(' ' . $where . ' ? OR ', $keys);
+            $key = '(' . $key;
+            $key .= ' ' . $where . ' ?)';
+        } else {
+            $key = ($key === 'tag_id' || $key === 'tag_name') ? 't.' . $key : 'p.' . $key;
+            $values = $ids;
+        }
+
+        self::$db->where($key, $values, $where);
+
+
+        if (strtoupper($where) === 'IN')
+            self::$db->orderBy($order, $order_type, $ids);
+        else
+            self::$db->orderBy($order, $order_type);
     }
 
     public static function insert_tags($post_id, $tags)
@@ -306,14 +367,7 @@ class PostModel extends PaperDatabase
         return $isCount ? self::$db->count : $tags;
     }
 
-    public static function fetch_tags_by_post_id($post_id)
-    {
-        self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id');
-        self::$db->where('pt.post_id', $post_id);
-        return self::$db->get(self::post_tag . ' pt');
-    }
-
-    public static function where_tag_name($keyword, $useJoin = false)
+    public static function search_tag_name($keyword, $useJoin = false)
     {
         if (!empty($keyword)) {
             if ($useJoin) {
@@ -325,6 +379,11 @@ class PostModel extends PaperDatabase
             $keyword = '%' . $keyword . '%';
             self::$db->where('t.tag_name LIKE ?', [$keyword]);
         }
+    }
+
+    public static function where_tag_name($tag)
+    {
+        self::$db->where('t.tag_name', $tag);
     }
 
     public static function getHashId($length = 6)
@@ -411,19 +470,17 @@ class PostModel extends PaperDatabase
         return [];
     }
 
-    public static function fetch_by_tag_name($queryValue, $getArrayLimit)
-    {
-        return [];
-    }
-
     public static function fetch_most_visited($limitMostVisited)
     {
         return [];
     }
 
-    public static function hot_tags($limitHotTags)
+    public static function hot_tags($limit = null)
     {
-        return [];
+        self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id', 'INNER');
+        self::$db->orderBy('count_use', 'DESC');
+        self::$db->groupBy('t.tag_id,t.tag_name');
+        return self::$db->get(self::post_tag . ' pt', $limit, 't.tag_id,t.tag_name,count(t.tag_id) count_use');
     }
 
     public static function fetch_author_info($post_id)

@@ -21,19 +21,22 @@ use pinoox\component\HelperString;
 class StatisticModel extends PaperDatabase
 {
 
-    public static function insert($post_id, $data)
+    const keyVisited = 'paper_visited_';
+
+    public static function insert($post, $data)
     {
         self::startTransaction();
 
         $insert_id = self::$db->insert(self::statistic, [
-            'post_id' => $post_id,
+            'post_id' => $post['post_id'],
+            'post_type' => $post['post_type'],
             'visitors' => 1,
             'visits' => 1,
             'insert_date' => Date::g('Y-m-d'),
             'json_data' => isset($data['json_data']) ? $data['json_data'] : null,
         ]);
 
-        self::$db->where('post_id', $post_id);
+        self::$db->where('post_id', $post['post_id']);
         $status = self::$db->update(self::post, [
             'visits' => self::$db->inc(),
             'visitors' => self::$db->inc(),
@@ -131,7 +134,7 @@ class StatisticModel extends PaperDatabase
                 self::update_stats($post_id, $data);
             }
         } else {
-            self::insert($post_id, $data);
+            self::insert($post, $data);
         }
         self::set_visited($post_id);
     }
@@ -151,7 +154,7 @@ class StatisticModel extends PaperDatabase
 
     public static function is_visited($post_id)
     {
-        $value = Cookie::get('visited_' . $post_id);
+        $value = Cookie::get(self::keyVisited . $post_id);
         if (empty($value)) return false;
 
         return true;
@@ -159,14 +162,19 @@ class StatisticModel extends PaperDatabase
 
     public static function set_visited($post_id)
     {
-        $endToday = strtotime(Date::g('Y-m-d 0:0:0', '+1 days'));
-        Cookie::set('visited_' . $post_id, '1', $endToday);
+        if(self::is_visited($post_id))
+            return;
+        $endToday = Date::g('Y-m-d 00:00:00','+1 days');
+        $endToday = strtotime($endToday) - time();
+        Cookie::set(self::keyVisited . $post_id, '1', $endToday);
     }
 
     public static function fetch_visits($post_id, $days = null)
     {
         if (!is_null($post_id))
             self::$db->where('s.post_id', $post_id);
+
+        self::$db->where('s.post_type', PostModel::post_type);
 
         if (!is_null($days)) {
             $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
@@ -188,6 +196,8 @@ class StatisticModel extends PaperDatabase
         $q = is_null($post_id) ? 'SUM(s.visitors) value' : 'COUNT(s.stat_id) value';
         if (!is_null($post_id))
             self::$db->where('s.post_id', $post_id);
+
+        self::$db->where('s.post_type', PostModel::post_type);
 
         if (!is_null($days)) {
             $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');

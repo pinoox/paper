@@ -8,13 +8,17 @@
                     <h2 class="section-title"><?php lang('front.new_articles'); ?>
                     </h2>
 
-                    <?php if (isset($newest) && !empty($newest)) { ?>
-                        <?php foreach ($newest as $i) { ?>
+                    <?php if (isset($posts) && !empty($posts)) { ?>
+                        <?php foreach ($posts as $i) { ?>
                             <?php includeView('pages>post_row', ['post' => $i]); ?>
                         <?php } ?>
                     <?php } ?>
                 </div>
-
+                <div class="paging">
+                    <?php if (!empty($posts)) { ?>
+                        <?php showPage($page, 'href="' . $_app . 'search/[page]/"'); ?>
+                    <?php } ?>
+                </div>
             </div>
             <div class="col-md-3 offset-md-1">
                 <?php includeView('pages>sidebar', [

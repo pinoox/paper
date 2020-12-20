@@ -145,7 +145,9 @@
                         field: (item) => {
                             return this.LANG.post.status[item.status];
                         },
-                        style: 'light',
+                        style:(item) => {
+                            return 'badge-status '+item.status;
+                        },
                     },
                     {
                         label: this.LANG.post.visits,

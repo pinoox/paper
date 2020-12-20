@@ -23,6 +23,21 @@
   }
 }
 
+.placeholderStyle(@color) {
+  &::placeholder{
+    color: @color;
+  }
+  &::-webkit-input-placeholder {
+    color: @color;
+  }
+  &:-ms-input-placeholder {
+    color: @color;
+  }
+  &::-moz-placeholder {
+    color: @color;
+  }
+}
+
 .none {
   display: none;
 }
@@ -302,6 +317,7 @@ body {
         font-size: 0.6em;
         font-weight: 400;
         color: #b3b3b3;
+        height: 15px;
       }
     }
 
@@ -324,6 +340,10 @@ body {
       background-size: 1px 0;
       text-decoration: none;
       .trans;
+
+      img{
+        width:20px !important;
+      }
 
       &:hover {
         .trans;
@@ -367,6 +387,10 @@ body {
     display: block;
     padding: 15px;
     border-top: 1px solid #EFEFEF;
+
+    img{
+      width:20px !important;
+    }
   }
 }
 
@@ -582,8 +606,19 @@ body {
   }
 
   .search-result {
-    .section-title {
-      input {
+    .section-search{
+      margin-bottom: 30px;
+
+      h2 {
+        font-size: 22px;
+        color: #B7B7B7;
+        font-weight: 700;
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+
+      .input-search {
+        width:100%;
         border: none;
         border-bottom: 1px solid #e8e8e8;
         outline: none;
@@ -591,11 +626,15 @@ body {
         padding: 10px 12px;
         color: @primary;
         font-weight: 800;
+        font-size: 16px;
+        .placeholderStyle(@colorText2);
+        margin-bottom: 10px;
       }
 
       b {
         font-weight: 300;
-        font-size: 16px;
+        font-size: 14px;
+        color: fade(@primary,80%);
       }
     }
   }
@@ -1015,6 +1054,10 @@ body {
       font-weight: 400;
       font-size: 13px;
       margin-left: 16px;
+
+      img{
+        width:20px !important;
+      }
     }
   }
 

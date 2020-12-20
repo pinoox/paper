@@ -140,6 +140,18 @@ Vue.mixin({
         },
     },
     methods: {
+        logout(caller = null) {
+            this._confirm(this.LANG.panel.are_you_sure_logout_account, () => {
+                this.$http.get(this.URL.API + 'user/logout').then((json) => {
+                    if (json.data.status) {
+                        this.USER.user = {isLogin: false};
+                        this.$router.replace({name:'login'});
+                        if(!!caller) caller();
+                    }
+                });
+            });
+
+        },
         getInitUser() {
             this.getUser(false).then((data) => {
                 if (!data)

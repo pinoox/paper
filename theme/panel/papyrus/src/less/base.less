@@ -44,6 +44,43 @@
   border-bottom-right-radius: @size;
 }
 
+.badge-status {
+  padding: 4px !important;
+  white-space: nowrap !important;
+  color: #fff !important;
+  border-radius: 5px !important;
+  font-size: 0.7em !important;
+
+  &.publish {
+    background: @greenColor !important;
+  }
+
+  &.active {
+    background: @greenColor !important;
+  }
+
+  &.seen {
+    background: @greenColor !important;
+  }
+
+
+  &.draft {
+    background: @textColorLight !important;
+  }
+
+  &.unseen {
+    background: @orangeColor !important;
+  }
+
+  &.pending {
+    background: @orangeColor !important;
+  }
+
+  &.suspend {
+    background: @redColor !important;
+  }
+}
+
 .m1-tb {
   margin: 1% 0;
 }
