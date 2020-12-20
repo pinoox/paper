@@ -10,7 +10,7 @@
 @secondary: #4178B3;
 @colorText: #3A3A3A;
 @colorText2: #6B6B6B;
-@linkHoverColor: #09E2FA;
+@linkHoverColor: #faaa09;
 .textGradient(@color1:#09E2FA,@color2:#00A2FF ) {
   background: -webkit-gradient(linear, left top, left bottom, from(@color1), to(@color2));
   -webkit-background-clip: text;
@@ -202,7 +202,7 @@ body {
   border-radius: 5px;
   padding: 10px 10px 10px 10px;
   width: 100%;
-  min-width: 350px;
+  min-width: 300px;
   outline: none !important;
 
   &:focus, &:active, &:hover {
@@ -259,8 +259,7 @@ body {
   width: 100%;
   z-index: 999;
   background: #fff;
-  display: grid;
-  grid-template-columns: 270px auto 200px;
+  display: flex;
   grid-template-rows: auto;
   padding: 4px 15px;
   box-shadow: 0 5px 8px rgba(102, 102, 102, 0.1);
@@ -303,7 +302,7 @@ body {
       margin-right: 5px;
       display: inline-block;
       font-size: 15px;
-      top: 10px;
+      top: 2px;
 
       h1 {
         font-size: 1em;
@@ -314,10 +313,14 @@ body {
       }
 
       h2 {
-        font-size: 0.6em;
+        font-size: 0.8em;
         font-weight: 400;
         color: #b3b3b3;
         height: 15px;
+
+        &:empty{
+          display: none;
+        }
       }
     }
 
@@ -326,6 +329,9 @@ body {
   .menu {
     position: relative;
     display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
 
     a {
       padding: 10px 12px;
@@ -377,7 +383,7 @@ body {
   z-index: 1100;
   background: #FFF;
   position: fixed;
-  top: 0;
+  top: -5px;
   height: 100vh;
   width: 250px;
   margin-top: 67px;
@@ -410,12 +416,14 @@ body {
     position: relative;
     border-radius: 0.5rem;
     overflow: hidden;
+    height: 280px;
+    max-height: 280px;
     display: block;
 
     img {
       border-radius: 0.5rem;
-      max-height: 300px;
       width: 101%;
+      height: 100%;
       .boxShadow();
       .trans;
     }
@@ -501,7 +509,7 @@ body {
     img {
 
       width: 100%;
-      max-width: 300px;
+      max-width: 250px;
     }
 
     .return {
@@ -544,13 +552,13 @@ body {
         img {
           position: absolute;
           height: 100%;
+          width: 100%;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           background-size: cover;
           border-radius: 0.6rem;
         }
-
 
         &:hover {
           .trans;
@@ -586,11 +594,11 @@ body {
           background: linear-gradient(to left, fade(@secondary, 10%), rgba(255, 255, 255, 0));
           color: @secondary;
           font-weight: 300;
-          font-size: 13px;
+          font-size: 10px;
           align-items: center;
 
           div {
-            flex-grow: 0.1;
+            flex-grow: 0.4;
           }
 
           .author {
@@ -1052,8 +1060,8 @@ body {
       padding: 4px 12px;
       color: #8D8D8D;
       font-weight: 400;
-      font-size: 13px;
-      margin-left: 16px;
+      font-size: 11px;
+      margin-left: 12px;
 
       img{
         width:20px !important;
@@ -1092,7 +1100,6 @@ body {
 @media screen and (max-width: 992px) {
   .header {
     position: fixed;
-    grid-template-columns: 30px 1fr 27%;
 
     .drawer-menu {
       display: block;
@@ -1101,7 +1108,8 @@ body {
     }
 
     .logo {
-      padding-right: 5px;
+      padding: 0 15px;
+      flex-grow: 1;
     }
 
     .menu {
@@ -1137,6 +1145,10 @@ body {
         font-size: 1.5em;
       }
     }
+  }
+
+  .slider .item{
+    height: auto;
   }
 }
 
@@ -1182,6 +1194,5 @@ body {
 
 @media screen and (max-width: 480px) {
   .header {
-    grid-template-columns: 30px 64% 90px
   }
 }
