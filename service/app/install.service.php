@@ -32,7 +32,7 @@ class InstallService implements ServiceInterface
             "realname" => 'paper.jpg',
             "uploadname" => 'paper.jpg',
             "ext" => 'jpg',
-            "dir_file" => 'apps/com_pinoox_paper/uploads/post/' . $hash_id . '/',
+            "dir_file" => 'apps/com_pinoox_paper/resources/',
             "size" => 16636,
             "access" => $hash_id,
         ]);
