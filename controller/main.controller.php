@@ -142,8 +142,8 @@ class MainController extends MasterConfiguration
 
         $post = PostModel::getInfoPost($post);
 
-        if ($post['key'] != $title)
-            Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post['key']);
+        if ($post['post_key'] != $title)
+            Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post['post_key']);
 
         $isOpenComment = $post['comment_status'] === PostModel::open_status;
 

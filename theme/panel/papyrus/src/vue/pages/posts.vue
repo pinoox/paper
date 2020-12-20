@@ -54,7 +54,7 @@
                                     <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                                 </div>
                                 <div v-else-if="props.column.field === 'operation'">
-                                    <a :href="URL.FRONT + 'post/' + props.row.post_id +'/'+props.row.key" target="_blank"
+                                    <a :href="URL.FRONT + 'post/' + props.row.post_id +'/'+props.row.post_key" target="_blank"
                                        class="btn-action"><i class="fa fa-link"></i></a>
                                     <router-link :to="{name:'post-stats',params:{post_id:props.row.post_id}}"
                                                  class="btn-action"><i class="fa fa-chart-pie"></i></router-link>

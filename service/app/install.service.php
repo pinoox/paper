@@ -65,9 +65,34 @@ class InstallService implements ServiceInterface
             'post_type' => PostModel::post_type,
             'image' => $image_id,
         ];
+
+        $this->addPost($data);
+
+        $hash_id = 'pt3a2w';
+
+        // add about page
+        $data = [
+            'title' => rlang('db.about_page.title'),
+            'context' => '<p style="text-align:center;">' . rlang('db.about_page.context') . '</p>',
+            'hash_id' => $hash_id,
+            'user_id' => isset($user['user_id']) ? $user['user_id'] : User::get('user_id'),
+            'summary' => null,
+            'time' => 0,
+            'characters' => rlang('db.about_page.characters'),
+            'words' => rlang('db.about_page.words'),
+            'status' => $status,
+            'post_type' => PostModel::page_type,
+            'image' => null,
+        ];
+
+        $this->addPost($data);
+    }
+
+    private function addPost($data)
+    {
         $data['post_id'] = PostModel::insert($data);
         PostModel::save_draft($data);
-        PostModel::post_history_insert($data, $status);
+        PostModel::post_history_insert($data, $data['status']);
         PostModel::update_publish_post($data['post_id']);
         PostModel::post_draft_update_synced($data['post_id'], 1);
     }
