@@ -211,7 +211,8 @@ class PostModel extends PaperDatabase
 
     public static function getInfoPost($post)
     {
-        $placeHolder = Url::file('resources/image-placeholder.jpg');
+        $placeHolderPost = Url::file('resources/image-placeholder.jpg');
+        $placeHolderAvatar = Url::file('resources/avatar.png');
 
         if (empty($post)) return $post;
         $post['tags'] = self::fetch_tags_by_post_id($post['post_id']);
@@ -219,12 +220,16 @@ class PostModel extends PaperDatabase
             $post['category'] = CategoryModel::fetch_by_id($post['cat_id']);
         else
             $post['category'] = null;
+
+
+        $post['key'] = empty($post['key'])? HelperString::replaceSpace($post['title']) : $post['key'];
         $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
         $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
         $file = FileModel::fetch_by_id($post['image_id']);
-        $post['image'] = Url::upload($file, $placeHolder);
-        $post['thumb_128'] = Url::thumb($file, 128, $placeHolder);
-        $post['thumb_512'] = Url::thumb($file, 512, $placeHolder);
+        $post['image'] = Url::upload($file, $placeHolderPost);
+        $post['thumb_128'] = Url::thumb($file, 128, $placeHolderPost);
+        $post['thumb_512'] = Url::thumb($file, 512, $placeHolderPost);
+        $post['avatar'] = Url::thumb($post['avatar_id'], 128, $placeHolderAvatar);
         return $post;
     }
 
