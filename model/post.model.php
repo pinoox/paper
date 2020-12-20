@@ -39,7 +39,7 @@ class PostModel extends PaperDatabase
         $date = Date::g('Y-m-d H:i:s');
         return self::$db->insert(self::post, [
             'hash_id' => $data['hash_id'],
-            'user_id' => User::get('user_id'),
+            'user_id' => isset($data['user_id'])? $data['user_id'] : User::get('user_id'),
             'summary' => $data['summary'],
             'time_tracking' => $data['time'],
             'status' => self::draft_status,
