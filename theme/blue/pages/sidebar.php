@@ -1,10 +1,12 @@
 <div class="sidebar">
-    <?php if (isset($mostVisited) && !empty($mostVisited)) { ?>
         <div class="most-visit">
             <h2 class="section-title"><?php lang('front.most_viewed_articles'); ?></h2>
             <div class="list">
-                <?php foreach ($mostVisited as $i) { ?>
-                    <a href="<?php echo articleLink($i); ?>">
+                <?php foreach (posts('*',[
+                        'limit' => 6,
+                        'order' => 'visits',
+                ]) as $i) { ?>
+                    <a href="<?php echo postLink($i); ?>">
                         <span class="title"><?php echo $i['title']; ?></span>
                         <span class="details">
                                             <span><?php echo showDate($i['insert_date']); ?></span>
@@ -15,26 +17,29 @@
 
             </div>
         </div>
-    <?php } ?>
 
 
     <div class="hot-tags">
-        <?php if (isset($hotTags) && !empty($hotTags)) { ?>
             <h2 class="section-title"><?php lang('front.hot_tags'); ?></h2>
             <div class="list">
-                <?php foreach ($hotTags as $i) { ?>
+                <?php foreach (hot_tags(16) as $i) { ?>
                     <a href="<?php echo $_app ?>search/?tag=<?php echo $i['tag_name']; ?>">#<?php echo $i['tag_name']; ?></a>
                 <?php } ?>
             </div>
-        <?php } ?>
     </div>
 
     <div class="follow-us">
         <h2 class="section-title"> <?php lang('front.follow_us'); ?></h2>
         <div class="list">
-            <a target="_blank" href="<?php echo $telegram; ?>" class="telegram"><i class="fab fa-telegram-plane"></i></a>
-            <a target="_blank" href="<?php echo $twitter; ?>" class="twitter"><i class="fab fa-twitter"></i></a>
-            <a target="_blank" href="<?php echo $instagram; ?>" class="instagram"><i class="fab fa-instagram"></i></a>
+            <?php foreach (setting('contact.socials') as $item) { ?>
+                <a target="_blank" href="<?php echo @$item['link']; ?>" class="<?php echo @$item['label']; ?>">
+                    <?php if (!empty($item['icon'])) { ?>
+                        <i class="<?php echo @$item['icon']; ?>"></i>
+                    <?php } else { ?>
+                        <img alt="<?php echo @$item['label']; ?>" src="<?php echo furl($item['image']); ?>"/>
+                    <?php } ?>
+                </a>
+            <?php } ?>
         </div>
     </div>
 </div>

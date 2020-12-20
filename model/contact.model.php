@@ -8,20 +8,27 @@
  * @author   Pinoox
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\component\Date;
 
 class ContactModel extends PaperDatabase
 {
+    /** @const seen,unseen */
+    const status_seen = "seen";
+    const status_unseen = "unseen";
+
+
     public static function insert($data)
     {
         return self::$db->insert(self::contact, [
             'full_name' => $data['full_name'],
-            'mobile' => $data['mobile'],
-            'subject' => $data['subject'],
+            'email' => @$data['email'],
+            'mobile' => @$data['mobile'],
+            'subject' => isset($data['subject']) ? $data['subject'] : null,
             'message' => $data['message'],
-            'status' => self::unseen,
+            'status' => self::status_unseen,
             'insert_date' => Date::g('Y-m-d H:i:s'),
         ]);
     }
@@ -52,8 +59,8 @@ class ContactModel extends PaperDatabase
     public static function where_search($keyword)
     {
         if (empty($keyword)) return;
-        if ($keyword == rlang('panel.seen')) $status = self::seen;
-        else if ($keyword == rlang('panel.unseen')) $status = self::unseen;
+        if ($keyword == rlang('panel.seen')) $status = self::status_seen;
+        else if ($keyword == rlang('panel.unseen')) $status = self::status_unseen;
         else $status = false;
 
         $k = '%' . $keyword . '%';
@@ -74,13 +81,30 @@ class ContactModel extends PaperDatabase
     public static function fetch_stats()
     {
         $total = self::fetch_all(null, null, true);
-        $seen = self::fetch_all(self::seen, null, true);
-        $unseen = self::fetch_all(self::unseen, null, true);
+        $seen = self::fetch_all(self::status_seen, null, true);
+        $unseen = self::fetch_all(self::status_unseen, null, true);
 
         return [
             'total' => $total,
             'seen' => $seen,
             'unseen' => $unseen,
         ];
+    }
+
+
+    public static function where_status($status)
+    {
+        if (!is_null($status) && $status != 'all')
+            self::$db->where('c.status', $status);
+    }
+
+    public static function sort($sort)
+    {
+        if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
+            if ($sort['field'] === 'approx_insert_date')
+                $sort['field'] = 'insert_date';
+
+            self::$db->orderBy($sort['field'], $sort['type']);
+        }
     }
 }

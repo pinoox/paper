@@ -10,10 +10,13 @@
  */
 namespace pinoox\app\com_pinoox_paper\controller\panel;
 
-use pinoox\app\com_pinoox_paper\model\ArticleModel;
+use pinoox\app\com_pinoox_paper\component\Setting;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
+use pinoox\app\com_pinoox_paper\model\LangModel;
+use pinoox\component\Dir;
 use pinoox\component\HelperHeader;
+use pinoox\component\Lang;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Router;
@@ -21,46 +24,14 @@ use pinoox\model\UserModel;
 
 class MainController extends MasterConfiguration
 {
-
-    public function _main()
-    {
-        $contactStats = ContactModel::fetch_stats();
-        $commentStats = CommentModel::fetch_stats();
-        $userStats = UserModel::fetch_stats();
-        $articleStats = ArticleModel::fetch_stats();
-
-        self::$template->set('contactStats', $contactStats);
-        self::$template->set('commentStats', $commentStats);
-        self::$template->set('userStats', $userStats);
-        self::$template->set('articleStats', $articleStats);
-        self::$template->show('dashboard>main');
-    }
-
-    public function assets()
+    public function dist()
     {
         $url = implode('/', Router::params());
-        if ($url === 'src/js/pinoox.js') {
+        if ($url === 'paper/pinoox.js') {
             HelperHeader::contentType('application/javascript', 'UTF-8');
-            self::$template->view('assets/src/js/pinoox.js');
+            self::$template->view('dist/paper/pinoox.js');
         } else {
-            self::_main();
+            self::error404();
         }
-    }
-
-
-    public function loadMostVisitedStats()
-    {
-        if (Request::isPost()) {
-            $result = ArticleModel::fetch_most_visited(10);
-            $visits = array_column($result, 'visits');
-            $visitors = array_column($result, 'visitors');
-
-            $series = [
-                ['name' => rlang('panel.user'), 'data' => $visitors],
-                ['name' => rlang('panel.visits'), 'data' => $visits],
-            ];
-            Response::json(['titles' => [], 'series' => $series]);
-        }
-
     }
 }
