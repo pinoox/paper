@@ -12,7 +12,7 @@
         <p class="summary"><?php echo $post['summary']; ?></p>
         <div class="details">
             <div class="author">
-                <img src="<?php echo $post['thumb_128']; ?>"
+                <img src="<?php echo $post['avatar']; ?>"
                      alt="<?php echo $post['full_name']; ?>">
                 <span><?php echo $post['full_name']; ?></span>
             </div>

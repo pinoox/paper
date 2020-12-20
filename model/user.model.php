@@ -13,6 +13,7 @@
 
 namespace pinoox\app\com_pinoox_paper\model;
 
+use pinoox\component\app\AppProvider;
 use pinoox\model\UserModel as UserModelCore;
 
 class UserModel extends UserModelCore
@@ -34,5 +35,12 @@ class UserModel extends UserModelCore
     {
         if (!is_null($status) && $status != 'all')
             self::$db->where('status', $status);
+    }
+
+    public static function fetch_by_app()
+    {
+        $app = AppProvider::get('package-name');
+        self::$db->where('app', $app);
+        return self::$db->getOne(self::user);
     }
 }

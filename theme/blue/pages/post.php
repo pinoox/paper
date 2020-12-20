@@ -13,15 +13,15 @@
 
                     <div class="details">
                         <div class="author">
-                            <img src="<?php echo showImage($post['avatar_id'], 128, true); ?>"
+                            <img src="<?php echo $post['avatar']; ?>"
                                  alt="<?php echo $post['title']; ?>">
                             <span><?php echo $post['full_name']; ?></span>
                         </div>
-                        <div class="publish-date"><?php echo showDate($post['insert_date']); ?></div>
+                        <div class="publish-date"><?php showDate($post['insert_date']); ?></div>
                         <div><?php echo $post['visits']; ?>&nbsp;<?php lang('front.visit') ?></div>
                     </div>
                     <div class="image">
-                        <img src="<?php echo showImage($post['image_id']); ?>"
+                        <img src="<?php echo $post['image']; ?>"
                              alt="<?php echo $post['title']; ?>">
                     </div>
                     <div class="content paper-article"><?php echo $post['context']; ?></div>
