@@ -4,7 +4,7 @@
 
 **Align center:**
 <p align="center" width="100%">
-    <img width="33%" src="paper-icon"> 
+    <img width="33%" src="https://raw.githubusercontent.com/esmaeilbahrani/paper/master/icon.png"> 
 </p>
 
   <h3 align="center">Paper</h3>
