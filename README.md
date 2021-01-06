@@ -10,7 +10,9 @@
   <h3 align="center">Paper</h3>
 
   <p align="center">
-    blog app for pinoox platform
+    CMS app make with  pinoox platform
+    <br>
+    <small>free build a personal, corporate, magazin, ect website for yourself, No need programming knowledge </small>
     <br />
     <br />
     <a href="https://github.com/pinoox/paper/issues">Report Bug</a>
