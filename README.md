@@ -2,7 +2,10 @@
 <br />
 <p align="center">
 
-![alt text][paper-icon]
+**Align center:**
+<p align="center" width="100%">
+    <img width="33%" src="paper-icon"> 
+</p>
 
   <h3 align="center">Paper</h3>
 
