@@ -7,10 +7,11 @@
     <img width="33%" src="https://raw.githubusercontent.com/esmaeilbahrani/paper/master/icon.png"> 
 </p>
 
-  <h3 align="center">Paper</h3>
-
+  <h3 align="center">**Paper**</h3>
+ **Made with Pinoo**
   <p align="center">
-    blog app for pinoox platform
+    <br>
+    <small>free build a personal, corporate, magazin, ect website for yourself, No need programming knowledge </small>
     <br />
     <br />
     <a href="https://github.com/pinoox/paper/issues">Report Bug</a>
