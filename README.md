@@ -10,7 +10,7 @@
   <h3 align="center">Paper</h3>
 
   <p align="center">
-   Made with Pinoo
+   Made with <a href="https://github.com/pinoox/">pinoox</a>
     <br>
     <small>free build a personal, corporate, magazin, ect website for yourself, No need programming knowledge </small>
     <br />
