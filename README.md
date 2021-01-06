@@ -1,13 +1,16 @@
 <!-- PROJECT LOGO -->
-<br />
-<p align="center">
-
-![alt text][paper-icon]
+<br /> 
+ 
+<p align="center" width="100%">
+    <img width="33%" src="https://raw.githubusercontent.com/esmaeilbahrani/paper/master/icon.png"> 
+</p>
 
   <h3 align="center">Paper</h3>
 
   <p align="center">
-    blog app for pinoox platform
+   Made with <a href="https://github.com/pinoox/">pinoox</a>
+    <br>
+    <small>free build a personal, corporate, magazin, ect website for yourself, No need programming knowledge </small>
     <br />
     <br />
     <a href="https://github.com/pinoox/paper/issues">Report Bug</a>
@@ -56,9 +59,6 @@ Paper is a new and modern **content management system (CMS)** Which is developed
 ### Built With
 
  * [Pinoox platform](https://github.com/pinoox/pinoox) <br><small>pinoox platform is the core of paper and you must first install pinoox for using paper</small>
-* [VueJs](https://vuejs.com) <br><small>Vue is a progressive
-JavaScript Framework and we implemment admin</small>
-
 
 
 <!-- GETTING STARTED -->
@@ -81,25 +81,22 @@ you can use navicat or phpmyadmin to manage database
 
 3. **Fast install pinoox with wizard installer:**
 <br>go to browser and enter path of pinoox repo in localhost
-> like this: http://127.0.0.1/pinoox/
+ like this: http://127.0.0.1/pinoox/
 
-
-3. **Install paper** <br>
+4. **Install paper** <br>
 you have 2 approaches for installing paper app
-
-    3.1. **Clone repo and copy to pinoox path on localhost in apps directory**
+<br><br>
+  4.1. **Clone repo and copy to pinoox path on localhost in apps directory**
      ```sh
    git clone install https://github.com/pinoox/paper.git
    ```
-  
 
-   3.2. **Clone repo and copy to pinoox path on localhost in apps**
+   4.2. **Clone repo and copy to pinoox path on localhost in apps**
    <br>
    >go to pinoox manager app  http://127.0.0.1/pinoox/manager
-   and go to market, install paper from market
-   
+   and go to market, install paper from market.                                                                                                                                                                                                                                                                       >
 
-**Routing** <br>
+4. **Routing** <br>
    Create a new route through your settings to make your website available to everyone
 
 
