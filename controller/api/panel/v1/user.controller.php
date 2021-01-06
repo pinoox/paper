@@ -15,6 +15,7 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
+use pinoox\component\Cookie;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -68,6 +69,7 @@ class UserController extends LoginConfiguration
     public function logout()
     {
         User::logout(null, false);
+        Cookie::destroy('pinoox_user');
         Response::json(null, true);
     }
 

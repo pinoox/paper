@@ -97,7 +97,7 @@ function showDate($date)
 
 function postLink($post)
 {
-    return Url::app() . 'post/' . $post['post_id'] . '/' . HelperString::replaceSpace($post['key']);
+    return Url::app() . 'post/' . $post['post_id'] . '/' . HelperString::replaceSpace($post['post_key']);
 }
 
 function socialLink($platform, $post)

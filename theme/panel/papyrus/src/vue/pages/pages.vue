@@ -55,6 +55,8 @@
                                     <img class="thumb thumb-round" :src="props.row.thumb_128" :alt="props.row.title">
                                 </div>
                                 <div v-else-if="props.column.field === 'operation'">
+                                    <a v-if="props.row.status === 'publish'" :href="URL.FRONT + props.row.post_key" target="_blank"
+                                       class="btn-action"><i class="fa fa-link"></i></a>
                                     <router-link :to="{name:'page-write',params:{post_id:props.row.post_id}}"
                                                  class="btn-action"><i class="fa fa-edit"></i></router-link>
                                     <span @click="remove(props.row,props.index)" class="btn-action"><i
