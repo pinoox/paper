@@ -6,8 +6,8 @@
                 <div class="article">
                     <h1 class="title" href=""><?php echo $post['title']; ?>
                         <?php if ($post['status'] !== 'publish') { ?>
-                            <a href="<?php echo url('panel/post/edit/') ?><?php echo $post['post_id']; ?>"
-                               class="badge">(<?php echo rlang('panel.' . $post['status']) ?>) </a>
+                            <a href="<?php echo url('panel/write/') ?><?php echo $post['post_id']; ?>"
+                               class="badge">(<?php lang('post.status.' . $post['status']) ?>) </a>
                         <?php } ?>
                     </h1>
 

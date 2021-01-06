@@ -222,7 +222,7 @@ class PostModel extends PaperDatabase
             $post['category'] = null;
 
 
-        $post['key'] = empty($post['key'])? HelperString::replaceSpace($post['title']) : $post['key'];
+        $post['post_key'] = empty($post['post_key'])? HelperString::replaceSpace($post['title']) : $post['post_key'];
         $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
         $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
         $file = FileModel::fetch_by_id($post['image_id']);

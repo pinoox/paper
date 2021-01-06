@@ -4,21 +4,20 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table category
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}category`;
-CREATE TABLE `{dbprefix}category`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_category`;
+CREATE TABLE `com_pinoox_paper_category`  (
   `cat_id` int(0) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `parent_id` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`cat_id`) USING BTREE,
-  INDEX `{dbprefix}category_parent_id`(`parent_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}category_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}category` (`cat_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `com_pinoox_paper_category_parent_id`(`parent_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table comment
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}comment`;
-CREATE TABLE `{dbprefix}comment`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_comment`;
+CREATE TABLE `com_pinoox_paper_comment`  (
   `comment_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parent_id` int(0) UNSIGNED NULL DEFAULT NULL,
   `user_id` int(0) UNSIGNED NULL DEFAULT NULL,
@@ -31,19 +30,16 @@ CREATE TABLE `{dbprefix}comment`  (
   `insert_date` datetime(0) NULL DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   PRIMARY KEY (`comment_id`) USING BTREE,
-  INDEX `{dbprefix}comment_post_id`(`post_id`) USING BTREE,
-  INDEX `{dbprefix}comment_user_id`(`user_id`) USING BTREE,
-  INDEX `{dbprefix}comment_parent_id`(`parent_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}comment_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}comment_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}comment_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `com_pinoox_paper_comment_post_id`(`post_id`) USING BTREE,
+  INDEX `com_pinoox_paper_comment_user_id`(`user_id`) USING BTREE,
+  INDEX `com_pinoox_paper_comment_parent_id`(`parent_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table contact
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}contact`;
-CREATE TABLE `{dbprefix}contact`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_contact`;
+CREATE TABLE `com_pinoox_paper_contact`  (
   `contact_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `subject` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
@@ -58,8 +54,8 @@ CREATE TABLE `{dbprefix}contact`  (
 -- ----------------------------
 -- Table post
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}post`;
-CREATE TABLE `{dbprefix}post`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_post`;
+CREATE TABLE `com_pinoox_paper_post`  (
   `post_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `hash_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `user_id` int(0) UNSIGNED NULL DEFAULT NULL,
@@ -81,19 +77,16 @@ CREATE TABLE `{dbprefix}post`  (
   `visitors` bigint(0) UNSIGNED NOT NULL DEFAULT 0,
   `time_tracking` int(0) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`post_id`) USING BTREE,
-  INDEX `{dbprefix}post_image_id`(`image_id`) USING BTREE,
-  INDEX `{dbprefix}post_user_id`(`user_id`) USING BTREE,
-  INDEX `{dbprefix}post_cat_id`(`cat_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}post_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `{dbprefix}category` (`cat_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}post_ibfk_2` FOREIGN KEY (`image_id`) REFERENCES `pincore_file` (`file_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}post_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
+  INDEX `com_pinoox_paper_post_image_id`(`image_id`) USING BTREE,
+  INDEX `com_pinoox_paper_post_user_id`(`user_id`) USING BTREE,
+  INDEX `com_pinoox_paper_post_cat_id`(`cat_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table post_draft
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}post_draft`;
-CREATE TABLE `{dbprefix}post_draft`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_post_draft`;
+CREATE TABLE `com_pinoox_paper_post_draft`  (
   `post_id` int(0) UNSIGNED NOT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `context` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
@@ -101,15 +94,14 @@ CREATE TABLE `{dbprefix}post_draft`  (
   `synced` tinyint(1) NOT NULL DEFAULT 0,
   `characters` int(0) NOT NULL DEFAULT 0,
   `words` int(0) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`post_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}post_draft_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`post_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table post_history
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}post_history`;
-CREATE TABLE `{dbprefix}post_history`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_post_history`;
+CREATE TABLE `com_pinoox_paper_post_history`  (
   `ph_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `post_id` int(0) UNSIGNED NULL DEFAULT NULL,
   `user_id` int(0) UNSIGNED NULL DEFAULT NULL,
@@ -118,30 +110,26 @@ CREATE TABLE `{dbprefix}post_history`  (
   `insert_date` datetime(0) NULL DEFAULT NULL,
   `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   PRIMARY KEY (`ph_id`) USING BTREE,
-  INDEX `{dbprefix}post_history_post_id`(`post_id`) USING BTREE,
-  INDEX `{dbprefix}post_history_user_id`(`user_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}post_history_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}post_history_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `com_pinoox_paper_post_history_post_id`(`post_id`) USING BTREE,
+  INDEX `com_pinoox_paper_post_history_user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table post_tag
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}post_tag`;
-CREATE TABLE `{dbprefix}post_tag`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_post_tag`;
+CREATE TABLE `com_pinoox_paper_post_tag`  (
   `post_id` int(0) UNSIGNED NOT NULL,
   `tag_id` int(0) UNSIGNED NOT NULL,
   PRIMARY KEY (`post_id`, `tag_id`) USING BTREE,
-  INDEX `{dbprefix}post_tag_tag_id`(`tag_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}post_tag_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `{dbprefix}post_tag_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `{dbprefix}tag` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `com_pinoox_paper_post_tag_tag_id`(`tag_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for {dbprefix}statistic
+-- Table structure for com_pinoox_paper_statistic
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}statistic`;
-CREATE TABLE `{dbprefix}statistic`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_statistic`;
+CREATE TABLE `com_pinoox_paper_statistic`  (
   `stat_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `post_id` int(0) UNSIGNED NULL DEFAULT NULL,
   `post_type` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
@@ -150,15 +138,14 @@ CREATE TABLE `{dbprefix}statistic`  (
   `insert_date` date NULL DEFAULT NULL,
   `json_data` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
   PRIMARY KEY (`stat_id`) USING BTREE,
-  INDEX `{dbprefix}statistic_post_id`(`post_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}statistic_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `com_pinoox_paper_statistic_post_id`(`post_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table tag
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}tag`;
-CREATE TABLE `{dbprefix}tag`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_tag`;
+CREATE TABLE `com_pinoox_paper_tag`  (
   `tag_id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tag_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`tag_id`) USING BTREE
@@ -167,12 +154,57 @@ CREATE TABLE `{dbprefix}tag`  (
 -- ----------------------------
 -- Table user_setting
 -- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}user_setting`;
-CREATE TABLE `{dbprefix}user_setting`  (
+DROP TABLE IF EXISTS `com_pinoox_paper_user_setting`;
+CREATE TABLE `com_pinoox_paper_user_setting`  (
   `user_id` int(0) UNSIGNED NOT NULL,
   `json_data` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`) USING BTREE,
-  CONSTRAINT `{dbprefix}user_setting_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+
+
+-- ----------------------------
+-- Foreign keys
+-- ----------------------------
+
+ALTER TABLE `com_pinoox_paper_category`
+    ADD CONSTRAINT `com_pinoox_paper_category_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `com_pinoox_paper_category` (`cat_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_comment`
+    ADD CONSTRAINT `com_pinoox_paper_comment_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `com_pinoox_paper_comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_comment`
+    ADD CONSTRAINT `com_pinoox_paper_comment_post_id` FOREIGN KEY (`post_id`) REFERENCES `com_pinoox_paper_post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_comment`
+    ADD CONSTRAINT `com_pinoox_paper_comment_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_post`
+    ADD CONSTRAINT `com_pinoox_paper_post_cat_id` FOREIGN KEY (`cat_id`) REFERENCES `com_pinoox_paper_category` (`cat_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_post`
+    ADD CONSTRAINT `com_pinoox_paper_post_image_id` FOREIGN KEY (`image_id`) REFERENCES `pincore_file` (`file_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_post`
+    ADD CONSTRAINT `com_pinoox_paper_post_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_post_history`
+    ADD CONSTRAINT `com_pinoox_paper_post_history_post_id` FOREIGN KEY (`post_id`) REFERENCES `com_pinoox_paper_post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_post_history`
+    ADD CONSTRAINT `com_pinoox_paper_post_history_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_post_tag`
+    ADD CONSTRAINT `com_pinoox_paper_post_tag_post_id` FOREIGN KEY (`post_id`) REFERENCES `com_pinoox_paper_post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_post_tag`
+    ADD CONSTRAINT `com_pinoox_paper_post_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `com_pinoox_paper_tag` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+    ALTER TABLE `com_pinoox_paper_statistic`
+    ADD CONSTRAINT `com_pinoox_paper_statistic_post_id` FOREIGN KEY (`post_id`) REFERENCES `com_pinoox_paper_post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `com_pinoox_paper_user_setting`
+    ADD CONSTRAINT `com_pinoox_paper_user_setting_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 SET FOREIGN_KEY_CHECKS = 1;

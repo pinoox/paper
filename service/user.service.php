@@ -13,6 +13,7 @@
 
 namespace pinoox\app\com_pinoox_paper\service;
 
+use pinoox\component\Cookie;
 use pinoox\component\interfaces\ServiceInterface;
 use pinoox\component\User;
 
