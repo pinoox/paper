@@ -63,18 +63,18 @@ Paper is a new and modern **content management system (CMS)** Which is developed
 
 To install Paper, you must use version 1.6.0 or higher [Pinoox platform](https://github.com/pinoox/pinoox)
 
-### Installation on local
+### Installation on localhost
 
 1. **Clone the pinoox platform repo** (required)
    ```sh
-   git clone install https://github.com/pinoox/pinoox.git
+   git clone https://github.com/pinoox/pinoox.git
    ```
 
 2. **Create a database in MySQL** <br>
 you can use navicat or phpmyadmin to manage database
 
 3. **Fast install pinoox with wizard installer:**
-<br>go to browser and enter path of pinoox repo in localhost
+<br>go to browser and enter the path of pinoox repo in localhost
  like this: http://127.0.0.1/pinoox/
 
 4. **Install paper** <br>
@@ -85,10 +85,10 @@ you have 2 approaches for installing paper app
    git clone install https://github.com/pinoox/paper.git
    ```
 
-   4.2. **Clone repo and copy to pinoox path on localhost in apps**
+   4.2. **Download and install from market**
    <br>
    >go to pinoox manager app  http://127.0.0.1/pinoox/manager
-   and go to market, install paper from market.                                                                                                                                                                                                                                                                       >
+   and go to market, install paper from the market
 
 4. **Routing** <br>
    Create a new route through your settings to make your website available to everyone
