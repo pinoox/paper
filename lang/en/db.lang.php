@@ -14,9 +14,7 @@ return [
     'about_page' =>
         [
             'title' => 'About us',
-            'context' => [
-                ' Tell us about yourself here ...',
-            ],
+            'context' => ' Tell us about yourself here ...',
             'words' => 7,
             'characters' => 40,
         ]

@@ -14,9 +14,7 @@ return [
     'about_page' =>
         [
             'title' => 'درباره ما',
-            'context' => [
-                'اینجا از خودتان بگید ...',
-            ],
+            'context' => 'اینجا از خودتان بگید ...',
             'words' => 6,
             'characters' => 33,
         ]

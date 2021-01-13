@@ -6,3 +6,7 @@ node_modules/
 /pinker
 /config
 /setting/config
+
+theme/
+!theme/panel/
+!theme/blue/

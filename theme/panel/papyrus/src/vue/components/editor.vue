@@ -246,6 +246,26 @@
                         tableCellProperties: {}
                     },
                     autosave: this.getAutoSave,
+                    mediaEmbed: {
+                        previewsInData:true,
+                        extraProviders: [
+                            {
+                                name: 'aparat',
+                                url: /^aparat\.com\/v\/(\w+)/,
+                                html: match => {
+                                    const id = match[ 1 ];
+                                    return (
+                                        '<div style="position: relative; padding-bottom: 100%; height: 0; padding-bottom: 56.2493%;">' +
+                                        `<iframe src="https://www.aparat.com/video/video/embed/videohash/${ id }/vt/frame" ` +
+                                        'style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" ' +
+                                        'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
+                                        '</iframe>' +
+                                        '</div>'
+                                    );
+                                },
+                            },
+                        ]
+                    },
                     fastbtn: [
                         {
                             name: 'save',
