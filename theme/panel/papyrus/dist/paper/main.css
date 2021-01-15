@@ -3243,6 +3243,7 @@ body.ltr .vue-notification-group {
   }
   .login-form {
     left: 10%;
+    top: 40% !important;
   }
   .login-form .form-item {
     display: inline-flex;
