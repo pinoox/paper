@@ -406,6 +406,7 @@ body {
       -webkit-transform: rotate(180deg);
       transform: rotate(180deg);
     }
+
     .fa-chevron-right {
       -webkit-transform: rotate(180deg);
       transform: rotate(180deg);
@@ -2024,6 +2025,12 @@ body {
         color: @textColor;
         display: none;
 
+        &.show {
+          display: block;
+          cursor: pointer;
+          margin-top: 12px;
+        }
+
         i {
           position: relative;
           top: 7px;
@@ -2802,9 +2809,10 @@ body {
       text-align: left;
     }
 
-    .vgt-compact td  {
+    .vgt-compact td {
       direction: ltr;
-      div{
+
+      div {
         text-align: left;
       }
 

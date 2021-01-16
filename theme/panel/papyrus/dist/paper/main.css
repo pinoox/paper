@@ -1967,6 +1967,11 @@ body.ltr .vue-notification-group {
   color: #506E93;
   display: none;
 }
+.nestable-category .nestable-item-content .actions .btn-action.show {
+  display: block;
+  cursor: pointer;
+  margin-top: 12px;
+}
 .nestable-category .nestable-item-content .actions .btn-action i {
   position: relative;
   top: 7px;
