@@ -19,6 +19,11 @@
                                     customClassName="icon stroke"/>
                         <span class="text">{{LANG.post.write}}</span>
                     </router-link>
+                    <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
+                        <simple-svg :src="_icons.article"
+                                    customClassName="icon"/>
+                        <span class="text">{{LANG.post.posts}}</span>
+                    </router-link>
                     <div class="item" @click="openMenu()">
                         <simple-svg :src="_icons.more_square"
                                     customClassName="icon stroke"/>
