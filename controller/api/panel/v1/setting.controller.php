@@ -131,6 +131,11 @@ class SettingController extends LoginConfiguration
             return PostModel::getInfoPost($post);
         }, $posts);
         Response::json($posts);
+    }
 
+    public function getActiveTheme()
+    {
+        $theme = AppProvider::get('theme');
+        Response::json($theme);
     }
 }

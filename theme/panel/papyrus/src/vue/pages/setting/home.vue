@@ -24,6 +24,11 @@
                         <i :class="view.icon"></i>
                         <span class="text">{{view.label}}</span>
                     </router-link>
+                    <router-link v-if="!$parent.isTheme" tag="div" class="item"
+                                 :to="{name: 'theme-setting',params:{theme_name:theme}}">
+                        <i class="fa fa-paint-brush"></i>
+                        <span class="text">{{LANG.panel.theme_settings}}</span>
+                    </router-link>
                 </div>
             </div>
         </simplebar>
@@ -34,8 +39,13 @@
     export default {
         data() {
             return {
-                params: {}
+                params: {},
+                theme:null,
             }
+        },
+        created()
+        {
+            this.getActiveTheme();
         },
         computed: {
             menus() {
@@ -47,6 +57,14 @@
             }
         },
         methods: {
+            getActiveTheme()
+            {
+                if (this.$parent.isTheme)
+                    return;
+                this.$http.get(this.URL.API+'setting/getActiveTheme/').then((json) => {
+                    this.theme = json.data;
+                });
+            },
             goTo(name) {
                 this._routerReplace({name: 'setting-' + name});
             }
