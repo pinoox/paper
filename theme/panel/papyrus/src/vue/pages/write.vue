@@ -79,18 +79,18 @@
                 next();
             });
         },
-        beforeRouteUpdate(to, from, next) {
-            if (to.name === this.$route.name) {
-                {
-                    if (!!to.params && !!to.params.post_id)
-                        window.history.pushState(null, {}, to.path);
-                    else
-                        next();
-                }
-            } else {
-                next();
-            }
-        },
+        // beforeRouteUpdate(to, from, next) {
+        //     if (to.name === this.$route.name) {
+        //         {
+        //             if (!!to.params && !!to.params.post_id)
+        //                 window.history.pushState(null, {}, to.path);
+        //             else
+        //                 next();
+        //         }
+        //     } else {
+        //         next();
+        //     }
+        // },
         data() {
             return {
                 countStatus: 0,
