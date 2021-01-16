@@ -273,6 +273,16 @@ class PostModel extends PaperDatabase
         return $result;
     }
 
+    public static function fetch_all_posts($limit = null, $isCount = false)
+    {
+        self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
+        self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id', 'LEFT');
+        self::$db->orderBy('p.insert_date', 'DESC');
+        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,pd.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.visits,p.visitors,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
+        if ($isCount) return self::$db->count;
+        return $result;
+    }
+
     public static function fetcher($ids = [], $option = [])
     {
         $limit = isset($option['limit']) ? $option['limit'] : null;

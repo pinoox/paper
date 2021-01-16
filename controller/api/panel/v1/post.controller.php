@@ -54,14 +54,14 @@ class PostController extends LoginConfiguration
         $form = Request::input('keyword,type,sort,status=all,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
-        $count = PostModel::fetch_all(null, true);
+        $count = PostModel::fetch_all_posts(null, true);
 
         // pagination
         $pagination = new Pagination($count, $form['perPage']);
         $pagination->setCurrentPage($form['page']);
 
         $this->filterSearch($form);
-        $posts = PostModel::fetch_all($pagination->getArrayLimit());
+        $posts = PostModel::fetch_all_posts($pagination->getArrayLimit());
 
         $posts = array_map(function ($post) {
             return $post = PostModel::getInfoPost($post);
