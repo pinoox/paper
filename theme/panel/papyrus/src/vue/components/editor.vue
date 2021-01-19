@@ -286,6 +286,7 @@
                         },
                         {
                             name: 'fullscreen',
+                            keystroke: 'Ctrl+F11',
                             label: this.LANG.post.fullscreen,
                             icon: iconFullscreen.default,
                             tooltip: true,
