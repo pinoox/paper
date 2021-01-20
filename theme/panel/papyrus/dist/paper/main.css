@@ -1654,6 +1654,11 @@ body.ltr .vue-notification-group {
   width: 40px !important;
   top: 10px;
 }
+.app-container .main .page .box-stat .icon .bg i {
+  color: #849fbe;
+  font-size: 30px;
+  margin-top: 13px;
+}
 .app-container .main .page a.box-stat:hover {
   background: rgba(31, 66, 108, 0.1);
 }

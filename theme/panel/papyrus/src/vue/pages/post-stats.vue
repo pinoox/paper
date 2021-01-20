@@ -48,8 +48,7 @@
                             </div>
                             <div class="icon">
                                 <div class="bg">
-                                    <simple-svg :src="_icons.eye"
-                                                customClassName="stroke"/>
+                                    <i class="far fa-eye"></i>
                                 </div>
                             </div>
                         </div>
@@ -60,8 +59,7 @@
                             </div>
                             <div class="icon">
                                 <div class="bg">
-                                    <simple-svg :src="_icons.users"
-                                                customClassName="fill ic_users"/>
+                                    <i class="far fa-keyboard"></i>
                                 </div>
                             </div>
                         </div>
@@ -74,8 +72,7 @@
                             </div>
                             <div class="icon">
                                 <div class="bg">
-                                    <simple-svg :src="_icons.users"
-                                                customClassName="fill ic_users"/>
+                                    <i class="far fa-clock"></i>
                                 </div>
                             </div>
                         </div>
@@ -91,8 +88,7 @@
                             </div>
                             <div class="icon">
                                 <div class="bg">
-                                    <simple-svg :src="_icons.comment"
-                                                customClassName="stroke ic_comments"/>
+                                    <i class="far fa-comment-dots"></i>
                                 </div>
                             </div>
                         </router-link>
