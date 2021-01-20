@@ -13,74 +13,74 @@
             </div>
             <div class="drawer-content">
                 <div class="menus">
-                    <div class="item" @click="goTo('dashboard')">
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'dashboard'}">
                         <simple-svg :src="_icons.dashboard"
                                     customClassName="icon"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.dashboard}}</span>
-                    </div>
-                    <div class="item" @click="goTo('write')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'write'}">
                         <simple-svg :src="_icons.pen"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.post.write}}</span>
-                    </div>
-                    <div class="item" @click="goTo('posts')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'posts'}">
                         <simple-svg :src="_icons.article"
                                     customClassName="icon"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.posts}}</span>
-                    </div>
-                    <div class="item" @click="goTo('comments')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'comments'}">
                         <simple-svg :src="_icons.comment"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.comments}}</span>
-                    </div>
-                    <div class="item" @click="goTo('contacts')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'contacts'}">
                         <simple-svg :src="_icons.call"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.contacts}}</span>
-                    </div>
-                    <div class="item" @click="goTo('pages')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'pages'}">
                         <simple-svg :src="_icons.page"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.pages}}</span>
-                    </div>
-                    <div class="item" @click="goTo('users')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'users'}">
                         <simple-svg :src="_icons.users"
                                     height="22px"
                                     customClassName="icon"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.users}}</span>
-                    </div>
-                    <div class="item" @click="goTo('template')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'template'}">
                         <simple-svg :src="_icons.image"
                                     height="22px"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.templates}}</span>
-                    </div>
-                    <div class="item" @click="goTo('profile')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'profile'}">
                         <simple-svg :src="_icons.profile"
                                     customClassName="icon"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.profile}}</span>
-                    </div>
-                    <div class="item" @click="goTo('category')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'category'}">
                         <simple-svg :src="_icons.category"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.category}}</span>
-                    </div>
-                    <div class="item" @click="goTo('setting')">
+                    </router-link>
+                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'setting'}">
                         <simple-svg :src="_icons.setting"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.settings}}</span>
-                    </div>
+                    </router-link>
                     <a class="item" :href="URL.APP" target="_blank">
                         <simple-svg :src="_icons.eye"
                                     customClassName="icon stroke"
@@ -146,7 +146,11 @@
                 });
                 this.toggleDrawer();
             },
-
         },
+        watch:{
+            '$route':function () {
+                this.toggleDrawer();
+            }
+        }
     }
 </script>
