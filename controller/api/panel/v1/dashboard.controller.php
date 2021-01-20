@@ -23,7 +23,7 @@ use pinoox\component\Request;
 use pinoox\component\Response;
 
 
-class DashboardController extends MasterConfiguration
+class DashboardController extends LoginConfiguration
 {
 
     public function getTime()
@@ -75,7 +75,7 @@ class DashboardController extends MasterConfiguration
 
     public function getMonthly()
     {
-        $days = 6;
+        $days = 4;
 
         $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-' . $days . ' days'), Date::g('Y-m-d', '+1 days'));
         $rangeDate = array_map(function ($d) {

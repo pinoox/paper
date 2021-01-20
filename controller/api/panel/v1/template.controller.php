@@ -17,7 +17,7 @@ use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Template;
 
-class TemplateController extends MasterConfiguration
+class TemplateController extends LoginConfiguration
 {
     public function getAll()
     {

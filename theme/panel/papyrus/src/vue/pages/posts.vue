@@ -160,14 +160,6 @@
                         style: 'light',
                     },
                     {
-                        label: this.LANG.post.visitors,
-                        icon: 'fa fa-users',
-                        field: (item) => {
-                            return this._isNull(item.visitors, '0');
-                        },
-                        style: 'light',
-                    },
-                    {
                         label: this.LANG.panel.operation,
                         field: 'operation',
                         style: 'operation',
