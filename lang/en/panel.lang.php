@@ -34,6 +34,7 @@ return [
     'sections' => 'sections',
     'total_posts_stats' => 'Visit statistics of all posts',
     'total_site_stats' => 'Site visit statistics',
+    'view_site' => 'view site',
     'total_written_time' => 'Total time spent writing',
     'today' => 'today',
     'hello' => 'hello',

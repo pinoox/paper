@@ -81,6 +81,12 @@
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.settings}}</span>
                     </div>
+                    <a class="item" :href="URL.APP" target="_blank">
+                        <simple-svg :src="_icons.eye"
+                                    customClassName="icon stroke"
+                                    fill="#A5B8CE"/>
+                        <span class="text">{{LANG.panel.view_site}}</span>
+                    </a>
                     <div class="item" @click="logoutPanel()">
                         <simple-svg :src="_icons.logout"
                                     customClassName="icon stroke"
