@@ -22,6 +22,9 @@
 .center .apexcharts-canvas {
   margin: auto;
 }
+.no-margin-bottom {
+  margin-bottom: 0 !important;
+}
 
 
 .vc-chrome {
@@ -1584,6 +1587,13 @@ body.ltr .vue-notification-group {
   background: #6A62D8;
   background: linear-gradient(0deg, #6A62D8 0%, #7781E3 100%);
   box-shadow: 0 4px 8px 0 rgba(119, 129, 227, 0.5);
+}
+.app-container .main .page .list-box-stat {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  text-align: center;
+  grid-gap: 1rem;
 }
 .app-container .main .page .box-stat {
   padding: 10px 20px;

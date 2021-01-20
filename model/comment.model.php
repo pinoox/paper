@@ -115,6 +115,28 @@ class CommentModel extends PaperDatabase
         ];
     }
 
+    public static function fetch_stats_by_post($post_id)
+    {
+        self::where_post_id($post_id);
+        $total = self::fetch_all(null, null, true);
+
+        self::where_post_id($post_id);
+        $publish = self::fetch_all(self::status_publish, null, true);
+
+        self::where_post_id($post_id);
+        $pending = self::fetch_all(self::status_pending, null, true);
+
+        self::where_post_id($post_id);
+        $suspend = self::fetch_all(self::status_suspend, null, true);
+
+        return [
+            'total' => $total,
+            'publish' => $publish,
+            'pending' => $pending,
+            'suspend' => $suspend,
+        ];
+    }
+
 
     public static function sort($sort)
     {
@@ -132,4 +154,28 @@ class CommentModel extends PaperDatabase
             self::$db->where('c.post_id', $post_id);
     }
 
+
+    public static function fetch_stats_post_comment($post_id, $days = null)
+    {
+        if (!is_null($post_id))
+            self::$db->where('c.post_id', $post_id);
+
+        self::$db->join(self::post . ' p', 'p.post_id=c.post_id');
+
+        if (!is_null($days)) {
+            $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
+            self::$db->where('DATE_FORMAT(c.insert_date, "%Y-%m-%d")', $fromDate, '>=');
+        }
+        self::$db->groupBy('date');
+        $result = self::$db->get(self::comment . ' c', null, 'DATE_FORMAT(c.insert_date, "%Y-%m-%d") AS date, COUNT(*) value');
+
+        $total = 0;
+        if(!empty($result))
+        {
+            foreach ($result as $item)
+                $total += $item['value'];
+        }
+
+        return ['total' => $total, 'series' => $result];
+    }
 }

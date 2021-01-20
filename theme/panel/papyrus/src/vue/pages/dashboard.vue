@@ -24,14 +24,14 @@
                             </div>
                         </div>
                     </column>
-                    <column :xs="2" :sm="2" :md="2" :lg="1">
+                    <column v-if="!!stats" :xs="2" :sm="2" :md="2" :lg="1">
                         <div class="single-stat purple">
                             <div class="caption">{{LANG.panel.total_written_time}}</div>
                             <div class="amount">{{stats.timeTracking.value}}</div>
                             <div class="unit">{{LANG.panel.type_time_tracking[stats.timeTracking.type]}}</div>
                         </div>
                     </column>
-                    <column :xs="3" :sm="3" :md="3" :lg="1">
+                    <column v-if="!!stats" :xs="3" :sm="3" :md="3" :lg="1">
                         <div class="single-stat red">
                             <div class="caption">{{LANG.panel.total_written_words}}</div>
                             <div class="amount">{{stats.words}}</div>
@@ -40,18 +40,18 @@
                     </column>
                 </row>
                 <br>
-                <row :gutter="10" :columns="3" v-if="!!stats.postStats">
-                    <column :sm="1" :md="1" :lg="1">
-                        <div class="box-stat box">
+                <div class="container">
+                    <section v-if="!!stats" class="list-box-stat">
+                        <div class="box-stat box" v-if="!!stats.progress">
                             <div class="text">
                                 <div class="caption">{{LANG.panel.visits}} {{LANG.panel.today}}</div>
-                                <div class="amount">{{stats.postStats.visits}} {{LANG.panel.times}}</div>
+                                <div v-if="!!stats.stats" fclass="amount">{{stats.stats.visits}} {{LANG.panel.times}}</div>
                                 <div class="footnote"
-                                     :class="{'green' : stats.postProgress.visits>0,'red': stats.postProgress.visits<0 }"
-                                     v-if="stats.postProgress.visits !== 0">
+                                     :class="{'green' : stats.progress.visits>0,'red': stats.progress.visits<0 }"
+                                     v-if="stats.progress.visits !== 0">
                                     <i class="fas fa-chart-line"></i>
-                                    <span class="ltr-text">% {{stats.postProgress.visits}}</span>
-                                    {{stats.postProgress.visits > 0 ?
+                                    <span class="ltr-text">% {{stats.progress.visits}}</span>
+                                    {{stats.progress.visits > 0 ?
                                     LANG.panel.asc_progress : LANG.panel.desc_progress }}
                                 </div>
                             </div>
@@ -62,18 +62,16 @@
                                 </div>
                             </div>
                         </div>
-                    </column>
-                    <column :sm="1" :md="1" :lg="1">
-                        <div class="box-stat box">
+                        <div class="box-stat box" v-if="!!stats.progress">
                             <div class="text">
                                 <div class="caption">{{LANG.panel.visitors}} {{LANG.panel.today}}</div>
-                                <div class="amount">{{stats.postStats.visitors}} {{LANG.panel.persons}}</div>
+                                <div v-if="!!stats.stats" class="amount">{{stats.stats.visitors}} {{LANG.panel.persons}}</div>
                                 <div class="footnote"
-                                     :class="{'green' : stats.postProgress.visitors>0,'red': stats.postProgress.visitors<0 }"
-                                     v-if="stats.postProgress.visitors !== 0">
+                                     :class="{'green' : stats.progress.visitors>0,'red': stats.progress.visitors<0 }"
+                                     v-if="stats.progress.visitors !== 0">
                                     <i class="fas fa-chart-line"></i>
-                                    <span class="ltr-text">% {{stats.postProgress.visitors}}</span>
-                                    {{stats.postProgress.visitors > 0 ?
+                                    <span class="ltr-text">% {{stats.progress.visitors}}</span>
+                                    {{stats.progress.visitors > 0 ?
                                     LANG.panel.asc_progress : LANG.panel.desc_progress }}
                                 </div>
                             </div>
@@ -84,9 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                    </column>
-                    <column :sm="1" :md="1" :lg="1">
-                        <router-link :to="{name:'comments'}" class="box-stat box">
+                        <router-link v-if="!!stats.commentStats" :to="{name:'comments'}" class="box-stat box">
                             <div class="text">
                                 <div class="caption">{{LANG.comment.comments}}</div>
                                 <div class="amount">{{stats.commentStats.total}} {{LANG.comment.comment_count}}</div>
@@ -102,10 +98,8 @@
                                 </div>
                             </div>
                         </router-link>
-                    </column>
-                </row>
+                    </section>
 
-                <div class="container">
                     <section class="section" v-if="monthly!=null">
                         <div class="section-title">
                             <h2>{{LANG.panel.total_posts_stats}}</h2>

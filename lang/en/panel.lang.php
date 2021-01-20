@@ -74,6 +74,7 @@ return [
     'select_image' => 'Image selection',
     'name_list' => 'List name (required)',
     'enter_name' => 'Enter name',
+    'last_few_days' => 'days last',
     'type_time_tracking' => [
         'sec' => 'sec',
         'minute' => 'minute',
