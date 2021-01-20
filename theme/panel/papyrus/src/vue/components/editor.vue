@@ -303,7 +303,9 @@
                             action() {
                                 let status = vm.$parent.isOpenFullscreen;
                                 if (!status)
-                                    vm.$parent.openFullscreen();
+                                    vm.$parent.openFullscreen().catch(err => {
+                                        console.warn(`Error Paper attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                                    });
                                 else
                                     vm.$parent.closeFullscreen();
                             }
