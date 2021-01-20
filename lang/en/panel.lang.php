@@ -33,6 +33,7 @@ return [
     'quick_access' => 'quick access',
     'sections' => 'sections',
     'total_posts_stats' => 'Visit statistics of all posts',
+    'total_site_stats' => 'Site visit statistics',
     'total_written_time' => 'Total time spent writing',
     'today' => 'today',
     'hello' => 'hello',

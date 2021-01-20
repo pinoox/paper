@@ -34,6 +34,7 @@ return [
     'quick_access' => 'دسترسی سریع',
     'sections' => 'بخش ها',
     'total_posts_stats' => 'آمار بازدید همه نوشته ها',
+    'total_site_stats' => 'آمار بازدید سایت',
     'today' => 'امروز',
     'hello' => 'سلام',
     'greeting_message' => 'وقت نوشتن ایده ها و حرفای نگفته هست بزن بریم',

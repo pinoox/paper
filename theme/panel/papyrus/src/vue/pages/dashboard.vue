@@ -100,7 +100,7 @@
                         </router-link>
                     </section>
 
-                    <section class="section" v-if="monthly!=null">
+                    <section class="section" v-if="monthlyPost!=null">
                         <div class="section-title">
                             <h2>{{LANG.panel.total_posts_stats}}</h2>
                         </div>
@@ -111,7 +111,45 @@
                                                :options="monthlyOpts"
                                                :height="monthlyOpts.chart.height"
                                                :width="monthlyOpts.chart.width"
+                                               :series="monthlyPost"></apexchart>
+                                </column>
+                            </row>
+                        </div>
+                    </section>
+
+                    <section class="section" v-if="monthly!=null">
+                        <div class="section-title">
+                            <h2>{{LANG.panel.total_site_stats}}</h2>
+                        </div>
+                        <div class="section-content">
+                            <row :gutter="0" :columns="1" class="box-group">
+                                <column :sm="1" :md="1" :lg="1">
+                                    <apexchart type="bar"
+                                               :options="monthlyOpts"
+                                               :height="monthlyOpts.chart.height"
+                                               :width="monthlyOpts.chart.width"
                                                :series="monthly"></apexchart>
+                                </column>
+                            </row>
+                        </div>
+                    </section>
+
+                    <section class="section" v-if="devices!=null">
+                        <div class="section-title">
+                            <h2>{{LANG.post.stats_devices}}</h2>
+                        </div>
+                        <div class="section-content">
+                            <row :gutter="12" :columns="1" class="box-group">
+                                <column :sm="1" :md="1" :lg="1">
+                                    <div class="box center" v-if="devices!=null">
+                                        <apexchart
+                                                ref="devicesChart"
+                                                type="radialBar"
+                                                :width="350"
+                                                :height="350"
+                                                :options="radialOpts"
+                                                :series="devices.percents"></apexchart>
+                                    </div>
                                 </column>
                             </row>
                         </div>
@@ -127,7 +165,9 @@
         data() {
             return {
                 todayDate: null,
+                monthlyPost: null,
                 monthly: null,
+                devices:null,
                 monthlyOpts: {
                     chart: {
                         type: 'bar',
@@ -182,28 +222,82 @@
                     let hour = new Date().getHours();
                     return hour <= 6 || hour >= 18
                 }
-            }
+            },
+            radialOpts() {
+                return {
+                    chart: {
+                        type: 'radialBar',
+                        fontFamily: 'IranSans',
+                    },
+                    stroke: {
+                        lineCap: 'round'
+                    },
+                    labels: [],
+                    plotOptions: {
+                        radialBar: {
+                            dataLabels: {
+                                name: {
+                                    fontSize: "22px"
+                                },
+                                value: {
+                                    fontSize: "16px"
+                                },
+                                total: {
+                                    show: true,
+                                    label: this.LANG.panel.total,
+                                    formatter: function (w) {
+                                        return '100%';
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        floating: true,
+                        fontSize: '10px',
+                        position: 'center',
+                        offsetX: 0,
+                        offsetY: 0,
+                        formatter: function (seriesName, opts) {
+                            return '%' + seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
+                        },
+                    },
+                };
+            },
         },
         methods: {
             getTime() {
-                this.$http.post(this.URL.API + 'dashboard/getTime').then((json) => {
+                this.$http.get(this.URL.API + 'dashboard/getTime').then((json) => {
                     this.todayDate = json.data;
                 });
             },
             getCountNotifies() {
-                this.$http.post(this.URL.API + 'dashboard/getCountNotifies').then((json) => {
+                this.$http.get(this.URL.API + 'dashboard/getCountNotifies').then((json) => {
                     this.unseen = json.data;
                 });
             },
             getStats() {
-                return this.$http.post(this.URL.API + 'dashboard/getStats').then((json) => {
+                return this.$http.get(this.URL.API + 'dashboard/getStats').then((json) => {
                     this.stats = json.data;
                 });
             },
             getMonthly() {
-                return this.$http.post(this.URL.API + 'post/getMonthly/').then((json) => {
+                return this.$http.get(this.URL.API + 'dashboard/getMonthly/').then((json) => {
                     this.monthly = json.data.series;
                     this.monthlyOpts.xaxis.categories = json.data.date;
+                });
+            },
+            getMonthlyPosts() {
+                return this.$http.get(this.URL.API + 'post/getMonthly/').then((json) => {
+                    this.monthlyPost = json.data.series;
+                    this.monthlyOpts.xaxis.categories = json.data.date;
+                });
+            },
+            getDevices() {
+                return this.$http.get(this.URL.API + 'dashboard/getDevices/').then((json) => {
+                    this.devices = json.data;
+                    this.radialOpts.labels = json.data.labels;
                 });
             },
         },
@@ -212,6 +306,8 @@
             this.getCountNotifies();
             this.getStats();
             this.getMonthly();
+            this.getMonthlyPosts();
+            this.getDevices();
         }
     }
 </script>

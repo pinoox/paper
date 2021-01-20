@@ -19,6 +19,7 @@ use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\Date;
+use pinoox\component\Request;
 use pinoox\component\Response;
 
 
@@ -57,6 +58,53 @@ class DashboardController extends MasterConfiguration
             'progress' => $statsProgress,
             'commentStats' => $commentStats
         ]);
+    }
+
+    public function getDevices()
+    {
+        list($devices, $total) = StatisticModel::fetch_devices();
+        $percents = StatisticModel::calc_device_percents($devices, $total);
+        $data = [
+            'percents' => array_column($percents, 'percent'),
+            'labels' => array_column($percents, 'device'),
+            'total' => $total,
+        ];
+
+        Response::json($data);
+    }
+
+    public function getMonthly()
+    {
+        $days = 6;
+
+        $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-' . $days . ' days'), Date::g('Y-m-d', '+1 days'));
+        $rangeDate = array_map(function ($d) {
+            return Helper::getLocaleDate('F d', $d);
+        }, $rangeDate);
+
+        $rangeDate[count($rangeDate) - 1] = rlang('post.today');
+        $rangeDate[count($rangeDate) - 2] = rlang('post.yesterday');
+
+        //visits
+        $visits = StatisticModel::fetch_visits($days);
+        $visitsSeries = Helper::createRangeDate(@$visits['series'], $days, true);
+
+        //visitors
+        $visitors = StatisticModel::fetch_visitors($days);
+        $visitorsSeries = StatisticModel::createRangeData($visitors['series'], $days, true);
+
+        $result = [
+            [
+                'name' => rlang('post.visits'),
+                'data' => $visitsSeries
+            ],
+            [
+                'name' => rlang('post.visitors'),
+                'data' => $visitorsSeries
+            ],
+        ];
+
+        Response::json(['series' => $result, 'date' => $rangeDate]);
     }
 
     private function getTimeTrackingRound()
