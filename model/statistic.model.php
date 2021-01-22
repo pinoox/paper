@@ -89,7 +89,7 @@ class StatisticModel extends PaperDatabase
         $data = self::createStatsObject();
 
         $todayRow = self::fetch_today();
-        $data['json_data'] = self::analysisJson($data, $todayRow['json_data']);
+        $data['json_data'] = self::analysisJson($data, @$todayRow['json_data']);
 
         if (!empty($todayRow)) {
             if (self::is_visited()) {
