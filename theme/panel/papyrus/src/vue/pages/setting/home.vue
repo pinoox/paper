@@ -20,7 +20,7 @@
                 <div class="menus setting">
                     <router-link tag="div" class="item"
                                  :to="{name:!$parent.isTheme? 'setting-config' : 'theme-setting-config',params:{setting_key:view.key}}"
-                                 v-for="view in menus">
+                                 v-for="view in menus" v-bind:key="view.key">
                         <i :class="view.icon"></i>
                         <span class="text">{{view.label}}</span>
                     </router-link>

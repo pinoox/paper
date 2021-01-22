@@ -45,7 +45,7 @@
                         <div class="box-stat box" v-if="!!stats.progress">
                             <div class="text">
                                 <div class="caption">{{LANG.panel.visits}} {{LANG.panel.today}}</div>
-                                <div v-if="!!stats.stats" fclass="amount">{{stats.stats.visits}} {{LANG.panel.times}}</div>
+                                <div v-if="!!stats.stats" class="amount">{{stats.stats.visits}} {{LANG.panel.times}}</div>
                                 <div class="footnote"
                                      :class="{'green' : stats.progress.visits>0,'red': stats.progress.visits<0 }"
                                      v-if="stats.progress.visits !== 0">
