@@ -39,6 +39,11 @@
                 <span @click="_parent.openListDrawer(setting)" class="btn btn-list"><i class="fa fa-cog"></i> {{LANG.panel.manage}} {{setting.label}}</span>
             </div>
 
+            <!-- form view -->
+            <div v-else-if="!listDisable && !!setting.type && setting.type === 'form'">
+                <span @click="_parent.openFormDrawer(setting)" class="btn btn-list"><i class="fa fa-cog"></i> {{LANG.panel.manage}} {{setting.label}}</span>
+            </div>
+
             <!-- select post view -->
             <div v-else-if="!!setting.type && setting.type === 'select:post'">
                 <select-post v-model="value[setting.key]" v-bind="getAttrs(setting)"></select-post>
