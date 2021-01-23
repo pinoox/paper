@@ -11,6 +11,9 @@
 <script>
 
     export default {
+        created() {
+            this.$store.state.checkLogin = true;
+        }
     }
 
 </script>

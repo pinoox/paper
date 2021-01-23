@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import {routes} from "./routes";
+import Store from './store';
 
 Vue.use(VueRouter);
 
@@ -14,19 +15,17 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if(!to.name)
-      next({name: 'dashboard'});
-  else
-      next();
-});
+    let checkLogin = Store.state.checkLogin;
+    let user = Store.state.user;
+    let isLogin = !!user && !!user.isLogin;
 
-// router.beforeEach((to, from, next) => {
-//     let token = localStorage.getItem('pinoox_user');
-//     console.log(to.name);
-//     if ((!token || !router.app.isLogin) && (!to.name || (to.name !== 'login' && to.name !== 'splash')))
-//         next({name: 'login'});
-//     else
-//         next();
-// });
+    if (checkLogin && !isLogin && (!to.name || (to.name !== 'login'))) {
+        next({name: 'login'});
+    } else if (!to.name) {
+        next({name: 'dashboard'});
+    } else {
+        next();
+    }
+});
 
 export default router;
