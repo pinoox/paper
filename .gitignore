@@ -8,5 +8,5 @@ node_modules/
 /setting/config
 
 theme/
-!theme/panel/
-!theme/blue/
+!theme/panel/*
+!theme/blue/*
