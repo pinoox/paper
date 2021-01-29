@@ -18,8 +18,9 @@ router.beforeEach((to, from, next) => {
     let checkLogin = Store.state.checkLogin;
     let user = Store.state.user;
     let isLogin = !!user && !!user.isLogin;
+    let token = localStorage.paper_user;
 
-    if (checkLogin && !isLogin && (!to.name || (to.name !== 'login'))) {
+    if (checkLogin && !token && !isLogin && (!to.name || (to.name !== 'login'))) {
         next({name: 'login'});
     } else if (!to.name) {
         next({name: 'dashboard'});
