@@ -115,8 +115,9 @@
                     },
                     {
                         label: this.LANG.panel.title,
-                        field: (item) => {
-                            return this._isNull(item.title, this.LANG.post.no_title);
+                        field: 'title',
+                        formatFn: (value) => {
+                            return this._isNull(value, this.LANG.post.no_title);
                         },
                         style: (item) => {
                             return !item.title ? 'light' : '';
@@ -134,8 +135,9 @@
                     },
                     {
                         label: this.LANG.panel.status,
-                        field: (item) => {
-                            return this.LANG.post.status[item.status];
+                        field: 'status',
+                        formatFn: (value) => {
+                            return this.LANG.post.status[value];
                         },
                         style:(item) => {
                             return 'badge-status '+item.status;

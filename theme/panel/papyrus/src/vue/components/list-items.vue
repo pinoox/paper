@@ -1,19 +1,19 @@
 <template>
     <div>
         <div v-if="state === 'list'">
-            <div class="category-actions">
+            <div class="category-actions" v-if="isAdd">
                 <div @click="goToAddState()" class="btn btn-primary">
                     {{LANG.panel.add}}
                 </div>
             </div>
-            <div>
+            <div v-if="isSortable">
                 <vue-nestable
-                        class="nestable nestable-category"
-                        :class="'editable'"
+                        class="nestable nestable-category editable"
                         v-model="items"
                         @change="trigger"
                         :rtl="true"
                         keyProp="_id"
+                        disabled
                         :maxDepth="depth">
                     <vue-nestable-handle
                             :draggable="true"
@@ -23,8 +23,10 @@
                             <i class="fa fa-arrows-alt"></i> {{ item.label }}
                         </span>
                         <div class="actions">
-                            <span @click="goToEditState(index)" class="btn-action"><i class="fa fa-pen"></i></span>
-                            <span @click="deleteItem(index)" class="btn-action"><i class="fa fa-trash"></i></span>
+                            <span v-if="isEdit" @click="goToEditState(index)" class="btn-action"><i
+                                    class="fa fa-pen"></i></span>
+                            <span v-if="isDelete" @click="deleteItem(index)" class="btn-action"><i
+                                    class="fa fa-trash"></i></span>
                         </div>
                     </vue-nestable-handle>
                     <div slot="placeholder">
@@ -35,8 +37,29 @@
 
                 </vue-nestable>
             </div>
+            <div v-else>
+                <div class="nestable nestable-category nestable-rtl">
+                        <ol class="nestable-list nestable-group nestable-item-content" v-if="items.length > 0">
+                            <li v-for="(item,index) in items" class="nestable-item" :class="'nestable-item-'+index">
+                                <span class="cat-name">{{ item.label }}</span>
+                                <div class="actions">
+                                <span v-if="isEdit" @click="goToEditState(index)" class="btn-action show"><i
+                                        class="fa fa-pen"></i></span>
+                                    <span v-if="isDelete" @click="deleteItem(index)" class="btn-action show"><i
+                                            class="fa fa-trash"></i></span>
+                                </div>
+                            </li>
+                        </ol>
+                    <div slot="placeholder" v-else>
+                        <div>
+                            <b>{{LANG.panel.empty_table}}</b>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-        <div v-else-if="state === 'add'">
+        <div v-else-if="isAdd && state === 'add'">
             <div class="category-actions">
                 <span class="back-btn" @click="goToListState()"><i
                         class="fa fa-angle-right"></i> {{LANG.panel.back}}</span>
@@ -56,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <div v-else-if="state === 'edit'">
+        <div v-else-if="isEdit && state === 'edit'">
             <div class="category-actions">
                 <span class="back-btn" @click="goToListState()"><i
                         class="fa fa-angle-right"></i>  {{LANG.panel.back}}</span>
@@ -65,7 +88,7 @@
                         <label class="input-label"> {{LANG.panel.name_list}}</label>
                         <div class="input-group">
                             <input :placeholder="LANG.panel.enter_name" v-model="paramsEdit.label" type="text"
-                                   class="input">
+                                   class="input" :disabled="!islabelEdit">
                         </div>
                     </div>
                     <form-builder :list-disable="true" :settings="settings"
@@ -127,6 +150,36 @@
             settings() {
                 return !!this.setting && !!this.setting.settings ? this.setting.settings : [];
             },
+            isAdd() {
+                if (!!this.setting && 'add' in this.setting)
+                    return this.setting.add;
+                else
+                    return true;
+            },
+            isEdit() {
+                if (!!this.setting && 'edit' in this.setting)
+                    return this.setting.edit;
+                else
+                    return true;
+            },
+            isDelete() {
+                if (!!this.setting && 'delete' in this.setting)
+                    return this.setting.delete;
+                else
+                    return true;
+            },
+            isSortable() {
+                if (!!this.setting && 'sortable' in this.setting)
+                    return this.setting.sortable;
+                else
+                    return true;
+            },
+            islabelEdit() {
+                if (!!this.setting && 'label-edit' in this.setting)
+                    return this.setting['label-edit'];
+                else
+                    return true;
+            },
         },
         methods: {
             add() {
@@ -152,7 +205,7 @@
             },
             checkLabel(params) {
                 if (!params.label) {
-                    this._notify('error',this.LANG.panel.err_empty_name_list);
+                    this._notify('error', this.LANG.panel.err_empty_name_list);
                     return false;
                 }
                 return true;

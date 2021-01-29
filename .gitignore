@@ -1,8 +1,11 @@
 # Created by .ignore support plugin (hsz.mobi)
+theme/
+!theme/panel/*
+!theme/blue/*
 /cache
 /uploads
 node_modules/
 /package-lock.json
 /pinker
 /config
-/setting/config
+/setting/config/*

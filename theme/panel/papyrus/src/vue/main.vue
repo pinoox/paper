@@ -167,7 +167,7 @@
             USER() {
                 if (!!this.$route.name && this.$route.name === 'splash') {
                     let time = this.getTimeStamp() - this.timestamp;
-                    time = 0 - time;
+                    time = 3000 - time;
                     if (time > 0) {
                         setTimeout(() => {
                             this.checkUser();

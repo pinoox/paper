@@ -15,83 +15,49 @@ namespace pinoox\app\com_pinoox_paper\model;
 use pinoox\app\com_pinoox_paper\component\Browser;
 use pinoox\component\Cookie;
 use pinoox\component\Date;
-use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
 
 class StatisticModel extends PaperDatabase
 {
 
-    const keyVisited = 'paper_visited_';
+    const keyVisited = 'paper_visit';
 
-    public static function insert($post, $data)
+    public static function insert($data)
     {
-        self::startTransaction();
-
         $insert_id = self::$db->insert(self::statistic, [
-            'post_id' => $post['post_id'],
-            'post_type' => $post['post_type'],
             'visitors' => 1,
             'visits' => 1,
             'insert_date' => Date::g('Y-m-d'),
             'json_data' => isset($data['json_data']) ? $data['json_data'] : null,
         ]);
 
-        self::$db->where('post_id', $post['post_id']);
-        $status = self::$db->update(self::post, [
-            'visits' => self::$db->inc(),
-            'visitors' => self::$db->inc(),
-        ]);
-        if ($status && $insert_id)
-            self::commit();
         return $insert_id;
     }
 
-    private static function fetch_today_by_post_id($post_id)
+    private static function fetch_today()
     {
         self::$db->where('s.insert_date', Date::g('Y-m-d'));
-        self::$db->where('s.post_id', $post_id);
         return self::$db->getOne(self::statistic . ' s');
     }
 
-    public static function update_visits($post_id)
+    public static function update_visits()
     {
-        self::startTransaction();
-
         self::$db->where('insert_date', Date::g('Y-m-d'));
-        self::$db->where('post_id', $post_id);
         $isOK = self::$db->update(self::statistic, [
             'visits' => self::$db->inc(),
         ]);
 
-        self::$db->where('post_id', $post_id);
-        $status = self::$db->update(self::post, [
-            'visits' => self::$db->inc(),
-        ]);
-        if ($status && $isOK)
-            self::commit();
-
         return $isOK;
     }
 
-    public static function update_stats($post_id, $data)
+    public static function update_stats($data)
     {
-        self::startTransaction();
-
         self::$db->where('insert_date', Date::g('Y-m-d'));
-        self::$db->where('post_id', $post_id);
         $isOK = self::$db->update(self::statistic, [
             'visitors' => self::$db->inc(),
             'visits' => self::$db->inc(),
             'json_data' => $data['json_data'],
         ]);
-
-        self::$db->where('post_id', $post_id);
-        $status = self::$db->update(self::post, [
-            'visits' => self::$db->inc(),
-            'visitors' => self::$db->inc(),
-        ]);
-        if ($status && $isOK)
-            self::commit();
 
         return $isOK;
     }
@@ -118,64 +84,44 @@ class StatisticModel extends PaperDatabase
         return $result;
     }
 
-    public static function visit($post_id)
+    public static function visit()
     {
         $data = self::createStatsObject();
-        $post = PostModel::fetch_by_id($post_id);
-        if (empty($post)) return;
 
-        $todayRow = self::fetch_today_by_post_id($post_id);
-        $data['json_data'] = self::analysisJson($data, $todayRow['json_data']);
+        $todayRow = self::fetch_today();
+        $data['json_data'] = self::analysisJson($data, @$todayRow['json_data']);
 
         if (!empty($todayRow)) {
-            if (self::is_visited($post_id)) {
-                self::update_visits($post_id);
+            if (self::is_visited()) {
+                self::update_visits();
             } else {
-                self::update_stats($post_id, $data);
+                self::update_stats($data);
             }
         } else {
-            self::insert($post, $data);
+            self::insert($data);
         }
-        self::set_visited($post_id);
+        self::set_visited();
     }
 
-    private static function update_visitors($post_id)
+    public static function is_visited()
     {
-        self::$db->where('s.post_id', $post_id);
-        self::$db->update(self::statistic . ' s', [
-            'visitors' => self::$db->inc()
-        ]);
-
-        self::$db->where('p.post_id', $post_id);
-        self::$db->update(self::post . ' p', [
-            'visitors' => self::$db->inc()
-        ]);
-    }
-
-    public static function is_visited($post_id)
-    {
-        $value = Cookie::get(self::keyVisited . $post_id);
+        $value = Cookie::get(self::keyVisited);
         if (empty($value)) return false;
 
         return true;
     }
 
-    public static function set_visited($post_id)
+    public static function set_visited()
     {
-        if(self::is_visited($post_id))
+        if(self::is_visited())
             return;
         $endToday = Date::g('Y-m-d 00:00:00','+1 days');
         $endToday = strtotime($endToday) - time();
-        Cookie::set(self::keyVisited . $post_id, '1', $endToday);
+        Cookie::set(self::keyVisited , '1', $endToday);
     }
 
-    public static function fetch_visits($post_id, $days = null)
+    public static function fetch_visits($days = null)
     {
-        if (!is_null($post_id))
-            self::$db->where('s.post_id', $post_id);
-
-        self::$db->where('s.post_type', PostModel::post_type);
-
         if (!is_null($days)) {
             $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
             self::$db->where('s.insert_date', $fromDate, '>=');
@@ -191,21 +137,15 @@ class StatisticModel extends PaperDatabase
         return ['total' => $total, 'series' => $result];
     }
 
-    public static function fetch_visitors($post_id, $days = null)
+    public static function fetch_visitors($days = null)
     {
-        $q = is_null($post_id) ? 'SUM(s.visitors) value' : 'COUNT(s.stat_id) value';
-        if (!is_null($post_id))
-            self::$db->where('s.post_id', $post_id);
-
-        self::$db->where('s.post_type', PostModel::post_type);
-
         if (!is_null($days)) {
             $fromDate = Date::g('Y-m-d', '-' . $days . ' DAY');
             self::$db->where('s.insert_date', $fromDate, '>=');
         }
 
         self::$db->groupBy('date');
-        $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date,' . $q);
+        $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date,COUNT(s.stat_id) value');
         if (empty($result)) return null;
 
         $total = 0;
@@ -215,13 +155,13 @@ class StatisticModel extends PaperDatabase
         return ['total' => $total, 'series' => $result];
     }
 
-    public static function fetch_posts_stats($date)
+    public static function fetch_stats($date)
     {
         self::$db->where('s.insert_date', $date, '=');
         return self::$db->getOne(self::statistic . ' s', 'IFNULL(SUM(s.visits), 0) visits, IFNULL(SUM(s.visitors), 0) visitors');
     }
 
-    public static function calc_post_stats_progress_than_yesterday($stats, $yesterday)
+    public static function calc_stats_progress_than_yesterday($stats, $yesterday)
     {
         self::$db->where('s.insert_date', $yesterday, '=');
         $yesterdayStats = self::$db->getOne(self::statistic . ' s', 'IFNULL(SUM(s.visits), 0) visits, IFNULL(SUM(s.visitors), 0) visitors');
@@ -266,9 +206,8 @@ class StatisticModel extends PaperDatabase
         return $rangeDate;
     }
 
-    public static function fetch_devices($post_id)
+    public static function fetch_devices()
     {
-        self::$db->where('s.post_id', $post_id);
         $rows = self::$db->get(self::statistic . ' s');
         if (empty($rows)) return [null, null];
 
@@ -308,13 +247,6 @@ class StatisticModel extends PaperDatabase
             $result[] = ['device' => $k, 'percent' => $p];
         }
         return $result;
-    }
-
-    public static function has_stats($post_id)
-    {
-        self::$db->where('s.post_id', $post_id);
-        $result = self::$db->getOne(self::statistic . ' s');
-        return !empty($result);
     }
 
     public static function createStatsObject()

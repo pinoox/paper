@@ -17,7 +17,7 @@ use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Validation;
 
-class CategoryController extends MasterConfiguration
+class CategoryController extends LoginConfiguration
 {
 
     public function getTree()

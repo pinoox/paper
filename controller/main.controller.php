@@ -15,7 +15,7 @@ use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
-use pinoox\app\com_pinoox_paper\model\StatisticModel;
+use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
 use pinoox\component\HelperHeader;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
@@ -45,7 +45,7 @@ class MainController extends MasterConfiguration
         if (empty($page)) self::error404();
 
         //store visits
-        StatisticModel::visit($page['post_id']);
+        PostStatisticModel::visit($page['post_id']);
 
         TemplateHelper::title($page['title']);
         TemplateHelper::description($page['summary']);
@@ -59,6 +59,7 @@ class MainController extends MasterConfiguration
     {
         $url = implode('/', Router::params());
         if ($url === 'pinoox.js') {
+            self::visitStatus(false);
             HelperHeader::contentType('application/javascript', 'UTF-8');
             self::$template->view('dist/pinoox.js');
         } else {
@@ -153,12 +154,8 @@ class MainController extends MasterConfiguration
         $tree = new Tree();
         $treeComments = $isOpenComment ? $tree->createTree($comments, 'parent_id', 'comment_id') : null;
 
-        if (!StatisticModel::is_visited($post_id))
-            $post['visitors']++;
-
         $post['visits']++;
-
-        StatisticModel::visit($post_id);
+        PostStatisticModel::visit($post_id);
         TemplateHelper::title($post['title']);
         TemplateHelper::description($post['summary']);
         TemplateHelper::setProperty('og:image', $post['thumb_512']);

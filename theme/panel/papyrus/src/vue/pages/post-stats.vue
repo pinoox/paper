@@ -3,8 +3,19 @@
         <div class="menubar">
             <div class="items">
                 <div class="text m1-rl">
-                    <router-link tag="span" :to="{name:'posts'}" class="icon">
-                        <i class="fa fa-chevron-right"></i> {{LANG.post.posts_list}}
+                    <a v-if="!!post" :href="URL.FRONT + 'post/' + post.post_id +'/'+post.post_key" target="_blank"
+                       class="item">{{LANG.post.preview}}</a>
+                    <router-link v-if="!!post" :to="{name:'write',params:{post_id:post.post_id}}" class="item">
+                        {{LANG.panel.edit}}
+                    </router-link>
+                    <router-link v-if="!!post" :to="{name:'comments',params:{post_id:post.post_id}}" class="item">
+                        {{LANG.panel.comments}}
+                    </router-link>
+                    <router-link :to="{name:'write'}" class="item">
+                        {{LANG.post.write}}
+                    </router-link>
+                    <router-link :to="{name:'posts'}" class="item">
+                        {{LANG.post.posts_list}}
                     </router-link>
                 </div>
             </div>
@@ -28,13 +39,79 @@
                             <div class="details">{{LANG.post.published}}: {{post.approx_insert_date}}</div>
                         </div>
                     </section>
+                    <section class="list-box-stat">
 
+                        <div class="box-stat box">
+                            <div class="text">
+                                <div class="caption">{{LANG.post.visits}}</div>
+                                <div class="amount">{{post.visits}} {{LANG.panel.times}}</div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <i class="far fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-stat box">
+                            <div class="text">
+                                <div class="caption">{{LANG.panel.total_written_words}}</div>
+                                <div class="amount">{{post.words}} {{LANG.panel.word}}</div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <i class="far fa-keyboard"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-stat box" v-if="!!stats">
+                            <div class="text">
+                                <div class="caption">{{LANG.panel.total_written_time}}</div>
+                                <div class="amount">{{stats.timeTracking.value}}
+                                    {{LANG.panel.type_time_tracking[stats.timeTracking.type]}}
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <i class="far fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <router-link v-if="!!stats" :to="{name:'comments',params:{post_id:post.post_id}}"
+                                     class="box-stat box">
+                            <div class="text">
+                                <div class="caption">{{LANG.comment.comments}}</div>
+                                <div class="amount">{{stats.comments.total}} {{LANG.comment.comment_count}}</div>
+                                <div class="footnote orange" v-show="stats.comments.pending>0">
+                                    {{stats.comments.pending}} {{LANG.comment.comment}}
+                                    {{LANG.comment.status.pending}}
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <i class="far fa-comment-dots"></i>
+                                </div>
+                            </div>
+                        </router-link>
+                    </section>
                     <div v-if="hasStats">
-                        <section class="section" v-if="monthly!=null">
-                            <div class="section-title">
+                        <section class="section" v-if="!!monthly">
+                            <div class="section-title no-margin-bottom">
                                 <h2>{{LANG.post.stats_post}}</h2>
                             </div>
-                            <div class="section-content">
+                            <ul class="section-tab">
+                                <li @click="changeLastDay(5)"
+                                    :class="[lastDay===5 ? 'active' :'' ]"> 5 {{LANG.panel.last_few_days}}
+                                </li>
+                                <li @click="changeLastDay(7)"
+                                    :class="[lastDay===7? 'active' :'']">
+                                    7 {{LANG.panel.last_few_days}}
+                                </li>
+                                <li @click="changeLastDay(21)"
+                                    :class="[lastDay===21? 'active' :'']">
+                                    21 {{LANG.panel.last_few_days}}
+                                </li>
+                            </ul>
+                            <div class="section-content" v-if="!isMonthlyLoading">
                                 <row :gutter="0" :columns="1" class="box-group">
                                     <column :sm="1" :md="1" :lg="1">
                                         <apexchart type="bar"
@@ -47,13 +124,11 @@
                             </div>
                         </section>
 
-                        <section class="section" v-if="stats!=null">
+                        <section class="section" v-if="!!stats">
                             <div class="section-title">
                                 <h2>{{LANG.post.stats_7_days}}</h2>
                             </div>
-                            <div class="section-content">
-                                <row :gutter="50" :columns="3" class="box-group">
-                                    <column :sm="3" :md="4" :lg="1">
+                            <div class="section-content list-box-stat box-group" >
                                         <div class="box box3">
                                             <div class="details">
                                                 <h3>{{stats.visits.total}}</h3>
@@ -65,55 +140,17 @@
                                                        :options="miniBoxOpts"
                                                        :series="stats.visits.series"></apexchart>
                                         </div>
-                                    </column>
-                                    <column :sm="3" :md="4" :lg="1">
-                                        <div class="box box4">
-                                            <div class="details">
-                                                <h3>{{stats.visitors.total}}</h3>
-                                                <h4>{{LANG.post.visitors}}</h4>
-                                            </div>
-                                            <apexchart type="line"
-                                                       :width="220"
-                                                       :height="80"
-                                                       :options="miniBoxOpts"
-                                                       :series="stats.visitors.series"></apexchart>
-                                        </div>
-                                    </column>
-                                    <column :sm="3" :md="4" :lg="1">
                                         <div class="box box2">
                                             <div class="details">
-                                                <h3>{{stats.visitors.total}}</h3>
+                                                <h3>{{stats.commentsDays.total}}</h3>
                                                 <h4>{{LANG.post.comments}}</h4>
                                             </div>
                                             <apexchart type="line"
                                                        :width="220"
                                                        :height="80"
                                                        :options="miniBoxOpts"
-                                                       :series="stats.visitors.series"></apexchart>
+                                                       :series="stats.commentsDays.series"></apexchart>
                                         </div>
-                                    </column>
-                                </row>
-                            </div>
-                        </section>
-
-                        <section class="section" v-if="devices!=null">
-                            <div class="section-title">
-                                <h2>{{LANG.post.stats_devices}}</h2>
-                            </div>
-                            <div class="section-content">
-                                <row :gutter="12" :columns="1" class="box-group">
-                                    <column :sm="1" :md="1" :lg="1">
-                                        <div class="box center" v-if="devices!=null">
-                                            <apexchart
-                                                    ref="devicesChart"
-                                                    type="radialBar"
-                                                    :width="350"
-                                                    :height="350"
-                                                    :options="radialOpts"
-                                                    :series="devices.percents"></apexchart>
-                                        </div>
-                                    </column>
-                                </row>
                             </div>
                         </section>
                     </div>
@@ -136,10 +173,11 @@
         props: ['post_id'],
         data() {
             return {
+                lastDay:5,
+                isMonthlyLoading:false,
                 hasStats: false,
                 post: null,
                 stats: null,
-                devices: null,
                 monthly: null,
                 miniBoxOpts: {
                     chart: {
@@ -244,51 +282,12 @@
                 },
             }
         },
-        computed: {
-            radialOpts() {
-                return {
-                    chart: {
-                        type: 'radialBar',
-                        fontFamily: 'IranSans',
-                    },
-                    stroke: {
-                        lineCap: 'round'
-                    },
-                    labels: [],
-                    plotOptions: {
-                        radialBar: {
-                            dataLabels: {
-                                name: {
-                                    fontSize: "22px"
-                                },
-                                value: {
-                                    fontSize: "16px"
-                                },
-                                total: {
-                                    show: true,
-                                    label: this.LANG.panel.total,
-                                    formatter: function (w) {
-                                        return '100%';
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    legend: {
-                        show: true,
-                        floating: true,
-                        fontSize: '10px',
-                        position: 'center',
-                        offsetX: 0,
-                        offsetY: 0,
-                        formatter: function (seriesName, opts) {
-                            return '%' + seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
-                        },
-                    },
-                };
-            },
-        },
         methods: {
+            changeLastDay(day)
+            {
+                this.lastDay = day;
+                this.getMonthly();
+            },
             getPost() {
                 return this.$http.post(this.URL.API + 'post/get/' + this.post_id).then((json) => {
                     this.post = json.data;
@@ -299,14 +298,10 @@
                     this.stats = json.data;
                 });
             },
-            getDevices() {
-                return this.$http.post(this.URL.API + 'post/getDevices/' + this.post_id).then((json) => {
-                    this.devices = json.data;
-                    this.radialOpts.labels = json.data.labels;
-                });
-            },
             getMonthly() {
-                return this.$http.post(this.URL.API + 'post/getMonthly/' + this.post_id).then((json) => {
+                this.isMonthlyLoading = true;
+                return this.$http.post(this.URL.API + 'post/getMonthly/' + this.post_id,{lastDay:this.lastDay}).then((json) => {
+                    this.isMonthlyLoading = false;
                     this.monthly = json.data.series;
                     this.monthlyOpts.xaxis.categories = json.data.date;
                 });
@@ -325,9 +320,7 @@
 
                 this.getMonthly().then(() => {
                     return this.getStats();
-                }).then(() => {
-                    return this.getDevices();
-                })
+                });
             });
         },
     }
@@ -363,4 +356,7 @@
         margin: auto;
     }
 
+    .no-margin-bottom{
+        margin-bottom: 0 !important;
+    }
 </style>
