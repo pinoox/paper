@@ -22,6 +22,9 @@
 .center .apexcharts-canvas {
   margin: auto;
 }
+.no-margin-bottom {
+  margin-bottom: 0 !important;
+}
 
 
 .vc-chrome {
@@ -1585,6 +1588,13 @@ body.ltr .vue-notification-group {
   background: linear-gradient(0deg, #6A62D8 0%, #7781E3 100%);
   box-shadow: 0 4px 8px 0 rgba(119, 129, 227, 0.5);
 }
+.app-container .main .page .list-box-stat {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  text-align: center;
+  grid-gap: 1rem;
+}
 .app-container .main .page .box-stat {
   padding: 10px 20px;
   display: flex;
@@ -1643,6 +1653,11 @@ body.ltr .vue-notification-group {
 .app-container .main .page .box-stat .icon .bg svg.ic_comments {
   width: 40px !important;
   top: 10px;
+}
+.app-container .main .page .box-stat .icon .bg i {
+  color: #849fbe;
+  font-size: 30px;
+  margin-top: 13px;
 }
 .app-container .main .page a.box-stat:hover {
   background: rgba(31, 66, 108, 0.1);
@@ -1966,6 +1981,11 @@ body.ltr .vue-notification-group {
   text-align: center;
   color: #506E93;
   display: none;
+}
+.nestable-category .nestable-item-content .actions .btn-action.show {
+  display: block;
+  cursor: pointer;
+  margin-top: 12px;
 }
 .nestable-category .nestable-item-content .actions .btn-action i {
   position: relative;
@@ -3243,6 +3263,7 @@ body.ltr .vue-notification-group {
   }
   .login-form {
     left: 10%;
+    top: 40% !important;
   }
   .login-form .form-item {
     display: inline-flex;

@@ -24,14 +24,14 @@
                             </div>
                         </div>
                     </column>
-                    <column :xs="2" :sm="2" :md="2" :lg="1">
+                    <column v-if="!!stats" :xs="2" :sm="2" :md="2" :lg="1">
                         <div class="single-stat purple">
                             <div class="caption">{{LANG.panel.total_written_time}}</div>
                             <div class="amount">{{stats.timeTracking.value}}</div>
                             <div class="unit">{{LANG.panel.type_time_tracking[stats.timeTracking.type]}}</div>
                         </div>
                     </column>
-                    <column :xs="3" :sm="3" :md="3" :lg="1">
+                    <column v-if="!!stats" :xs="3" :sm="3" :md="3" :lg="1">
                         <div class="single-stat red">
                             <div class="caption">{{LANG.panel.total_written_words}}</div>
                             <div class="amount">{{stats.words}}</div>
@@ -40,18 +40,18 @@
                     </column>
                 </row>
                 <br>
-                <row :gutter="10" :columns="3" v-if="!!stats.postStats">
-                    <column :sm="1" :md="1" :lg="1">
-                        <div class="box-stat box">
+                <div class="container">
+                    <section v-if="!!stats" class="list-box-stat">
+                        <div class="box-stat box" v-if="!!stats.progress">
                             <div class="text">
                                 <div class="caption">{{LANG.panel.visits}} {{LANG.panel.today}}</div>
-                                <div class="amount">{{stats.postStats.visits}} {{LANG.panel.times}}</div>
+                                <div v-if="!!stats.stats" class="amount">{{stats.stats.visits}} {{LANG.panel.times}}</div>
                                 <div class="footnote"
-                                     :class="{'green' : stats.postProgress.visits>0,'red': stats.postProgress.visits<0 }"
-                                     v-if="stats.postProgress.visits !== 0">
+                                     :class="{'green' : stats.progress.visits>0,'red': stats.progress.visits<0 }"
+                                     v-if="stats.progress.visits !== 0">
                                     <i class="fas fa-chart-line"></i>
-                                    <span class="ltr-text">% {{stats.postProgress.visits}}</span>
-                                    {{stats.postProgress.visits > 0 ?
+                                    <span class="ltr-text">% {{stats.progress.visits}}</span>
+                                    {{stats.progress.visits > 0 ?
                                     LANG.panel.asc_progress : LANG.panel.desc_progress }}
                                 </div>
                             </div>
@@ -62,18 +62,16 @@
                                 </div>
                             </div>
                         </div>
-                    </column>
-                    <column :sm="1" :md="1" :lg="1">
-                        <div class="box-stat box">
+                        <div class="box-stat box" v-if="!!stats.progress">
                             <div class="text">
                                 <div class="caption">{{LANG.panel.visitors}} {{LANG.panel.today}}</div>
-                                <div class="amount">{{stats.postStats.visitors}} {{LANG.panel.persons}}</div>
+                                <div v-if="!!stats.stats" class="amount">{{stats.stats.visitors}} {{LANG.panel.persons}}</div>
                                 <div class="footnote"
-                                     :class="{'green' : stats.postProgress.visitors>0,'red': stats.postProgress.visitors<0 }"
-                                     v-if="stats.postProgress.visitors !== 0">
+                                     :class="{'green' : stats.progress.visitors>0,'red': stats.progress.visitors<0 }"
+                                     v-if="stats.progress.visitors !== 0">
                                     <i class="fas fa-chart-line"></i>
-                                    <span class="ltr-text">% {{stats.postProgress.visitors}}</span>
-                                    {{stats.postProgress.visitors > 0 ?
+                                    <span class="ltr-text">% {{stats.progress.visitors}}</span>
+                                    {{stats.progress.visitors > 0 ?
                                     LANG.panel.asc_progress : LANG.panel.desc_progress }}
                                 </div>
                             </div>
@@ -84,9 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                    </column>
-                    <column :sm="1" :md="1" :lg="1">
-                        <router-link :to="{name:'comments'}" class="box-stat box">
+                        <router-link v-if="!!stats.commentStats" :to="{name:'comments'}" class="box-stat box">
                             <div class="text">
                                 <div class="caption">{{LANG.comment.comments}}</div>
                                 <div class="amount">{{stats.commentStats.total}} {{LANG.comment.comment_count}}</div>
@@ -102,11 +98,9 @@
                                 </div>
                             </div>
                         </router-link>
-                    </column>
-                </row>
+                    </section>
 
-                <div class="container">
-                    <section class="section" v-if="monthly!=null">
+                    <section class="section" v-if="monthlyPost!=null">
                         <div class="section-title">
                             <h2>{{LANG.panel.total_posts_stats}}</h2>
                         </div>
@@ -117,7 +111,45 @@
                                                :options="monthlyOpts"
                                                :height="monthlyOpts.chart.height"
                                                :width="monthlyOpts.chart.width"
+                                               :series="monthlyPost"></apexchart>
+                                </column>
+                            </row>
+                        </div>
+                    </section>
+
+                    <section class="section" v-if="monthly!=null">
+                        <div class="section-title">
+                            <h2>{{LANG.panel.total_site_stats}}</h2>
+                        </div>
+                        <div class="section-content">
+                            <row :gutter="0" :columns="1" class="box-group">
+                                <column :sm="1" :md="1" :lg="1">
+                                    <apexchart type="bar"
+                                               :options="monthlyOpts"
+                                               :height="monthlyOpts.chart.height"
+                                               :width="monthlyOpts.chart.width"
                                                :series="monthly"></apexchart>
+                                </column>
+                            </row>
+                        </div>
+                    </section>
+
+                    <section class="section" v-if="devices!=null">
+                        <div class="section-title">
+                            <h2>{{LANG.post.stats_devices}}</h2>
+                        </div>
+                        <div class="section-content">
+                            <row :gutter="12" :columns="1" class="box-group">
+                                <column :sm="1" :md="1" :lg="1">
+                                    <div class="box center" v-if="devices!=null">
+                                        <apexchart
+                                                ref="devicesChart"
+                                                type="radialBar"
+                                                :width="350"
+                                                :height="350"
+                                                :options="radialOpts"
+                                                :series="devices.percents"></apexchart>
+                                    </div>
                                 </column>
                             </row>
                         </div>
@@ -133,7 +165,9 @@
         data() {
             return {
                 todayDate: null,
+                monthlyPost: null,
                 monthly: null,
+                devices:null,
                 monthlyOpts: {
                     chart: {
                         type: 'bar',
@@ -188,28 +222,82 @@
                     let hour = new Date().getHours();
                     return hour <= 6 || hour >= 18
                 }
-            }
+            },
+            radialOpts() {
+                return {
+                    chart: {
+                        type: 'radialBar',
+                        fontFamily: 'IranSans',
+                    },
+                    stroke: {
+                        lineCap: 'round'
+                    },
+                    labels: [],
+                    plotOptions: {
+                        radialBar: {
+                            dataLabels: {
+                                name: {
+                                    fontSize: "22px"
+                                },
+                                value: {
+                                    fontSize: "16px"
+                                },
+                                total: {
+                                    show: true,
+                                    label: this.LANG.panel.total,
+                                    formatter: function (w) {
+                                        return '100%';
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        floating: true,
+                        fontSize: '10px',
+                        position: 'center',
+                        offsetX: 0,
+                        offsetY: 0,
+                        formatter: function (seriesName, opts) {
+                            return '%' + seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
+                        },
+                    },
+                };
+            },
         },
         methods: {
             getTime() {
-                this.$http.post(this.URL.API + 'dashboard/getTime').then((json) => {
+                this.$http.get(this.URL.API + 'dashboard/getTime').then((json) => {
                     this.todayDate = json.data;
                 });
             },
             getCountNotifies() {
-                this.$http.post(this.URL.API + 'dashboard/getCountNotifies').then((json) => {
+                this.$http.get(this.URL.API + 'dashboard/getCountNotifies').then((json) => {
                     this.unseen = json.data;
                 });
             },
             getStats() {
-                return this.$http.post(this.URL.API + 'dashboard/getStats').then((json) => {
+                return this.$http.get(this.URL.API + 'dashboard/getStats').then((json) => {
                     this.stats = json.data;
                 });
             },
             getMonthly() {
-                return this.$http.post(this.URL.API + 'post/getMonthly/').then((json) => {
+                return this.$http.get(this.URL.API + 'dashboard/getMonthly/').then((json) => {
                     this.monthly = json.data.series;
                     this.monthlyOpts.xaxis.categories = json.data.date;
+                });
+            },
+            getMonthlyPosts() {
+                return this.$http.get(this.URL.API + 'post/getMonthly/').then((json) => {
+                    this.monthlyPost = json.data.series;
+                    this.monthlyOpts.xaxis.categories = json.data.date;
+                });
+            },
+            getDevices() {
+                return this.$http.get(this.URL.API + 'dashboard/getDevices/').then((json) => {
+                    this.devices = json.data;
+                    this.radialOpts.labels = json.data.labels;
                 });
             },
         },
@@ -218,6 +306,8 @@
             this.getCountNotifies();
             this.getStats();
             this.getMonthly();
+            this.getMonthlyPosts();
+            this.getDevices();
         }
     }
 </script>

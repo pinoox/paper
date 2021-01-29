@@ -125,8 +125,9 @@
                     },
                     {
                         label: this.LANG.panel.title,
-                        field: (item) => {
-                            return this._isNull(item.title, this.LANG.post.no_title);
+                        field: 'title',
+                        formatFn: (value) => {
+                            return this._isNull(value, this.LANG.post.no_title);
                         },
                         style: (item) => {
                             return !item.title ? 'light' : '';
@@ -144,8 +145,9 @@
                     },
                     {
                         label: this.LANG.panel.status,
-                        field: (item) => {
-                            return this.LANG.post.status[item.status];
+                        field: 'status',
+                        formatFn: (value) => {
+                            return this.LANG.post.status[value];
                         },
                         style: (item) => {
                             return 'badge-status ' + item.status;
@@ -154,16 +156,9 @@
                     {
                         label: this.LANG.post.visits,
                         icon: 'fa fa-eye',
-                        field: (item) => {
-                            return this._isNull(item.visits, '0');
-                        },
-                        style: 'light',
-                    },
-                    {
-                        label: this.LANG.post.visitors,
-                        icon: 'fa fa-users',
-                        field: (item) => {
-                            return this._isNull(item.visitors, '0');
+                        field: 'visits',
+                        formatFn: (value) => {
+                            return this._isNull(value, '0');
                         },
                         style: 'light',
                     },

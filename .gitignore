@@ -1,4 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
+theme/
+!theme/panel/*
+!theme/blue/*
 /cache
 /uploads
 node_modules/
@@ -6,7 +9,3 @@ node_modules/
 /pinker
 /config
 /setting/config
-
-theme/
-!theme/panel/
-!theme/blue/

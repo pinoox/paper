@@ -79,18 +79,18 @@
                 next();
             });
         },
-        beforeRouteUpdate(to, from, next) {
-            if (to.name === this.$route.name) {
-                {
-                    if (!!to.params && !!to.params.post_id)
-                        window.history.pushState(null, {}, to.path);
-                    else
-                        next();
-                }
-            } else {
-                next();
-            }
-        },
+        // beforeRouteUpdate(to, from, next) {
+        //     if (to.name === this.$route.name) {
+        //         {
+        //             if (!!to.params && !!to.params.post_id)
+        //                 window.history.pushState(null, {}, to.path);
+        //             else
+        //                 next();
+        //         }
+        //     } else {
+        //         next();
+        //     }
+        // },
         data() {
             return {
                 countStatus: 0,
@@ -399,7 +399,6 @@
             },
             openFullscreen() {
                 let ckBody = $('#write').find('.ck-body-wrapper');
-
                 if (!ckBody || ckBody.length <= 0) {
                     ckBody = $('.ck-body-wrapper');
                     ckBody.css('position', 'absolute');
@@ -408,16 +407,20 @@
 
                 let el = document.getElementById('write');
                 if (el.requestFullscreen) {
-                    el.requestFullscreen();
+                    return el.requestFullscreen();
+                } else if (el.mozRequestFullScreen) {  /* Firefox */
+                    return  el.mozRequestFullScreen();
                 } else if (el.webkitRequestFullscreen) { /* Safari */
-                    el.webkitRequestFullscreen();
+                    return  el.webkitRequestFullscreen();
                 } else if (el.msRequestFullscreen) { /* IE11 */
-                    el.msRequestFullscreen();
+                    return el.msRequestFullscreen();
                 }
             },
             closeFullscreen() {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
+                } else if (document.mozExitFullScreen) {  /* Firefox */
+                    document.mozExitFullScreen();
                 } else if (document.webkitExitFullscreen) { /* Safari */
                     document.webkitExitFullscreen();
                 } else if (document.msExitFullscreen) { /* IE11 */

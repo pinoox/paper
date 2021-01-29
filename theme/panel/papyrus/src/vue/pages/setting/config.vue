@@ -29,6 +29,7 @@
             </footer>
         </simplebar>
         <list-setting @close="listDrawer = false" :open="listDrawer"></list-setting>
+        <form-setting @close="formDrawer = false" :open="formDrawer"></form-setting>
     </div>
 </template>
 
@@ -36,9 +37,10 @@
     import {mapMutations} from 'vuex';
     import ListSetting from "../../drawers/list-setting.vue";
     import FormBuilder from "../../components/form-builder.vue";
+    import FormSetting from "../../drawers/form-setting.vue";
 
     export default {
-        components: {FormBuilder, ListSetting},
+        components: {FormSetting, FormBuilder, ListSetting},
         props: ['setting_key'],
         data() {
             return {
@@ -46,6 +48,7 @@
                 setting: {},
                 paramsImage:{},
                 listDrawer: false,
+                formDrawer: false,
                 isLoadConfig:false,
             }
         },
@@ -65,6 +68,10 @@
             openListDrawer(setting) {
                 this.setting = setting;
                 this.listDrawer = true;
+            },
+            openFormDrawer(setting) {
+                this.setting = setting;
+                this.formDrawer = true;
             },
             getSettings() {
                 let key = this.view.key;

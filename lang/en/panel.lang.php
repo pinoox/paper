@@ -33,6 +33,8 @@ return [
     'quick_access' => 'quick access',
     'sections' => 'sections',
     'total_posts_stats' => 'Visit statistics of all posts',
+    'total_site_stats' => 'Site visit statistics',
+    'view_site' => 'view site',
     'total_written_time' => 'Total time spent writing',
     'today' => 'today',
     'hello' => 'hello',
@@ -74,6 +76,7 @@ return [
     'select_image' => 'Image selection',
     'name_list' => 'List name (required)',
     'enter_name' => 'Enter name',
+    'last_few_days' => 'days last',
     'type_time_tracking' => [
         'sec' => 'sec',
         'minute' => 'minute',

@@ -1,7 +1,7 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import FileRepository  from '@ckeditor/ckeditor5-upload/src/filerepository';
 
-import { attachLinkToDocumentation } from '@ckeditor/ckeditor5-utils/src/ckeditorerror';
+import { logWarning  } from '@ckeditor/ckeditor5-utils/src/ckeditorerror';
 
 export default class PaperUploadAdapter extends Plugin {
     /**
@@ -29,8 +29,7 @@ export default class PaperUploadAdapter extends Plugin {
         }
 
         if ( !options.uploadUrl ) {
-            console.warn( attachLinkToDocumentation( 'paper-upload-adapter-missing-uploadurl' ) );
-
+            console.warn( logWarning ( 'paper-upload-adapter-missing-uploadurl' ) );
             return;
         }
 

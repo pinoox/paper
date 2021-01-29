@@ -13,10 +13,10 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
-use pinoox\app\com_pinoox_paper\model\CategoryModel;
+use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
-use pinoox\app\com_pinoox_paper\model\StatisticModel;
+use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
 use pinoox\component\Date;
 use pinoox\component\Dir;
 use pinoox\component\Pagination;
@@ -26,7 +26,6 @@ use pinoox\component\Uploader;
 use pinoox\component\Url;
 use pinoox\component\User;
 use pinoox\component\Validation;
-use pinoox\model\FileModel;
 
 
 class PostController extends LoginConfiguration
@@ -36,6 +35,7 @@ class PostController extends LoginConfiguration
         PostModel::where_post_type($post_type);
         $post = PostModel::post_draft_fetch_by_id($post_id);
         $post = PostModel::getInfoPost($post);
+
         Response::json($post);
     }
 
@@ -54,14 +54,14 @@ class PostController extends LoginConfiguration
         $form = Request::input('keyword,type,sort,status=all,perPage=10,page=1', null, '!empty');
 
         $this->filterSearch($form);
-        $count = PostModel::fetch_all(null, true);
+        $count = PostModel::fetch_all_posts(null, true);
 
         // pagination
         $pagination = new Pagination($count, $form['perPage']);
         $pagination->setCurrentPage($form['page']);
 
         $this->filterSearch($form);
-        $posts = PostModel::fetch_all($pagination->getArrayLimit());
+        $posts = PostModel::fetch_all_posts($pagination->getArrayLimit());
 
         $posts = array_map(function ($post) {
             return $post = PostModel::getInfoPost($post);
@@ -103,7 +103,7 @@ class PostController extends LoginConfiguration
 
     public function save()
     {
-        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0,'time'=>0], null, '!empty');
+        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0, 'time' => 0], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
@@ -292,51 +292,41 @@ class PostController extends LoginConfiguration
 
     public function visit($post_id)
     {
-        StatisticModel::visit($post_id);
+        PostStatisticModel::visit($post_id);
         Response::json('done');
     }
 
     public function getStats($post_id)
     {
         $post = PostModel::fetch_by_id($post_id);
-        if (empty($post)) return null;
+        if (empty($post)) return self::error();
+
+        $days = 7;
 
         //visits
-        $visits = StatisticModel::fetch_visits($post_id, 7);
-        $visitsSeries = StatisticModel::createRangeData($visits['series'], 6, true);
+        $visits = PostStatisticModel::fetch_visits($post_id, $days);
+        $visitsSeries = Helper::createRangeDate(@$visits['series'], $days, true);
 
-        //visitors
-        $visitors = StatisticModel::fetch_visitors($post_id, 7);
-        $visitorsSeries = StatisticModel::createRangeData($visitors['series'], 6, true);
+        $commentStats = CommentModel::fetch_stats_by_post($post_id);
+
+        //comments
+        $comments = CommentModel::fetch_stats_post_comment($post_id, $days);
+        $commentSeries = Helper::createRangeDate(@$comments['series'], $days, true);
 
         $result = [
             'visits' => [
                 'total' => $visits['total'],
                 'series' => [['data' => $visitsSeries]]
             ],
-            'visitors' => [
-                'total' => $visitors['total'],
-                'series' => [['data' => $visitorsSeries]]
+            'commentsDays' => [
+                'total' => $comments['total'],
+                'series' => [['data' => $commentSeries]]
             ],
+            'timeTracking' => Helper::timePrint($post['time_tracking']),
+            'comments' => $commentStats,
         ];
 
         Response::json($result);
-    }
-
-    public function getDevices($post_id)
-    {
-        $post = PostModel::fetch_by_id($post_id);
-        if (empty($post)) return null;
-
-        list($devices, $total) = StatisticModel::fetch_devices($post_id);
-        $percents = StatisticModel::calc_device_percents($devices, $total);
-        $data = [
-            'percents' => array_column($percents, 'percent'),
-            'labels' => array_column($percents, 'device'),
-            'total' => $total,
-        ];
-
-        Response::json($data);
     }
 
     public function getMonthly($post_id = null)
@@ -346,7 +336,16 @@ class PostController extends LoginConfiguration
             if (empty($post)) return null;
         }
 
-        $days = 6;
+        $lastDay = Request::inputOne('lastDay', 5, '!empty');
+
+        if ($lastDay == 7)
+            $lastDay = 7;
+        else if ($lastDay == 21)
+            $lastDay = 21;
+        else
+            $lastDay = 5;
+
+        $days = $lastDay - 1;
 
         $rangeDate = Date::betweenGDate(Date::g('Y-m-d', '-' . $days . ' days'), Date::g('Y-m-d', '+1 days'));
         $rangeDate = array_map(function ($d) {
@@ -357,12 +356,12 @@ class PostController extends LoginConfiguration
         $rangeDate[count($rangeDate) - 2] = rlang('post.yesterday');
 
         //visits
-        $visits = StatisticModel::fetch_visits($post_id, $days);
-        $visitsSeries = StatisticModel::createRangeData($visits['series'], $days, true);
+        $visits = PostStatisticModel::fetch_visits($post_id, $days);
+        $visitsSeries = Helper::createRangeDate(@$visits['series'], $days, true);
 
-        //visitors
-        $visitors = StatisticModel::fetch_visitors($post_id, $days);
-        $visitorsSeries = StatisticModel::createRangeData($visitors['series'], $days, true);
+        //comments
+        $comments = CommentModel::fetch_stats_post_comment($post_id, $days);
+        $commentSeries = Helper::createRangeDate(@$comments['series'], $days, true);
 
         $result = [
             [
@@ -370,8 +369,8 @@ class PostController extends LoginConfiguration
                 'data' => $visitsSeries
             ],
             [
-                'name' => rlang('post.visitors'),
-                'data' => $visitorsSeries
+                'name' => rlang('panel.comments'),
+                'data' => $commentSeries
             ],
         ];
 
@@ -380,7 +379,7 @@ class PostController extends LoginConfiguration
 
     public function hasStats($post_id)
     {
-        Response::json(StatisticModel::has_stats($post_id));
+        Response::json(PostStatisticModel::has_stats($post_id));
     }
 
     public function deleteAllHistory($post_id)
@@ -398,5 +397,4 @@ class PostController extends LoginConfiguration
 
         Response::jsonMessage(rlang('panel.error_happened'), false);
     }
-
 }

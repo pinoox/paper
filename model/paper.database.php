@@ -21,6 +21,7 @@ class PaperDatabase extends PinooxDatabase
     const post_draft = 'com_pinoox_paper_post_draft';
     const post_history = 'com_pinoox_paper_post_history';
     const post_tag = 'com_pinoox_paper_post_tag';
+    const post_statistic = 'com_pinoox_paper_post_statistic';
     const tag = 'com_pinoox_paper_tag';
     const category = 'com_pinoox_paper_category';
     const contact = 'com_pinoox_paper_contact';

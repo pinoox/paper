@@ -15,6 +15,7 @@ namespace pinoox\app\com_pinoox_paper\controller;
 use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
+use pinoox\app\com_pinoox_paper\model\StatisticModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Dir;
 use pinoox\component\HelperHeader;
@@ -36,6 +37,12 @@ class MasterConfiguration implements ControllerInterface
      * @var array
      */
     protected static $config;
+    private static $visit = true;
+
+    protected function visitStatus($status = true)
+    {
+        self::$visit = $status;
+    }
 
     public function __construct()
     {
@@ -144,4 +151,9 @@ class MasterConfiguration implements ControllerInterface
         $this->loadMenus();
     }
 
+    public function __destruct()
+    {
+        if(self::$visit)
+            StatisticModel::visit();
+    }
 }

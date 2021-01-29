@@ -2,10 +2,6 @@ import Vue from "vue";
 
 Vue.mixin({
     computed: {
-        isLogin() {
-            let user = this.$store.state.user;
-            return !!user && !!user.isLogin;
-        },
         USER: {
             get() {
                 return this.$store.state.user;
@@ -140,13 +136,21 @@ Vue.mixin({
         },
     },
     methods: {
+        isLogin() {
+            let user = this.$store.state.user;
+            return !!user && !!user.isLogin;
+        },
+        exitUser() {
+            this.USER = {isLogin: false};
+            localStorage.removeItem('paper_user');
+            this.$router.replace({name: 'login'});
+        },
         logout(caller = null) {
             this._confirm(this.LANG.panel.are_you_sure_logout_account, () => {
                 this.$http.get(this.URL.API + 'user/logout').then((json) => {
                     if (json.data.status) {
-                        this.USER.user = {isLogin: false};
-                        this.$router.replace({name:'login'});
-                        if(!!caller) caller();
+                        this.exitUser();
+                        if (!!caller) caller();
                     }
                 });
             });
@@ -169,7 +173,7 @@ Vue.mixin({
                     let data = json.data.result;
                     data.isLogin = true;
                     return data;
-                    if(isUpdate)
+                    if (isUpdate)
                         this.USER = data;
                 } else {
                     this.USER = {isLogin: false}
@@ -204,7 +208,7 @@ Vue.mixin({
             });
         },
         tokenAuth() {
-            let token = localStorage.pinoox_user;
+            let token = localStorage.paper_user;
             if (!!token) {
                 return `${token}`;
             }

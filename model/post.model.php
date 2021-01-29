@@ -39,7 +39,7 @@ class PostModel extends PaperDatabase
         $date = Date::g('Y-m-d H:i:s');
         return self::$db->insert(self::post, [
             'hash_id' => $data['hash_id'],
-            'user_id' => isset($data['user_id'])? $data['user_id'] : User::get('user_id'),
+            'user_id' => isset($data['user_id']) ? $data['user_id'] : User::get('user_id'),
             'summary' => $data['summary'],
             'time_tracking' => $data['time'],
             'status' => self::draft_status,
@@ -222,7 +222,7 @@ class PostModel extends PaperDatabase
             $post['category'] = null;
 
 
-        $post['post_key'] = empty($post['post_key'])? HelperString::replaceSpace($post['title']) : $post['post_key'];
+        $post['post_key'] = empty($post['post_key']) ? HelperString::replaceSpace($post['title']) : $post['post_key'];
         $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
         $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
         $file = FileModel::fetch_by_id($post['image_id']);
@@ -268,7 +268,17 @@ class PostModel extends PaperDatabase
     {
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->orderBy('p.insert_date', 'DESC');
-        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.visits,p.visitors,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
+        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
+        if ($isCount) return self::$db->count;
+        return $result;
+    }
+
+    public static function fetch_all_posts($limit = null, $isCount = false)
+    {
+        self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
+        self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id', 'LEFT');
+        self::$db->orderBy('p.insert_date', 'DESC');
+        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,pd.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
         if ($isCount) return self::$db->count;
         return $result;
     }
@@ -278,10 +288,9 @@ class PostModel extends PaperDatabase
         $limit = isset($option['limit']) ? $option['limit'] : null;
         $isCount = isset($option['count']) ? $option['count'] : false;
 
-        if ($ids !== 'ALL' && $ids !== 'all' && $ids !== '*')
-            self::buildWhereForFetcher($ids, $option);
+        self::buildWhereForFetcher($ids, $option);
 
-        $columns = 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.cat_id,p.characters,p.words,p.visits,p.visitors,u.username,u.avatar_id';
+        $columns = 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.cat_id,p.characters,p.words,p.visits,u.username,u.avatar_id';
 
         self::$db->groupBy($columns);
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
@@ -294,32 +303,35 @@ class PostModel extends PaperDatabase
 
     private static function buildWhereForFetcher($ids, $option)
     {
+        $isAll = $ids === 'ALL' || $ids === 'all' || $ids === '*';
         $key = isset($option['key']) ? $option['key'] : 'post_id';
         $where = isset($option['where']) ? $option['where'] : 'IN';
-        $default_order = ($key === 'post_id') ? 'post_id' : 'insert_date';
-        $default_order_type = ($key === 'post_id') ? 'ASC' : 'DESC';
+        $default_order = (!$isAll && $key === 'post_id') ? 'post_id' : 'publish_date';
+        $default_order_type = (!$isAll && $key === 'post_id') ? 'ASC' : 'DESC';
         $order = isset($option['order']) ? $option['order'] : $default_order;
         $order = 'p.' . $order;
         $order_type = isset($option['order_type']) ? $option['order_type'] : $default_order_type;
-        if (HelperString::has(strtoupper($where), 'IN'))
-            $ids = is_array($ids) ? $ids : [$ids];
-        if (is_array($key)) {
-            $keys = [];
-            $values = [];
-            foreach ($key as $k) {
-                $keys[] = ($k === 'tag_id' || $k === 'tag_name') ? 't.' . $k : 'p.' . $k;
-                $values[] = $ids;
+
+        if (!$isAll) {
+            if (HelperString::has(strtoupper($where), 'IN'))
+                $ids = is_array($ids) ? $ids : [$ids];
+            if (is_array($key)) {
+                $keys = [];
+                $values = [];
+                foreach ($key as $k) {
+                    $keys[] = ($k === 'tag_id' || $k === 'tag_name') ? 't.' . $k : 'p.' . $k;
+                    $values[] = $ids;
+                }
+                $key = implode(' ' . $where . ' ? OR ', $keys);
+                $key = '(' . $key;
+                $key .= ' ' . $where . ' ?)';
+            } else {
+                $key = ($key === 'tag_id' || $key === 'tag_name') ? 't.' . $key : 'p.' . $key;
+                $values = $ids;
             }
-            $key = implode(' ' . $where . ' ? OR ', $keys);
-            $key = '(' . $key;
-            $key .= ' ' . $where . ' ?)';
-        } else {
-            $key = ($key === 'tag_id' || $key === 'tag_name') ? 't.' . $key : 'p.' . $key;
-            $values = $ids;
+
+            self::$db->where($key, $values, $where);
         }
-
-        self::$db->where($key, $values, $where);
-
 
         if (strtoupper($where) === 'IN')
             self::$db->orderBy($order, $order_type, $ids);

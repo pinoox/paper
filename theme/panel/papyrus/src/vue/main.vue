@@ -128,7 +128,7 @@
             },
             checkUser() {
                 let token = this.tokenAuth();
-                if ((!token || !this.isLogin) && (!this.$route.name || this.$route.name !== 'login')) {
+                if ((!token || !this.isLogin()) && (!this.$route.name || this.$route.name !== 'login')) {
                     this._routerReplace({name: 'login'});
                 } else if (!!this.route.name && (this.route.name === 'login' || this.route.name === 'splash')) {
                     this._routerReplace({name: 'dashboard'});
@@ -138,17 +138,6 @@
             },
             getTimeStamp(date = null) {
                 return new Date(date).getTime();
-            },
-            logout() {
-                this._confirm(this.LANG.panel.are_you_sure_logout_account, () => {
-                    this.$http.get(this.URL.API + 'user/logout').then((json) => {
-                        if (json.data.status) {
-                            this.USER.user = {isLogin: false};
-                            this.$router.replace({name: 'login'});
-                        }
-                    });
-                });
-
             },
             showFront() {
                 window.open(PINOOX.URL.FRONT, '_blank');
@@ -167,7 +156,7 @@
             USER() {
                 if (!!this.$route.name && this.$route.name === 'splash') {
                     let time = this.getTimeStamp() - this.timestamp;
-                    time = 0 - time;
+                    time = 3000 - time;
                     if (time > 0) {
                         setTimeout(() => {
                             this.checkUser();
@@ -177,6 +166,22 @@
                 }
                 this.checkUser();
             },
+            // '$route': {
+            //     handler(to, from) {
+            //
+            //         let token = localStorage.paper_user;
+            //         let checkLogin = this.$store.state.checkLogin;
+            //         console.log('checkLogin: ',checkLogin);
+            //         console.log('token: ',!token);
+            //         console.log('isLogin: ',!this.isLogin());
+            //         console.log('login: ',(!to.name || (to.name !== 'login')));
+            //         if (checkLogin && !token && !this.isLogin() && (!to.name || (to.name !== 'login'))) {
+            //             this.exitUser();
+            //         }
+            //     },
+            //     deep: true,
+            //     immediate: true,
+            // }
         }
     }
 </script>
