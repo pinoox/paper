@@ -11,12 +11,6 @@
                     <router-link v-if="!!post" :to="{name:'comments',params:{post_id:post.post_id}}" class="item">
                         {{LANG.panel.comments}}
                     </router-link>
-                    <router-link :to="{name:'write'}" class="item">
-                        {{LANG.post.write}}
-                    </router-link>
-                    <router-link :to="{name:'posts'}" class="item">
-                        {{LANG.post.posts_list}}
-                    </router-link>
                 </div>
             </div>
         </div>

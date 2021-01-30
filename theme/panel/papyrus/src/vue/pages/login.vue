@@ -37,7 +37,7 @@
                 login() {
                     this.$http.post(this.URL.API + 'account/login', this.params).then((json) => {
                         if (this._messageResponse(json.data)) {
-                            localStorage.pinoox_user = json.data.result;
+                            localStorage.paper_user = json.data.result;
                             this.getInitUser();
                         }
                     });

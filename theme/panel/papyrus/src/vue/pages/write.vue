@@ -115,6 +115,7 @@
                     post_key: '',
                     characters: 0,
                     words: 0,
+                    hook:'disable',
                 },
                 category: null,
                 images: [],
@@ -173,6 +174,14 @@
                 document.onkeypress = () => {
                     this.timeSleep = 30;
                 };
+            },
+            enableHook()
+            {
+                this.params.hook = 'enable';
+            },
+            disableHook()
+            {
+                this.params.hook = 'disable';
             },
             startTimer() {
                 return setInterval(() => {
@@ -325,7 +334,7 @@
             },
             save(status = null) {
                 let params = this.getFormData(this.params);
-
+                this.disableHook();
                 if (!!status)
                     params.append('status', status);
 
