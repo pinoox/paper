@@ -184,6 +184,7 @@
         },
         methods: {
             changeStatus(status) {
+                this.$parent.enableHook();
                 this.$parent.save(status);
             },
             openSelectImage() {
@@ -243,6 +244,8 @@
                 let status = null;
                 if (this.params.title !== paramsParent.editor.title)
                     status = this.$parent.status;
+
+                this.$parent.enableHook();
                 this.$parent.save(status).then((data) => {
                     if (data.status)
                         this.$parent.isSynced = true;
