@@ -103,7 +103,7 @@ class PostController extends LoginConfiguration
 
     public function save()
     {
-        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0, 'time' => 0], null, '!empty');
+        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0, 'time' => 0, 'hook' => 'disable'], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
@@ -134,6 +134,21 @@ class PostController extends LoginConfiguration
         PostModel::insert_tags($input['post_id'], $input['tags']);
 
         PaperDatabase::commit();
+
+        if ($input['hook'] === 'enable') {
+            $address = setting('developer.hook.address');
+            $token = setting('developer.hook.token');
+
+            if (Validation::checkOne($address, '!empty|url')) {
+                @Request::sendPost($address, $input, [
+                    'headers' => [
+                        'paper_token' => $token,
+                    ],
+                    'background' => true,
+                ]);
+            }
+        }
+
         Response::jsonMessage(rlang('post.save_successfully'), true, $input['post_id']);
     }
 
@@ -170,8 +185,9 @@ class PostController extends LoginConfiguration
             $result = PostModel::update_status($input['post_id'], $input['status']);
         }
 
-        if (!$result)
+        if (!$result) {
             Response::json(rlang('post.error_happened'), false);
+        }
     }
 
     public function delete()

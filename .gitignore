@@ -2,10 +2,10 @@
 theme/
 !theme/panel/*
 !theme/blue/*
-/cache
-/uploads
+cache
+uploads
 node_modules/
-/package-lock.json
-/pinker
-/config
-/setting/config
+package-lock.json
+pinker
+config
+setting/config
