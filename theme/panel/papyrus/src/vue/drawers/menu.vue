@@ -81,7 +81,7 @@
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.settings}}</span>
                     </router-link>
-                    <a class="item" :href="URL.APP" target="_blank">
+                    <a class="item" :href="URL.FRONT" target="_blank">
                         <simple-svg :src="_icons.eye"
                                     customClassName="icon stroke"
                                     fill="#A5B8CE"/>
