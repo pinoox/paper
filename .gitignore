@@ -7,5 +7,4 @@ uploads
 node_modules/
 package-lock.json
 pinker
-config
 setting/config
