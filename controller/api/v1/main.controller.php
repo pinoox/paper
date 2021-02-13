@@ -17,7 +17,7 @@ use pinoox\component\Response;
 use pinoox\component\Validation;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 
-class ApiController extends MasterConfiguration
+class MainController extends MasterConfiguration
 {
     public function newContact()
     {

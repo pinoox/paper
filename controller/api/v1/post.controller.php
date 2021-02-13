@@ -17,6 +17,7 @@ use pinoox\app\com_pinoox_paper\model\CategoryModel;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\component\Date;
+use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Tree;
@@ -35,16 +36,32 @@ class PostController extends MasterConfiguration
         Response::json($post);
     }
 
+    private function filterSearch($form)
+    {
+        if (!empty($form['tag']))
+            PostModel::where_tag_name($form['tag']);
+        if (!empty($form['keyword']))
+            PostModel::where_search($form['keyword']);
+    }
+
     public function getAll()
     {
-        PostModel::where_status(PostModel::publish_status);
-        $posts = PostModel::fetch_all();
-        $posts = array_map(function ($post) {
-            $post = $this->getPostInfo($post);
-            return $post;
-        }, $posts);
+        $form = Request::get('page=1,keyword,tag', null, '!empty');
 
-        Response::json($posts);
+        $this->filterSearch($form);
+        $count = posts('all', [
+            'count' => true,
+        ]);
+
+        $pagination = new Pagination($count, 10);
+        $pagination->setCurrentPage($form['page']);
+
+        $this->filterSearch($form);
+        $posts = posts('all', [
+            'limit' => $pagination->getArrayLimit(),
+        ]);
+
+        Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
     }
 
     public function getAllByUsername($username)

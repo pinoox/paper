@@ -52,7 +52,7 @@ class MainController extends MasterConfiguration
 
         TemplateHelper::title($page['title']);
         self::$template->set('page', $page);
-        self::$template->show('pages>page');
+        self::_show('pages>page');
     }
 
     public function dist()
@@ -61,6 +61,7 @@ class MainController extends MasterConfiguration
         if ($url === 'pinoox.js') {
             self::visitStatus(false);
             HelperHeader::contentType('application/javascript', 'UTF-8');
+            self::$template->offView('index');
             self::$template->view('dist/pinoox.js');
         } else {
             self::error404();
@@ -72,11 +73,15 @@ class MainController extends MasterConfiguration
         $data = $this->getPosts();
         self::$template->set('posts', $data['posts']);
         self::$template->set('page', $data['page']);
-        self::$template->show('pages>home');
+        self::_show('pages>home');
     }
 
     private function getPosts($page = 1, $form = null)
     {
+        if (self::$api) {
+            return ['posts' => [], 'page' => [], 'count' => 0];
+        }
+
         $this->filterSearch($form);
         $count = posts('all', [
             'count' => true,
@@ -125,7 +130,7 @@ class MainController extends MasterConfiguration
         self::$template->set('query', $query);
         self::$template->set('page', $data['page']);
         self::$template->set('posts', $data['posts']);
-        self::$template->show('pages>search');
+        self::_show('pages>search');
     }
 
     public function post($post_id, $title = null)
@@ -164,7 +169,7 @@ class MainController extends MasterConfiguration
         self::$template->set('cmCount', $cmCount);
         self::$template->set('comments', $treeComments);
         self::$template->set('post', $post);
-        self::$template->show('pages>post');
+        self::_show('pages>post');
     }
 
     public function sendContact()
@@ -224,6 +229,6 @@ class MainController extends MasterConfiguration
     public function contact()
     {
         TemplateHelper::title(rlang('front.contact_us'));
-        self::$template->show('pages>contact');
+        self::_show('pages>contact');
     }
 }

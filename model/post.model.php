@@ -230,6 +230,7 @@ class PostModel extends PaperDatabase
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolderPost);
         $post['thumb_512'] = Url::thumb($file, 512, $placeHolderPost);
         $post['avatar'] = Url::thumb($post['avatar_id'], 128, $placeHolderAvatar);
+        $post['url'] = Url::app().'post/' . $post['post_id'] . '/' . $post['post_key'];
         return $post;
     }
 
@@ -400,7 +401,8 @@ class PostModel extends PaperDatabase
 
     public static function where_tag_name($tag)
     {
-        self::$db->where('t.tag_name', $tag);
+        if(!empty($tag))
+            self::$db->where('t.tag_name', $tag);
     }
 
     public static function getHashId($length = 6)

@@ -13,6 +13,7 @@
         data() {
             return {
                 posts: [],
+                pages: {},
             }
         },
         created() {
@@ -21,7 +22,8 @@
         methods:{
             getPosts() {
                 this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
-                    this.posts = json.data;
+                    this.posts = json.data.posts;
+                    this.pages = json.data.page;
                 });
             },
         }

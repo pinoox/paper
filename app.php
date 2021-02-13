@@ -14,7 +14,6 @@ return array(
     'theme-panel' => 'papyrus',
     'lang' => 'fa',
     'service' => [
-        'template',
         'user',
     ],
     'loader' => [
