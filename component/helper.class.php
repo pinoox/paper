@@ -28,8 +28,6 @@ class Helper
         } else {
             return Date::j($format, $date);
         }
-
-
     }
 
     public static function timePrint($seconds)

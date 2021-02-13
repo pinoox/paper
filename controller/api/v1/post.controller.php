@@ -16,24 +16,44 @@ use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\CategoryModel;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
-use pinoox\component\Date;
+use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Tree;
 use pinoox\component\Url;
+use pinoox\component\User;
 use pinoox\component\Validation;
 use pinoox\model\FileModel;
 
 
 class PostController extends MasterConfiguration
 {
-    public function get($post_id = null)
+    public function get()
     {
-        PostModel::where_status(PostModel::publish_status);
-        $post = PostModel::fetch_by_id($post_id);
-        $post = $this->getPostInfo($post);
-        Response::json($post);
+        $form = Request::input(['post_id','post_key','date_format'=>'l d F Y'], null, '!empty');
+
+        //check post available for guest users
+        if (!User::isLoggedIn()) {
+            PostModel::where_status(PostModel::publish_status);
+        }
+
+        PostModel::where_post_type(PostModel::post_type);
+        $post = PostModel::fetch_by_id($form['post_id']);
+        $post = PostModel::getInfoPost($post,$form['date_format']);
+
+        if (!$post || $post['post_key'] != $form['post_key'])
+            Response::json($post, false);
+
+
+
+        if ($post) {
+            $post['visits']++;
+            PostStatisticModel::visit($form['post_id']);
+            Response::json($post, true);
+        } else {
+            Response::json($post, false);
+        }
     }
 
     private function filterSearch($form)
@@ -46,7 +66,12 @@ class PostController extends MasterConfiguration
 
     public function getAll()
     {
-        $form = Request::get('page=1,keyword,tag', null, '!empty');
+        $form = Request::input([
+            'page' => 1,
+            'keyword',
+            'tag',
+            'date_format' => 'd F Y'
+        ], null, '!empty');
 
         $this->filterSearch($form);
         $count = posts('all', [
@@ -59,6 +84,7 @@ class PostController extends MasterConfiguration
         $this->filterSearch($form);
         $posts = posts('all', [
             'limit' => $pagination->getArrayLimit(),
+            'date_format' => $form['date_format'],
         ]);
 
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
@@ -79,22 +105,23 @@ class PostController extends MasterConfiguration
 
     public function getMostVisited()
     {
-        PostModel::sort(['field' => 'visits', 'type' => 'DESC']);
-        PostModel::where_status(PostModel::publish_status);
-        $posts = PostModel::fetch_all();
-        $posts = array_map(function ($post) {
-            $post = $this->getPostInfo($post);
-            return $post;
-        }, $posts);
+        $date_format = Request::inputOne('date_format', 'd F Y', '!empty');
+
+        $posts = posts('*', [
+            'limit' => 5,
+            'order' => 'visits',
+            'date_format' => $date_format,
+        ]);
 
         Response::json($posts);
     }
 
     public function getLatestComments()
     {
+        $date_format = Request::inputOne('date_format', 'd F Y', '!empty');
         $comments = CommentModel::fetch_all(CommentModel::status_publish, 5);
-        $comments = array_map(function ($cm) {
-            return $this->getCommentInfo($cm);
+        $comments = array_map(function ($cm) use ($date_format) {
+            return $this->getCommentInfo($cm, $date_format);
         }, $comments);
 
         Response::json($comments);
@@ -181,7 +208,7 @@ class PostController extends MasterConfiguration
         ];
     }
 
-    private function getCommentInfo($comment)
+    private function getCommentInfo($comment, $date_format = null)
     {
         if (empty($comment)) return $comment;
 
@@ -189,7 +216,8 @@ class PostController extends MasterConfiguration
         $cm['parent_id'] = $comment['parent_id'];
         $cm['message'] = $comment['message'];
         $cm['full_name'] = $comment['full_name'];
-        $cm['approx_insert_date'] = Date::approximateDate($comment['insert_date']);
+        $cm['insert_date'] = Helper::getLocaleDate('Y/m/d H:i', $comment['insert_date']);
+        $cm['approx_date'] = Helper::getLocaleDate($date_format, $comment['insert_date']);
         $cm['image'] = Url::file('resources/avatar.png');
         $cm['post_title'] = isset($comment['title']) ? $comment['title'] : null;
         $cm['post_url'] = Url::app() . 'post/' . $comment['post_id'];

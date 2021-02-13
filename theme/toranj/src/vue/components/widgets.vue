@@ -10,14 +10,14 @@
                         <div class="widget-content">
                             <div class="posts">
                                 <div class="post" v-for="p in mostVisitedPosts">
-                                    <a :href="p.meta.url" class="post-image">
+                                    <a :href="p.url" class="post-image">
                                         <img :src="p.thumb_128" :alt="p.title">
                                     </a>
                                     <div class="post-content">
                                         <div class="post-meta">
-                                            <time :datetime="p.publish_date_time">{{p.publish_date}}</time>
+                                            <time :datetime="p.publish_date">{{p.approx_date}}</time>
                                         </div>
-                                        <h4 class="post-title"><a :href="p.meta.url">{{p.title}}</a></h4>
+                                        <h4 class="post-title"><a :href="p.url">{{p.title}}</a></h4>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                                 <div class="comment" v-for="(c,index) in latestComments">
                                     <div class="comment-meta">
                                         <div class="user">{{c.full_name}}</div>
-                                        <time datetime="">{{c.approx_insert_date}}</time>
+                                        <time :datetime="c.insert_date">{{c.approx_date}}</time>
                                     </div>
                                     <a :href="c.post_url" class="comment-link">{{c.post_title}}</a>
                                     <p class="comment-text">{{c.message | truncate(100, '...')}}</p>
@@ -86,6 +86,11 @@
                     this.latestComments = json.data;
                 });
             },
+            getTime($date)
+            {
+                let parts = $date.split(' ');
+                return !!parts[1]? parts[1] : '';
+            }
         },
         created() {
             this.getMostVisitedPosts();

@@ -4,6 +4,7 @@ import Post from '../vue/pages/post.vue';
 import Search from '../vue/pages/search.vue';
 import Tag from '../vue/pages/tag.vue';
 import Contact from '../vue/pages/contact.vue';
+import ErrorPage from '../vue/pages/errorPage.vue';
 
 export const routes = [
     {
@@ -45,6 +46,6 @@ export const routes = [
     {
         path: PINOOX.URL.BASE + 'error',
         name: 'error',
-        component: Error,
+        component: ErrorPage,
     },
 ];

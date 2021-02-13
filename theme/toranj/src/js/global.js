@@ -14,6 +14,14 @@ Vue.mixin({
                 this.$store.state.user = val;
             }
         },
+        MENU: {
+            get() {
+                return this.$store.state.menu;
+            },
+            set(val) {
+                this.$store.state.menu = val;
+            }
+        },
         userSettings: {
             get() {
                 return this.$store.state.userSettings;
@@ -187,6 +195,43 @@ Vue.mixin({
                 return `${token}`;
             }
             return null;
+        },
+        _share(location, provider, type = "post") {
+            switch (provider + '>' + type) {
+                case 'whatsapp>post':
+                    return 'whatsapp://send?text=' + location;
+                    break;
+                case 'facebook>post':
+                    return 'http://www.facebook.com/share.php?v=4&src=bm&u=' + location;
+                    break;
+                case 'telegram>post':
+                    return 'tg://msg_url?url=' + location;
+                    break;
+                case 'twitter>post':
+                    return 'http://www.twitter.com/home?status=' + location;
+                    break;
+                case 'linkedin>post':
+                    return 'https://www.linkedin.com/shareArticle?mini=true&url=' + location;
+                    break;
+                case 'twitter>profile':
+                    return 'https://twitter.com/' + location;
+                    break;
+                case 'github>profile':
+                    return 'https://github.com/' + location;
+                    break;
+                case 'facebook>profile':
+                    return 'https://facebook.com/' + location;
+                    break;
+                case 'instagram>profile':
+                    return 'https://instagram.com/' + location;
+                    break;
+                case 'telegram>profile':
+                    return 'https://t.me/' + location;
+                    break;
+                case 'linkedin>profile':
+                    return 'https://linkedin.com/in/' + location;
+                    break;
+            }
         },
         _delay: (function () {
             let timer = 0;

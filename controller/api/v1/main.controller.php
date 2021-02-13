@@ -12,10 +12,10 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\v1;
 
+use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Validation;
-use pinoox\app\com_pinoox_paper\model\ContactModel;
 
 class MainController extends MasterConfiguration
 {
@@ -38,5 +38,13 @@ class MainController extends MasterConfiguration
         Response::jsonMessage(rlang('front.error_happened'), false);
     }
 
+    public function getSetting($section, $key = null)
+    {
+        if ($section == 'developer')
+            self::error();
+
+        $key = !empty($key) ? $section . '.' . $key : $section;
+        Response::json(setting($key));
+    }
 }
     

@@ -2,13 +2,13 @@
     <div class="container">
         <div class="posts-list" v-if="posts!=null && posts.length > 0">
             <div v-for="(p,index) in posts" :class="[isFirst && index===0 ? 'post-first' : 'post']">
-                <a :href="p.url" class="post-image">
+                <router-link :to="p.url" class="post-image">
                     <img :src="p.image" alt="p.title">
-                </a>
+                </router-link>
                 <div class="post-content">
                     <div class="post-meta">
-                        <time :datetime="p.publish_date_time" class="post-date">{{p.publish_date}}</time>
-                        <div class="inline-divider"></div>
+                        <time :datetime="p.publish_date" class="post-date">{{p.approx_date}}</time>
+                        <div class="inline-divider" v-if="p.tags!=null && p.tags.length>0"></div>
                         <div class="post-tags" v-if="p.tags!=null && p.tags.length>0">
                             <router-link :to="{name:'tag',params:{tag_name:t.tag_name}}" class="item"
                                          v-for="t in p.tags"> #{{t.tag_name}}
@@ -44,5 +44,12 @@
         data() {
             return {}
         },
+        methods:{
+            getTimePost($date)
+            {
+                let parts = $date.split(' ');
+                return !!parts[1]? parts[1] : '';
+            }
+        }
     }
 </script>

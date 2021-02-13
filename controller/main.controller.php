@@ -143,6 +143,7 @@ class MainController extends MasterConfiguration
             PostModel::where_status(PostModel::publish_status);
         }
 
+        PostModel::where_post_type(PostModel::post_type);
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) self::error404();
 
@@ -151,23 +152,28 @@ class MainController extends MasterConfiguration
         if ($post['post_key'] != $title)
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post['post_key']);
 
-        $isOpenComment = $post['comment_status'] === PostModel::open_status;
 
-        //load comments
-        $comments = $isOpenComment ? CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish) : null;
-        $cmCount = $isOpenComment ? count($comments) : 0;
-        $tree = new Tree();
-        $treeComments = $isOpenComment ? $tree->createTree($comments, 'parent_id', 'comment_id') : null;
-
-        $post['visits']++;
-        PostStatisticModel::visit($post_id);
         TemplateHelper::title($post['title']);
         TemplateHelper::description($post['summary']);
         TemplateHelper::setProperty('og:image', $post['thumb_512']);
 
+        if (!self::$api) {
+            $post['visits']++;
+            PostStatisticModel::visit($post_id);
+
+            $isOpenComment = $post['comment_status'] === PostModel::open_status;
+
+            //load comments
+            $comments = $isOpenComment ? CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish) : null;
+            $cmCount = $isOpenComment ? count($comments) : 0;
+            $tree = new Tree();
+            $treeComments = $isOpenComment ? $tree->createTree($comments, 'parent_id', 'comment_id') : null;
+
+            self::$template->set('cmCount', $cmCount);
+            self::$template->set('comments', $treeComments);
+        }
+
         self::$template->set('tags', $post['tags']);
-        self::$template->set('cmCount', $cmCount);
-        self::$template->set('comments', $treeComments);
         self::$template->set('post', $post);
         self::_show('pages>post');
     }

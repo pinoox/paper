@@ -11,6 +11,7 @@
 
 namespace pinoox\app\com_pinoox_paper\model;
 
+use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\component\app\AppProvider;
 use pinoox\component\Date;
 use pinoox\component\HelperString;
@@ -209,8 +210,10 @@ class PostModel extends PaperDatabase
         ]);
     }
 
-    public static function getInfoPost($post)
+    public static function getInfoPost($post, $date_format = null)
     {
+        if(empty($post))
+            return $post;
         $placeHolderPost = Url::file('resources/image-placeholder.jpg');
         $placeHolderAvatar = Url::file('resources/avatar.png');
 
@@ -223,14 +226,16 @@ class PostModel extends PaperDatabase
 
 
         $post['post_key'] = empty($post['post_key']) ? HelperString::replaceSpace($post['title']) : $post['post_key'];
-        $post['approx_insert_date'] = Date::j('l d F Y (H:i)', $post['insert_date']);
-        $post['publish_date'] = Date::j('Y/m/d H:i', $post['publish_date']);
+
+        $date_format = !empty($date_format) ? $date_format : 'l d F Y (H:i)';
+        $post['approx_date'] = Helper::getLocaleDate($date_format, $post['publish_date']);
+        $post['publish_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['publish_date']);
         $file = FileModel::fetch_by_id($post['image_id']);
         $post['image'] = Url::upload($file, $placeHolderPost);
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolderPost);
         $post['thumb_512'] = Url::thumb($file, 512, $placeHolderPost);
         $post['avatar'] = Url::thumb($post['avatar_id'], 128, $placeHolderAvatar);
-        $post['url'] = Url::app().'post/' . $post['post_id'] . '/' . $post['post_key'];
+        $post['url'] = Url::app() . 'post/' . $post['post_id'] . '/' . $post['post_key'];
         return $post;
     }
 
@@ -401,7 +406,7 @@ class PostModel extends PaperDatabase
 
     public static function where_tag_name($tag)
     {
-        if(!empty($tag))
+        if (!empty($tag))
             self::$db->where('t.tag_name', $tag);
     }
 

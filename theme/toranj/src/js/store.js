@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         LANG: PINOOX.LANG,
+        menu: PINOOX.MENU,
         isLoading: false,
         isTransition: true,
     },
