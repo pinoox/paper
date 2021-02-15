@@ -37,6 +37,7 @@
                 this.$http.post(this.URL.API + 'post/leaveComment/', this.sendComment).then((json) => {
                     if (this._messageResponse(json.data)) {
                         this.sendComment = {};
+                        this.$emit('refresh');
                     }
                 });
             }

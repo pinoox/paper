@@ -14,12 +14,20 @@ Vue.mixin({
                 this.$store.state.user = val;
             }
         },
-        MENU: {
+        generalSetting: {
             get() {
-                return this.$store.state.menu;
+                return this.$store.state.general;
             },
             set(val) {
-                this.$store.state.menu = val;
+                this.$store.state.general = val;
+            }
+        },
+        contactSetting: {
+            get() {
+                return this.$store.state.contact;
+            },
+            set(val) {
+                this.$store.state.contact = val;
             }
         },
         userSettings: {
@@ -138,6 +146,10 @@ Vue.mixin({
         },
     },
     methods: {
+        _title(title = null) {
+            title = !!title ? this.generalSetting.site_title + ' - ' + title : this.generalSetting.site_title;
+            document.title = title;
+        },
         getInitUser() {
             this.getUser(false).then((data) => {
                 if (!data)

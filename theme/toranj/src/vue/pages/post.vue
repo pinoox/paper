@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="post-single" v-if="post!=null">
+        <div class="post-single" v-if="!isErrPage && !!post">
             <div class="post-header">
                 <div class="post-meta">
                     <time :datetime="post.publish_date">{{post.approx_date}}</time>
@@ -17,7 +17,9 @@
             </div>
 
 
-            <div class="post-content" v-html="post.context"></div>
+            <div class="post-content paper-article">
+                <div v-html="post.context"></div>
+            </div>
 
             <div class="post-footer">
                 <div class="post-share">
@@ -41,7 +43,9 @@
                         <img :src="post.avatar" :alt="post.full_name">
                     </div>
                     <div class="author-info">
-                        <span class="info-name">{{post.full_name}}</span>
+                        <router-link :to="{name:'profile',params:{username:post.username}}" class="info-name">
+                            {{post.full_name}}
+                        </router-link>
                         <p v-if="false" class="info-bio"></p>
                         <div v-if="false" class="info-social">
                             <a href="">{{LANG.front.telegram}}</a>
@@ -57,47 +61,48 @@
 
             <Comment v-if="!!post && !!post.post_id" :postId="post.post_id"></Comment>
         </div>
+        <error-page v-if="isErrPage"></error-page>
     </div>
 </template>
 
 <script>
 
     import Comment from '../components/comments.vue'
+    import ErrorPage from "./errorPage.vue";
 
     export default {
-        components: {Comment},
+        components: {ErrorPage, Comment},
         props: ['post_id', 'title'],
         data() {
             return {
-                post: null
+                post: null,
+                isErrPage: false,
             }
         },
         methods: {
             getPost() {
-                this.$http.post(this.URL.API + 'post/get/' ,{
-                    'post_id' : this.post_id,
-                    'post_key' : this.title,
+                this.$http.post(this.URL.API + 'post/get/', {
+                    'post_id': this.post_id,
+                    'post_key': this.title,
                 }).then((json) => {
                     this.post = {};
                     if (json.data.status) {
                         this.post = json.data.result;
+                        this._title(this.post.title);
                     } else {
-                        if(!!json.data.result){
+                        if (!!json.data.result) {
                             let post = json.data.result;
-                            console.log('p1',post);
-                            this.$router.push({name:'post',params:{post_id:post.post_id,title:post.post_key}});
-                        }
-                        else
-                        {
-                            this._routerPush({name:'error'});
+                            this.$router.push({name: 'post', params: {post_id: post.post_id, title: post.post_key}});
+                        } else {
+                            this.isErrPage = true;
+                            this._title(this.LANG.front.not_found_page);
                         }
                     }
                 });
             },
-            getTimePost($date)
-            {
+            getTimePost($date) {
                 let parts = $date.split(' ');
-                return !!parts[1]? parts[1] : '';
+                return !!parts[1] ? parts[1] : '';
             }
         },
         created() {

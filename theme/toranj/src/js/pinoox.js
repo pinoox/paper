@@ -15,4 +15,6 @@ const PINOOX = {
 
     LANG: <?php echo @$_lang; ?>,
     MENU: <?php echo @$_menu; ?>,
+    general: <?php echo @setting_json('general'); ?>,
+    contact: <?php echo @setting_json('contact'); ?>,
 };

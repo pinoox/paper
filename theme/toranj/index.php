@@ -9,7 +9,7 @@
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="<?php echo $_url; ?>dist/<?php echo @$assets['vendor_css']; ?>">
     <link rel="stylesheet" href="<?php echo $_url; ?>dist/<?php echo @$assets['main_css']; ?>">
-    <script src="<?php echo url(''); ?>dist/pinoox.js?lang=<?php echo $_translate; ?>&v1"></script>
+    <script src="<?php echo url(''); ?>dist/pinoox.js?lang=<?php echo $_translate; ?>&v=<?php echo chunkhash(); ?>"></script>
 </head>
 
 <body class="<?php echo @$_direction; ?>">

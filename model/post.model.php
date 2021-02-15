@@ -256,7 +256,7 @@ class PostModel extends PaperDatabase
     {
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->where('p.post_id', $post_id);
-        return self::$db->getOne(self::post . ' p', 'p.*,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id');
+        return self::$db->getOne(self::post . ' p', 'p.*,CONCAT(u.fname," ",u.lname) full_name,u.avatar_id,u.username');
     }
 
     public static function fetch_by_ids($posts)

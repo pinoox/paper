@@ -62,6 +62,7 @@ class MasterConfiguration implements ControllerInterface
         $lang = [
             'front' => Lang::get('front'),
             'contact' => Lang::get('contact'),
+            'pagination' => Lang::get('~pagination'),
         ];
         self::$template->set('_lang', HelperString::encodeJson($lang, true));
     }
@@ -126,7 +127,11 @@ class MasterConfiguration implements ControllerInterface
 
     public function error404()
     {
-        HelperHeader::generateStatusCodeHTTP('404 Not Found');
+        if(!self::$api)
+        {
+            HelperHeader::generateStatusCodeHTTP('404 Not Found');
+            TemplateHelper::title(rlang('front.not_found_page'));
+        }
 
         if (Request::isAjax())
             Response::json(rlang('panel.invalid_request'), false);

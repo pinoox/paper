@@ -6,7 +6,7 @@
             </div>
         </div>
 
-        <PostsList :posts="posts"></PostsList>
+        <PostsList @goPage="goPage" :pages="pages" :posts="posts"></PostsList>
 
     </section>
 </template>
@@ -19,19 +19,30 @@
         props: ['tag_name'],
         data() {
             return {
-                keyword: null,
-                posts: []
+                posts: [],
+                pages: {},
+                params: {
+                    page: 1,
+                    tag: null,
+                }
             }
         },
         methods: {
-            searchPosts() {
-                this.$http.post(this.URL.API + 'post/getByTag/', {tag_name: this.tag_name}).then((json) => {
-                    this.posts = json.data;
+            getPosts() {
+                this.params.tag = this.tag_name;
+                this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
+                    this.posts = json.data.posts;
+                    this.pages = json.data.pages;
                 });
+            },
+            goPage(page) {
+                this.params.page = page;
+                this.getPosts();
             }
         },
         created() {
-            this.searchPosts();
+            this.getPosts();
+            this._title(this.LANG.front.tag + ' (' +this.tag_name+')');
         }
     }
 </script>

@@ -16,6 +16,8 @@ use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
+use pinoox\component\Dir;
+use pinoox\component\File;
 use pinoox\component\HelperHeader;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
@@ -50,7 +52,6 @@ class MainController extends MasterConfiguration
         TemplateHelper::title($page['title']);
         TemplateHelper::description($page['summary']);
 
-        TemplateHelper::title($page['title']);
         self::$template->set('page', $page);
         self::_show('pages>page');
     }

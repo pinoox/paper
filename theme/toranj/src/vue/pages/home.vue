@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PostsList :posts="posts" :isFirst="true"></PostsList>
+        <PostsList @goPage="goPage" :pages="pages" :posts="posts" :isFirst="true"></PostsList>
     </div>
 </template>
 
@@ -14,18 +14,27 @@
             return {
                 posts: [],
                 pages: {},
+                params:{
+                    page:1,
+                }
             }
         },
         created() {
+            this._title();
             this.getPosts();
         },
         methods:{
             getPosts() {
                 this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
                     this.posts = json.data.posts;
-                    this.pages = json.data.page;
+                    this.pages = json.data.pages;
                 });
             },
+            goPage(page)
+            {
+                this.params.page = page;
+                this.getPosts();
+            }
         }
     }
 </script>
