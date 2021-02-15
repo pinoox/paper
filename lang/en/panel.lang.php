@@ -72,6 +72,7 @@ return [
     'user_profile' => 'User Profile',
     'comments' => 'comments',
     'contacts' => 'contacts',
+    'contact' => 'contact',
     'profile_image' => 'Profile image',
     'select_image' => 'Image selection',
     'name_list' => 'List name (required)',

@@ -98,6 +98,22 @@
                                 </div>
                             </div>
                         </router-link>
+                        <router-link v-if="!!stats.contactStats" :to="{name:'contacts'}" class="box-stat box">
+                            <div class="text">
+                                <div class="caption">{{LANG.panel.contacts}}</div>
+                                <div class="amount">{{stats.contactStats.total}} {{LANG.panel.contact}}</div>
+                                <div class="footnote orange" v-show="stats.contactStats.unseen>0">
+                                    {{stats.contactStats.unseen}} {{LANG.panel.contact}}
+                                    {{LANG.panel.contact_status.unseen}}
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <div class="bg">
+                                    <simple-svg :src="_icons.call"
+                                                customClassName="stroke ic_comments"/>
+                                </div>
+                            </div>
+                        </router-link>
                     </section>
 
                     <section class="section" v-if="monthlyPost!=null">
