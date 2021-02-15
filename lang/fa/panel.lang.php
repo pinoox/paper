@@ -64,6 +64,7 @@ return [
     'settings' => 'تنظیمات',
     'theme' => 'قالب',
     'theme_settings' => 'تنظیمات قالب',
+    'no_settings_template ' => 'تنظیماتی برای این قالب موجود نیست',
     'templates' => 'قالب ها',
     'template_subtext' => 'لیست قالب های پیپر',
     'subtitle_settings' => 'با انتخاب هر گزینه تنظیمات مربوط به آن صفحه را به سادگی مدیریت کنید',

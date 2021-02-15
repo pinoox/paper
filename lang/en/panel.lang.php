@@ -65,6 +65,7 @@ return [
     'settings' => 'settings',
     'theme' => 'template',
     'theme_settings' => 'template settings',
+    'no_settings_template ' => 'There are no settings for this template',
     'templates' => 'templates',
     'template_subtext' => 'paper templates list',
     'subtitle_settings' => 'Simply manage the settings for that page by selecting an option',
