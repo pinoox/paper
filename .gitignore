@@ -2,6 +2,7 @@
 theme/
 !theme/panel/*
 !theme/blue/*
+!theme/toranj/*
 cache
 uploads
 node_modules/
