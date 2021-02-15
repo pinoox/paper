@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <PostsList @goPage="goPage" :pages="pages" :posts="posts" :isFirst="true"></PostsList>
+    <div class="posts-list-empty">
+        <div class="icon"><i class="fa fa-exclamation-triangle"></i></div>
+        <div class="text">{{LANG.front.not_found_page}}</div>
     </div>
 </template>
 
@@ -14,27 +15,18 @@
             return {
                 posts: [],
                 pages: {},
-                params:{
-                    page:1,
-                }
             }
         },
         created() {
-            this._title();
             this.getPosts();
         },
         methods:{
             getPosts() {
                 this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
                     this.posts = json.data.posts;
-                    this.pages = json.data.pages;
+                    this.pages = json.data.page;
                 });
             },
-            goPage(page)
-            {
-                this.params.page = page;
-                this.getPosts();
-            }
         }
     }
 </script>

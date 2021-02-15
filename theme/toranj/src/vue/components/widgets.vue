@@ -10,14 +10,14 @@
                         <div class="widget-content">
                             <div class="posts">
                                 <div class="post" v-for="p in mostVisitedPosts">
-                                    <a :href="p.meta.url" class="post-image">
+                                    <router-link :to="{name:'post',params:{post_id:p.post_id,title:p.post_key}}" class="post-image">
                                         <img :src="p.thumb_128" :alt="p.title">
-                                    </a>
+                                    </router-link>
                                     <div class="post-content">
                                         <div class="post-meta">
-                                            <time :datetime="p.publish_date_time">{{p.publish_date}}</time>
+                                            <time :datetime="p.publish_date">{{p.approx_date}}</time>
                                         </div>
-                                        <h4 class="post-title"><a :href="p.meta.url">{{p.title}}</a></h4>
+                                        <h4 class="post-title"><router-link :to="{name:'post',params:{post_id:p.post_id,title:p.post_key}}">{{p.title}}</router-link></h4>
                                     </div>
                                 </div>
                             </div>
@@ -34,9 +34,9 @@
                                 <div class="comment" v-for="(c,index) in latestComments">
                                     <div class="comment-meta">
                                         <div class="user">{{c.full_name}}</div>
-                                        <time datetime="">{{c.approx_insert_date}}</time>
+                                        <time :datetime="c.insert_date">{{c.approx_date}}</time>
                                     </div>
-                                    <a :href="c.post_url" class="comment-link">{{c.post_title}}</a>
+                                    <router-link :to="{name:'post',params:{post_id:c.post.post_id,title:c.post.post_key}}" class="comment-link">{{c.post.title}}</router-link>
                                     <p class="comment-text">{{c.message | truncate(100, '...')}}</p>
                                 </div>
                             </div>
@@ -50,12 +50,7 @@
                         </div>
                         <div class="widget-content">
                             <div class="socials">
-                                <a class="item facebook-color" href=""><i class="fab fa-facebook"></i></a>
-                                <a class="item instagram-color" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="item telegram-color" href=""><i class="fab fa-telegram"></i></a>
-                                <a class="item whatsapp-color" href=""><i class="fab fa-whatsapp"></i></a>
-                                <a class="item linkedin-color" href=""><i class="fab fa-linkedin"></i></a>
-                                <a class="item twitter-color" href=""><i class="fab fa-twitter"></i></a>
+                                <a v-for="s in contactSetting.socials" class="item" :class="s.label+'-color'" href=""><i :class="s.icon"></i></a>
                             </div>
                         </div>
                     </div>
@@ -86,6 +81,11 @@
                     this.latestComments = json.data;
                 });
             },
+            getTime($date)
+            {
+                let parts = $date.split(' ');
+                return !!parts[1]? parts[1] : '';
+            }
         },
         created() {
             this.getMostVisitedPosts();

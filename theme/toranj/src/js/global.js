@@ -14,6 +14,22 @@ Vue.mixin({
                 this.$store.state.user = val;
             }
         },
+        generalSetting: {
+            get() {
+                return this.$store.state.general;
+            },
+            set(val) {
+                this.$store.state.general = val;
+            }
+        },
+        contactSetting: {
+            get() {
+                return this.$store.state.contact;
+            },
+            set(val) {
+                this.$store.state.contact = val;
+            }
+        },
         userSettings: {
             get() {
                 return this.$store.state.userSettings;
@@ -130,6 +146,10 @@ Vue.mixin({
         },
     },
     methods: {
+        _title(title = null) {
+            title = !!title ? this.generalSetting.site_title + ' - ' + title : this.generalSetting.site_title;
+            document.title = title;
+        },
         getInitUser() {
             this.getUser(false).then((data) => {
                 if (!data)
@@ -187,6 +207,43 @@ Vue.mixin({
                 return `${token}`;
             }
             return null;
+        },
+        _share(location, provider, type = "post") {
+            switch (provider + '>' + type) {
+                case 'whatsapp>post':
+                    return 'whatsapp://send?text=' + location;
+                    break;
+                case 'facebook>post':
+                    return 'http://www.facebook.com/share.php?v=4&src=bm&u=' + location;
+                    break;
+                case 'telegram>post':
+                    return 'tg://msg_url?url=' + location;
+                    break;
+                case 'twitter>post':
+                    return 'http://www.twitter.com/home?status=' + location;
+                    break;
+                case 'linkedin>post':
+                    return 'https://www.linkedin.com/shareArticle?mini=true&url=' + location;
+                    break;
+                case 'twitter>profile':
+                    return 'https://twitter.com/' + location;
+                    break;
+                case 'github>profile':
+                    return 'https://github.com/' + location;
+                    break;
+                case 'facebook>profile':
+                    return 'https://facebook.com/' + location;
+                    break;
+                case 'instagram>profile':
+                    return 'https://instagram.com/' + location;
+                    break;
+                case 'telegram>profile':
+                    return 'https://t.me/' + location;
+                    break;
+                case 'linkedin>profile':
+                    return 'https://linkedin.com/in/' + location;
+                    break;
+            }
         },
         _delay: (function () {
             let timer = 0;

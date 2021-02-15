@@ -29,8 +29,9 @@ function posts($value, $option = [])
     if (!is_array($posts))
         return $posts;
 
-    $posts = array_map(function ($post) {
-        return PostModel::getInfoPost($post);
+    $date_format = isset($option['date_format']) ? $option['date_format'] : null;
+    $posts = array_map(function ($post) use ($date_format) {
+        return PostModel::getInfoPost($post,$date_format);
     }, $posts);
 
     return $posts;

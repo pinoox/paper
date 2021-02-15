@@ -16,6 +16,8 @@ use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
+use pinoox\component\Dir;
+use pinoox\component\File;
 use pinoox\component\HelperHeader;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
@@ -50,9 +52,8 @@ class MainController extends MasterConfiguration
         TemplateHelper::title($page['title']);
         TemplateHelper::description($page['summary']);
 
-        TemplateHelper::title($page['title']);
         self::$template->set('page', $page);
-        self::$template->show('pages>page');
+        self::_show('pages>page');
     }
 
     public function dist()
@@ -61,6 +62,7 @@ class MainController extends MasterConfiguration
         if ($url === 'pinoox.js') {
             self::visitStatus(false);
             HelperHeader::contentType('application/javascript', 'UTF-8');
+            self::$template->offView('index');
             self::$template->view('dist/pinoox.js');
         } else {
             self::error404();
@@ -72,11 +74,15 @@ class MainController extends MasterConfiguration
         $data = $this->getPosts();
         self::$template->set('posts', $data['posts']);
         self::$template->set('page', $data['page']);
-        self::$template->show('pages>home');
+        self::_show('pages>home');
     }
 
     private function getPosts($page = 1, $form = null)
     {
+        if (self::$api) {
+            return ['posts' => [], 'page' => [], 'count' => 0];
+        }
+
         $this->filterSearch($form);
         $count = posts('all', [
             'count' => true,
@@ -125,7 +131,7 @@ class MainController extends MasterConfiguration
         self::$template->set('query', $query);
         self::$template->set('page', $data['page']);
         self::$template->set('posts', $data['posts']);
-        self::$template->show('pages>search');
+        self::_show('pages>search');
     }
 
     public function post($post_id, $title = null)
@@ -138,6 +144,7 @@ class MainController extends MasterConfiguration
             PostModel::where_status(PostModel::publish_status);
         }
 
+        PostModel::where_post_type(PostModel::post_type);
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) self::error404();
 
@@ -146,25 +153,30 @@ class MainController extends MasterConfiguration
         if ($post['post_key'] != $title)
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post['post_key']);
 
-        $isOpenComment = $post['comment_status'] === PostModel::open_status;
 
-        //load comments
-        $comments = $isOpenComment ? CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish) : null;
-        $cmCount = $isOpenComment ? count($comments) : 0;
-        $tree = new Tree();
-        $treeComments = $isOpenComment ? $tree->createTree($comments, 'parent_id', 'comment_id') : null;
-
-        $post['visits']++;
-        PostStatisticModel::visit($post_id);
         TemplateHelper::title($post['title']);
         TemplateHelper::description($post['summary']);
         TemplateHelper::setProperty('og:image', $post['thumb_512']);
 
+        if (!self::$api) {
+            $post['visits']++;
+            PostStatisticModel::visit($post_id);
+
+            $isOpenComment = $post['comment_status'] === PostModel::open_status;
+
+            //load comments
+            $comments = $isOpenComment ? CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish) : null;
+            $cmCount = $isOpenComment ? count($comments) : 0;
+            $tree = new Tree();
+            $treeComments = $isOpenComment ? $tree->createTree($comments, 'parent_id', 'comment_id') : null;
+
+            self::$template->set('cmCount', $cmCount);
+            self::$template->set('comments', $treeComments);
+        }
+
         self::$template->set('tags', $post['tags']);
-        self::$template->set('cmCount', $cmCount);
-        self::$template->set('comments', $treeComments);
         self::$template->set('post', $post);
-        self::$template->show('pages>post');
+        self::_show('pages>post');
     }
 
     public function sendContact()
@@ -224,6 +236,6 @@ class MainController extends MasterConfiguration
     public function contact()
     {
         TemplateHelper::title(rlang('front.contact_us'));
-        self::$template->show('pages>contact');
+        self::_show('pages>contact');
     }
 }

@@ -2,10 +2,7 @@
     <div class="container">
         <div class="footer">
             <div class="links">
-                <a href="">خانه</a>
-                <a href="">تماس با ما</a>
-                <a href="">تبلیغات</a>
-                <a href="">درباره ما</a>
+                <router-link v-for="m in generalSetting.menu" :to="URL.BASE + m.link">{{m.label}}</router-link>
             </div>
 
             <div class="copyright">
