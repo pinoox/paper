@@ -35,7 +35,7 @@ class ApiConfiguration implements ControllerInterface
         $this->error();
     }
 
-    public function error()
+    protected function error()
     {
         Response::json('not found',404);
     }

@@ -45,6 +45,9 @@
                 params: {}
             }
         },
+        created(){
+            this._title(this.LANG.front.contact_us);
+        },
         methods: {
             newContact() {
                 this.$http.post(this.URL.API + 'newContact',this.params).then((json) => {

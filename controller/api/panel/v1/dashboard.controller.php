@@ -48,6 +48,7 @@ class DashboardController extends LoginConfiguration
         $visitStats = StatisticModel::fetch_stats($today);
         $statsProgress = StatisticModel::calc_stats_progress_than_yesterday($visitStats, $yesterday);
         $commentStats = CommentModel::fetch_stats();
+        $contactStats = ContactModel::fetch_stats();
         $words = PostModel::fetch_total_words();
         $timeTracking = $this->getTimeTrackingRound();
 
@@ -56,7 +57,8 @@ class DashboardController extends LoginConfiguration
             'timeTracking' => $timeTracking,
             'stats' => $visitStats,
             'progress' => $statsProgress,
-            'commentStats' => $commentStats
+            'commentStats' => $commentStats,
+            'contactStats' => $contactStats,
         ]);
     }
 

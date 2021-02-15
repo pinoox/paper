@@ -6,15 +6,14 @@ return array(
     'name' => 'paper',
     'description' => 'paper is an application for launching magazine, blog, and content websites',
     'icon' => 'icon.png',
-    'version-code' => 9,
-    'version-name' => '2.3',
+    'version-code' => 10,
+    'version-name' => '2.4.8',
     'developer' => 'pinoox',
     'enable' => true,
     'theme' => 'blue',
     'theme-panel' => 'papyrus',
     'lang' => 'fa',
     'service' => [
-        'template',
         'user',
     ],
     'loader' => [

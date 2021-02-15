@@ -5,7 +5,7 @@
                 <div class="comments">
                     <div class="cm-caption">{{LANG.front.comments}} <span v-if="count>0">({{count}})</span></div>
 
-                    <CommentForm :post-id="postId"></CommentForm>
+                    <CommentForm :post-id="postId" @refresh="getComments()"></CommentForm>
 
                     <div class="cm-list">
                         <div class="comment" v-for="(c,index) in comments">

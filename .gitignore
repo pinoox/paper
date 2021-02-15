@@ -2,9 +2,11 @@
 theme/
 !theme/panel/*
 !theme/blue/*
+!theme/toranj/*
 cache
 uploads
 node_modules/
 package-lock.json
 pinker
 setting/config
+theme/*/setting/config

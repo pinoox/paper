@@ -13,10 +13,7 @@
 namespace pinoox\app\com_pinoox_paper\controller;
 
 use pinoox\app\com_pinoox_paper\component\TemplateHelper;
-use pinoox\app\com_pinoox_paper\model\LangModel;
-use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\app\com_pinoox_paper\model\StatisticModel;
-use pinoox\component\app\AppProvider;
 use pinoox\component\Dir;
 use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
@@ -33,16 +30,9 @@ class MasterConfiguration implements ControllerInterface
      * @var Template
      */
     protected static $template;
-    /**
-     * @var array
-     */
-    protected static $config;
-    private static $visit = true;
 
-    protected function visitStatus($status = true)
-    {
-        self::$visit = $status;
-    }
+    private static $visit = true;
+    protected static $api = false;
 
     public function __construct()
     {
@@ -60,26 +50,20 @@ class MasterConfiguration implements ControllerInterface
         self::$template->set('_app', url());
         self::$template->set('_direction', rlang('front.direction'));
         self::$template->set('_translate', Lang::current());
-        self::$template->set('_menu', setting('general.menu'));
+        self::$template->set('_menu', HelperString::encodeJson(setting('general.menu'), true));
         self::$template->setPageTitle(setting('general.site_title'));
         TemplateHelper::initData();
-    }
-
-    private function loadMenus()
-    {
-        self::$template->set('primaryMenu', []);
-
-        self::$template->set('footerMenu', []);
-    }
-
-    public function _main()
-    {
-        self::$template->show('index');
+        self::$template->view('index');
+        self::$api = self::$template->getMeta('api');
     }
 
     private function setLang()
     {
-        $lang = ['front' => Lang::get('front')];
+        $lang = [
+            'front' => Lang::get('front'),
+            'contact' => Lang::get('contact'),
+            'pagination' => Lang::get('~pagination'),
+        ];
         self::$template->set('_lang', HelperString::encodeJson($lang, true));
     }
 
@@ -118,7 +102,6 @@ class MasterConfiguration implements ControllerInterface
         ];
     }
 
-
     private function changeScalarToArray(&$array, $key)
     {
         if (!isset($array[$key])) return;
@@ -130,20 +113,42 @@ class MasterConfiguration implements ControllerInterface
         }
     }
 
+    private function loadMenus()
+    {
+        self::$template->set('primaryMenu', []);
+
+        self::$template->set('footerMenu', []);
+    }
+
+    public function _main()
+    {
+        self::error404();
+    }
+
     public function error404()
     {
-        HelperHeader::generateStatusCodeHTTP('404 Not Found');
+        if(!self::$api)
+        {
+            HelperHeader::generateStatusCodeHTTP('404 Not Found');
+            TemplateHelper::title(rlang('front.not_found_page'));
+        }
 
         if (Request::isAjax())
             Response::json(rlang('panel.invalid_request'), false);
 
-        self::$template->show('pages>error404');
+        self::_show('pages>error404');
         exit;
+    }
+
+    public function _show($view)
+    {
+        if (!self::$api)
+            self::$template->show($view);
     }
 
     public function _exception()
     {
-        self::_main();
+        self::error404();
     }
 
     public function _header()
@@ -153,7 +158,12 @@ class MasterConfiguration implements ControllerInterface
 
     public function __destruct()
     {
-        if(self::$visit)
+        if (self::$visit)
             StatisticModel::visit();
+    }
+
+    protected function visitStatus($status = true)
+    {
+        self::$visit = $status;
     }
 }

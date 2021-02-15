@@ -4,13 +4,13 @@
         <div class="container">
             <div class="page">
                 <div class="search-box">
-                    <input v-model="keyword" @keyup="searchPosts()" type="text"
+                    <input v-model="params.keyword" type="text"
                            :placeholder="LANG.front.searching_for_what_write_down_here">
                 </div>
             </div>
         </div>
 
-        <PostsList :posts="posts"></PostsList>
+        <PostsList @goPage="goPage" :pages="pages" :posts="posts"></PostsList>
 
     </section>
 </template>
@@ -23,19 +23,40 @@
         props: ['username'],
         data() {
             return {
-                keyword: null,
-                posts: []
+                posts: [],
+                pages: {},
+                params: {
+                    page: 1,
+                    rows:12,
+                    keyword: null,
+                }
             }
         },
         methods: {
-            searchPosts() {
-                this.$http.post(this.URL.API + 'post/search/', {keyword: this.keyword}).then((json) => {
-                    this.posts = json.data;
+            getPosts() {
+                this.$http.post(this.URL.API + 'post/getAll/', this.params).then((json) => {
+                    this.posts = json.data.posts;
+                    this.pages = json.data.pages;
                 });
+            },
+            goPage(page) {
+                this.params.page = page;
+                this.getPosts();
             }
         },
         created() {
-            this.searchPosts();
+            this.getPosts();
+            this._title(this.LANG.front.search);
+        },
+        watch: {
+            'params.keyword': {
+                handler() {
+                    this._delay(() => {
+                        this.params.page = 1;
+                        this.getPosts();
+                    }, 500);
+                }
+            }
         }
     }
 </script>

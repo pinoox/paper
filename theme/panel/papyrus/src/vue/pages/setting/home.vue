@@ -15,7 +15,7 @@
                 </div>
             </div>
         </header>
-        <simplebar class="simplebar">
+        <simplebar class="simplebar" v-if="!!menus && menus.length > 0">
             <div class="form-content">
                 <div class="menus setting">
                     <router-link tag="div" class="item"
@@ -32,6 +32,14 @@
                 </div>
             </div>
         </simplebar>
+        <div class="container" v-else>
+                    <div class="section-content">
+                        <h3 class="subtitle">{{LANG.panel.no_settings_template}}</h3>
+                        <span @click="$router.go(-1)" class="btn btn-sm btn-simple">{{LANG.panel.back}}</span>
+                    </div>
+            </div>
+
+        </div>
     </div>
 </template>
 
