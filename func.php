@@ -1,6 +1,7 @@
 <?php
 //paper functions file
 
+use pinoox\app\com_pinoox_paper\model\CategoryModel;
 use pinoox\app\com_pinoox_paper\component\TemplateHelper;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
@@ -31,7 +32,7 @@ function posts($value, $option = [])
 
     $date_format = isset($option['date_format']) ? $option['date_format'] : null;
     $posts = array_map(function ($post) use ($date_format) {
-        return PostModel::getInfoPost($post,$date_format);
+        return PostModel::getInfoPost($post, $date_format);
     }, $posts);
 
     return $posts;
@@ -40,6 +41,27 @@ function posts($value, $option = [])
 function hot_tags($limit = 10)
 {
     return PostModel::hot_tags($limit);
+}
+
+function category($category_id = null, $into = false)
+{
+    if ($into) {
+        CategoryModel::where_parent($category_id);
+        return CategoryModel::fetch_all();
+    } else {
+        return CategoryModel::fetch_by_id($category_id);
+    }
+}
+
+function category_tree()
+{
+    $category = CategoryModel::fetch_all();
+    return CategoryModel::tree($category);
+}
+
+function breadcrumb($category_id)
+{
+    return CategoryModel::getBreadcrumb($category_id);
 }
 
 function paper_menu($items = null)

@@ -337,6 +337,9 @@
 .badge-status.suspend {
   background: #db335a !important;
 }
+.badge-status.primary {
+  background: #1f426c !important;
+}
 .m1-tb {
   margin: 1% 0;
 }
@@ -1965,6 +1968,13 @@ body.ltr .vue-notification-group {
   font-weight: bold;
   color: #506E93;
   cursor: pointer !important;
+}
+.nestable-category .nestable-item-content .cat-name .number {
+  padding: 4px !important;
+  white-space: nowrap !important;
+  color: #1f426c !important;
+  border-radius: 5px !important;
+  font-size: 0.7em !important;
 }
 .nestable-category .nestable-item-content .cat-name:hover {
   color: #1f426c;

@@ -79,6 +79,10 @@
   &.suspend {
     background: @redColor !important;
   }
+
+  &.primary {
+    background: @primaryColor !important;
+  }
 }
 
 .m1-tb {
@@ -2021,6 +2025,14 @@ body {
       font-weight: bold;
       color: @textColor;
       cursor: pointer !important;
+
+      .number{
+        padding: 4px !important;
+        white-space: nowrap !important;
+        color: @primaryColor !important;
+        border-radius: 5px !important;
+        font-size: 0.7em !important;
+      }
 
       &:hover {
         color: @primaryColor;
