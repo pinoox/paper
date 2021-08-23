@@ -154,16 +154,16 @@
         },
         watch: {
             USER() {
-                if (!!this.$route.name && this.$route.name === 'splash') {
-                    let time = this.getTimeStamp() - this.timestamp;
-                    time = 3000 - time;
-                    if (time > 0) {
-                        setTimeout(() => {
-                            this.checkUser();
-                        }, time);
-                        return;
-                    }
-                }
+                // if (!!this.$route.name && this.$route.name === 'splash') {
+                //   let time = this.getTimeStamp() - this.timestamp;
+                //     time = 3000 - time;
+                //     if (time > 0) {
+                //         setTimeout(() => {
+                //             this.checkUser();
+                //         }, time);
+                //         return;
+                //     }
+                // }
                 this.checkUser();
             },
             // '$route': {
