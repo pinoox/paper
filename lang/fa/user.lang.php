@@ -33,4 +33,16 @@ return [
         'suspend'=>'تعلیق',
         'pending'=>'در انتظار فعالسازی',
     ],
+
+    /*
+     * Groups
+     */
+    'groups' => 'گروه های کاربری',
+    'add_group' => 'افزودن گروه',
+    'edit_group' => 'ویرایش گروه',
+    'group_key' => 'نام کلیدی',
+    'group_name' => 'نام گروه کاربری',
+    'repeat_group_key' => 'این نام گروه قبلا ثبت شده است',
+    'group_successful_delete' => 'این گروه کاربری با موفقیت حذف شد',
+    'group_added_successfully' => 'گروه کاربری با موفقیت اضافه شد',
 ];

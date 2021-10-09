@@ -71,6 +71,7 @@ return [
     'profile' => 'پروفایل',
     'user_profile' => 'مشخصات کاربری',
     'comments' => 'نظرات',
+    'search' => 'جست و جو',
     'contacts' => 'تماس ها',
     'contact' => 'تماس',
     'profile_image' => 'تصویر پروفایل',

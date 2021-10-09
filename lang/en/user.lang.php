@@ -27,9 +27,22 @@ return [
     'enter_old_password' => 'Enter current password',
     'enter_re_new_password' => 'Repeat new password',
     'err_old_password' => 'You entered the wrong password',
+
     'status' => [
         'active' => 'active',
         'suspend' => 'suspend',
         'pending' => 'pending',
     ],
+
+    /*
+     * Groups
+     */
+    'groups' => 'groups',
+    'add_group' => 'Add group',
+    'edit_group' => 'Edit group',
+    'group_key' => 'group key',
+    'group_name' => 'group name',
+    'repeat_group_key' => 'This group name is already registered!',
+    'group_successful_delete' => 'This user group was successfully deleted',
+    'group_added_successfully' => 'User group added successfully',
 ];
