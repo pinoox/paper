@@ -76,7 +76,11 @@
     background: @orangeColor !important;
   }
 
-  &.suspend {
+  &.schedule {
+    background: @orangeColor !important;
+  }
+
+  &.suspend,&.cancel_publish {
     background: @redColor !important;
   }
 
@@ -1043,6 +1047,11 @@ body {
 
               &.publish {
                 color: @greenColorDark;
+                opacity: 0.6;
+              }
+
+              &.schedule {
+                color: @orangeColorDark;
                 opacity: 0.6;
               }
 
@@ -2592,10 +2601,10 @@ body {
             }
 
             .status {
-              font-size: 10px;
-              padding: 0 4px;
+              font-size: 10px !important;
+              padding: 0 6px;
               border-radius: 4px;
-              background: fade(@primaryColor, 20%);
+              background: fade(@primaryColor, 50%);
               margin: 0 4px;
             }
           }

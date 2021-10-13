@@ -21,6 +21,8 @@ return [
     'post_publication' => 'Publish Post',
     'page_publication' => 'Publish Page',
     'description' => 'Description',
+    'release_schedule' => 'Release Schedule',
+    'cancel_scheduling' => 'Cancel Scheduling',
     'enter_description' => 'Enter page description',
     'page_address' => 'Page address',
     'enter_page_address' => 'Enter page address',
@@ -80,6 +82,8 @@ return [
     'status' => [
         'draft' => 'draft',
         'publish' => 'publish',
+        'schedule' => 'Scheduled',
+        'cancel_schedule' => 'cancel schedule',
         'synced' => 'Synced',
         'cancel_publish' => 'Cancel publish',
     ],

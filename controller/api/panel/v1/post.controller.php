@@ -19,6 +19,7 @@ use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
 use pinoox\component\Date;
 use pinoox\component\Dir;
+use pinoox\component\Lang;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -103,7 +104,23 @@ class PostController extends LoginConfiguration
 
     public function save()
     {
-        $input = Request::post(['post_id', 'post_type' => PostModel::post_type, 'status' => false, 'post_key', 'image', 'hash_id', 'title', 'summary', '!context', 'tags', 'characters' => 0, 'words' => 0, 'time' => 0, 'hook' => 'disable'], null, '!empty');
+        $input = Request::post([
+            'post_id',
+            'post_type' => PostModel::post_type,
+            'status' => false,
+            'post_key',
+            'image',
+            'hash_id',
+            'title',
+            'summary',
+            '!context',
+            'tags',
+            'schedule_date',
+            'characters' => 0,
+            'words' => 0,
+            'time' => 0,
+            'hook' => 'disable'
+        ], null, '!empty');
 
         $validations = [
             'context' => ['required', rlang('panel.context')],
@@ -116,6 +133,14 @@ class PostController extends LoginConfiguration
 
         PaperDatabase::startTransaction();
         $isEdit = !empty($input['post_id']);
+
+        if ($input['status'] !== PostModel::schedule_status || $input['post_type'] !== PostModel::post_type) {
+            $input['schedule_date'] = null;
+        }
+
+        if (!empty($input['schedule_date']) && Lang::current() == 'fa') {
+            $input['schedule_date'] = Date::g('Y-m-d H:i:s', $input['schedule_date'], true);
+        }
 
         // save data
         if ($isEdit) {
@@ -157,15 +182,15 @@ class PostController extends LoginConfiguration
         if (!$input['status'])
             return;
 
-        if ($input['status'] === PostModel::publish_status) {
+        $post = PostModel::fetch_by_id($input['post_id']);
+
+        if ($input['status'] === PostModel::publish_status || $input['status'] === PostModel::schedule_status) {
             $valid = Validation::check($input, [
                 'title' => ['required', rlang('panel.title')],
                 'context' => ['required', rlang('panel.context')],
             ]);
             if ($valid->isFail())
                 Response::jsonMessage($valid->first(), false);
-
-            $post = PostModel::fetch_by_id($input['post_id']);
 
             if ($input['post_type'] === PostModel::page_type) {
                 if (empty($input['post_key']))
@@ -175,13 +200,27 @@ class PostController extends LoginConfiguration
                     Response::jsonMessage(rlang('post.err_repeat_key'), false);
             }
 
-            $status = $post['status'] === PostModel::publish_status ? PostModel::synced_status : PostModel::publish_status;
+            $isSchedule = ($input['status'] === PostModel::schedule_status);
+
+            if (!$isSchedule) {
+                $status = $post['status'] === PostModel::publish_status ? PostModel::synced_status : PostModel::publish_status;
+            } else {
+                $status = PostModel::schedule_status;
+            }
 
             PostModel::post_history_insert($input, $status);
-            $result = PostModel::update_publish_post($input['post_id']);
+
+            if (!$isSchedule) {
+                $result = PostModel::update_publish_post($input['post_id']);
+            } else {
+                $result = PostModel::update_schedule_post($input['post_id']);
+            }
+
             PostModel::post_draft_update_synced($input['post_id'], 1);
         } else {
-            PostModel::post_history_insert($input, PostModel::cancel_publish_status);
+            $status = ($post['status'] === PostModel::schedule_status) ? PostModel::cancel_schedule_status : PostModel::cancel_publish_status;
+
+            PostModel::post_history_insert($input, $status);
             $result = PostModel::update_status($input['post_id'], $input['status']);
         }
 

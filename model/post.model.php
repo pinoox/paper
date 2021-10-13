@@ -24,7 +24,9 @@ class PostModel extends PaperDatabase
     //status
     const draft_status = "draft";
     const publish_status = "publish";
+    const schedule_status = "schedule";
     const cancel_publish_status = "cancel_publish";
+    const cancel_schedule_status = "cancel_schedule";
     const synced_status = "synced";
 
     // status comment
@@ -49,6 +51,7 @@ class PostModel extends PaperDatabase
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'insert_date' => $date,
             'update_date' => $date,
+            'schedule_date' => @$data['schedule_date'],
         ]);
     }
 
@@ -159,6 +162,22 @@ class PostModel extends PaperDatabase
         ]);
     }
 
+    public static function update_schedule_post($post_id)
+    {
+        $post = self::post_draft_fetch_by_id($post_id);
+        if (!$post)
+            return false;
+
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post, [
+            'title' => $post['draft_title'],
+            'context' => $post['draft_context'],
+            'status' => self::schedule_status,
+            'characters' => !empty($post['characters']) ? $post['characters'] : 0,
+            'words' => !empty($post['words']) ? $post['words'] : 0,
+        ]);
+    }
+
     public static function post_history_insert($data, $status)
     {
         $date = Date::g('Y-m-d H:i:s');
@@ -207,12 +226,13 @@ class PostModel extends PaperDatabase
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'update_date' => $date,
             'time_tracking' => self::$db->inc($data['time']),
+            'schedule_date' => @$data['schedule_date'],
         ]);
     }
 
     public static function getInfoPost($post, $date_format = null)
     {
-        if(empty($post))
+        if (empty($post))
             return $post;
         $placeHolderPost = Url::file('resources/image-placeholder.jpg');
         $placeHolderAvatar = Url::file('resources/avatar.png');
@@ -230,6 +250,11 @@ class PostModel extends PaperDatabase
         $date_format = !empty($date_format) ? $date_format : 'l d F Y (H:i)';
         $post['approx_date'] = Helper::getLocaleDate($date_format, $post['publish_date']);
         $post['publish_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['publish_date']);
+
+        if (isset($post['schedule_date'])) {
+            $post['schedule_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['schedule_date']);
+        }
+
         $file = FileModel::fetch_by_id($post['image_id']);
         $post['image'] = Url::upload($file, $placeHolderPost);
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolderPost);
