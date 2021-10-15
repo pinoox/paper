@@ -157,6 +157,7 @@ class PostModel extends PaperDatabase
             'context' => $post['draft_context'],
             'publish_date' => $date,
             'status' => self::publish_status,
+            'schedule_date' => null,
             'characters' => !empty($post['characters']) ? $post['characters'] : 0,
             'words' => !empty($post['words']) ? $post['words'] : 0,
         ]);
@@ -514,16 +515,6 @@ class PostModel extends PaperDatabase
 
     }
 
-    public static function fetch_all_tags_by_post_id($post_id)
-    {
-        return [];
-    }
-
-    public static function fetch_most_visited($limitMostVisited)
-    {
-        return [];
-    }
-
     public static function hot_tags($limit = null)
     {
         self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id', 'INNER');
@@ -544,5 +535,36 @@ class PostModel extends PaperDatabase
         if (!empty($username)) {
             self::$db->where('u.username', $username);
         }
+    }
+
+    public static function update_all_schedule_publish()
+    {
+        $now = Date::g('Y-m-d H:i:s');
+        self::$db->where('schedule_date', $now, '<=');
+
+        self::$db->where('status', self::schedule_status);
+        return self::$db->update(self::post, [
+            'status' => self::publish_status,
+        ]);
+    }
+
+    public static function fetch_all_schedule_publish()
+    {
+        $now = Date::g('Y-m-d H:i:s');
+        self::$db->where('schedule_date', $now, '<=');
+
+        self::$db->where('status', self::schedule_status);
+        return self::$db->get(self::post);
+    }
+
+    public static function watch_schedule_publish($post)
+    {
+        if(empty($post) || !isset($post['post_id']))
+            return;
+
+        $draft = self::post_draft_fetch_by_id($post['post_id']);
+        self::post_history_insert($draft, self::publish_status);
+        self::update_publish_post($post['post_id']);
+        self::post_draft_update_synced($post['post_id'], 1);
     }
 }

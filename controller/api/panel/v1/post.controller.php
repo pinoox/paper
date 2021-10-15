@@ -139,7 +139,7 @@ class PostController extends LoginConfiguration
         }
 
         if (!empty($input['schedule_date']) && Lang::current() == 'fa') {
-            $input['schedule_date'] = Date::g('Y-m-d H:i:s', $input['schedule_date'], true);
+            $input['schedule_date'] = Date::g('Y-m-d H:i:s', $input['schedule_date'], true,date_default_timezone_get(),'Asia/Tehran');
         }
 
         // save data
