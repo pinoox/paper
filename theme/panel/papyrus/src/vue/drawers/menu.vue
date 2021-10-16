@@ -109,6 +109,12 @@ export default {
           link: 'panel/user',
         },
         {
+          url: {name: 'groups'},
+          label: this.LANG.user.groups,
+          icon: 'fal fa-users-cog',
+          link: 'panel/group',
+        },
+        {
           url: {name: 'contacts'},
           label: this.LANG.panel.contacts,
           image: this._icons.call,
@@ -170,13 +176,6 @@ export default {
         //   image: this._icons.users,
         //   customClass: 'icon',
         //   link: 'panel/user',
-        // },
-        // {
-        //   url: {name: 'groups'},
-        //   label: this.LANG.panel.groups,
-        //   icon: 'fal fa-users-cog',
-        //   customClass: 'icon',
-        //   link: 'panel/group',
         // },
         // {
         //   url: {name: 'profile'},
