@@ -1,5 +1,7 @@
 <?php
 
+Use pinoox\component\Lang;
+
 return [
     'key' => 'lang',
     'label' => rlang('setting.language'),
@@ -8,7 +10,7 @@ return [
     'settings' => [
         [
             'key' => 'lang',
-            'value' => 'en',
+            'value' => Lang::current(),
             'label' => rlang('setting.select_lang'),
             'type' => 'select',
             'options' => rlang('setting.lang'),
