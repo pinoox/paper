@@ -12,6 +12,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\UserSettingModel;
@@ -340,5 +341,14 @@ class UserController extends LoginConfiguration
         }
 
         Response::json(rlang('panel.error_happened'), false);
+    }
+
+    public function getGroups()
+    {
+        $field = Request::input('keyword', null, '!empty');
+
+        GroupModel::where_search($field['keyword']);
+        $items = GroupModel::fetch_all(20);
+        Response::json($items);
     }
 }

@@ -60,7 +60,7 @@ class GroupController extends ApiConfiguration
 
         $valid = Validation::check($form, [
             'group_name' => ['required|length:>=2', rlang('user.group_name')],
-            'group_key' => ['required|length:>=2', rlang('user.group_key')],
+            'group_key' => ['required|username|length:>=2', rlang('user.group_key')],
         ]);
 
         if ($valid->isFail())

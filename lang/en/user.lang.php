@@ -45,4 +45,5 @@ return [
     'repeat_group_key' => 'This group name is already registered!',
     'group_successful_delete' => 'This user group was successfully deleted',
     'group_added_successfully' => 'User group added successfully',
+    'select_user_group' => 'Select a user group',
 ];

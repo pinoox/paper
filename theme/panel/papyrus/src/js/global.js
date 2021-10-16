@@ -18,6 +18,14 @@ Vue.mixin({
                 this.$store.state.userSettings = val;
             }
         },
+        PERMISSION: {
+            get() {
+                return this.USER.permissions;
+            },
+            set(val) {
+                this.USER.permissions = val;
+            }
+        },
         isTransition: {
             get() {
                 return this.$store.state.isTransition;

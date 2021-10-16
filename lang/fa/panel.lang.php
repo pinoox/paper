@@ -77,6 +77,7 @@ return [
     'profile_image' => 'تصویر پروفایل',
     'select_image' => 'انتخاب تصویر',
     'name_list' => 'نام لیست (ضروری)',
+    'permission' => 'سطح دسترسی',
     'enter_name' => 'نام را وارد کنید',
     'last_few_days' => 'روز گذشته',
     'type_time_tracking' => [

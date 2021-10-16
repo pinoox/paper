@@ -45,4 +45,5 @@ return [
     'repeat_group_key' => 'این نام گروه قبلا ثبت شده است',
     'group_successful_delete' => 'این گروه کاربری با موفقیت حذف شد',
     'group_added_successfully' => 'گروه کاربری با موفقیت اضافه شد',
+    'select_user_group' => 'انتخاب گروه کاربری',
 ];
