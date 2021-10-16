@@ -27,9 +27,9 @@ class PaperDatabase extends PinooxDatabase
     const tag = self::prefix.'tag';
     const category = self::prefix.'category';
     const contact = self::prefix.'contact';
-    const user_setting = self::prefix.'user_setting';
     const comment = self::prefix.'comment';
     const statistic = self::prefix.'statistic';
+    const user_paper = self::prefix.'user';
     const group = self::prefix.'group';
 
 }

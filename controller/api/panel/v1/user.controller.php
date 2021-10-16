@@ -28,6 +28,7 @@ use pinoox\component\Validation;
 use pinoox\model\FileModel;
 use pinoox\model\PinooxDatabase;
 use pinoox\app\com_pinoox_paper\model\UserModel;
+use pinoox\model\UserModel as UserModelCore;
 
 class UserController extends LoginConfiguration
 {
@@ -89,7 +90,7 @@ class UserController extends LoginConfiguration
         $users = UserModel::fetch_all($pagination->getArrayLimit());
 
         $users = array_map(function ($user) {
-            return $user = $this->getUserInfo($user);
+            return $this->getUserInfo($user);
         }, $users);
 
         Response::json(['users' => $users, 'pages' => $pagination->getInfoPage()['page']]);
@@ -98,7 +99,7 @@ class UserController extends LoginConfiguration
 
     private function filterSearch($form)
     {
-        UserModel::where_search($form['keyword']);
+        UserModelCore::where_search($form['keyword']);
         UserModel::where_status($form['status']);
         UserModel::sort($form['sort']);
     }
@@ -113,6 +114,7 @@ class UserController extends LoginConfiguration
         $user['image'] = Url::upload($file, $placeHolder);
         $user['thumb_128'] = Url::thumb($file, 128, $placeHolder);
         $user['full_name'] = $user['fname'] . ' ' . $user['lname'];
+        $user['group'] = GroupModel::fetch_by_key($user['group_key']);
         unset($user['password']);
 
         return $user;
@@ -120,7 +122,17 @@ class UserController extends LoginConfiguration
 
     public function add()
     {
-        $input = Request::post('avatar_id,status,fname,lname,username,email,password,re_password', null, '!empty');
+        $input = Request::post([
+            'avatar_id',
+            'status',
+            'fname',
+            'lname',
+            'username',
+            'email',
+            'group_key' => GroupModel::getDefault(),
+            'password',
+            're_password'
+        ], null, '!empty');
         $valid = Validation::check($input, [
             'fname' => ['required|length:>2', rlang('user.fname')],
             'lname' => ['required|length:>2', rlang('user.lname')],
@@ -134,17 +146,19 @@ class UserController extends LoginConfiguration
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
 
-        $input['status'] = $input['status'] === UserModel::active ? UserModel::active : UserModel::suspend;
+        $input['status'] = $input['status'] === UserModelCore::active ? UserModelCore::active : UserModelCore::suspend;
 
-        $username = UserModel::fetch_user_by_email_or_username($input['username']);
+        $username = UserModelCore::fetch_user_by_email_or_username($input['username']);
         if ($username)
             Response::jsonMessage(rlang('user.username_duplicated'), false);
 
-        $email = UserModel::fetch_user_by_email_or_username($input['email']);
+        $email = UserModelCore::fetch_user_by_email_or_username($input['email']);
         if ($email)
             Response::jsonMessage(rlang('user.email_duplicated'), false);
 
+        PaperDatabase::startTransaction();
         $user_id = UserModel::insert($input);
+        PaperDatabase::commit();
 
         if ($user_id) {
             $this->uploadAvatar($user_id);
@@ -195,7 +209,19 @@ class UserController extends LoginConfiguration
 
     public function edit()
     {
-        $input = Request::post('user_id,avatar_id,status,fname,lname,username,email,password,re_password,delete_avatar', null, '!empty');
+        $input = Request::post([
+            'user_id',
+            'avatar_id',
+            'status',
+            'fname',
+            'lname',
+            'username',
+            'email',
+            'group_key' => GroupModel::getDefault(),
+            'password',
+            're_password',
+            'delete_avatar',
+        ], null, '!empty');
         $valid = Validation::check($input, [
             'user_id' => ['required', rlang('user.fname')],
             'fname' => ['required|length:>2', rlang('user.fname')],
@@ -211,22 +237,22 @@ class UserController extends LoginConfiguration
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
 
-        $input['status'] = $input['status'] === UserModel::active ? UserModel::active : UserModel::suspend;
+        $input['status'] = $input['status'] === UserModelCore::active ? UserModelCore::active : UserModelCore::suspend;
 
         $user = UserModel::fetch_by_id($input['user_id']);
         if (!$user)
             Response::jsonMessage(rlang('panel.invalid_request'), false);
 
-        $username = UserModel::fetch_user_by_email_or_username($input['username'], $input['user_id']);
+        $username = UserModelCore::fetch_user_by_email_or_username($input['username'], $input['user_id']);
         if ($username)
             Response::jsonMessage(rlang('user.username_duplicated'), false);
 
-        $email = UserModel::fetch_user_by_email_or_username($input['email'], $input['user_id']);
+        $email = UserModelCore::fetch_user_by_email_or_username($input['email'], $input['user_id']);
         if ($email)
             Response::jsonMessage(rlang('user.email_duplicated'), false);
 
         PaperDatabase::startTransaction();
-        $status = UserModel::update($input['user_id'], $input);
+        $status = UserModel::update($input);
 
         if ($status) {
             if ($input['delete_avatar'])
@@ -266,15 +292,15 @@ class UserController extends LoginConfiguration
             Response::json($valid->first(), false);
 
         $input['user_id'] = User::get('user_id');
-        $username = UserModel::fetch_user_by_email_or_username($input['username'], $input['user_id']);
+        $username = UserModelCore::fetch_user_by_email_or_username($input['username'], $input['user_id']);
         if ($username)
             Response::json(rlang('user.username_duplicated'), false);
 
-        $email = UserModel::fetch_user_by_email_or_username($input['email'], $input['user_id']);
+        $email = UserModelCore::fetch_user_by_email_or_username($input['email'], $input['user_id']);
         if ($email)
             Response::json(rlang('user.email_duplicated'), false);
 
-        $status = UserModel::update_info($input['user_id'], $input);
+        $status = UserModelCore::update_info($input['user_id'], $input);
 
         if ($status)
             Response::json(rlang('user.edited_successfully'), true);
@@ -300,11 +326,11 @@ class UserController extends LoginConfiguration
 
         $user_id = User::get('user_id');
 
-        if (!UserModel::fetch_by_password($user_id, $inputs['old_password'])) {
+        if (!UserModelCore::fetch_by_password($user_id, $inputs['old_password'])) {
             Response::json(rlang('user.err_old_password'), false);
         }
 
-        if (UserModel::update_password($user_id, $inputs['password'], $inputs['old_password'])) {
+        if (UserModelCore::update_password($user_id, $inputs['password'], $inputs['old_password'])) {
             Response::json(rlang('user.edited_successfully'), true);
         }
 
@@ -317,7 +343,7 @@ class UserController extends LoginConfiguration
             $this->error();
         $user = User::get();
         $this->deleteAvatar($user['avatar_id']);
-        if (UserModel::update_avatar($user['user_id'], null)) {
+        if (UserModelCore::update_avatar($user['user_id'], null)) {
             $user = $this->getUser();
             Response::json($user, true);
         }

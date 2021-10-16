@@ -17,12 +17,6 @@ use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 
 class GroupModel extends PaperDatabase
 {
-
-    const user = 'user';
-    const guest = 'guest';
-    const admin = 'admin';
-    const default_key = self::user;
-
     public static function fetch_by_key($group_key, $old_group_key = null)
     {
         if ($group_key == $old_group_key)
@@ -82,5 +76,10 @@ class GroupModel extends PaperDatabase
 
         $k = '%' . $keyword . '%';
         self::$db->where('(g.group_key LIKE ? OR g.group_name LIKE ?)', [$k, $k]);
+    }
+
+    public static function getDefault()
+    {
+        return 'admin';
     }
 }

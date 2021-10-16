@@ -48,11 +48,10 @@
               </div>
             </div>
             <div class="input-wrapper">
-              <label class="input-label">{{ LANG.panel.select_user_group }}</label>
-              <div class="input-group">
+              <label class="input-label">{{ LANG.user.select_user_group }}</label>
                 <v-select
-                    class="v-select-custom input"
-                    :placeholder="LANG.panel.select_user_group"
+                    class="input"
+                    :placeholder="LANG.user.select_user_group"
                     dir="rtl"
                     v-model="params.group"
                     @search="fetchGroups"
@@ -60,7 +59,6 @@
                     :options="groups">
                   <div slot="no-options"><span class="no-options">{{ LANG.panel.nothing_found }}</span></div>
                 </v-select>
-              </div>
             </div>
             <div class="input-wrapper">
               <label class="input-label">{{ LANG.user.password }}</label>
@@ -104,6 +102,7 @@
               <label class="input-label center">{{ LANG.user.user_status }}</label>
               <div class="input-group center">
                 <toggle-button v-model="status"
+                               :sync="true"
                                :width="70"
                                :labels="{checked: LANG.post.active, unchecked: LANG.post.inactive}"/>
               </div>
@@ -162,8 +161,10 @@ export default {
         let value = params[key];
         if (key === 'delete_avatar')
           value = !!value ? 1 : 0;
-        else if (key === 'status')
-          value = !!value ? 'active' : 'suspend';
+        else if (key === 'group') {
+          key = 'group_key';
+          value = !!value && typeof value === "object" && !!value.group_key ? value.group_key : '';
+        }
 
         data.append(key, value);
       }
