@@ -13,6 +13,22 @@ return [
             'type' => 'image',
         ],
         [
+            'key' => 'group',
+            'value' => \pinoox\app\com_pinoox_paper\model\GroupModel::fetch_by_key('admin'),
+            'label' => rlang('user.select_user_group'),
+            'type' => 'group',
+        ],
+        [
+            'key' => 'lang',
+            'value' => 'admin',
+            'label' => rlang('user.select_user_group'),
+            'type' => 'select',
+            'options' => \pinoox\app\com_pinoox_paper\model\GroupModel::fetch_all_for_setting(),
+            'attrs' => [
+                'clearable' => false,
+            ],
+        ],
+        [
             'key' => 'menu',
             'label' => rlang('setting.main_menu'),
             'type' => 'list',

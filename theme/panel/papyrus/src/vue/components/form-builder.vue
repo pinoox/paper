@@ -18,6 +18,11 @@
                                :labels="{checked: LANG.post.active, unchecked: LANG.post.inactive}"/>
             </div>
 
+          <!-- select group view -->
+            <div v-else-if="!!setting.type && setting.type === 'group'">
+              <select-group :value="value[setting.key]" v-model="value[setting.key]" v-bind="getAttrs(setting)"></select-group>
+            </div>
+
             <!-- select view -->
             <div v-else-if="!!setting.type && setting.type === 'select'">
                 <v-select
@@ -89,10 +94,11 @@
     import SelectPost from "./select-post.vue";
     import ColorPicker from "./color-picker.vue";
     import ImageSetting from "../drawers/image-setting.vue";
+    import SelectGroup from "../components/select-group.vue";
 
     export default {
         name: "form-builder",
-        components: {ImageSetting, SelectPost, ColorPicker},
+        components: {ImageSetting, SelectPost, ColorPicker, SelectGroup},
         props: {
             settings: {
                 default: [],
