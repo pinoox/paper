@@ -60,6 +60,8 @@
                 let params = this.getFormParams(this.params);
                 this.$http.post(this.URL.API + 'group/save', params).then((json) => {
                     if (this._messageResponse(json.data)) {
+                      this.group.group_name = this.params.group_name;
+                      this.group.group_key = this.params.group_key;
                         this.$emit('onSuccess', true);
                         this.closeDrawer();
                     }

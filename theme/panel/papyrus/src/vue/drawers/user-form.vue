@@ -40,7 +40,6 @@
                   :placeholder="LANG.user.select_user_group"
                   dir="rtl"
                   v-model="params.group"
-                  @search="fetchGroups"
                   label="group_name"
                   :options="groups">
                 <div slot="no-options"><span class="no-options">{{ LANG.panel.nothing_found }}</span></div>
@@ -180,22 +179,13 @@ export default {
     errorAvatar(error) {
       this._notify('error', error.message);
     },
-    fetchGroups(keyword, loading) {
-      if (!keyword && !keyword.length) return false;
-      this._delay(() => {
-        loading(true);
-        this.getGroups(keyword).then(() => {
-          loading(false);
-        });
-      }, 500);
-    },
     getGroups(keyword = null) {
       return this.$http.post(
           this.URL.API + 'user/getGroups/',
           {
             keyword: keyword
           }).then((json) => {
-        this.groups = json.data;
+        this.groups = !!json.data? json.data : [];
       });
     },
     openDrawer() {

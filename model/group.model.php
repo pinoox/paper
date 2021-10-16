@@ -14,6 +14,7 @@
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
+use pinoox\component\Config;
 
 class GroupModel extends PaperDatabase
 {
@@ -22,37 +23,56 @@ class GroupModel extends PaperDatabase
         if ($group_key == $old_group_key)
             return false;
 
-        self::$db->where('group_key', $group_key);
-        return self::$db->getOne(self::group);
+        return Config::getLinear('groups', $group_key);
     }
 
     public static function insert($form)
     {
-        return self::$db->insert(self::group, [
+        Config::setLinear('groups', $form['group_key'], [
             'group_key' => $form['group_key'],
             'group_name' => $form['group_name'],
         ]);
+        Config::save('groups');
     }
 
     public static function update($group_key, $form)
     {
-        self::$db->where('group_key', $group_key);
-        return self::$db->update(self::group, [
+        Config::removeLinear('groups', $group_key);
+
+        Config::setLinear('groups', $form['group_key'], [
             'group_key' => $form['group_key'],
             'group_name' => $form['group_name'],
         ]);
+
+        Config::save('groups');
     }
 
     public static function delete($group_key)
     {
-        self::$db->where('group_key', $group_key);
-        return self::$db->delete(self::group);
+        Config::removeLinear('groups', $group_key);
+        Config::save('groups');
     }
 
-    public static function fetch_all($limit = null, $isCount = false)
+    public static function fetch_all()
     {
-        $result = self::$db->get(self::group . ' g', $limit);
-        return ($isCount) ? self::$db->count : $result;
+        $items = Config::get('groups');
+        if (!empty($items))
+            $items = array_values($items);
+        return $items;
+    }
+
+    public static function fetch_all_for_setting()
+    {
+        $groups = self::fetch_all();
+        $result = [];
+
+        if (empty($groups))
+            return $result;
+        foreach ($groups as $group) {
+            $result[$group['group_key']] = $group['group_name'];
+        }
+
+        return $result;
     }
 
     public static function filter($form)

@@ -12,6 +12,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
@@ -137,5 +138,11 @@ class SettingController extends LoginConfiguration
     {
         $theme = AppProvider::get('theme');
         Response::json($theme);
+    }
+
+    public function getGroups()
+    {
+        $items = GroupModel::fetch_all();
+        Response::json($items);
     }
 }

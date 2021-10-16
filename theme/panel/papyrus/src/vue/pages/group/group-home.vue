@@ -27,23 +27,17 @@
                 compactMode
                 :columns="columns"
                 :rows="groups"
-                mode="remote"
                 :search-options="{
                                  externalQuery: params.keyword,
                             }"
-                @on-search="onSearch"
-                @on-page-change="onPageChange"
-                @on-sort-change="onSortChange"
-                @on-per-page-change="onPerPageChange"
-                :isLoading.sync="isLoading"
-                :totalRows="pages.count"
+                :totalRows="groups.count"
                 :pagination-options="defaultTableOpts">
               <template slot="table-row" slot-scope="props">
                 <div v-if="props.column.field === 'thumb_128'">
                   <img class="thumb thumb-circle" :src="props.row.thumb_128" :alt="props.row.title">
                 </div>
                 <div v-else-if="props.column.field === 'operation'">
-                  <router-link :to="{name:'permissions',params:{group_key:props.row.group_key}}"  class="btn-action">
+                  <router-link :to="{name:'permissions',params:{group_key:props.row.group_key}}" class="btn-action">
                     <i class="fas fa-user-lock"></i>
                   </router-link>
                   <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
@@ -72,7 +66,6 @@
     </simplebar>
 
     <GroupForm @close="drawerName=null"
-               @onSuccess="getItems()"
                :group="this.group"
                :open="drawerName==='group-form'"></GroupForm>
   </div>
@@ -89,18 +82,14 @@ export default {
       drawerName: null,
       groups: [],
       pages: [],
-      params: {
-        keyword: null,
-        page: 1,
-        status: 'all',
-        perPage: 10,
-        sort: {
-          field: '',
-          type: '',
-        },
-      },
-      group: null
+      group: null,
+      params:{
+        keyword:null,
+      }
     }
+  },
+  created() {
+    this.getItems();
   },
   computed: {
     columns() {
@@ -124,31 +113,9 @@ export default {
   },
   methods: {
     getItems() {
-      this.$http.post(this.URL.API + 'group/getAll/', this.params).then((json) => {
-        this.groups = json.data.groups;
-        this.pages = json.data.pages;
+      this.$http.get(this.URL.API + 'group/getAll/').then((json) => {
+        this.groups = json.data;
       });
-    },
-    updateParams(newProps) {
-      this.params = Object.assign({}, this.params, newProps);
-    },
-    onPageChange(params) {
-      this.updateParams({page: params.currentPage});
-      this.getItems();
-    },
-    onPerPageChange(params) {
-      this.updateParams({perPage: params.currentPerPage});
-      this.getItems();
-    },
-    onSearch(params) {
-      this._delay(() => {
-        this.updateParams({keyword: params.searchTerm});
-        this.getItems();
-      }, 500);
-    },
-    permission(row) {
-      this.drawerName = 'permission-form';
-      this.group = row;
     },
     edit(row) {
       this.drawerName = 'group-form';
@@ -166,20 +133,6 @@ export default {
           }
         });
       });
-    },
-    onSortChange(params) {
-      let first = params.slice(0, 1).shift();
-      this.updateParams({
-        sort: {
-          type: first.type,
-          field: first.field,
-        },
-      });
-      this.getItems();
-    },
-    filter(param) {
-      this.updateParams({status: param});
-      this.getItems();
     },
   },
 }

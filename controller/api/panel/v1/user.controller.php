@@ -371,10 +371,7 @@ class UserController extends LoginConfiguration
 
     public function getGroups()
     {
-        $field = Request::input('keyword', null, '!empty');
-
-        GroupModel::where_search($field['keyword']);
-        $items = GroupModel::fetch_all(20);
+        $items = GroupModel::fetch_all();
         Response::json($items);
     }
 }

@@ -14,6 +14,7 @@ namespace pinoox\app\com_pinoox_paper\controller\panel;
 use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\component\app\AppProvider;
+use pinoox\component\Config;
 use pinoox\component\Dir;
 use pinoox\component\HelperHeader;
 use pinoox\component\HelperString;
