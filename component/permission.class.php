@@ -11,9 +11,9 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  */
 
-namespace pinoox\app\com_pindev_ticket\component;
+namespace pinoox\app\com_pinoox_paper\component;
 
-use pinoox\app\com_pindev_ticket\model\UserTicketModel;
+use pinoox\app\com_pinoox_paper\model\UserModel;
 use pinoox\component\Cache;
 use pinoox\component\HelperString;
 use pinoox\component\Router;
@@ -36,7 +36,7 @@ class Permission
         }
 
         if (!empty($user_id)) {
-            $user = UserTicketModel::fetch_by_id($user_id);
+            $user = UserModel::fetch_by_id($user_id);
             $group_key = !empty($user['group_key']) ? $user['group_key'] : 'user';
         }
 
@@ -73,4 +73,33 @@ class Permission
         $status = Cache::get('permission.' . $group_key . '.option.' . $permission_key);
         return (is_null($status)) ? true : $status;
     }
+
+    public static function getPermission($group_key)
+    {
+
+        $permission = [
+            'module' => [],
+            'option' => [],
+        ];
+
+        $modules = Cache::get('permission.' . $group_key  . '.module');
+        $options = Cache::get('permission.' . $group_key . '.option');
+
+        if (!empty($modules)) {
+            foreach ($modules as $key => $module) {
+                if (!$module)
+                    $permission['module'][] = $key;
+            }
+        }
+
+        if (!empty($options)) {
+            foreach ($options as $key => $option) {
+                if (!$option)
+                    $permission['option'][] = $key;
+            }
+        }
+
+        return $permission;
+    }
+
 }

@@ -31,10 +31,10 @@
                     </div>
                 </div>
                 <div class="menu">
-                    <router-link :to="{name:'profile'}" tag="div" class="item">
+                    <router-link :to="{name:'profile'}" class="item">
                         <span class="text">{{LANG.panel.profile}}</span>
                     </router-link>
-                    <router-link :to="{name:'setting'}" tag="div" class="item">
+                    <router-link :to="{name:'setting'}" class="item">
                         <span class="text">{{LANG.panel.settings}}</span>
                     </router-link>
                 </div>

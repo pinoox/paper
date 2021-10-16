@@ -12,6 +12,7 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\component\Permission;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
@@ -35,12 +36,17 @@ class UserController extends LoginConfiguration
     public function get()
     {
         $user = $this->getUser();
+        $group_key = isset($user['group_key']) ? $user['group_key'] : GroupModel::getDefault();
+        $user['permissions'] = Permission::getPermission($group_key);
+
         Response::json($user, true);
     }
 
     private function getUser()
     {
-        $user = User::get();
+        $user_id = User::get('user_id');
+        $user = UserModel::fetch_by_id($user_id);
+
         return [
             'is_avatar' => !empty($user['avatar_id']),
             'avatar' => Url::upload($user['avatar_id'], Url::file('resources/avatar.png')),
@@ -49,6 +55,7 @@ class UserController extends LoginConfiguration
             'lname' => $user['lname'],
             'full_name' => $user['full_name'],
             'username' => $user['username'],
+            'group_key' => $user['group_key'],
             'email' => $user['email'],
         ];
     }

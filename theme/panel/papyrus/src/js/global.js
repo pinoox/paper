@@ -307,6 +307,27 @@ Vue.mixin({
             let time = new Date().toLocaleTimeString();
             let parts = time.split(' ');
             return parts[0] + ' ' + this.LANG.panel[parts[1]];
-        }
+        },
+        _module(key) {
+            if (!this.isLogin)
+                return false;
+
+            let modules = !!this.PERMISSION? this.PERMISSION.module : [];
+            for (let i in modules) {
+                let route = modules[i];
+                route = route.replace(/\|:|@|>/gi, '/');
+                key = key.replace(/\|:|@|>/gi, '/');
+                key = key.replace(/^\/|\/$/g, '');
+                if (key === route)
+                    return false
+            }
+
+            return true;
+        },
+        _option(key) {
+            if (!this.isLogin) return false;
+            if (!this.PERMISSION.option) return false;
+            return !this.PERMISSION.option.includes(key);
+        },
     }
 });

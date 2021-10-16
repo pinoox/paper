@@ -770,6 +770,7 @@ body.ltr .vue-notification-group {
   padding-bottom: 10px;
 }
 .app-container .sidebar .sidebar-content .menu .item {
+  display: block;
   grid-template-columns: 20px 1fr;
   align-items: center;
   color: #A5B8CE;
@@ -1759,6 +1760,11 @@ body.ltr .vue-notification-group {
 .menus .item i {
   font-size: 2.5em;
   padding: 10px 0;
+  color: #1f426c;
+}
+.menus .item b {
+  font-size: 4.5em;
+  font-weight: 500;
   color: #1f426c;
 }
 .vue-notification-group {
@@ -3325,6 +3331,10 @@ body.ltr .vue-notification-group {
 .input-wrapper {
   padding: 0.5rem;
   text-align: right;
+}
+.input-wrapper.search-head {
+  padding: 0 !important;
+  margin-bottom: 1.5rem !important;
 }
 .input-wrapper.center {
   text-align: center;
