@@ -34,6 +34,19 @@
               </div>
             </div>
             <div class="input-wrapper">
+              <label class="input-label">{{ LANG.user.select_user_group }}</label>
+              <v-select
+                  class="input"
+                  :placeholder="LANG.user.select_user_group"
+                  dir="rtl"
+                  v-model="params.group"
+                  @search="fetchGroups"
+                  label="group_name"
+                  :options="groups">
+                <div slot="no-options"><span class="no-options">{{ LANG.panel.nothing_found }}</span></div>
+              </v-select>
+            </div>
+            <div class="input-wrapper">
               <label class="input-label">{{ LANG.user.username }}</label>
               <div class="input-group">
                 <input v-model="params.username" type="text"
@@ -46,19 +59,6 @@
                 <input v-model="params.email" type="text"
                        :placeholder="LANG.user.email" class="input">
               </div>
-            </div>
-            <div class="input-wrapper">
-              <label class="input-label">{{ LANG.user.select_user_group }}</label>
-                <v-select
-                    class="input"
-                    :placeholder="LANG.user.select_user_group"
-                    dir="rtl"
-                    v-model="params.group"
-                    @search="fetchGroups"
-                    label="group_name"
-                    :options="groups">
-                  <div slot="no-options"><span class="no-options">{{ LANG.panel.nothing_found }}</span></div>
-                </v-select>
             </div>
             <div class="input-wrapper">
               <label class="input-label">{{ LANG.user.password }}</label>

@@ -33,7 +33,7 @@ class UserModel extends PaperDatabase
             self::$db->where('u.app', AppProvider::get('package-name'));
 
         self::$db->join(self::user_paper . ' up', 'u.user_id=up.user_id', 'LEFT');
-        $result = self::$db->get(self::user . ' u', $limit, 'u.*,up.*,u.user_id');
+        $result = self::$db->get(self::user . ' u', $limit, 'u.*,up.*,u.user_id, CONCAT_WS(" ", u.fname, u.lname) full_name');
         if ($isCount) return count($result);
         return $result;
     }
@@ -42,10 +42,16 @@ class UserModel extends PaperDatabase
     {
         if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
             if ($sort['field'] === 'approx_register_date')
-                $sort['field'] = 'register_date';
-
-            if ($sort['field'] === 'full_name')
-                $sort['field'] = 'fname';
+            {
+                $sort['field'] = 'u.register_date';
+            }
+            else if ($sort['field'] === 'full_name')
+            {
+                $sort['field'] = 'full_name';
+            }
+            else{
+                $sort['field'] = 'u.'.$sort['field'];
+            }
 
             self::$db->orderBy($sort['field'], $sort['type']);
         }
