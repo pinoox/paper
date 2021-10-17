@@ -12,14 +12,14 @@
 
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
+use pinoox\app\com_pinoox_paper\model\PermissionModel;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\app\com_pinoox_paper\controller\api\ApiConfiguration;
+use pinoox\component\Cache;
 use pinoox\component\Lang;
-use pinoox\component\Pagination;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Validation;
-use pinoox\model\PinooxDatabase;
 
 class GroupController extends ApiConfiguration
 {
@@ -57,6 +57,8 @@ class GroupController extends ApiConfiguration
             GroupModel::insert($form);
         }
 
+        Cache::clean('permissions');
+
         Response::jsonMessage(rlang('user.group_added_successfully'), true);
     }
 
@@ -65,6 +67,8 @@ class GroupController extends ApiConfiguration
         $group = GroupModel::fetch_by_key($group_key);
         if ($group) {
             GroupModel::delete($group_key);
+            PermissionModel::delete($group_key);
+            Cache::clean('permissions');
             Response::jsonMessage(Lang::replace('user.group_successful_delete', $group['group_name']), true);
         }
         Response::jsonMessage(Lang::get('panel.error_happened'), false);

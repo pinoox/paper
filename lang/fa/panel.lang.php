@@ -1,6 +1,7 @@
 <?php
 return [
     'direction' => 'rtl',
+    'admin_panel' => 'پنل مدیریت',
     'PM' => 'ب.ظ',
     'AM' => 'ق.ظ',
     'invalid_request' => 'درخواست معتبر نیست',
@@ -34,6 +35,7 @@ return [
     'quick_access' => 'دسترسی سریع',
     'sections' => 'بخش ها',
     'total_posts_stats' => 'آمار بازدید همه نوشته ها',
+    'post_stats' => 'آمار نوشته',
     'total_site_stats' => 'آمار بازدید سایت',
     'view_site' => 'نمایش سایت',
     'today' => 'امروز',

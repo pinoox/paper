@@ -14,6 +14,8 @@
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\component\Config;
+use pinoox\component\Dir;
+use pinoox\component\File;
 
 class PermissionModel extends PaperDatabase
 {
@@ -39,8 +41,14 @@ class PermissionModel extends PaperDatabase
 
     public static function save($group_key,$data)
     {
-        Config::remove('permissions>'.$group_key);
+        self::delete($group_key);
         Config::set('permissions>'.$group_key,$data);
         Config::save('permissions>'.$group_key);
+    }
+
+    public static function delete($group_key)
+    {
+        $path = Dir::path('pinker>config>permissions>'. $group_key.'.config.php');
+        File::remove_file($path);
     }
 }

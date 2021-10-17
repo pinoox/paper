@@ -8,6 +8,7 @@ import Tree from '@widgetjs/tree';
 import Permission from '../../../js/permission';
 
 export default {
+  mixins:[Permission],
   name: 'PermissionTree',
   props: ['group'],
   data() {
@@ -18,11 +19,6 @@ export default {
         branches: [],
       }
     }
-  },
-  computed: {
-    permissions() {
-      return Permission;
-    },
   },
   mounted() {
     this.getPermissions();

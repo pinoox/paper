@@ -2576,9 +2576,6 @@ body.ltr .vue-notification-group {
   .app-container .main .page .menubar .items {
     overflow-y: hidden;
   }
-  .app-container .main .page .menubar .items .text {
-    width: 80%;
-  }
   .app-container .main .page .menubar .items .text .title {
     font-size: 1rem;
   }

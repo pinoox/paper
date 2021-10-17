@@ -312,7 +312,7 @@ Vue.mixin({
             if (!this.isLogin)
                 return false;
 
-            let modules = !!this.PERMISSION? this.PERMISSION.module : [];
+            let modules = !!this.PERMISSION ? this.PERMISSION.module : [];
             for (let i in modules) {
                 let route = modules[i];
                 route = route.replace(/\|:|@|>/gi, '/');
@@ -329,5 +329,18 @@ Vue.mixin({
             if (!this.PERMISSION.option) return false;
             return !this.PERMISSION.option.includes(key);
         },
+        _lang(value) {
+            let items = value.split('.');
+            let result = this.LANG;
+            for (let item of items) {
+                if (!result || !result[item]) {
+                    result = null;
+                    break;
+                }
+                result = this.LANG[item];
+            }
+
+            return typeof result === 'string'? result : JSON.stringify(result);
+        }
     }
 });

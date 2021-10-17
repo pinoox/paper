@@ -13,6 +13,8 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\model\PermissionModel;
+use pinoox\app\com_pinoox_paper\component\Permission;
+use pinoox\app\com_pinoox_paper\model\UserModel;
 use pinoox\component\Cache;
 use pinoox\component\Config;
 use pinoox\component\Request;
@@ -52,7 +54,7 @@ class PermissionController extends MasterConfiguration
     public function getUserPermissions()
     {
         $user_id = User::get('user_id');
-        $user = UserPandaModel::fetch_by_id($user_id);
+        $user = UserModel::fetch_by_id($user_id);
         $permissions = Permission::getPermission($user['group_key']);
         Response::json($permissions);
     }

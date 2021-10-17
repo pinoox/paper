@@ -49,7 +49,7 @@ class Permission
         $key = $permission_key;
         $key = str_replace(['\\', ':', '@', '>'], '/', $key) . '/';
 
-        $permissions = Cache::get('permission.' . $group_key . '.module');
+        $permissions = Cache::get('permissions.' . $group_key . '.module');
 
         if (!empty($permissions)) {
             foreach ($permissions as $_key => $permission) {
@@ -70,7 +70,7 @@ class Permission
 
     public static function option_group($permission_key, $group_key)
     {
-        $status = Cache::get('permission.' . $group_key . '.option.' . $permission_key);
+        $status = Cache::get('permissions.' . $group_key . '.option.' . $permission_key);
         return (is_null($status)) ? true : $status;
     }
 
@@ -82,8 +82,8 @@ class Permission
             'option' => [],
         ];
 
-        $modules = Cache::get('permission.' . $group_key  . '.module');
-        $options = Cache::get('permission.' . $group_key . '.option');
+        $modules = Cache::get('permissions.' . $group_key  . '.module');
+        $options = Cache::get('permissions.' . $group_key . '.option');
 
         if (!empty($modules)) {
             foreach ($modules as $key => $module) {

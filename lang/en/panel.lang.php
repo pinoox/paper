@@ -1,6 +1,7 @@
 <?php
 return [
     'direction' => 'ltr',
+    'admin_panel' => 'admin panel',
     'PM' => 'PM',
     'AM' => 'AM',
     'invalid_request' => 'invalid request',
@@ -32,6 +33,7 @@ return [
     'quick_access' => 'quick access',
     'sections' => 'sections',
     'total_posts_stats' => 'Visit statistics of all posts',
+    'post_stats' => 'Statistics post',
     'total_site_stats' => 'Site visit statistics',
     'view_site' => 'view site',
     'total_written_time' => 'Total time spent writing',

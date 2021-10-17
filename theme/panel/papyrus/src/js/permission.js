@@ -1,77 +1,81 @@
-export default  [
-    {
-        "id": 'panel',
-        "text": "پنل مدیریت",
-        "type": 'module',
-        "children": [
-            {
-                "id": 'dashboard',
-                "text": "داشبورد فروشندگان",
-            },
-            {
-                "id": 'm',
-                "text": "محموله ها",
-            },
-            {
-                "id": 'takhfif',
-                "text": "تخفیف های شگفت انگیز",
-            },
-            {
-                "id": 'product',
-                "text": "محصولات",
-                "children": [
-                    {
-                        "id": 18,
-                        "text": "افزودن محصول",
-                    },
-                    {
-                        "id": 19,
-                        "text": "ویرایش محصول",
-                    },
-                    {
-                        "id": 20,
-                        "text": "جستجو پیشرفته محصولات",
-                    }
-                ]
-            },
-            {
-                "id": 'panel/order',
-                "text": "سفارشات",
-            },
-            {
-                "id": 'comment',
-                "text": "نظرات",
-            },
-            {
-                "id": 23,
-                "text": "پرسش و پاسخ",
-            },
-            {
-                "id": 32,
-                "text": "تبدیل به حساب حقوقی",
-            },
-            {
-                "id": 33,
-                "text": "تبدیل به فروشنده شوید",
-            },
-            {
-                "id": 42,
-                "text": "پروفایل",
-            },
-            {
-                "id": 46,
-                "text": "تسویه حساب",
-            },
-            {
-                "id": 1000,
-                "text": "فروشنده",
-                "children": [
-                    {
-                        "id": 1002,
-                        "text": "گزارش فروش",
-                    }
-                ]
-            }
-        ]
+export default {
+    computed: {
+        permissions() {
+            return [
+                {
+                    "id": 'panel',
+                    "text": this.LANG.panel.admin_panel,
+                    "type": 'module',
+                    "children": [
+                        {
+                            "id": 'dashboard',
+                            "text": this.LANG.panel.dashboard,
+                        },
+                        {
+                            "id": 'user',
+                            "text":  this.LANG.panel.users,
+                        },
+                        {
+                            "id": 'group',
+                            "text": this.LANG.user.groups,
+                            "children": [
+                                {
+                                    "id": 'permission',
+                                    "text": this.LANG.panel.permission,
+                                },
+                            ]
+                        },
+                        {
+                            "id": 'posts',
+                            "text": this.LANG.post.posts,
+                            "children": [
+                                {
+                                    "id": 'write',
+                                    "text": this.LANG.post.write,
+                                },
+                                {
+                                    "id": 'post/stats',
+                                    "text": this.LANG.panel.post_stats,
+                                },
+                                {
+                                    "id": 'all_posts',
+                                    "type": 'option',
+                                    "text": this.LANG.post.access_all_posts,
+                                },
+                            ]
+                        },
+                        {
+                            "id": 'comment',
+                            "text": this.LANG.comment.comments,
+                        },
+                        {
+                            "id": 'contact',
+                            "text": this.LANG.contact.contact_title,
+                        },
+                        {
+                            "id": 'page',
+                            "text":  this.LANG.panel.pages,
+                        },
+                        {
+                            "id": 'category',
+                            "text":  this.LANG.panel.category,
+                        },
+                        {
+                            "id": 'templates',
+                            "text":  this.LANG.panel.templates,
+                        },
+                        {
+                            "id": 'profile',
+                            "text":  this.LANG.panel.profile,
+                        },
+                        {
+                            "id": 'setting',
+                            "text":  this.LANG.panel.settings,
+                        },
+                    ]
+                }
+            ];
+        }
     }
-];
+
+};
