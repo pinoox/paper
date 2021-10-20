@@ -27,6 +27,12 @@ class Permission
         return (!empty($group_key)) ? self::module_group($permission_key, $group_key) : false;
     }
 
+    public static function api($permission_key = null, $user_id = null)
+    {
+        $group_key = self::getGroup($user_id);
+        return (!empty($group_key)) ? self::api_group($permission_key, $group_key) : false;
+    }
+
     public static function getGroup($user_id = null)
     {
         $group_key = 'guest';
@@ -50,6 +56,25 @@ class Permission
         $key = str_replace(['\\', ':', '@', '>'], '/', $key) . '/';
 
         $permissions = Cache::get('permissions.' . $group_key . '.module');
+
+        if (!empty($permissions)) {
+            foreach ($permissions as $_key => $permission) {
+                $_key = str_replace(['\\', ':', '@', '>'], '/', $_key) . '/';
+                if (HelperString::firstHas($key, $_key)) {
+                    if (!$permission) return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static function api_group($permission_key, $group_key)
+    {
+        $permission_key = (!is_null($permission_key)) ? $permission_key : Router::url();
+        $key = $permission_key;
+        $key = str_replace(['\\', ':', '@', '>'], '/', $key) . '/';
+
+        $permissions = Cache::get('permissions.' . $group_key . '.api');
 
         if (!empty($permissions)) {
             foreach ($permissions as $_key => $permission) {

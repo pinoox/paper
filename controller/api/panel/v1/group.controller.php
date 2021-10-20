@@ -14,14 +14,13 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\model\PermissionModel;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
-use pinoox\app\com_pinoox_paper\controller\api\ApiConfiguration;
 use pinoox\component\Cache;
 use pinoox\component\Lang;
 use pinoox\component\Request;
 use pinoox\component\Response;
 use pinoox\component\Validation;
 
-class GroupController extends ApiConfiguration
+class GroupController extends LoginConfiguration
 {
     public function getGroup($group_key)
     {
@@ -52,7 +51,18 @@ class GroupController extends ApiConfiguration
             Response::jsonMessage(rlang('user.repeat_group_key'), false);
 
         if (!empty($form['old_group_key'])) {
-            GroupModel::update($form['old_group_key'], $form);
+            {
+                $old = GroupModel::fetch_by_key($form['old_group_key']);
+                $form['is_main'] = false;
+
+                if ($old['is_main'])
+                {
+                    $form['group_key'] = $old['group_key'];
+                    $form['is_main'] = true;
+                }
+
+                GroupModel::update($form['old_group_key'], $form);
+            }
         } else {
             GroupModel::insert($form);
         }
@@ -65,7 +75,7 @@ class GroupController extends ApiConfiguration
     public function delete($group_key)
     {
         $group = GroupModel::fetch_by_key($group_key);
-        if ($group) {
+        if ($group && !$group['is_main']) {
             GroupModel::delete($group_key);
             PermissionModel::delete($group_key);
             Cache::clean('permissions');

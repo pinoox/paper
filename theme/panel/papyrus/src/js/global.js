@@ -176,7 +176,7 @@ Vue.mixin({
             });
         },
         getUser(isUpdate = true) {
-            return this.$http.get(this.URL.API + 'user/get').then((json) => {
+            return this.$http.get(this.URL.API + 'account/get').then((json) => {
                 if (!!json.data && json.data.status && json.data.status !== 404) {
                     let data = json.data.result;
                     data.isLogin = true;

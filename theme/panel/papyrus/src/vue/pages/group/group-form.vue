@@ -25,7 +25,7 @@
                                        :placeholder="LANG.user.group_name" class="input">
                             </div>
                         </div>
-                        <div class="input-wrapper">
+                        <div class="input-wrapper" v-show="!!group && !group.is_main">
                             <label class="input-label">{{LANG.user.group_key}}</label>
                             <div class="input-group">
                                 <input v-model="params.group_key" type="text"

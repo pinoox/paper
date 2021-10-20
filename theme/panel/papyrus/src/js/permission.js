@@ -1,76 +1,96 @@
+const api_v1 = 'api/panel/v1/';
+
 export default {
     computed: {
         permissions() {
             return [
                 {
-                    "id": 'panel',
-                    "text": this.LANG.panel.admin_panel,
-                    "type": 'module',
-                    "children": [
+                    id: 'panel',
+                    text: this.LANG.panel.admin_panel,
+                    type: 'module',
+                    children: [
                         {
-                            "id": 'dashboard',
-                            "text": this.LANG.panel.dashboard,
+                            id: 'panel/dashboard',
+                            text: this.LANG.panel.dashboard,
+                            api: api_v1 + 'dashboard',
                         },
                         {
-                            "id": 'user',
-                            "text":  this.LANG.panel.users,
+                            id: 'panel/user',
+                            text: this.LANG.panel.users,
+                            api: api_v1 + 'user',
                         },
                         {
-                            "id": 'group',
-                            "text": this.LANG.user.groups,
-                            "children": [
+                            id: 'panel/group',
+                            text: this.LANG.user.groups,
+                            api: api_v1 + 'group',
+                            children: [
                                 {
-                                    "id": 'permission',
-                                    "text": this.LANG.panel.permission,
+                                    id: 'panel/permission',
+                                    text: this.LANG.panel.permission,
+                                    api: api_v1 + 'permission',
                                 },
                             ]
                         },
                         {
-                            "id": 'posts',
-                            "text": this.LANG.post.posts,
-                            "children": [
+                            id: 'panel/posts',
+                            text: this.LANG.post.posts,
+                            api: api_v1 + 'post',
+                            children: [
                                 {
-                                    "id": 'write',
-                                    "text": this.LANG.post.write,
+                                    id: 'panel/write',
+                                    text: this.LANG.post.write,
+                                    api: api_v1 + 'post/save',
                                 },
                                 {
-                                    "id": 'post/stats',
-                                    "text": this.LANG.panel.post_stats,
+                                    id: 'post/stats',
+                                    text: this.LANG.panel.post_stats,
+                                    api: [
+                                        api_v1 + 'post/hasStats',
+                                        api_v1 + 'post/getStats',
+                                        api_v1 + 'post/getMonthly',
+                                    ],
                                 },
                                 {
-                                    "id": 'all_posts',
-                                    "type": 'option',
-                                    "text": this.LANG.post.access_all_posts,
+                                    id: 'panel/all_posts',
+                                    type: 'option',
+                                    text: this.LANG.post.access_all_posts,
                                 },
                             ]
                         },
                         {
-                            "id": 'comment',
-                            "text": this.LANG.comment.comments,
+                            id: 'panel/comment',
+                            text: this.LANG.comment.comments,
+                            api: api_v1 + 'comment',
                         },
                         {
-                            "id": 'contact',
-                            "text": this.LANG.contact.contact_title,
+                            id: 'panel/contact',
+                            text: this.LANG.contact.contact_title,
+                            api: api_v1 + 'contact',
                         },
                         {
-                            "id": 'page',
-                            "text":  this.LANG.panel.pages,
+                            id: 'panel/pages',
+                            text: this.LANG.panel.pages,
+                            api: api_v1 + 'page',
                         },
                         {
-                            "id": 'category',
-                            "text":  this.LANG.panel.category,
+                            id: 'panel/category',
+                            text: this.LANG.panel.category,
+                            api: api_v1 + 'category',
                         },
                         {
-                            "id": 'templates',
-                            "text":  this.LANG.panel.templates,
+                            id: 'panel/templates',
+                            text: this.LANG.panel.templates,
+                            api: api_v1 + 'template',
                         },
                         {
-                            "id": 'profile',
-                            "text":  this.LANG.panel.profile,
+                            id: 'panel/profile',
+                            text: this.LANG.panel.profile,
+                            api: api_v1 + 'profile',
                         },
                         {
-                            "id": 'setting',
-                            "text":  this.LANG.panel.settings,
+                            id: 'panel/setting',
+                            text: this.LANG.panel.settings,
+                            api: api_v1 + 'setting',
                         },
                     ]
                 }

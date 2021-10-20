@@ -31,6 +31,7 @@ return [
     'page_not_found' => 'page not found!',
     'page_not_found_description' => 'sorry, the page you are looking for does not exist. Please try again!',
     'quick_access' => 'quick access',
+    'default_group' => 'default group',
     'sections' => 'sections',
     'total_posts_stats' => 'Visit statistics of all posts',
     'post_stats' => 'Statistics post',

@@ -31,6 +31,7 @@ class GroupModel extends PaperDatabase
         Config::setLinear('groups', $form['group_key'], [
             'group_key' => $form['group_key'],
             'group_name' => $form['group_name'],
+            'is_main' => false,
         ]);
         Config::save('groups');
     }
@@ -42,6 +43,7 @@ class GroupModel extends PaperDatabase
         Config::setLinear('groups', $form['group_key'], [
             'group_key' => $form['group_key'],
             'group_name' => $form['group_name'],
+            'is_main' => $form['is_main'],
         ]);
 
         Config::save('groups');

@@ -34,21 +34,28 @@ class PermissionModel extends PaperDatabase
             $type = isset($b['type']) ? $b['type'] : 'module';
             $key = $b['id'];
             $permissions[$type][$key] = true;
+
+            if (isset($b['api'])) {
+                $apis = !is_array($b['api']) ? [$b['api']] : $b['api'];
+                foreach ($apis as $api) {
+                    $permissions['api'][$api] = true;
+                }
+            }
         }
 
         return $permissions;
     }
 
-    public static function save($group_key,$data)
+    public static function save($group_key, $data)
     {
         self::delete($group_key);
-        Config::set('permissions>'.$group_key,$data);
-        Config::save('permissions>'.$group_key);
+        Config::set('permissions>' . $group_key, $data);
+        Config::save('permissions>' . $group_key);
     }
 
     public static function delete($group_key)
     {
-        $path = Dir::path('pinker>config>permissions>'. $group_key.'.config.php');
+        $path = Dir::path('pinker>config>permissions>' . $group_key . '.config.php');
         File::remove_file($path);
     }
 }

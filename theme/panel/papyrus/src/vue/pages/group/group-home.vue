@@ -36,12 +36,18 @@
                 <div v-if="props.column.field === 'thumb_128'">
                   <img class="thumb thumb-circle" :src="props.row.thumb_128" :alt="props.row.title">
                 </div>
+                <div v-if="props.column.field === 'group_name'">
+                 <span>
+                                    {{ props.row.group_name }}
+                                </span>
+                  <span class="badge-status draft">{{LANG.panel.default_group }}</span>
+                </div>
                 <div v-else-if="props.column.field === 'operation'">
                   <router-link :to="{name:'permissions',params:{group_key:props.row.group_key}}" class="btn-action">
                     <i class="fas fa-user-lock"></i>
                   </router-link>
                   <span @click="edit(props.row)" class="btn-action"><i class="fa fa-edit"></i></span>
-                  <span @click="remove(props.row,props.index)" class="btn-action"><i
+                  <span v-if="!props.row.is_main" @click="remove(props.row,props.index)" class="btn-action"><i
                       class="fa fa-trash"></i></span>
                 </div>
                 <div v-else>

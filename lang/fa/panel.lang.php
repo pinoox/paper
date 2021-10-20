@@ -33,6 +33,7 @@ return [
     'page_not_found' => 'صفحه وجود ندارد!',
     'page_not_found_description' => 'متاسفانه صفحه ای که به دنبال آن هستید وجود ندارد، مجددا امتحان کنید',
     'quick_access' => 'دسترسی سریع',
+    'default_group' => 'گروه پیش فرض',
     'sections' => 'بخش ها',
     'total_posts_stats' => 'آمار بازدید همه نوشته ها',
     'post_stats' => 'آمار نوشته',
