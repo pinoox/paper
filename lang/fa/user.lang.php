@@ -43,7 +43,10 @@ return [
     'group_key' => 'نام کلیدی',
     'group_name' => 'نام گروه کاربری',
     'repeat_group_key' => 'این نام گروه قبلا ثبت شده است',
+    'err_allowed_group_key' => 'این نام کلیدی قابل ثبت نیست نام کلیدی دیگری را وارد کنید',
     'group_successful_delete' => 'این گروه کاربری با موفقیت حذف شد',
     'group_added_successfully' => 'گروه کاربری با موفقیت اضافه شد',
     'select_user_group' => 'انتخاب گروه کاربری',
+    'alert_administrator_not_change' => 'دسترسی های گروه کاربری "{0}" قابل تغییر نیستند',
+    'administrator' => 'مدیرکل',
 ];

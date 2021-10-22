@@ -46,6 +46,9 @@ class PermissionController extends MasterConfiguration
 
         if ($valid->isFail()) Response::jsonMessage($valid->first(), false);
 
+        if($data['group_key'] === 'administrator')
+            Response::jsonMessage(rlang('panel.error_happened'), false);
+
         PermissionModel::save($data['group_key'], $data['tree']);
         Cache::clean('permissions');
         Response::jsonMessage(rlang('panel.edited_successfully'), true);

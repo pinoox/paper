@@ -1,5 +1,8 @@
 <template>
-  <div id="tree">
+  <div>
+    <span v-if="isAdministrator" class="alert"> {{ _replaceData(LANG.user.alert_administrator_not_change,group.group_name) }}</span>
+    <div id="tree">
+    </div>
   </div>
 </template>
 
@@ -8,7 +11,7 @@ import Tree from '@widgetjs/tree';
 import Permission from '../../../js/permission';
 
 export default {
-  mixins:[Permission],
+  mixins: [Permission],
   name: 'PermissionTree',
   props: ['group'],
   data() {
@@ -22,6 +25,11 @@ export default {
   },
   mounted() {
     this.getPermissions();
+  },
+  computed: {
+    isAdministrator() {
+      return !!this.group && this.group.group_key === 'administrator';
+    },
   },
   methods: {
     getPermissions() {
@@ -39,12 +47,16 @@ export default {
       let tree = new Tree('#tree', {
         data: this.permissions,
         values: this.tree.nodes,
+        disables: this.getDisableNods(),
         onChange: function () {
           $this.tree.nodes = this.values;
           $this.tree.branches = this.selectedNodes;
           $this.onChange();
         },
       })
+    },
+    getDisableNods() {
+      return this.isAdministrator ? this.tree.nodes : null;
     },
     onChange() {
       this.$emit('onChange', this.tree);

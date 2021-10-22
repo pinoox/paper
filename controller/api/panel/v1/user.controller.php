@@ -378,7 +378,7 @@ class UserController extends LoginConfiguration
 
     public function getGroups()
     {
-        $items = GroupModel::fetch_all();
+        $items = GroupModel::fetch_all_by_filter();
         Response::json($items);
     }
 }

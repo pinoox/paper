@@ -341,6 +341,34 @@ Vue.mixin({
             }
 
             return typeof result === 'string'? result : JSON.stringify(result);
-        }
+        },
+        _replaceData() {
+            let text = '';
+            let args = [...arguments];
+            let numargs = args.length;
+            if (numargs < 1) return text;
+
+            text = args[0];
+            if (typeof (text) === "object" || typeof (text) === "array") return text;
+            numargs--;
+            if (numargs < 1) return text;
+
+            args.shift();
+            let replaces = args[0];
+            if (typeof (replaces) === "object" || typeof (replaces) === "array") {
+                let value = null;
+                for (let key in replaces) {
+                    value = replaces[key];
+                    text = text.replace("{" + key + "}", value);
+                }
+                return text;
+            }
+            for (let i = 0; i < numargs; i++) {
+                let replace = args[i];
+                replace = (typeof (replace) === "object" || typeof (replace) === "array") ? JSON.parse(replace) : replace;
+                text = text.replace("{" + i + "}", replace);
+            }
+            return text;
+        },
     }
 });

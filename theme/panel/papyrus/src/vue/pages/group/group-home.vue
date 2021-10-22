@@ -26,11 +26,11 @@
                 :rtl="_dir==='rtl'"
                 compactMode
                 :columns="columns"
-                :rows="groups"
+                :rows="groupList"
                 :search-options="{
                                  externalQuery: params.keyword,
                             }"
-                :totalRows="groups.count"
+                :totalRows="groupList.count"
                 :pagination-options="defaultTableOpts">
               <template slot="table-row" slot-scope="props">
                 <div v-if="props.column.field === 'thumb_128'">
@@ -40,7 +40,7 @@
                  <span>
                                     {{ props.row.group_name }}
                                 </span>
-                  <span class="badge-status draft">{{LANG.panel.default_group }}</span>
+                  <span class="badge-status draft" v-if="!!props.row.is_main">{{ LANG.panel.default_group }}</span>
                 </div>
                 <div v-else-if="props.column.field === 'operation'">
                   <router-link :to="{name:'permissions',params:{group_key:props.row.group_key}}" class="btn-action">
@@ -89,8 +89,8 @@ export default {
       groups: [],
       pages: [],
       group: null,
-      params:{
-        keyword:null,
+      params: {
+        keyword: null,
       }
     }
   },
@@ -115,7 +115,12 @@ export default {
           sortable: false,
         },
       ];
-    }
+    },
+    groupList() {
+      return this.groups.filter((item) => {
+        return !item.hide || item.hide !== true;
+      })
+    },
   },
   methods: {
     getItems() {

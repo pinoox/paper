@@ -5,7 +5,7 @@
         <div class="text">
           <span class="title">{{ LANG.panel.permission }} {{ group.group_name }}</span>
         </div>
-        <div class="item publish-item" @click="save()">
+        <div v-if="!isAdministrator" class="item publish-item" @click="save()">
           {{ LANG.panel.save_changes }}
         </div>
         <router-link :to="{name:'groups'}" class="item">
@@ -58,6 +58,11 @@ export default {
       },
       group: {}
     }
+  },
+  computed:{
+    isAdministrator() {
+      return !!this.group && this.group.group_key === 'administrator';
+    },
   },
   methods: {
     getGroup() {

@@ -43,7 +43,10 @@ return [
     'group_key' => 'group key',
     'group_name' => 'group name',
     'repeat_group_key' => 'This group name is already registered!',
+    'err_allowed_group_key' => 'This group_key could not be registered. Enter another key name ',
     'group_successful_delete' => 'This user group was successfully deleted',
     'group_added_successfully' => 'User group added successfully',
     'select_user_group' => 'Select a user group',
+    'alert_administrator_not_change' => 'The permissions of the "{0}" user group cannot be changed',
+    'administrator' => 'Administrator',
 ];

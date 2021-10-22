@@ -47,6 +47,11 @@ class GroupController extends LoginConfiguration
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
 
+        if(empty($form['old_group_key']) && in_array($form['group_key'],['user','guest','administrator']))
+        {
+            Response::jsonMessage(rlang('user.err_allowed_group_key'), false);
+        }
+
         if (GroupModel::fetch_by_key($form['group_key'], $form['old_group_key']))
             Response::jsonMessage(rlang('user.repeat_group_key'), false);
 
