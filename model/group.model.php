@@ -110,6 +110,6 @@ class GroupModel extends PaperDatabase
 
     public static function getDefault()
     {
-        return 'admin';
+        return 'user';
     }
 }

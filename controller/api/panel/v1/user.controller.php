@@ -16,7 +16,6 @@ use pinoox\app\com_pinoox_paper\component\Permission;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\app\com_pinoox_paper\component\Helper;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
-use pinoox\app\com_pinoox_paper\model\UserSettingModel;
 use pinoox\component\Cookie;
 use pinoox\component\Pagination;
 use pinoox\component\Request;
@@ -62,7 +61,7 @@ class UserController extends LoginConfiguration
 
     public function getSettings($state = null)
     {
-        $settings = UserSettingModel::get_data($state);
+        $settings = UserModel::get_setting_data($state);
         $settings = !empty($settings) ? $settings : [];
         Response::json($settings);
     }
@@ -71,7 +70,7 @@ class UserController extends LoginConfiguration
     {
         $data = Request::inputOne('data', '', '!empty');
 
-        UserSettingModel::save_data($data, $state);
+        UserModel::save_setting_data($data, $state);
         Response::json(rlang('post.save_successfully'), true);
     }
 

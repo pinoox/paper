@@ -15,6 +15,7 @@ namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\component\app\AppProvider;
+use pinoox\component\HelperString;
 use pinoox\component\User;
 use pinoox\model\UserModel as UserModelCore;
 
@@ -41,16 +42,12 @@ class UserModel extends PaperDatabase
     public static function sort($sort)
     {
         if (!empty($sort) && isset($sort['field']) && !empty($sort['field'])) {
-            if ($sort['field'] === 'approx_register_date')
-            {
+            if ($sort['field'] === 'approx_register_date') {
                 $sort['field'] = 'u.register_date';
-            }
-            else if ($sort['field'] === 'full_name')
-            {
+            } else if ($sort['field'] === 'full_name') {
                 $sort['field'] = 'full_name';
-            }
-            else{
-                $sort['field'] = 'u.'.$sort['field'];
+            } else {
+                $sort['field'] = 'u.' . $sort['field'];
             }
 
             self::$db->orderBy($sort['field'], $sort['type']);
@@ -110,6 +107,7 @@ class UserModel extends PaperDatabase
         return self::$db->insert(self::user_paper, [
             'user_id' => $form['user_id'],
             'group_key' => isset($form['group_key']) ? $form['group_key'] : GroupModel::getDefault(),
+            'setting_data' => @$form['setting_data'],
         ]);
     }
 
@@ -120,4 +118,48 @@ class UserModel extends PaperDatabase
     }
 
 
+    public static function get_setting_data($state = null, $user_id = null)
+    {
+        $user_id = !empty($user_id) ? $user_id : User::get('user_id');
+        $user = self::fetch_by_id($user_id);
+        $setting = !empty($user) ? HelperString::decodeJson($user['setting_data']) : [];
+
+        if (!is_null($state))
+            return isset($setting[$state]) ? $setting[$state] : null;
+        else
+            return $setting;
+    }
+
+    public static function save_setting_data($data, $state = null, $user_id = null)
+    {
+        $user_id = !empty($user_id) ? $user_id : User::get('user_id');
+        $user_setting = self::fetch_by_id($user_id);
+        $setting = ($user_setting) ? HelperString::decodeJson($user_setting['json_data']) : [];
+        if (!is_null($state)) {
+            if (isset($setting[$state]))
+                unset($setting[$state]);
+            $setting[$state] = $data;
+        } else {
+            $setting = $data;
+        }
+
+        if ($user_setting)
+        {
+            return self::update_setting($user_id, $setting);
+        }
+        else {
+            return self::insert_self([
+                'user_id' => $user_id,
+                'setting_data' => $setting,
+            ]);
+        }
+    }
+
+    public static function update_setting($user_id, $data)
+    {
+        self::$db->where('user_id', $user_id);
+        return self::$db->update(self::user, [
+            'setting_data' => HelperString::encodeJson($data),
+        ]);
+    }
 }
