@@ -217,6 +217,11 @@ class PostModel extends PaperDatabase
         self::$db->where('p.post_type', $post_type);
     }
 
+    public static function where_user_id($user_id)
+    {
+        self::$db->where('p.user_id', $user_id);
+    }
+
     public static function update($data)
     {
         $date = Date::g('Y-m-d H:i:s');
