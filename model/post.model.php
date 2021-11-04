@@ -24,7 +24,9 @@ class PostModel extends PaperDatabase
     //status
     const draft_status = "draft";
     const publish_status = "publish";
+    const schedule_status = "schedule";
     const cancel_publish_status = "cancel_publish";
+    const cancel_schedule_status = "cancel_schedule";
     const synced_status = "synced";
 
     // status comment
@@ -49,6 +51,7 @@ class PostModel extends PaperDatabase
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'insert_date' => $date,
             'update_date' => $date,
+            'schedule_date' => @$data['schedule_date'],
         ]);
     }
 
@@ -154,6 +157,23 @@ class PostModel extends PaperDatabase
             'context' => $post['draft_context'],
             'publish_date' => $date,
             'status' => self::publish_status,
+            'schedule_date' => null,
+            'characters' => !empty($post['characters']) ? $post['characters'] : 0,
+            'words' => !empty($post['words']) ? $post['words'] : 0,
+        ]);
+    }
+
+    public static function update_schedule_post($post_id)
+    {
+        $post = self::post_draft_fetch_by_id($post_id);
+        if (!$post)
+            return false;
+
+        self::$db->where('post_id', $post_id);
+        return self::$db->update(self::post, [
+            'title' => $post['draft_title'],
+            'context' => $post['draft_context'],
+            'status' => self::schedule_status,
             'characters' => !empty($post['characters']) ? $post['characters'] : 0,
             'words' => !empty($post['words']) ? $post['words'] : 0,
         ]);
@@ -207,12 +227,13 @@ class PostModel extends PaperDatabase
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'update_date' => $date,
             'time_tracking' => self::$db->inc($data['time']),
+            'schedule_date' => @$data['schedule_date'],
         ]);
     }
 
     public static function getInfoPost($post, $date_format = null)
     {
-        if(empty($post))
+        if (empty($post))
             return $post;
         $placeHolderPost = Url::file('resources/image-placeholder.jpg');
         $placeHolderAvatar = Url::file('resources/avatar.png');
@@ -230,6 +251,11 @@ class PostModel extends PaperDatabase
         $date_format = !empty($date_format) ? $date_format : 'l d F Y (H:i)';
         $post['approx_date'] = Helper::getLocaleDate($date_format, $post['publish_date']);
         $post['publish_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['publish_date']);
+
+        if (isset($post['schedule_date'])) {
+            $post['schedule_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['schedule_date']);
+        }
+
         $file = FileModel::fetch_by_id($post['image_id']);
         $post['image'] = Url::upload($file, $placeHolderPost);
         $post['thumb_128'] = Url::thumb($file, 128, $placeHolderPost);
@@ -489,16 +515,6 @@ class PostModel extends PaperDatabase
 
     }
 
-    public static function fetch_all_tags_by_post_id($post_id)
-    {
-        return [];
-    }
-
-    public static function fetch_most_visited($limitMostVisited)
-    {
-        return [];
-    }
-
     public static function hot_tags($limit = null)
     {
         self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id', 'INNER');
@@ -519,5 +535,36 @@ class PostModel extends PaperDatabase
         if (!empty($username)) {
             self::$db->where('u.username', $username);
         }
+    }
+
+    public static function update_all_schedule_publish()
+    {
+        $now = Date::g('Y-m-d H:i:s');
+        self::$db->where('schedule_date', $now, '<=');
+
+        self::$db->where('status', self::schedule_status);
+        return self::$db->update(self::post, [
+            'status' => self::publish_status,
+        ]);
+    }
+
+    public static function fetch_all_schedule_publish()
+    {
+        $now = Date::g('Y-m-d H:i:s');
+        self::$db->where('schedule_date', $now, '<=');
+
+        self::$db->where('status', self::schedule_status);
+        return self::$db->get(self::post);
+    }
+
+    public static function watch_schedule_publish($post)
+    {
+        if(empty($post) || !isset($post['post_id']))
+            return;
+
+        $draft = self::post_draft_fetch_by_id($post['post_id']);
+        self::post_history_insert($draft, self::publish_status);
+        self::update_publish_post($post['post_id']);
+        self::post_draft_update_synced($post['post_id'], 1);
     }
 }

@@ -21,6 +21,8 @@ return [
     'page_publication' => 'انتشار برگه',
     'post_publication' => 'انتشار نوشته',
     'description' => 'توضیحات',
+    'release_schedule' => 'زمانبندی انتشار',
+    'cancel_scheduling' => 'لغو زمانبندی',
     'enter_description' => 'توضیحات برگه را وارد کنید',
     'page_address' => 'آدرس برگه',
     'enter_page_address' => 'آدرس برگه را وارد کنید',
@@ -80,6 +82,8 @@ return [
     'status' => [
         'draft' => 'پیش نویس',
         'publish' => 'منتشر شده',
+        'schedule' => 'زمانبندی شده',
+        'cancel_schedule' => 'لغو زمانبندی',
         'synced' => 'همگام سازی شده',
         'cancel_publish' => 'لغو انتشار',
     ],
