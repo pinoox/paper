@@ -27,6 +27,7 @@ return [
     'enter_old_password' => 'رمز عبور فعلی را وارد کنید',
     'enter_re_new_password' => 'رمز عبور جدید را تکرار کنید',
     'err_old_password' => 'رمز عبور  را اشتباه وارد کرده اید',
+    'err_permission_for_login' => 'شما دسترسی به پنل مدیریت را ندارید!',
 
     'status' => [
         'active' => 'فعال',

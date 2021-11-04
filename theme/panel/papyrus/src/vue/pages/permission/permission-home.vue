@@ -67,7 +67,14 @@ export default {
   methods: {
     getGroup() {
       this.$http.get(this.URL.API + 'group/getGroup/' + this.group_key).then((json) => {
-        this.group = json.data;
+        if(!!json.data)
+        {
+          this.group = json.data;
+        }
+        else
+        {
+          this._routerReplace({name:'error'});
+        }
       });
     },
     onChangePermissions(e) {

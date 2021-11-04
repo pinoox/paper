@@ -13,9 +13,11 @@
 
 namespace pinoox\app\com_pinoox_paper\model;
 
+use pinoox\app\com_pinoox_paper\component\Permission;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\HelperString;
+use pinoox\component\Url;
 use pinoox\component\User;
 use pinoox\model\UserModel as UserModelCore;
 
@@ -25,6 +27,18 @@ class UserModel extends PaperDatabase
     {
         self::$db->join(self::user_paper . ' up', 'u.user_id=up.user_id', 'LEFT');
         self::$db->where('u.user_id', $user_id);
+        return self::$db->getOne(self::user . ' u', 'u.*,up.*,u.user_id, CONCAT_WS(" ", u.fname, u.lname) full_name');
+    }
+
+    public static function fetch_user_by_email_or_username($username, $notUser = null)
+    {
+        self::$db->where('u.app', app('package-name'));
+        self::$db->where('(u.email = ? OR u.username = ?)', [$username, $username]);
+
+        if (!empty($notUser))
+            self::$db->where('u.user_id', $notUser, '!=');
+
+        self::$db->join(self::user_paper . ' up', 'u.user_id=up.user_id', 'LEFT');
         return self::$db->getOne(self::user . ' u', 'u.*,up.*,u.user_id, CONCAT_WS(" ", u.fname, u.lname) full_name');
     }
 
@@ -143,11 +157,9 @@ class UserModel extends PaperDatabase
             $setting = $data;
         }
 
-        if ($user_setting)
-        {
+        if ($user_setting) {
             return self::update_setting($user_id, $setting);
-        }
-        else {
+        } else {
             return self::insert_self([
                 'user_id' => $user_id,
                 'setting_data' => $setting,
@@ -161,5 +173,30 @@ class UserModel extends PaperDatabase
         return self::$db->update(self::user, [
             'setting_data' => HelperString::encodeJson($data),
         ]);
+    }
+
+    public static function get_info_user($user = null, $isPermission = false)
+    {
+        $avatar_default = Url::file('resources/avatar.png');
+        $result = [
+            'isLogin' => true,
+            'user_id' => $user['user_id'],
+            'fname' => $user['fname'],
+            'lname' => $user['lname'],
+            'full_name' => $user['full_name'],
+            'group_key' => $user['group_key'],
+            'username' => $user['username'],
+            'email' => $user['email'],
+            'is_avatar' => !empty($user['avatar_id']),
+            'avatar' => Url::upload($user['avatar_id'], $avatar_default),
+            'avatar_thumb' => Url::thumb($user['avatar_id'], 128, $avatar_default),
+        ];
+
+        if ($isPermission) {
+            $group_key = isset($user['group_key']) ? $user['group_key'] : GroupModel::getDefault();
+            $result['permissions'] = Permission::getPermission($group_key);
+        }
+
+        return $result;
     }
 }

@@ -66,9 +66,12 @@ class GroupModel extends PaperDatabase
     public static function fetch_all_by_filter()
     {
         $items = self::fetch_all();
-        return array_filter($items,function ($item){
-            return!isset($item['hide']) || $item['hide'] != true;
-        });
+        if (empty($items))
+            return [];
+
+        return array_values(array_filter($items, function ($item) {
+            return !isset($item['hide']) || $item['hide'] != true;
+        }));
     }
 
     public static function fetch_all_for_setting()

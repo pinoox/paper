@@ -160,4 +160,8 @@ export const routes = [
         name: 'error',
         component: Error,
     },
+    {
+        path: PINOOX.URL.BASE + "*",
+        component: Error,
+    },
 ];

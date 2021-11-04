@@ -8,18 +8,18 @@
                 </div>
                 <div class="nav">
 
-                    <router-link :to="{name:'dashboard'}" class="item" exact-active-class="active">
+                    <router-link v-if="_module('panel/dashboard')" :to="{name:'dashboard'}" class="item" exact-active-class="active">
                         <simple-svg :src="_icons.dashboard"
                                     customClassName="icon"
                                     fill="#A5B8CE"/>
                         <span class="text">{{LANG.panel.dashboard}}</span>
                     </router-link>
-                    <router-link class="item" :to="{name:'write'}" exact-active-class="active">
+                    <router-link v-if="_module('panel/write')" class="item" :to="{name:'write'}" exact-active-class="active">
                         <simple-svg :src="_icons.pen"
                                     customClassName="icon stroke"/>
                         <span class="text">{{LANG.post.write}}</span>
                     </router-link>
-                    <router-link class="item" :to="{name:'posts'}" exact-active-class="active">
+                    <router-link v-if="_module('panel/posts')" class="item" :to="{name:'posts'}" exact-active-class="active">
                         <simple-svg :src="_icons.article"
                                     customClassName="icon"/>
                         <span class="text">{{LANG.post.posts}}</span>

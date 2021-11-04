@@ -27,6 +27,7 @@ return [
     'enter_old_password' => 'Enter current password',
     'enter_re_new_password' => 'Repeat new password',
     'err_old_password' => 'You entered the wrong password',
+    'err_permission_for_login' => 'You do not have access to the admin panel!',
 
     'status' => [
         'active' => 'active',

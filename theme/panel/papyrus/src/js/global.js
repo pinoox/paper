@@ -164,28 +164,39 @@ Vue.mixin({
             });
 
         },
-        getInitUser() {
-            this.getUser(false).then((data) => {
-                if (!data)
+        getInitUser(call) {
+            return this.getUser().then((status) => {
+
+                if (!status)
                     return;
+
                 this.getConfigs().then(() => {
-                    return this.getUserSetting();
-                }).then(() => {
-                    this.USER = data;
+                    return this.getUserSetting().then(() => {
+                        if (!!call)
+                            call();
+                    });
                 });
             });
         },
-        getUser(isUpdate = true) {
+        getUser() {
             return this.$http.get(this.URL.API + 'account/get').then((json) => {
-                if (!!json.data && json.data.status && json.data.status !== 404) {
-                    let data = json.data.result;
-                    data.isLogin = true;
-                    return data;
-                    if (isUpdate)
-                        this.USER = data;
-                } else {
-                    this.USER = {isLogin: false}
+                let status = json.data.status;
+                let result = json.data.result;
+
+                if (status) {
+                    this.USER = json.data.result;
+                    return true;
+                } else if (result.statusCode === 403) {
+                    if (result.message === 'NEED_LOGIN') {
+                        this.USER = {isLogin: false};
+                        localStorage.removeItem('paper_user');
+                        this._routerReplace({name: 'login'});
+                    } else {
+                        this._routerReplace({name: 'error'});
+                    }
                 }
+
+                return false;
             });
         },
         getConfigs() {
@@ -318,7 +329,7 @@ Vue.mixin({
                 route = route.replace(/\|:|@|>/gi, '/');
                 key = key.replace(/\|:|@|>/gi, '/');
                 key = key.replace(/^\/|\/$/g, '');
-                if (key === route)
+                if (key.startsWith(route))
                     return false
             }
 
@@ -340,7 +351,11 @@ Vue.mixin({
                 result = this.LANG[item];
             }
 
-            return typeof result === 'string'? result : JSON.stringify(result);
+            return typeof result === 'string' ? result : JSON.stringify(result);
+        },
+        _removeFirstStr(string, search) {
+            let length = string.length - search.length;
+            return string.substr(search.length, length);
         },
         _replaceData() {
             let text = '';
