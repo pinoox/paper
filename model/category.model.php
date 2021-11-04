@@ -83,5 +83,36 @@ class CategoryModel extends PaperDatabase
         ]);
     }
 
+    public static function getBreadcrumb($cat_id)
+    {
+        $breadcrumb = [];
+        $category = self::fetch_by_id($cat_id);
+        if (!empty($category)) {
+            self::build_parent($category, $breadcrumb);
+            $breadcrumb = array_reverse($breadcrumb);
+        }
+        return $breadcrumb;
+    }
 
+    public static function build_parent($cat, &$path)
+    {
+        if (empty($cat))
+            return [];
+
+        $cat['active'] = (empty($path));
+
+        $path[] = $cat;
+        if (empty($cat['parent_id']))
+            return $cat;
+
+        self::$db->where('c.cat_id', $cat['parent_id']);
+        $parent = self::$db->getOne(self::category . ' c');
+
+        return self::build_parent($parent, $path);
+    }
+
+    public static function where_parent($parent_id)
+    {
+        self::$db->whereWithNull('parent_id', $parent_id);
+    }
 }

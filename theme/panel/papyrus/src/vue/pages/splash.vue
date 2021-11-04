@@ -1,5 +1,5 @@
 <template>
-    <section class="splash">
+    <section class="splash" v-if="false">
         <div>R</div>
         <div>E</div>
         <div>P</div>

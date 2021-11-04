@@ -15,6 +15,8 @@ import SettingConfig from '../vue/pages/setting/config.vue';
 import Template from '../vue/pages/template/main.vue';
 import TemplateHome from '../vue/pages/template/home.vue';
 import Category from '../vue/pages/category.vue';
+import Group from '../vue/pages/group/group-home.vue';
+import Permissions from '../vue/pages/permission/permission-home.vue';
 import Error from '../vue/pages/error.vue';
 
 export const routes = [
@@ -74,6 +76,17 @@ export const routes = [
         path: PINOOX.URL.BASE + '/users',
         name: 'users',
         component: Users,
+    },
+    {
+        path: PINOOX.URL.BASE + '/groups',
+        name: 'groups',
+        component: Group,
+    },
+    {
+        path: PINOOX.URL.BASE + '/permission/:group_key',
+        name: 'permissions',
+        component: Permissions,
+        props: true,
     },
     {
         path: PINOOX.URL.BASE + '/contacts',
@@ -145,6 +158,10 @@ export const routes = [
     {
         path: PINOOX.URL.BASE + '/error',
         name: 'error',
+        component: Error,
+    },
+    {
+        path: PINOOX.URL.BASE + "*",
         component: Error,
     },
 ];

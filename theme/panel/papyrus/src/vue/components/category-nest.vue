@@ -46,7 +46,7 @@
                             <i class="fa fa-times"></i>
                         </span>
                 <span class="cat-name" @click="selectCategory(item)">
-                            <i v-if="isEdit" class="fa fa-arrows-alt"></i> {{ item.cat_name }}
+                            <i v-if="isEdit" class="fa fa-arrows-alt"></i> {{ item.cat_name }} <span class="number">({{item.cat_id}})</span>
                         </span>
                 <div class="actions">
                     <span @click="editItem(item)" class="btn-action"><i class="fa fa-pen"></i></span>

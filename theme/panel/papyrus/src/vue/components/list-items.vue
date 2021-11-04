@@ -188,7 +188,7 @@
                         ...this.paramsAdd,
                         _id: this.getId(),
                     };
-                    this.items.push(params);
+                    this.items.unshift(params);
                     this.goToListState();
                 }
             },

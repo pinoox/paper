@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'key' => 'general',
+    'key' => 'developer',
     'label' => rlang('setting.developer'),
     'icon' => 'fa fa-laptop-code',
     'sort' => 10,

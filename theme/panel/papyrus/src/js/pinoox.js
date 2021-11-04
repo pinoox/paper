@@ -9,6 +9,7 @@ const PINOOX = {
         API: '<?php echo url("^api/panel/v1/"); ?>',
         SITE: '<?php echo url("~"); ?>',
         FRONT: '<?php echo url(); ?>',
+        FRONT_BASE: '<?php echo url("^"); ?>',
         APP_PATH: '<?php echo furl(); ?>',
         PANEL: '<?php echo url("~panel"); ?>',
         THEME: '<?php echo $_url; ?>',

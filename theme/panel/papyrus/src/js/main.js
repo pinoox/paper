@@ -26,6 +26,7 @@ import VueApexCharts from 'vue-apexcharts';
 import simplebar from 'simplebar-vue';
 import PictureInput from 'vue-picture-input';
 import Draggable from 'vuedraggable';
+import VuePersianDatetimePicker from 'vue-persian-datetime-picker';
 
 Vue.component('simplebar', simplebar);
 Vue.component('apexchart', VueApexCharts);
@@ -44,6 +45,7 @@ Vue.component('column', Column);
 Vue.component('hidden', Hidden);
 Vue.component('picture-input', PictureInput);
 Vue.component('draggable', Draggable);
+Vue.component('date-picker', VuePersianDatetimePicker);
 
 __webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
 

@@ -6,8 +6,8 @@ return array(
     'name' => 'paper',
     'description' => 'paper is an application for launching magazine, blog, and content websites',
     'icon' => 'icon.png',
-    'version-code' => 10,
-    'version-name' => '2.4.8',
+    'version-code' => 11,
+    'version-name' => '2.4.95',
     'developer' => 'pinoox',
     'enable' => true,
     'theme' => 'blue',
@@ -15,6 +15,8 @@ return array(
     'lang' => 'fa',
     'service' => [
         'user',
+        'permission',
+        'schedule',
     ],
     'loader' => [
         '@func' => 'func.php',

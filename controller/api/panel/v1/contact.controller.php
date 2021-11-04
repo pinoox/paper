@@ -64,6 +64,19 @@ class ContactController extends LoginConfiguration
         return $contact;
     }
 
+    public function changeStatus()
+    {
+        $inputs = Request::input('contact_id,status', null, '!empty');
+
+        $inputs['status'] = $inputs['status'] === ContactModel::status_seen ? ContactModel::status_seen : ContactModel::status_unseen;
+
+        if (ContactModel::update_status($inputs['contact_id'],$inputs['status'])) {
+                Response::jsonMessage(rlang('post.save_successfully'), true);
+        }
+
+        Response::jsonMessage(rlang('panel.error_happened'), false);
+    }
+
     public function delete()
     {
         $contact_id = Request::inputOne('contact_id', null, '!empty');

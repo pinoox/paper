@@ -1,156 +1,243 @@
 <template>
-    <section>
-        <ch-drawer custom-class="drawer-wrapper"
-                   :location='drawerPosition'
-                   :visible.sync='drawerOpen'
-                   :area="drawerArea"
-                   :before-close='handleBeforeClose'>
-            <div slot='header' class="drawer-header">
-                <div class="title">
-                    <div class="text">{{LANG.panel.menus}}</div>
-                    <div class="subtext">{{LANG.panel.menus_info}}</div>
-                </div>
-            </div>
-            <div class="drawer-content">
-                <div class="menus">
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'dashboard'}">
-                        <simple-svg :src="_icons.dashboard"
-                                    customClassName="icon"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.dashboard}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'write'}">
-                        <simple-svg :src="_icons.pen"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.post.write}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'posts'}">
-                        <simple-svg :src="_icons.article"
-                                    customClassName="icon"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.posts}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'comments'}">
-                        <simple-svg :src="_icons.comment"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.comments}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'contacts'}">
-                        <simple-svg :src="_icons.call"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.contacts}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'pages'}">
-                        <simple-svg :src="_icons.page"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.pages}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'users'}">
-                        <simple-svg :src="_icons.users"
-                                    height="22px"
-                                    customClassName="icon"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.users}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'template'}">
-                        <simple-svg :src="_icons.image"
-                                    height="22px"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.templates}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'profile'}">
-                        <simple-svg :src="_icons.profile"
-                                    customClassName="icon"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.profile}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'category'}">
-                        <simple-svg :src="_icons.category"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.category}}</span>
-                    </router-link>
-                    <router-link @click.native="toggleDrawer()" class="item" :to="{name:'setting'}">
-                        <simple-svg :src="_icons.setting"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.settings}}</span>
-                    </router-link>
-                    <a class="item" :href="URL.FRONT" target="_blank">
-                        <simple-svg :src="_icons.eye"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.view_site}}</span>
-                    </a>
-                    <div class="item" @click="logoutPanel()">
-                        <simple-svg :src="_icons.logout"
-                                    customClassName="icon stroke"
-                                    fill="#A5B8CE"/>
-                        <span class="text">{{LANG.panel.logout}}</span>
-                    </div>
+  <section>
+    <ch-drawer custom-class="drawer-wrapper"
+               :location='drawerPosition'
+               :visible.sync='drawerOpen'
+               :area="drawerArea"
+               :before-close='handleBeforeClose'>
+      <div slot='header' class="drawer-header">
+        <div class="title">
+          <div class="text">{{ LANG.panel.menus }}</div>
+          <div class="subtext">{{ LANG.panel.menus_info }}</div>
+        </div>
+      </div>
+      <div class="drawer-content">
+        <div class="input-wrapper search-head">
+          <div class="input-group">
+            <input v-model="keyword" type="text"
+                   :placeholder="LANG.panel.search" class="input">
+          </div>
+        </div>
+        <div class="menus">
+          <router-link v-for="m in filterMenu" @click.native="toggleDrawer()" class="item" :to="m.url">
+            <b :class="m.icon" v-if="!!m.icon"></b>
+            <simple-svg :src="m.image" v-else
+                        :customClassName="m.customClass"
+                        fill="#A5B8CE"/>
+            <span class="text">{{ m.label }}</span>
+          </router-link>
+          <a class="item" :href="URL.FRONT" target="_blank">
+            <simple-svg :src="_icons.eye"
+                        customClassName="icon stroke"
+                        fill="#A5B8CE"/>
+            <span class="text">{{ LANG.panel.view_site }}</span>
+          </a>
+          <div class="item" @click="logoutPanel()">
+            <simple-svg :src="_icons.logout"
+                        customClassName="icon stroke"
+                        fill="#A5B8CE"/>
+            <span class="text">{{ LANG.panel.logout }}</span>
+          </div>
+        </div>
+      </div>
+      <div slot='footer' class="drawer-footer">
+        <div>
+          <div @click="toggleDrawer()" class="btn btn-simple">{{ LANG.panel.close }}</div>
+        </div>
+      </div>
 
-                </div>
-            </div>
-            <div slot='footer' class="drawer-footer">
-                <div>
-                    <div @click="toggleDrawer()" class="btn btn-simple">{{LANG.panel.close}}</div>
-                </div>
-            </div>
+    </ch-drawer>
 
-        </ch-drawer>
-
-    </section>
+  </section>
 </template>
 
 <script>
 
-    export default {
-        props: ['open'],
-        data() {
-            return {
-                drawerPosition: 'bottom',
-                drawerArea: '90%',
-            }
-        },
-        computed: {
-            drawerOpen: {
-                get() {
-                    return this.open;
-                },
-                set(val) {
-                    this.$emit('onClose', val);
-                }
-            }
-        },
-        methods: {
-            logoutPanel()
-            {
-                this.logout(()=>{
-                    this.toggleDrawer();
-                })
-            },
-            toggleDrawer() {
-                this.drawerOpen = !this.drawerOpen;
-            },
-            handleBeforeClose(next) {
-                this.toggleDrawer();
-                next();
-            },
-            goTo(page) {
-                this.$router.push({name: page}).catch(err => {
-                });
-                this.toggleDrawer();
-            },
-        },
-        watch:{
-            '$route':function () {
-                this.toggleDrawer();
-            }
-        }
+export default {
+  props: ['open'],
+  data() {
+    return {
+      drawerPosition: 'bottom',
+      drawerArea: '90%',
+      keyword: '',
     }
+  },
+  computed: {
+    filterMenu() {
+      return this.menu.filter((item) => {
+        if (!!item.link && !this._module(item.link))
+          return false;
+
+        return this.keyword.toLowerCase().split(' ').every(v => item.label.toLowerCase().includes(v))
+      })
+    },
+    menu() {
+      return [
+        {
+          url: {name: 'dashboard'},
+          label: this.LANG.panel.dashboard,
+          image: this._icons.dashboard,
+          customClass: 'icon',
+          link: 'panel/dashboard',
+        },
+        {
+          url: {name: 'write'},
+          label: this.LANG.post.write,
+          image: this._icons.pen,
+          customClass: 'icon stroke',
+          link: 'panel/write',
+        },
+        {
+          url: {name: 'posts'},
+          label: this.LANG.panel.posts,
+          image: this._icons.article,
+          customClass: 'icon',
+          link: 'panel/posts',
+        },
+        {
+          url: {name: 'comments'},
+          label: this.LANG.panel.comments,
+          image: this._icons.comment,
+          customClass: 'icon stroke',
+          link: 'panel/comment',
+        },
+        {
+          url: {name: 'users'},
+          label: this.LANG.panel.users,
+          image: this._icons.users,
+          customClass: 'icon',
+          link: 'panel/user',
+        },
+        {
+          url: {name: 'groups'},
+          label: this.LANG.user.groups,
+          icon: 'fal fa-users-cog',
+          link: 'panel/group',
+        },
+        {
+          url: {name: 'contacts'},
+          label: this.LANG.panel.contacts,
+          image: this._icons.call,
+          customClass: 'icon stroke',
+          link: 'panel/contact',
+        },
+        {
+          url: {name: 'templates'},
+          label: this.LANG.panel.templates,
+          image: this._icons.image,
+          customClass: 'icon stroke',
+          link: 'panel/templates',
+        },
+        {
+          url: {name: 'category'},
+          label: this.LANG.panel.category,
+          image: this._icons.category,
+          customClass: 'icon stroke',
+          link: 'panel/category',
+        },
+        {
+          url: {name: 'pages'},
+          label: this.LANG.panel.pages,
+          image: this._icons.page,
+          customClass: 'icon stroke',
+          link: 'panel/pages',
+        },
+        {
+          url: {name: 'setting'},
+          label: this.LANG.panel.settings,
+          image: this._icons.setting,
+          customClass: 'icon stroke',
+          link: 'panel/setting',
+        },
+        {
+          url: {name: 'profile'},
+          label: this.LANG.panel.profile,
+          image: this._icons.profile,
+          customClass: 'icon',
+          link: 'panel/profile',
+        },
+        // {
+        //   url: {name: 'comments'},
+        //   label: this.LANG.panel.comments,
+        //   icon: 'fa fa-comments',
+        //   customClass: 'icon stroke',
+        //   link: 'panel/comment',
+        // },
+        // {
+        //   url: {name: 'contacts'},
+        //   label: this.LANG.panel.contacts,
+        //   image: this._icons.call,
+        //   customClass: 'icon stroke',
+        //   link: 'panel/contact',
+        // },
+        // {
+        //   url: {name: 'users'},
+        //   label: this.LANG.panel.users,
+        //   image: this._icons.users,
+        //   customClass: 'icon',
+        //   link: 'panel/user',
+        // },
+        // {
+        //   url: {name: 'profile'},
+        //   label: this.LANG.panel.profile,
+        //   icon: 'fal fa-address-card',
+        //   customClass: 'icon',
+        //   link: 'panel/profile',
+        // },
+        // {
+        //   url: {name: 'category'},
+        //   label: this.LANG.panel.category,
+        //   image: this._icons.category,
+        //   customClass: 'icon stroke',
+        //   link: 'panel/category',
+        // },
+        // {
+        //   url: {name: 'page'},
+        //   label: this.LANG.panel.list_pages,
+        //   icon: 'fal fa-file-alt',
+        //   link: 'panel/page',
+        // },
+        // {
+        //   url: {name: 'setting'},
+        //   label: this.LANG.panel.settings,
+        //   image: this._icons.setting,
+        //   customClass: 'icon stroke',
+        //   link: 'panel/setting',
+        // },
+      ];
+    },
+    drawerOpen: {
+      get() {
+        return this.open;
+      },
+      set(val) {
+        this.$emit('onClose', val);
+      }
+    }
+  },
+  methods: {
+    logoutPanel() {
+      this.logout(() => {
+        this.toggleDrawer();
+      })
+    },
+    changeCaptureDrawer(capture) {
+      this.changeCapture(capture);
+      this.toggleDrawer();
+    },
+    toggleDrawer() {
+      this.drawerOpen = !this.drawerOpen;
+    },
+    handleBeforeClose(next) {
+      this.toggleDrawer();
+      next();
+    },
+    goTo(page) {
+      this.$router.push({name: page}).catch(err => {
+      });
+      this.toggleDrawer();
+    },
+
+  },
+}
 </script>
