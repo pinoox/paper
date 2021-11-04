@@ -18,6 +18,14 @@ Vue.mixin({
                 this.$store.state.userSettings = val;
             }
         },
+        PERMISSION: {
+            get() {
+                return this.USER.permissions;
+            },
+            set(val) {
+                this.USER.permissions = val;
+            }
+        },
         isTransition: {
             get() {
                 return this.$store.state.isTransition;
@@ -156,28 +164,39 @@ Vue.mixin({
             });
 
         },
-        getInitUser() {
-            this.getUser(false).then((data) => {
-                if (!data)
+        getInitUser(call) {
+            return this.getUser().then((status) => {
+
+                if (!status)
                     return;
+
                 this.getConfigs().then(() => {
-                    return this.getUserSetting();
-                }).then(() => {
-                    this.USER = data;
+                    return this.getUserSetting().then(() => {
+                        if (!!call)
+                            call();
+                    });
                 });
             });
         },
-        getUser(isUpdate = true) {
-            return this.$http.get(this.URL.API + 'user/get').then((json) => {
-                if (!!json.data && json.data.status && json.data.status !== 404) {
-                    let data = json.data.result;
-                    data.isLogin = true;
-                    return data;
-                    if (isUpdate)
-                        this.USER = data;
-                } else {
-                    this.USER = {isLogin: false}
+        getUser() {
+            return this.$http.get(this.URL.API + 'account/get').then((json) => {
+                let status = json.data.status;
+                let result = json.data.result;
+
+                if (status) {
+                    this.USER = json.data.result;
+                    return true;
+                } else if (result.statusCode === 403) {
+                    if (result.message === 'NEED_LOGIN') {
+                        this.USER = {isLogin: false};
+                        localStorage.removeItem('paper_user');
+                        this._routerReplace({name: 'login'});
+                    } else {
+                        this._routerReplace({name: 'error'});
+                    }
                 }
+
+                return false;
             });
         },
         getConfigs() {
@@ -299,6 +318,72 @@ Vue.mixin({
             let time = new Date().toLocaleTimeString();
             let parts = time.split(' ');
             return parts[0] + ' ' + this.LANG.panel[parts[1]];
-        }
+        },
+        _module(key) {
+            if (!this.isLogin)
+                return false;
+
+            let modules = !!this.PERMISSION ? this.PERMISSION.module : [];
+            for (let i in modules) {
+                let route = modules[i];
+                route = route.replace(/\|:|@|>/gi, '/');
+                key = key.replace(/\|:|@|>/gi, '/');
+                key = key.replace(/^\/|\/$/g, '');
+                if (key.startsWith(route))
+                    return false
+            }
+
+            return true;
+        },
+        _option(key) {
+            if (!this.isLogin) return false;
+            if (!this.PERMISSION.option) return false;
+            return !this.PERMISSION.option.includes(key);
+        },
+        _lang(value) {
+            let items = value.split('.');
+            let result = this.LANG;
+            for (let item of items) {
+                if (!result || !result[item]) {
+                    result = null;
+                    break;
+                }
+                result = this.LANG[item];
+            }
+
+            return typeof result === 'string' ? result : JSON.stringify(result);
+        },
+        _removeFirstStr(string, search) {
+            let length = string.length - search.length;
+            return string.substr(search.length, length);
+        },
+        _replaceData() {
+            let text = '';
+            let args = [...arguments];
+            let numargs = args.length;
+            if (numargs < 1) return text;
+
+            text = args[0];
+            if (typeof (text) === "object" || typeof (text) === "array") return text;
+            numargs--;
+            if (numargs < 1) return text;
+
+            args.shift();
+            let replaces = args[0];
+            if (typeof (replaces) === "object" || typeof (replaces) === "array") {
+                let value = null;
+                for (let key in replaces) {
+                    value = replaces[key];
+                    text = text.replace("{" + key + "}", value);
+                }
+                return text;
+            }
+            for (let i = 0; i < numargs; i++) {
+                let replace = args[i];
+                replace = (typeof (replace) === "object" || typeof (replace) === "array") ? JSON.parse(replace) : replace;
+                text = text.replace("{" + i + "}", replace);
+            }
+            return text;
+        },
     }
 });

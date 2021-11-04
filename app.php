@@ -15,6 +15,7 @@ return array(
     'lang' => 'fa',
     'service' => [
         'user',
+        'permission',
         'schedule',
     ],
     'loader' => [

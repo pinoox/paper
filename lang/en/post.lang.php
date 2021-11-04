@@ -16,6 +16,7 @@ return [
     'delete_all' => 'Delete all',
     'posts' => 'posts',
     'posts_list' => 'posts list',
+    'access_all_posts' => 'access to all posts',
     'save' => 'save',
     'category' => 'category',
     'post_publication' => 'Publish Post',

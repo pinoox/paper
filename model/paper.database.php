@@ -8,6 +8,7 @@
  * @author   Pinoox
  * @license  https://opensource.org/licenses/MIT MIT License
  */
+
 namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\model\PinooxDatabase;
@@ -15,18 +16,21 @@ use pinoox\model\PinooxDatabase;
 class PaperDatabase extends PinooxDatabase
 {
 
+    const prefix = 'com_pinoox_paper_';
+
     //tables
-    const settings = 'com_pinoox_paper_settings';
-    const post = 'com_pinoox_paper_post';
-    const post_draft = 'com_pinoox_paper_post_draft';
-    const post_history = 'com_pinoox_paper_post_history';
-    const post_tag = 'com_pinoox_paper_post_tag';
-    const post_statistic = 'com_pinoox_paper_post_statistic';
-    const tag = 'com_pinoox_paper_tag';
-    const category = 'com_pinoox_paper_category';
-    const contact = 'com_pinoox_paper_contact';
-    const user_setting = 'com_pinoox_paper_user_setting';
-    const comment = 'com_pinoox_paper_comment';
-    const statistic = 'com_pinoox_paper_statistic';
+    const settings = self::prefix . 'settings';
+    const post = self::prefix . 'post';
+    const post_draft = self::prefix . 'post_draft';
+    const post_history = self::prefix . 'post_history';
+    const post_tag = self::prefix . 'post_tag';
+    const post_statistic = self::prefix . 'post_statistic';
+    const tag = self::prefix . 'tag';
+    const category = self::prefix . 'category';
+    const contact = self::prefix . 'contact';
+    const comment = self::prefix . 'comment';
+    const statistic = self::prefix . 'statistic';
+    const user_paper = self::prefix . 'user';
+    const group = self::prefix . 'group';
 
 }

@@ -404,6 +404,24 @@ body {
       right: unset !important;
       left: 1% !important;
     }
+
+    .treejs {
+      .treejs-node__checked > .treejs-checkbox:after {
+        right: 5px;
+        left: initial !important;
+      }
+
+      .treejs-node__halfchecked > .treejs-checkbox:after {
+        right: 3px;
+        left: initial !important;
+      }
+
+      .treejs-node__close > .treejs-switcher {
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+      }
+    }
   }
 
   &.ltr {
@@ -581,6 +599,7 @@ body {
         padding-bottom: 10px;
 
         .item {
+          display: block;
           grid-template-columns: 20px 1fr;
           align-items: center;
           color: @textColorLight;
@@ -1118,6 +1137,16 @@ body {
         }
       }
 
+      .alert{
+        background: fade(@yellowColor,50%);
+        color: #000;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: block;
+        text-align: center;
+        margin: 5px 0;
+      }
+
       .menubar {
         background: #fff;
         border-bottom: 1px solid @borderColor;
@@ -1190,7 +1219,6 @@ body {
                 box-shadow: 0 0 16px 0 #64f1b0;
               }
             }
-
           }
         }
       }
@@ -1709,7 +1737,7 @@ body {
 .menus {
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   text-align: center;
   grid-gap: 1rem;
 
@@ -1757,6 +1785,12 @@ body {
       padding: 10px 0;
       color: @primaryColor;
     }
+
+    b {
+      font-size: 4.5em;
+      font-weight: 500;
+      color: @primaryColor;
+    }
   }
 }
 
@@ -1774,7 +1808,7 @@ body {
     box-shadow: 0 2px 5px rgba(153, 153, 153, 0.36) !important;
     margin-bottom: 5px;
     background: fade(@primaryColor, 70%);
-    z-index: 999999;
+    z-index: 99999999;
 
     &:hover {
       cursor: pointer;
@@ -2529,6 +2563,23 @@ body {
   }
 }
 
+.treejs {
+  background: #a5b8ce26;
+  padding: 10px;
+  border-radius: 10px;
+
+  .treejs-node.treejs-placeholder {
+    padding: 4px 10px;
+  }
+
+  .treejs-label {
+    font-size: 1.3em;
+  }
+
+  .treejs-nodes {
+  }
+}
+
 .pulled-drawer {
   background: #eaeaea;
   width: 333px;
@@ -2792,8 +2843,6 @@ body {
             overflow-y: hidden;
 
             .text {
-              width: 80%;
-
               .title {
                 font-size: 1rem;
               }
@@ -2803,6 +2852,8 @@ body {
       }
     }
   }
+
+
 
   .form-wrapper {
     footer {
