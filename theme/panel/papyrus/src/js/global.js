@@ -155,7 +155,7 @@ Vue.mixin({
         },
         logout(caller = null) {
             this._confirm(this.LANG.panel.are_you_sure_logout_account, () => {
-                this.$http.get(this.URL.API + 'user/logout').then((json) => {
+                this.$http.get(this.URL.API + 'account/logout').then((json) => {
                     if (json.data.status) {
                         this.exitUser();
                         if (!!caller) caller();
@@ -200,7 +200,7 @@ Vue.mixin({
             });
         },
         getConfigs() {
-            return this.$http.get(this.URL.API + 'setting/getAll/').then((json) => {
+            return this.$http.get(this.URL.API + 'account/getAllSetting/').then((json) => {
                 if (!!json.data && json.data.status && json.data.status !== 404)
                     return;
 
@@ -208,7 +208,7 @@ Vue.mixin({
             });
         },
         getUserSetting() {
-            return this.$http.get(this.URL.API + 'user/getSettings/').then((json) => {
+            return this.$http.get(this.URL.API + 'account/getUserSetting/').then((json) => {
                 if (!!json.data && json.data.status && json.data.status !== 404)
                     return;
                 this.userSettings = !!json.data ? json.data : this.userSettings;
@@ -217,7 +217,7 @@ Vue.mixin({
         saveUserSetting(data, key = null) {
             key = !!key ? key : null;
             data = !!data ? data : {};
-            return this.$http.post(this.URL.API + 'user/saveSettings/' + key, {data: data}, this.offLoading).then((json) => {
+            return this.$http.post(this.URL.API + 'account/saveUserSettings/' + key, {data: data}, this.offLoading).then((json) => {
                 if (!!key)
                     this.userSettings[key] = data;
                 else

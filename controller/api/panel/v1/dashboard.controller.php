@@ -114,4 +114,10 @@ class DashboardController extends LoginConfiguration
         $seconds = PostModel::fetch_total_time_tracking();
         return Helper::timePrint($seconds);
     }
+
+    public function getPostMonthly($post_id = null)
+    {
+        $postController = new PostController();
+        $postController->getMonthly($post_id);
+    }
 }
