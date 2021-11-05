@@ -490,8 +490,8 @@ class PostModel extends PaperDatabase
     public static function search_keyword($keyword)
     {
         if (!empty($keyword)) {
-            $p = '%' . $keyword . '%';
-            self::$db->where('(p.title LIKE ? OR p.summary LIKE ?)', [$p, $p]);
+            $p = '%' . strtolower($keyword) . '%';
+            self::$db->where('(LOWER(p.title) LIKE ? OR LOWER(p.summary) LIKE ?)', [$p, $p]);
         }
     }
 
@@ -520,8 +520,8 @@ class PostModel extends PaperDatabase
     public static function where_search($query)
     {
         if (!is_null($query)) {
-            $p = '%' . $query . '%';
-            self::$db->where('p.title LIKE ? OR p.summary LIKE ?', [$p, $p]);
+            $p = '%' . strtolower($query) . '%';
+            self::$db->where('LOWER(p.title) LIKE ? OR LOWER(p.summary) LIKE ?', [$p, $p]);
         }
 
     }
