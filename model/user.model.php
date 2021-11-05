@@ -136,7 +136,7 @@ class UserModel extends PaperDatabase
     {
         $user_id = !empty($user_id) ? $user_id : User::get('user_id');
         $user = self::fetch_by_id($user_id);
-        $setting = !empty($user) ? HelperString::decodeJson($user['setting_data']) : [];
+        $setting = !empty($user) ? HelperString::decodeJson($user['setting_data']) : null;
 
         if (!is_null($state))
             return isset($setting[$state]) ? $setting[$state] : null;
@@ -148,7 +148,7 @@ class UserModel extends PaperDatabase
     {
         $user_id = !empty($user_id) ? $user_id : User::get('user_id');
         $user_setting = self::fetch_by_id($user_id);
-        $setting = ($user_setting) ? HelperString::decodeJson($user_setting['json_data']) : [];
+        $setting = ($user_setting) ? HelperString::decodeJson($user_setting['setting_data']) : [];
         if (!is_null($state)) {
             if (isset($setting[$state]))
                 unset($setting[$state]);
@@ -170,7 +170,7 @@ class UserModel extends PaperDatabase
     public static function update_setting($user_id, $data)
     {
         self::$db->where('user_id', $user_id);
-        return self::$db->update(self::user, [
+        return self::$db->update(self::user_paper, [
             'setting_data' => HelperString::encodeJson($data),
         ]);
     }
@@ -198,5 +198,19 @@ class UserModel extends PaperDatabase
         }
 
         return $result;
+    }
+
+    public static function where_search($keyword)
+    {
+        if (empty($keyword)) return;
+        if ($keyword == rlang('panel.active')) $status = UserModelCore::active;
+        else if ($keyword == rlang('panel.suspend')) $status = UserModelCore::suspend;
+        else $status = false;
+
+        $k = '%' . strtolower($keyword) . '%';
+        if ($status !== false)
+            self::$db->where('(`status` LIKE ? )', [$status]);
+        else
+            self::$db->where('(LOWER(fname) LIKE ? OR LOWER(lname) LIKE ? OR LOWER(email) LIKE ? )', [$k, $k, $k]);
     }
 }

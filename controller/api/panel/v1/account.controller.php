@@ -131,10 +131,10 @@ class AccountController extends MasterConfiguration
     {
         if (User::isLoggedIn() && Permission::module('panel')) {
             $settings = UserModel::get_setting_data($state);
-            $settings = !empty($settings) ? $settings : [];
+            $settings = !empty($settings) ? $settings : null;
             Response::json($settings);
         } else {
-            Response::json([]);
+            Response::json(null);
         }
     }
 

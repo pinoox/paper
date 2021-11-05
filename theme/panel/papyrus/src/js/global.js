@@ -334,9 +334,9 @@ Vue.mixin({
             let modules = !!this.PERMISSION ? this.PERMISSION.module : [];
             for (let i in modules) {
                 let route = modules[i];
-                route = route.replace(/\|:|@|>/gi, '/');
+                route = route.replace(/\|:|@|>/gi, '/') + '/';
                 key = key.replace(/\|:|@|>/gi, '/');
-                key = key.replace(/^\/|\/$/g, '');
+                key = key.replace(/^\/|\/$/g, '') + '/';
                 if (key.startsWith(route))
                     return false
             }
