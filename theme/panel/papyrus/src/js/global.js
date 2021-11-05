@@ -83,6 +83,14 @@ Vue.mixin({
                 return this.$store.state.isLoading;
             }
         },
+        _isPrimaryLoading: {
+            set(val) {
+                this.$store.state.isPrimaryLoading = val;
+            },
+            get() {
+                return this.$store.state.isPrimaryLoading;
+            }
+        },
         viewSettings: {
             set(val) {
                 this.$store.state.viewSettings = val;

@@ -12,6 +12,7 @@ export default new Vuex.Store({
         userSettings: {},
         configs: {},
         isLoading: false,
+        isPrimaryLoading: false,
         isTransition: true,
         viewSettings:[],
         countTranslate:0,

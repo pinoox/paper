@@ -134,7 +134,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 99999999;
   display: flex;
   width: 100%;
   height: 100%;
@@ -2442,6 +2442,10 @@ body {
   transform: translateZ(0);
   -webkit-animation: load8 1.1s infinite linear;
   animation: load8 1.1s infinite linear;
+
+  &.spinner-image-manager{
+    position: absolute !important;
+  }
 }
 
 @-webkit-keyframes load8 {

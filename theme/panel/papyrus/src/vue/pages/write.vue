@@ -128,6 +128,7 @@ export default {
       message: null,
       timeSleep: 30,
       time: 0,
+      isImageLoading: false,
     };
   },
   computed: {
@@ -209,8 +210,9 @@ export default {
         this.uploadFiles(f);
       });
     },
-    selectFile() {
+    selectFile(isImageLoading = true) {
       this.$refs.file.click();
+      this.isImageLoading = isImageLoading;
     },
     handleFileInput(e) {
       let files = e.target.files;
@@ -226,6 +228,9 @@ export default {
       let xhr = this.$http.CancelToken.source();
       this.$http.post(this.URL.API + 'post/imageUpload/', data, {
         cancelToken: xhr.token,
+        params: {
+          isPrimaryLoading: this.isImageLoading,
+        },
         onUploadProgress: (progressEvent) => {
           let percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
         }
