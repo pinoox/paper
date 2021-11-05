@@ -68,7 +68,7 @@
                                 </div>
                                 <div v-else>
                                 <span :class="typeof props.column.style === 'function'? props.column.style(props.row) : props.column.style">
-                                    <i v-if="!!props.column.icon" :class="props.column.icon"></i> {{props.formattedRow[props.column.field]}}
+                                  <i v-if="!!props.column.icon" :class="props.column.icon"></i> <span v-html="props.formattedRow[props.column.field]"></span>
                                 </span>
                                 </div>
                             </template>

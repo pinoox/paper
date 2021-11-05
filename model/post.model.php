@@ -251,7 +251,13 @@ class PostModel extends PaperDatabase
             $post['category'] = null;
 
 
-        $post['post_key'] = empty($post['post_key']) ? HelperString::replaceSpace($post['title']) : $post['post_key'];
+        if($post['post_type'] == PostModel::post_type)
+        $post['post_key'] = htmlspecialchars_decode($post['title']);
+
+        if (!empty($post['post_key'])) {
+            $post['post_key'] = str_replace(['`', '"', "'", '(', ')', ',', '.', '?', '\\', '/', '*', '&', '^', '$', '%', '#', '@', '_', '!', '|', '~', '<', '>', '=', '+', '[', ']', '{', '}'], '', $post['post_key']);
+            $post['post_key'] = HelperString::replaceSpace($post['post_key']);
+        }
 
         $date_format = !empty($date_format) ? $date_format : 'l d F Y (H:i)';
         $post['approx_date'] = Helper::getLocaleDate($date_format, $post['publish_date']);
@@ -305,7 +311,7 @@ class PostModel extends PaperDatabase
     {
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->orderBy('p.insert_date', 'DESC');
-        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
+        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_typ,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
         if ($isCount) return self::$db->count;
         return $result;
     }
@@ -315,7 +321,7 @@ class PostModel extends PaperDatabase
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id', 'LEFT');
         self::$db->orderBy('p.insert_date', 'DESC');
-        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,pd.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
+        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,pd.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_type,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
         if ($isCount) return self::$db->count;
         return $result;
     }
@@ -327,7 +333,7 @@ class PostModel extends PaperDatabase
 
         self::buildWhereForFetcher($ids, $option);
 
-        $columns = 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.insert_date,p.update_date,p.publish_date,p.cat_id,p.characters,p.words,p.visits,u.username,u.avatar_id';
+        $columns = 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_type,p.insert_date,p.update_date,p.publish_date,p.cat_id,p.characters,p.words,p.visits,u.username,u.avatar_id';
 
         self::$db->groupBy($columns);
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
@@ -564,7 +570,7 @@ class PostModel extends PaperDatabase
 
     public static function watch_schedule_publish($post)
     {
-        if(empty($post) || !isset($post['post_id']))
+        if (empty($post) || !isset($post['post_id']))
             return;
 
         $draft = self::post_draft_fetch_by_id($post['post_id']);
