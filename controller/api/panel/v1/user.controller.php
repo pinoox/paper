@@ -75,11 +75,11 @@ class UserController extends LoginConfiguration
     }
 
     public function logout()
-    {
-        User::logout(null, false);
-        Cookie::destroy('pinoox_user');
-        Response::json(null, true);
-    }
+{
+    User::logout(null, false);
+    Cookie::destroy('pinoox_user');
+    Response::json(null, true);
+}
 
     public function getAll()
     {
@@ -105,7 +105,7 @@ class UserController extends LoginConfiguration
 
     private function filterSearch($form)
     {
-        UserModelCore::where_search($form['keyword']);
+        UserModel::where_search($form['keyword']);
         UserModel::where_status($form['status']);
         UserModel::sort($form['sort']);
     }
