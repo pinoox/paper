@@ -17,6 +17,8 @@ import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor.js';
 import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily.js';
 import FontSize from '@ckeditor/ckeditor5-font/src/fontsize.js';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading.js';
+import HeadingButtonsUI from '@ckeditor/ckeditor5-heading/src/headingbuttonsui';
+import ParagraphButtonUI from '@ckeditor/ckeditor5-paragraph/src/paragraphbuttonui';
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight.js';
 import Image from '@ckeditor/ckeditor5-image/src/image.js';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption.js';
@@ -50,7 +52,11 @@ import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalli
 import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor';
 import BlockToolbar from '@ckeditor/ckeditor5-ui/src/toolbar/block/blocktoolbar';
 import AutoSave from '@ckeditor/ckeditor5-autosave/src/autosave';
+import FindAndReplace from './plugins/ckeditor5-find-and-replace/src/findandreplace';
+import GeneralHtmlSupport from './plugins/ckeditor5-html-support/src/generalhtmlsupport';
+import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
 import FastBtn from './fastbtn';
+
 
 class Editor extends DecoupledDocumentEditor {}
 
@@ -67,6 +73,8 @@ Editor.builtinPlugins = [
 	FontFamily,
 	FontSize,
 	Heading,
+	HeadingButtonsUI,
+	ParagraphButtonUI,
 	Highlight,
 	Image,
 	ImageCaption,
@@ -100,6 +108,9 @@ Editor.builtinPlugins = [
 	TableCellProperties,
 	PaperUploadAdapter,
 	AutoSave,
+	FindAndReplace,
+	GeneralHtmlSupport,
+	SourceEditing,
 	FastBtn,
 ];
 
