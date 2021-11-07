@@ -74,9 +74,9 @@ class UserModel extends PaperDatabase
             self::$db->where('status', $status);
     }
 
-    public static function fetch_by_app()
+    public static function fetch_by_app($app = null)
     {
-        $app = AppProvider::get('package-name');
+        $app = !empty($app)? $app : AppProvider::get('package-name');
         self::$db->where('app', $app);
         return self::$db->getOne(self::user);
     }

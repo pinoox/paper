@@ -181,7 +181,7 @@ CREATE TABLE `{dbprefix}tag`  (
 -- ----------------------------
 
 ALTER TABLE `{dbprefix}user`
-    ADD CONSTRAINT `{dbprefix}user_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+    ADD CONSTRAINT `{dbprefix}user_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `{dbprefix}category`
     ADD CONSTRAINT `{dbprefix}category_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}category` (`cat_id`) ON DELETE CASCADE ON UPDATE CASCADE;
