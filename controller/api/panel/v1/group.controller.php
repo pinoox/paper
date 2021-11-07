@@ -14,6 +14,7 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\model\PermissionModel;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
+use pinoox\app\com_pinoox_paper\model\UserModel;
 use pinoox\component\Cache;
 use pinoox\component\Lang;
 use pinoox\component\Request;
@@ -67,6 +68,11 @@ class GroupController extends LoginConfiguration
                 }
 
                 GroupModel::update($form['old_group_key'], $form);
+
+                if($form['old_group_key'] != $form['group_key'])
+                {
+                    UserModel::update_group_users($form['old_group_key'],$form['group_key']);
+                }
             }
         } else {
             GroupModel::insert($form);

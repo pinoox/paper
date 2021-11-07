@@ -15,6 +15,7 @@ namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\app\com_pinoox_paper\component\Permission;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
+use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\HelperString;
 use pinoox\component\Url;
@@ -113,6 +114,14 @@ class UserModel extends PaperDatabase
         self::$db->where('user_id', $form['user_id']);
         return self::$db->update(self::user_paper, [
             'group_key' => isset($form['group_key']) ? $form['group_key'] : GroupModel::getDefault(),
+        ]);
+    }
+
+    public static function update_group_users($old_group_key,$new_group_key)
+    {
+        self::$db->where('group_key', $old_group_key);
+        return self::$db->update(self::user_paper, [
+            'group_key' => $new_group_key,
         ]);
     }
 
