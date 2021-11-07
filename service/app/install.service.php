@@ -23,6 +23,12 @@ class InstallService implements ServiceInterface
 
     public function _run()
     {
+        $user = UserModel::fetch_by_app();
+        UserModel::insert_self([
+            'user_id' => $user['user_id'],
+            'group_key' => 'administrator',
+        ]);
+
         $hash_id = 'bt3a3w';
 
         // add image
@@ -51,7 +57,6 @@ class InstallService implements ServiceInterface
         $characters = rlang('db.welcome_post.characters');
         $status = PostModel::publish_status;
 
-        $user = UserModel::fetch_by_app();
         $data = [
             'title' => $title,
             'context' => $context,
