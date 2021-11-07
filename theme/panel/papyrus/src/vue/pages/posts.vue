@@ -24,6 +24,10 @@
                         :class="[params.status==='publish'? 'active' :'']">
                         {{LANG.post.status.publish}}
                     </li>
+                  <li @click="filter('schedule')"
+                      :class="[params.status==='schedule'? 'active' :'']">
+                    {{LANG.post.status.schedule}}
+                  </li>
                     <li @click="filter('draft')"
                         :class="[params.status==='draft'? 'active' :'']">
                         {{LANG.post.status.draft}}

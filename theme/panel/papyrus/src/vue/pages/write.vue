@@ -14,7 +14,7 @@
         <div class="item" @click="drawerName = 'image-manager'">
           {{ LANG.post.images }}
         </div>
-        <router-link v-if="!!post_id && post_type==='post'"
+        <router-link v-if="!!post_id && post_type==='post' && _module('panel/posts/stats')"
                      :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
           {{ LANG.post.stats }}
         </router-link>
@@ -25,6 +25,13 @@
         <div v-if="!!post_id" class="item" @click="drawerName = 'settings'">
           {{ LANG.post.settings }}
         </div>
+        <a v-if="!!post_id && post_type==='post' && !!post.post_key && status === 'publish'"
+           :href="URL.FRONT + 'post/' + post_id +'/'+post.post_key" target="_blank"
+           class="item">{{LANG.post.post_view}}</a>
+
+        <a v-if="!!post_id && post_type === 'page' && !!post.post_key && status === 'publish'"
+           :href="URL.FRONT + post.post_key" target="_blank"
+           class="item">{{LANG.post.post_view}}</a>
       </div>
     </div>
     <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
