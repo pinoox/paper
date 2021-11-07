@@ -45,7 +45,7 @@ Vue.component('column', Column);
 Vue.component('hidden', Hidden);
 Vue.component('picture-input', PictureInput);
 Vue.component('draggable', Draggable);
-Vue.component('date-picker', VuePersianDatetimePicker);
+Vue.component('paper-date-picker', VuePersianDatetimePicker);
 
 __webpack_public_path__ = PINOOX.URL.THEME + 'dist/paper/';
 

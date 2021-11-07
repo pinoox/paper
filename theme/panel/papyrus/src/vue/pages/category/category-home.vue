@@ -43,7 +43,7 @@
           <div class="section-content">
             <vue-good-table
                 styleClass="vgt-table table"
-                :line-numbers="true"
+                :line-numbers="false"
                 :rtl="_dir==='rtl'"
                 compactMode
                 :columns="columns"
@@ -125,6 +125,10 @@ export default {
   computed: {
     columns() {
       return [
+        {
+          label: this.LANG.panel.id,
+          field: 'cat_id',
+        },
         {
           label: this.LANG.panel.category_name,
           field: 'cat_name',

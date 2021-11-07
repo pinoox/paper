@@ -132,9 +132,10 @@
         >
           <i class="fa fa-calendar-alt"></i>
         </span>
-        <date-picker :locale="currentLang" :format="currentLang === 'fa'? 'jYYYY/jMM/jDD HH:mm' : 'YYYY/jMM/jDD HH:mm'"
+        <paper-date-picker :locale="currentLang" :format="currentLang === 'fa'? 'jYYYY/jMM/jDD HH:mm' : 'YYYY/jMM/jDD HH:mm'"
                      type="datetime" :show="isSchedule" element="my-custom-editable-input"
                      v-if="$parent.status !== 'publish'" v-model="params.schedule_date" @close="isSchedule=false"/>
+
       </div>
     </ch-drawer>
   </section>
