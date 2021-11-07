@@ -2,13 +2,26 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+-- Table user
+-- ----------------------------
+DROP TABLE IF EXISTS `{dbprefix}user`;
+CREATE TABLE `{dbprefix}user`  (
+  `user_id` int(0) UNSIGNED NOT NULL,
+  `group_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `setting_data` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table category
 -- ----------------------------
 DROP TABLE IF EXISTS `{dbprefix}category`;
 CREATE TABLE `{dbprefix}category`  (
   `cat_id` int(0) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `cat_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `parent_id` int(0) NULL DEFAULT NULL,
+  `image_id` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`cat_id`) USING BTREE,
   INDEX `{dbprefix}category_parent_id`(`parent_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
@@ -71,6 +84,7 @@ CREATE TABLE `{dbprefix}post`  (
   `insert_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   `publish_date` datetime NULL DEFAULT NULL,
+  `schedule_date` datetime NULL DEFAULT NULL,
   `characters` int(0) UNSIGNED NOT NULL DEFAULT 0,
   `words` int(0) UNSIGNED NOT NULL DEFAULT 0,
   `visits` bigint(0) UNSIGNED NOT NULL DEFAULT 0,
@@ -163,23 +177,17 @@ CREATE TABLE `{dbprefix}tag`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table user_setting
--- ----------------------------
-DROP TABLE IF EXISTS `{dbprefix}user_setting`;
-CREATE TABLE `{dbprefix}user_setting`  (
-  `user_id` int(0) UNSIGNED NOT NULL,
-  `json_data` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
-
-
-
--- ----------------------------
 -- Foreign keys
 -- ----------------------------
 
+ALTER TABLE `{dbprefix}user`
+    ADD CONSTRAINT `{dbprefix}user_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+
 ALTER TABLE `{dbprefix}category`
     ADD CONSTRAINT `{dbprefix}category_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}category` (`cat_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `{dbprefix}category`
+    ADD CONSTRAINT `{dbprefix}category_image_id` FOREIGN KEY (`image_id`) REFERENCES `pincore_file` (`file_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `{dbprefix}comment`
     ADD CONSTRAINT `{dbprefix}comment_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `{dbprefix}comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -213,9 +221,5 @@ ALTER TABLE `{dbprefix}post_tag`
 
 ALTER TABLE `{dbprefix}post_statistic`
     ADD CONSTRAINT `{dbprefix}post_statistic_post_id` FOREIGN KEY (`post_id`) REFERENCES `{dbprefix}post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `{dbprefix}user_setting`
-    ADD CONSTRAINT `{dbprefix}user_setting_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 SET FOREIGN_KEY_CHECKS = 1;
