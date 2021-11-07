@@ -155,16 +155,27 @@ class PostController extends MasterConfiguration
     {
         $date_format = Request::inputOne('date_format', 'd F Y', '!empty');
 
-        $comments = CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish);
+        PostModel::where_post_type(PostModel::post_type);
+        $post = PostModel::fetch_by_id($post_id);
 
-        $comments = array_map(function ($cm) use ($date_format) {
-            return $this->getCommentInfo($cm, $date_format);
-        }, $comments);
+        if($post['comment'] === PostModel::open_status)
+        {
+            $comments = CommentModel::fetch_all_by_post($post_id, CommentModel::status_publish);
 
-        $tree = new Tree();
-        $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');
+            $comments = array_map(function ($cm) use ($date_format) {
+                return $this->getCommentInfo($cm, $date_format);
+            }, $comments);
 
-        Response::json(['count' => count($comments), 'items' => $treeComments]);
+            $tree = new Tree();
+            $treeComments = $tree->createTree($comments, 'parent_id', 'comment_id');
+
+            Response::json(['count' => count($comments), 'items' => $treeComments]);
+        }
+        else
+        {
+            Response::json(['count' => 0, 'items' => []]);
+        }
+
     }
 
     public function leaveComment()
