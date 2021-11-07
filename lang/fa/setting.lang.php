@@ -46,4 +46,5 @@ return [
     'header_code' => 'افزودن کد در هد سایت',
     'footer_code' => 'افزودن کد در فوتر سایت',
     'auto_approval_comment' => 'تایید خودکار نظرات',
+    'count_rows_posts' => 'تعداد نوشته ها در صفحه',
 ];

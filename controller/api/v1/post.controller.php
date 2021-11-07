@@ -55,12 +55,14 @@ class PostController extends MasterConfiguration
 
     public function getAll()
     {
+        $countRows = PostModel::getCountRows();
+
         $form = Request::input([
             'page' => 1,
             'keyword',
             'tag',
             'username',
-            'rows' => 10,
+            'rows' => $countRows,
             'date_format' => 'd F Y'
         ], null, '!empty');
 
@@ -69,7 +71,7 @@ class PostController extends MasterConfiguration
             'count' => true,
         ]);
 
-        $form['rows'] = is_numeric($form['rows']) ? $form['rows'] : 10;
+        $form['rows'] = is_numeric($form['rows']) ? $form['rows'] : $countRows;
         $form['rows'] = $form['rows'] < 50 ? $form['rows'] : 50;
         $pagination = new Pagination($count, $form['rows']);
         $pagination->setCurrentPage($form['page']);

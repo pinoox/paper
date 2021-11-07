@@ -88,7 +88,8 @@ class MainController extends MasterConfiguration
             'count' => true,
         ]);
 
-        $pagination = new Pagination($count, 10);
+        $countRows = PostModel::getCountRows();
+        $pagination = new Pagination($count, $countRows);
         $pagination->setCurrentPage($page);
 
         $this->filterSearch($form);

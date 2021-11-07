@@ -78,5 +78,11 @@ return [
                 'rows' => 5,
             ],
         ],
+        [
+            'key' => 'count_rows',
+            'value' => '10',
+            'label' => rlang('setting.count_rows_posts'),
+            'type' => 'number',
+        ]
     ]
 ];

@@ -251,8 +251,8 @@ class PostModel extends PaperDatabase
             $post['category'] = null;
 
 
-        if($post['post_type'] == PostModel::post_type)
-        $post['post_key'] = htmlspecialchars_decode($post['title']);
+        if ($post['post_type'] == PostModel::post_type)
+            $post['post_key'] = htmlspecialchars_decode($post['title']);
 
         if (!empty($post['post_key'])) {
             $post['post_key'] = str_replace(['`', '"', "'", '(', ')', ',', '.', '?', '\\', '/', '*', '&', '^', '$', '%', '#', '@', '_', '!', '|', '~', '<', '>', '=', '+', '[', ']', '{', '}'], '', $post['post_key']);
@@ -577,5 +577,11 @@ class PostModel extends PaperDatabase
         self::post_history_insert($draft, self::publish_status);
         self::update_publish_post($post['post_id']);
         self::post_draft_update_synced($post['post_id'], 1);
+    }
+
+    public static function getCountRows()
+    {
+        $countRows = setting('general.count_rows');
+        return !empty($countRows) && is_numeric($countRows) ? intval($countRows) : 0;
     }
 }
