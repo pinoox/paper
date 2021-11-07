@@ -484,6 +484,9 @@ class PostModel extends PaperDatabase
             if ($sort['field'] === 'approx_insert_date')
                 $sort['field'] = 'insert_date';
 
+            if ($sort['field'] === 'approx_date')
+                $sort['field'] = 'publish_date';
+
             self::$db->orderBy($sort['field'], $sort['type']);
         }
     }
