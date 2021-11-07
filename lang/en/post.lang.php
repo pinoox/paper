@@ -123,4 +123,5 @@ return [
     'edit_category_info' => 'you can specify subcategories by dragging and dropping each category in edit mode',
     'return_to_selection' => 'choose category',
     'post_view' => 'Post view',
+    'date_release' => 'Date of Release',
 ];

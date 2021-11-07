@@ -264,6 +264,7 @@ class PostModel extends PaperDatabase
         $post['publish_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['publish_date']);
 
         if (isset($post['schedule_date'])) {
+            $post['approx_schedule_date'] = Helper::getLocaleDate($date_format, $post['schedule_date']);
             $post['schedule_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['schedule_date']);
         }
 
@@ -311,7 +312,7 @@ class PostModel extends PaperDatabase
     {
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->orderBy('p.insert_date', 'DESC');
-        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_typ,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
+        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_typ,p.insert_date,p.update_date,p.publish_date,p.schedule_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
         if ($isCount) return self::$db->count;
         return $result;
     }
@@ -321,7 +322,7 @@ class PostModel extends PaperDatabase
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');
         self::$db->join(self::post_draft . ' pd', 'pd.post_id=p.post_id', 'LEFT');
         self::$db->orderBy('p.insert_date', 'DESC');
-        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,pd.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_type,p.insert_date,p.update_date,p.publish_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
+        $result = self::$db->get(self::post . ' p', $limit, 'p.post_id,pd.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_type,p.insert_date,p.update_date,p.publish_date,p.schedule_date,p.visits,CONCAT(u.fname," ",u.lname) full_name,u.username,u.avatar_id');
         if ($isCount) return self::$db->count;
         return $result;
     }
@@ -333,7 +334,7 @@ class PostModel extends PaperDatabase
 
         self::buildWhereForFetcher($ids, $option);
 
-        $columns = 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_type,p.insert_date,p.update_date,p.publish_date,p.cat_id,p.characters,p.words,p.visits,u.username,u.avatar_id';
+        $columns = 'p.post_id,p.title,p.summary,p.status,p.user_id,p.image_id,p.post_key,p.post_type,p.insert_date,p.update_date,p.publish_date,p.schedule_date,p.cat_id,p.characters,p.words,p.visits,u.username,u.avatar_id';
 
         self::$db->groupBy($columns);
         self::$db->join(self::user . ' u', 'u.user_id=p.user_id', 'LEFT');

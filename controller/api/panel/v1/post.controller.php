@@ -83,7 +83,7 @@ class PostController extends LoginConfiguration
         $posts = PostModel::fetch_all_posts($pagination->getArrayLimit());
 
         $posts = array_map(function ($post) {
-            return $post = PostModel::getInfoPost($post);
+            return PostModel::getInfoPost($post);
         }, $posts);
 
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
