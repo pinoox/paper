@@ -1,0 +1,105 @@
+ul.breadcrumb-list {
+  list-style: none;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+
+  li {
+    position: relative;
+    margin: 0 11px 5px 11px;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: @primaryColor;
+    line-height: 40px;
+    padding: 0 8px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: 500;
+    border: 1px solid @primaryColor;
+    cursor: pointer;
+
+    &.no-hover{
+      cursor: default !important;
+    }
+
+    &:hover:not(&.no-hover) {
+      background: fade(@primaryColor, 80%) !important;
+      color: #fff;
+    }
+
+    &.active {
+      cursor: default;
+      background: @primaryColor!important;
+      color: #fff;
+    }
+
+    &:not(:last-child):after {
+      position: absolute;
+      right: -15px;
+      color: @primaryColor;
+      content: "\276F";
+      pointer-events: none;
+      display: inline-block;
+    }
+
+    .rtl &:not(:last-child):after {
+      left: -15px;
+      right: initial;
+    }
+  }
+
+  &.link-into {
+    li {
+      padding: 0;
+      border: initial;
+
+      a, span {
+        display: inline-block;
+        padding: 0px 8px;
+        border: 1px solid @primaryColor;
+        border-radius: 5px;
+
+      }
+
+      a {
+        color: @primaryColor;
+
+        &:hover {
+          background: @primaryColor !important;
+          color: #fff;
+        }
+      }
+
+      &.active {
+        span{
+          background: @primaryColor!important;
+        }
+      }
+    }
+  }
+
+  &.mini{
+    li {
+      font-size: 12px;
+      line-height: 30px;
+
+      &:after {
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  ul.breadcrumb-list {
+    li {
+      font-size: 10px;
+      line-height: 30px;
+
+      &:after {
+        font-size: 10px;
+      }
+    }
+  }
+}

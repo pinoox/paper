@@ -327,40 +327,62 @@
 .nestable-handle {
     display: inline;
 }
-.badge-status {
+.badge-status,
+.order-status {
   padding: 4px !important;
   white-space: nowrap !important;
   color: #fff !important;
   border-radius: 5px !important;
   font-size: 0.7em !important;
 }
-.badge-status.publish {
+.badge-status.publish,
+.order-status.publish {
   background: #05b36f !important;
 }
-.badge-status.active {
+.badge-status.active,
+.order-status.active {
   background: #05b36f !important;
 }
-.badge-status.seen {
+.badge-status.seen,
+.order-status.seen {
   background: #05b36f !important;
 }
-.badge-status.draft {
+.badge-status.draft,
+.order-status.draft {
   background: #A5B8CE !important;
 }
-.badge-status.unseen {
+.badge-status.unseen,
+.order-status.unseen {
   background: #ed9703 !important;
 }
-.badge-status.pending {
+.badge-status.pending,
+.order-status.pending {
   background: #ed9703 !important;
 }
-.badge-status.schedule {
+.badge-status.schedule,
+.order-status.schedule {
   background: #ed9703 !important;
 }
 .badge-status.suspend,
-.badge-status.cancel_publish {
+.order-status.suspend,
+.badge-status.cancel_publish,
+.order-status.cancel_publish {
   background: #db335a !important;
 }
-.badge-status.primary {
+.badge-status.primary,
+.order-status.primary {
   background: #1f426c !important;
+}
+.order-status {
+  padding: 4px 12px;
+  white-space: nowrap;
+  color: #999;
+  border-radius: 5px;
+  font-size: 0.8em;
+  display: inline-block;
+  background: rgba(31, 66, 108, 0.1);
+  border-right: 2px solid;
+  font-weight: 500;
 }
 .m1-tb {
   margin: 1% 0;
@@ -2027,6 +2049,16 @@ body.ltr .vue-notification-group {
   color: #506E93;
   cursor: pointer !important;
 }
+.nestable-category .nestable-item-content .cat-name.highlight {
+  color: #05b36f !important;
+}
+.nestable-category .nestable-item-content .cat-name.pointer {
+  cursor: pointer !important;
+}
+.nestable-category .nestable-item-content .cat-name.no-selected {
+  color: #7e9cbf;
+  cursor: not-allowed !important;
+}
 .nestable-category .nestable-item-content .cat-name .number {
   padding: 4px !important;
   white-space: nowrap !important;
@@ -2527,6 +2559,15 @@ body.ltr .vue-notification-group {
 .pulled-drawer .drawer-inside .close-drawer .close:hover {
   background: rgba(31, 66, 108, 0.2);
   cursor: pointer;
+}
+.order-status-dropdown {
+  padding: 10px;
+  cursor: pointer;
+}
+.order-status-dropdown .v-dropdown-menu__body .item {
+  display: block;
+  padding: 10px;
+  border-bottom: 1px solid #E2E2E2;
 }
 @media screen and (max-width: 110px) {
   .app-container .main .page .greeting .art img {
@@ -3722,6 +3763,88 @@ body.ltr .vue-notification-group {
   }
   .col-lg-order .order-12 {
     order: 12;
+  }
+}
+ul.breadcrumb-list {
+  list-style: none;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+}
+ul.breadcrumb-list li {
+  position: relative;
+  margin: 0 11px 5px 11px;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #1f426c;
+  line-height: 40px;
+  padding: 0 8px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 500;
+  border: 1px solid #1f426c;
+  cursor: pointer;
+}
+ul.breadcrumb-list li.no-hover {
+  cursor: default !important;
+}
+ul.breadcrumb-list li:hover:not(ul.breadcrumb-list li.no-hover) {
+  background: rgba(31, 66, 108, 0.8) !important;
+  color: #fff;
+}
+ul.breadcrumb-list li.active {
+  cursor: default;
+  background: #1f426c !important;
+  color: #fff;
+}
+ul.breadcrumb-list li:not(:last-child):after {
+  position: absolute;
+  right: -15px;
+  color: #1f426c;
+  content: "\276F";
+  pointer-events: none;
+  display: inline-block;
+}
+.rtl ul.breadcrumb-list li:not(:last-child):after {
+  left: -15px;
+  right: initial;
+}
+ul.breadcrumb-list.link-into li {
+  padding: 0;
+  border: initial;
+}
+ul.breadcrumb-list.link-into li a,
+ul.breadcrumb-list.link-into li span {
+  display: inline-block;
+  padding: 0px 8px;
+  border: 1px solid #1f426c;
+  border-radius: 5px;
+}
+ul.breadcrumb-list.link-into li a {
+  color: #1f426c;
+}
+ul.breadcrumb-list.link-into li a:hover {
+  background: #1f426c !important;
+  color: #fff;
+}
+ul.breadcrumb-list.link-into li.active span {
+  background: #1f426c !important;
+}
+ul.breadcrumb-list.mini li {
+  font-size: 12px;
+  line-height: 30px;
+}
+ul.breadcrumb-list.mini li:after {
+  font-size: 10px;
+}
+@media screen and (max-width: 576px) {
+  ul.breadcrumb-list li {
+    font-size: 10px;
+    line-height: 30px;
+  }
+  ul.breadcrumb-list li:after {
+    font-size: 10px;
   }
 }
 

@@ -44,11 +44,11 @@
       </editor>
     </div>
     <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
-    <category v-if="post_type==='post'"
-              :open="drawerName==='category'"
-              :selected="category"
-              @onClose="drawerName=null"
-              @onSelected="setCategory"></category>
+    <category-select v-if="post_type==='post'"
+                     :open="drawerName==='category'"
+                     v-model="category"
+                     type="off"
+                     @onClose="drawerName=null"></category-select>
     <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
     <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
     <preview @close="drawerName = null" :values="preview" :open="drawerName === 'preview'"></preview>
@@ -60,15 +60,15 @@
 
 import Editor from "../components/editor.vue";
 import Publish from "../drawers/publish.vue";
-import Category from "../drawers/category.vue";
 import ImageManager from "../drawers/image-manager.vue";
 import Settings from "../drawers/settings.vue";
 import Preview from "../drawers/preview.vue";
 import PulledDrawer from "../components/pulled-drawer.vue";
+import CategorySelect from "../drawers/category-select.vue";
 
 export default {
   name: 'write',
-  components: {Preview, Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
+  components: {CategorySelect, Preview, Editor, Publish, ImageManager, Settings, PulledDrawer},
   beforeRouteLeave(to, from, next) {
     if (this.isSave) {
       next();
