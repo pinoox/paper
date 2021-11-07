@@ -48,8 +48,7 @@ class GroupController extends LoginConfiguration
         if ($valid->isFail())
             Response::jsonMessage($valid->first(), false);
 
-        if(empty($form['old_group_key']) && in_array($form['group_key'],['user','guest','administrator']))
-        {
+        if (empty($form['old_group_key']) && in_array($form['group_key'], ['user', 'guest', 'administrator'])) {
             Response::jsonMessage(rlang('user.err_allowed_group_key'), false);
         }
 
@@ -61,17 +60,15 @@ class GroupController extends LoginConfiguration
                 $old = GroupModel::fetch_by_key($form['old_group_key']);
                 $form['is_main'] = false;
 
-                if ($old['is_main'])
-                {
+                if ($old['is_main']) {
                     $form['group_key'] = $old['group_key'];
                     $form['is_main'] = true;
                 }
 
                 GroupModel::update($form['old_group_key'], $form);
 
-                if($form['old_group_key'] != $form['group_key'])
-                {
-                    UserModel::update_group_users($form['old_group_key'],$form['group_key']);
+                if ($form['old_group_key'] != $form['group_key']) {
+                    UserModel::update_group_users($form['old_group_key'], $form['group_key']);
                 }
             }
         } else {
@@ -90,6 +87,7 @@ class GroupController extends LoginConfiguration
             GroupModel::delete($group_key);
             PermissionModel::delete($group_key);
             Cache::clean('permissions');
+            UserModel::update_group_users($group_key, null);
             Response::jsonMessage(Lang::replace('user.group_successful_delete', $group['group_name']), true);
         }
         Response::jsonMessage(Lang::get('panel.error_happened'), false);

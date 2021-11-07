@@ -15,7 +15,6 @@ namespace pinoox\app\com_pinoox_paper\model;
 
 use pinoox\app\com_pinoox_paper\component\Permission;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
-use pinoox\app\com_pinoox_paper\model\GroupModel;
 use pinoox\component\app\AppProvider;
 use pinoox\component\HelperString;
 use pinoox\component\Url;
