@@ -116,9 +116,9 @@ export default {
     select(category){
       let data = {...category};
       data.children = [];
-      this.selected = category;
-      this.$emit('input', category);
-      this.$emit('select', category);
+      this.selected = data;
+      this.$emit('input', data);
+      this.$emit('select', data);
       this.toggleDrawer();
     },
     unSelect() {

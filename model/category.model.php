@@ -32,6 +32,12 @@ class CategoryModel extends PaperDatabase
         return self::$db->getOne(self::category);
     }
 
+    public static function fetch_by_id_or_key($category)
+    {
+        self::$db->where('(cat_id = ? OR cat_key = ?)', [$category,$category]);
+        return self::$db->getOne(self::category);
+    }
+
     public static function fetch_by_name($cat_name, $no_id = null)
     {
         if (!is_null($no_id))
@@ -160,10 +166,10 @@ class CategoryModel extends PaperDatabase
         return self::get_breadcrumb($cat['cat_id']);
     }
 
-    public static function get_breadcrumb($cat_id)
+    public static function get_breadcrumb($key)
     {
         $breadcrumb = [];
-        $category = CategoryModel::fetch_by_id($cat_id);
+        $category = CategoryModel::fetch_by_id_or_key($key);
         if (!empty($category)) {
             CategoryModel::build_parent($category, $breadcrumb);
             $breadcrumb = array_reverse($breadcrumb);
