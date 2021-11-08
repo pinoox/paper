@@ -97,6 +97,7 @@ class InstallService implements ServiceInterface
             'words' => rlang('db.about_page.words'),
             'status' => $status,
             'post_type' => PostModel::page_type,
+            'post_key' => 'about',
             'image' => null,
         ];
 
