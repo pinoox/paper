@@ -45,6 +45,7 @@ class PostModel extends PaperDatabase
             'user_id' => isset($data['user_id']) ? $data['user_id'] : User::get('user_id'),
             'summary' => $data['summary'],
             'time_tracking' => $data['time'],
+            'cat_id' => @$data['cat_id'],
             'status' => self::draft_status,
             'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
             'post_type' => !empty($data['post_type']) ? $data['post_type'] : self::post_type,
@@ -226,14 +227,19 @@ class PostModel extends PaperDatabase
     {
         $date = Date::g('Y-m-d H:i:s');
         self::$db->where('post_id', $data['post_id']);
-        return self::$db->update(self::post, [
+        $_data = [
             'summary' => !empty($data['summary']) ? $data['summary'] : null,
             'post_key' => !empty($data['post_key']) ? $data['post_key'] : null,
             'image_id' => !empty($data['image']) ? $data['image'] : null,
             'update_date' => $date,
             'time_tracking' => self::$db->inc($data['time']),
             'schedule_date' => @$data['schedule_date'],
-        ]);
+        ];
+
+        if (array_key_exists('cat_id',$data))
+            $_data['cat_id'] = $data['cat_id'];
+
+        return self::$db->update(self::post, $_data);
     }
 
     public static function getInfoPost($post, $date_format = null)

@@ -134,6 +134,7 @@ class PostController extends LoginConfiguration
             'image',
             'hash_id',
             'title',
+            'cat_id',
             'summary',
             '!context',
             'tags',
