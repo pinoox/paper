@@ -14,6 +14,7 @@ namespace pinoox\app\com_pinoox_paper\service\app;
 
 use pinoox\app\com_pinoox_manager\component\Wizard;
 use pinoox\app\com_pinoox_paper\model\PostModel;
+use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\app\com_pinoox_paper\model\UserModel;
 use pinoox\component\Config;
 use pinoox\component\Dir;
@@ -39,6 +40,10 @@ class UpdateService implements ServiceInterface
                 ]);
             }
         }
+
+        $general = SettingsModel::get('general');
+        $general['count_rows'] = '10';
+        SettingsModel::save('general', $general);
     }
 
     private function updateDataBase()
