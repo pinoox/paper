@@ -14,6 +14,7 @@ return [
     'contact_message_received_successfully' => 'we have received your message successfully, thanks for your feedback',
     'error_to_send_contact' => 'sorry, there was an error sending the message',
     'tag' => 'tag',
+    'categories' => 'categories',
 
     /*********************************************************************************************************************
      * posts
