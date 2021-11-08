@@ -295,7 +295,7 @@ export default {
               });
             },
             action() {
-              vm.$parent.save();
+              vm.$parent.save(null,true);
             }
           },
           {

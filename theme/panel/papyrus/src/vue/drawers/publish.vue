@@ -207,8 +207,7 @@ export default {
   },
   methods: {
     changeStatus(status) {
-      this.$parent.enableHook();
-      this.$parent.save(status);
+      this.$parent.pushStatus(status);
     },
     cancelScheduling() {
       this.$parent.enableHook();
