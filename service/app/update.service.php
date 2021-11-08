@@ -22,7 +22,7 @@ use pinoox\component\User;
 use pinoox\model\FileModel;
 use pinoox\model\PinooxDatabase;
 
-class InstallService implements ServiceInterface
+class UpdateService implements ServiceInterface
 {
 
     public function _run()

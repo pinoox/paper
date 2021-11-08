@@ -184,7 +184,7 @@ export default {
       if ((!token || !this.isLogin() || !this._module('panel')) && (!this.$route.name || this.$route.name !== 'login')) {
         this._routerReplace({name: 'login'});
       } else if (this._module(path)) {
-        if (name === 'login' || name === 'splash') {
+        if (name === 'login' || path === 'panel/account' || name === 'splash') {
           this._routerReplace({name: 'dashboard'});
         } else {
           this._routerReplace(route_path);
