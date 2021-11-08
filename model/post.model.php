@@ -599,6 +599,6 @@ class PostModel extends PaperDatabase
     public static function getCountRows()
     {
         $countRows = setting('general.count_rows');
-        return !empty($countRows) && is_numeric($countRows) ? intval($countRows) : 0;
+        return !empty($countRows) && is_numeric($countRows) ? intval($countRows) : 1;
     }
 }
