@@ -17,6 +17,7 @@ namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Permission;
 use pinoox\app\com_pinoox_paper\model\GroupModel;
+use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\app\com_pinoox_paper\model\UserModel;
 use pinoox\component\Security;
 use pinoox\model\UserModel as UserModelCore;
@@ -113,5 +114,46 @@ class AccountController extends MasterConfiguration
         $user_id = User::get('user_id');
         $user = UserModel::fetch_by_id($user_id);
         return UserModel::get_info_user($user, true);
+    }
+
+    public function getAllSetting()
+    {
+        if (User::isLoggedIn() && Permission::module('panel')) {
+            $configs = SettingsModel::getAll();
+            $configs = !empty($configs) ? $configs : [];
+            Response::json($configs);
+        } else {
+            Response::json([]);
+        }
+    }
+
+    public function getUserSetting($state = null)
+    {
+        if (User::isLoggedIn() && Permission::module('panel')) {
+            $settings = UserModel::get_setting_data($state);
+            $settings = !empty($settings) ? $settings : null;
+            Response::json($settings);
+        } else {
+            Response::json(null);
+        }
+    }
+
+    public function saveUserSettings($state = null)
+    {
+        if (User::isLoggedIn() && Permission::module('panel')) {
+            $data = Request::inputOne('data', '', '!empty');
+
+            UserModel::save_setting_data($data, $state);
+            Response::json(rlang('post.save_successfully'), true);
+        } else {
+            Response::json([]);
+        }
+    }
+
+    public function logout()
+    {
+        User::logout(null, false);
+        Cookie::destroy('pinoox_user');
+        Response::json(null, true);
     }
 }

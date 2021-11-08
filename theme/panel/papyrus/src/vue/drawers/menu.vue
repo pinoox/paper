@@ -122,7 +122,7 @@ export default {
           link: 'panel/contact',
         },
         {
-          url: {name: 'templates'},
+          url: {name: 'template'},
           label: this.LANG.panel.templates,
           image: this._icons.image,
           customClass: 'icon stroke',
@@ -156,54 +156,6 @@ export default {
           customClass: 'icon',
           link: 'panel/profile',
         },
-        // {
-        //   url: {name: 'comments'},
-        //   label: this.LANG.panel.comments,
-        //   icon: 'fa fa-comments',
-        //   customClass: 'icon stroke',
-        //   link: 'panel/comment',
-        // },
-        // {
-        //   url: {name: 'contacts'},
-        //   label: this.LANG.panel.contacts,
-        //   image: this._icons.call,
-        //   customClass: 'icon stroke',
-        //   link: 'panel/contact',
-        // },
-        // {
-        //   url: {name: 'users'},
-        //   label: this.LANG.panel.users,
-        //   image: this._icons.users,
-        //   customClass: 'icon',
-        //   link: 'panel/user',
-        // },
-        // {
-        //   url: {name: 'profile'},
-        //   label: this.LANG.panel.profile,
-        //   icon: 'fal fa-address-card',
-        //   customClass: 'icon',
-        //   link: 'panel/profile',
-        // },
-        // {
-        //   url: {name: 'category'},
-        //   label: this.LANG.panel.category,
-        //   image: this._icons.category,
-        //   customClass: 'icon stroke',
-        //   link: 'panel/category',
-        // },
-        // {
-        //   url: {name: 'page'},
-        //   label: this.LANG.panel.list_pages,
-        //   icon: 'fal fa-file-alt',
-        //   link: 'panel/page',
-        // },
-        // {
-        //   url: {name: 'setting'},
-        //   label: this.LANG.panel.settings,
-        //   image: this._icons.setting,
-        //   customClass: 'icon stroke',
-        //   link: 'panel/setting',
-        // },
       ];
     },
     drawerOpen: {

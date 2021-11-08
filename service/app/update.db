@@ -1,0 +1,37 @@
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table user
+-- ----------------------------
+DROP TABLE IF EXISTS `{dbprefix}user`;
+CREATE TABLE `{dbprefix}user`  (
+  `user_id` int(0) UNSIGNED NOT NULL,
+  `group_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `setting_data` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Add columns
+-- ----------------------------
+ALTER TABLE `{dbprefix}category` ADD `cat_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL;
+ALTER TABLE `{dbprefix}category` ADD `image_id` int(0) NULL DEFAULT NULL;
+ALTER TABLE `{dbprefix}post` ADD `schedule_date` datetime NULL DEFAULT NULL;
+
+-- ----------------------------
+-- Foreign keys
+-- ----------------------------
+ALTER TABLE `{dbprefix}user`
+    ADD CONSTRAINT `{dbprefix}user_user_id` FOREIGN KEY (`user_id`) REFERENCES `pincore_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `{dbprefix}category`
+    ADD CONSTRAINT `{dbprefix}category_image_id` FOREIGN KEY (`image_id`) REFERENCES `pincore_file` (`file_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ----------------------------
+-- Clear tables
+-- ----------------------------
+DROP TABLE IF EXISTS `{dbprefix}user_setting`;
+
+
+SET FOREIGN_KEY_CHECKS = 1;

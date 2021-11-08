@@ -305,7 +305,7 @@
                 });
             },
             getMonthlyPosts() {
-                return this.$http.get(this.URL.API + 'post/getMonthly/').then((json) => {
+                return this.$http.get(this.URL.API + 'dashboard/getPostMonthly/').then((json) => {
                     this.monthlyPost = json.data.series;
                     this.monthlyOpts.xaxis.categories = json.data.date;
                 });

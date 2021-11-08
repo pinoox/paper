@@ -9,9 +9,12 @@ export default new Vuex.Store({
         checkLogin:false,
         LANG: PINOOX.LANG,
         user: {},
-        userSettings: {},
+        userSettings: {
+            paperSize:75,
+        },
         configs: {},
         isLoading: false,
+        isPrimaryLoading: false,
         isTransition: true,
         viewSettings:[],
         countTranslate:0,

@@ -23,6 +23,7 @@ function paper_footer()
 
 function posts($value, $option = [])
 {
+
     PostModel::where_post_type(PostModel::post_type);
     PostModel::where_status(PostModel::publish_status);
     $posts = PostModel::fetcher($value, $option);
@@ -43,13 +44,16 @@ function hot_tags($limit = 10)
     return PostModel::hot_tags($limit);
 }
 
-function category($category_id = null, $into = false)
+function category($key = null, $into = false)
 {
     if ($into) {
-        CategoryModel::where_parent($category_id);
+        $cat = CategoryModel::fetch_by_id_or_key($key);
+        if (!$cat)
+            return null;
+        CategoryModel::where_parent($cat['cat_id']);
         return CategoryModel::fetch_all();
     } else {
-        return CategoryModel::fetch_by_id($category_id);
+        return CategoryModel::fetch_by_id_or_key($key);
     }
 }
 
@@ -59,9 +63,9 @@ function category_tree()
     return CategoryModel::tree($category);
 }
 
-function breadcrumb($category_id)
+function breadcrumb($key)
 {
-    return CategoryModel::getBreadcrumb($category_id);
+    return CategoryModel::get_breadcrumb($key);
 }
 
 function paper_menu($items = null)

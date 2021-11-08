@@ -74,9 +74,9 @@ class UserModel extends PaperDatabase
             self::$db->where('status', $status);
     }
 
-    public static function fetch_by_app()
+    public static function fetch_by_app($app = null)
     {
-        $app = AppProvider::get('package-name');
+        $app = !empty($app)? $app : AppProvider::get('package-name');
         self::$db->where('app', $app);
         return self::$db->getOne(self::user);
     }
@@ -116,6 +116,14 @@ class UserModel extends PaperDatabase
         ]);
     }
 
+    public static function update_group_users($old_group_key,$new_group_key)
+    {
+        self::$db->where('group_key', $old_group_key);
+        return self::$db->update(self::user_paper, [
+            'group_key' => $new_group_key,
+        ]);
+    }
+
     public static function insert_self($form)
     {
         return self::$db->insert(self::user_paper, [
@@ -136,7 +144,7 @@ class UserModel extends PaperDatabase
     {
         $user_id = !empty($user_id) ? $user_id : User::get('user_id');
         $user = self::fetch_by_id($user_id);
-        $setting = !empty($user) ? HelperString::decodeJson($user['setting_data']) : [];
+        $setting = !empty($user) ? HelperString::decodeJson($user['setting_data']) : null;
 
         if (!is_null($state))
             return isset($setting[$state]) ? $setting[$state] : null;
@@ -148,7 +156,7 @@ class UserModel extends PaperDatabase
     {
         $user_id = !empty($user_id) ? $user_id : User::get('user_id');
         $user_setting = self::fetch_by_id($user_id);
-        $setting = ($user_setting) ? HelperString::decodeJson($user_setting['json_data']) : [];
+        $setting = ($user_setting) ? HelperString::decodeJson($user_setting['setting_data']) : [];
         if (!is_null($state)) {
             if (isset($setting[$state]))
                 unset($setting[$state]);
@@ -170,7 +178,7 @@ class UserModel extends PaperDatabase
     public static function update_setting($user_id, $data)
     {
         self::$db->where('user_id', $user_id);
-        return self::$db->update(self::user, [
+        return self::$db->update(self::user_paper, [
             'setting_data' => HelperString::encodeJson($data),
         ]);
     }
@@ -198,5 +206,19 @@ class UserModel extends PaperDatabase
         }
 
         return $result;
+    }
+
+    public static function where_search($keyword)
+    {
+        if (empty($keyword)) return;
+        if ($keyword == rlang('panel.active')) $status = UserModelCore::active;
+        else if ($keyword == rlang('panel.suspend')) $status = UserModelCore::suspend;
+        else $status = false;
+
+        $k = '%' . strtolower($keyword) . '%';
+        if ($status !== false)
+            self::$db->where('(`status` LIKE ? )', [$status]);
+        else
+            self::$db->where('(LOWER(fname) LIKE ? OR LOWER(lname) LIKE ? OR LOWER(email) LIKE ? )', [$k, $k, $k]);
     }
 }

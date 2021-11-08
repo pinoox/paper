@@ -14,7 +14,10 @@ import SettingHome from '../vue/pages/setting/home.vue';
 import SettingConfig from '../vue/pages/setting/config.vue';
 import Template from '../vue/pages/template/main.vue';
 import TemplateHome from '../vue/pages/template/home.vue';
-import Category from '../vue/pages/category.vue';
+import Category from '../vue/pages/category/category-main.vue';
+import CategoryHome from '../vue/pages/category/category-home.vue';
+import CategoryNode from '../vue/pages/category/category-node.vue';
+import CategoryForm from '../vue/pages/category/category-form.vue';
 import Group from '../vue/pages/group/group-home.vue';
 import Permissions from '../vue/pages/permission/permission-home.vue';
 import Error from '../vue/pages/error.vue';
@@ -106,8 +109,31 @@ export const routes = [
     },
     {
         path: PINOOX.URL.BASE + '/category',
-        name: 'category',
         component: Category,
+        children: [
+            {
+                path: 'node',
+                name: 'category-node',
+                component: CategoryNode,
+            },
+            {
+                path: 'add',
+                name: 'category-add',
+                component: CategoryForm,
+            },
+            {
+                path: 'edit/:cat_id',
+                name: 'category-edit',
+                component: CategoryForm,
+                props: true,
+            },
+            {
+                path: ':cat_id?',
+                name: 'category',
+                component: CategoryHome,
+                props: true,
+            },
+        ],
     },
     {
         path: PINOOX.URL.BASE + '/theme/:theme_name/setting',

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <div class="blur-loading animate__animated animate__fadeIn animate__faster" v-show="_isLoading">
+    <div class="blur-loading animate__animated animate__fadeIn animate__faster" v-show="_isLoading && _isPrimaryLoading">
       <div class="spinner"></div>
     </div>
     <notifications group="app" classes="notification">
@@ -103,25 +103,53 @@ export default {
       this.$http.interceptors.request.use((request) => {
 
         let isLoading = true;
+        let isPrimaryLoading = true;
         if (request.params !== undefined && request.params.isLoading !== undefined) {
           isLoading = request.params.isLoading;
         }
-        if (isLoading) {
+
+        if (request.params !== undefined && request.params.isPrimaryLoading !== undefined) {
+          isPrimaryLoading = request.params.isPrimaryLoading;
+        }
+
+
+        if(isLoading || isPrimaryLoading)
+        {
           this.numProcessing++;
+        }
+
+        if (isLoading) {
           this._isLoading = true;
         }
+
+        if(isPrimaryLoading)
+        {
+          this._isPrimaryLoading = true;
+        }
+
         request.headers.Authorization = this.tokenAuth();
         request.isLoading = isLoading;
+        request.isPrimaryLoading = isPrimaryLoading;
 
         return request;
       });
 
       this.$http.interceptors.response.use((response) => {
-        if (response.config.isLoading) {
+
+        if(response.config.isLoading || response.config.isPrimaryLoading)
           this.numProcessing--;
+
+        if (response.config.isLoading) {
           let isStop = (this.numProcessing === 0);
           if (isStop) {
             this._isLoading = false;
+          }
+        }
+
+        if (response.config.isPrimaryLoading) {
+          let isStop = (this.numProcessing === 0);
+          if (isStop) {
+            this._isPrimaryLoading = false;
           }
         }
         return response;
@@ -156,7 +184,7 @@ export default {
       if ((!token || !this.isLogin() || !this._module('panel')) && (!this.$route.name || this.$route.name !== 'login')) {
         this._routerReplace({name: 'login'});
       } else if (this._module(path)) {
-        if (name === 'login' || name === 'splash') {
+        if (name === 'login' || path === 'panel/account' || name === 'splash') {
           this._routerReplace({name: 'dashboard'});
         } else {
           this._routerReplace(route_path);

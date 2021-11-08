@@ -21,27 +21,68 @@
     </div>
 </div>
 <div class="header">
-    <div class="drawer-menu"><i class="fas fa-bars"></i></div>
-    <div class="logo">
-        <a href="<?php echo $_app; ?>">
-            <img src="<?php echo furl(setting('general.site_logo')); ?>" alt="logo">
-            <div class="title">
-                <h1><?php echo setting('general.site_title'); ?></h1>
-                <h2><?php echo setting('general.site_subtitle'); ?></h2>
-            </div>
-        </a>
+    <div class="toolbar">
+        <div class="drawer-menu"><i class="fas fa-bars"></i></div>
+        <div class="logo">
+            <a href="<?php echo $_app; ?>">
+                <img src="<?php echo furl(setting('general.site_logo')); ?>" alt="logo">
+                <div class="title">
+                    <h1><?php echo setting('general.site_title'); ?></h1>
+                    <h2><?php echo setting('general.site_subtitle'); ?></h2>
+                </div>
+            </a>
+        </div>
+        <div class="menu">
+            <?php paper_menu(); ?>
+        </div>
+        <div class="left-side">
+            <a href="<?php echo $_app ?>contact" class="action-item"><i class="fa fa-phone"></i></a>
+            <span id="ic-search" class="action-item"><i class="fa fa-search"></i></span>
+            <a href="<?php echo $_app ?>panel/account" id="ic-login" class="action-item"><i
+                        class="fa fa-user<?php echo isLoggedIn() ? '-cog' : ''; ?>"></i></a>
+        </div>
     </div>
-    <div class="menu">
-        <?php paper_menu(); ?>
-    </div>
-    <div class="left-side">
-        <a href="<?php echo $_app ?>contact" class="action-item"><i class="fa fa-phone"></i></a>
-        <span id="ic-search" class="action-item"><i class="fa fa-search"></i></span>
-        <a href="<?php echo $_app ?>panel/account" id="ic-login" class="action-item"><i
-                    class="fa fa-user<?php echo isLoggedIn() ? '-cog' : ''; ?>"></i></a>
+    <div class="category">
+        <?php $tree = category_tree(); ?>
+        <?php if (!empty($tree)) { ?>
+            <?php foreach ($tree as $t) { ?>
+                <div class="item">
+                    <a href="<?php echo url('search?cat=') . $t['cat_key'] ?>"><?php echo $t['cat_name'] ?></a>
+                    <?php if (!empty($t['children'])) { ?>
+                        <div class="sub">
+                            <?php foreach ($t['children'] as $c) { ?>
+                                <div class="item"><a href="<?php echo url('search?cat=') . $c['cat_key'] ?>"><?php echo $c['cat_name'] ?></a></div>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+        <?php } ?>
     </div>
 </div>
 <div class="mini-menu">
     <?php paper_menu(); ?>
+
+    <div class="drawer-category">
+        <div class="caption"><?php lang('front.categories'); ?></div>
+        <div class="list">
+            <?php if (!empty($tree)) { ?>
+                <?php foreach ($tree as $t) { ?>
+                    <div class="item">
+                        <a href="<?php echo url('search?cat=') . $t['cat_key'] ?>"><?php echo $t['cat_name'] ?></a>
+                        <?php if (!empty($t['children'])) { ?>
+                            <div class="sub">
+                                <?php foreach ($t['children'] as $c) { ?>
+                                    <div class="item"><a href="<?php echo url('search?cat=') . $c['cat_key'] ?>"><?php echo $c['cat_name'] ?></a></div>
+                                <?php } ?>
+                            </div>
+                            <div class="arrow"><i class="fa fa-chevron-down"></i></div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+        </div>
+
+    </div>
 </div>
 <div class="overlay"></div>

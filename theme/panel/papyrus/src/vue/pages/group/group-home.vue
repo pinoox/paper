@@ -140,7 +140,10 @@ export default {
       this._confirm(this.LANG.panel.are_you_sure_to_delete, () => {
         this.$http.post(this.URL.API + 'group/delete/' + row.group_key).then((json) => {
           if (this._messageResponse(json.data)) {
-            this.$delete(this.groups, index)
+            let _index = this.groups.findIndex((group) => {
+              return group.group_key === row.group_key;
+            });
+            this.$delete(this.groups, _index);
           }
         });
       });

@@ -5,16 +5,21 @@
         <div v-if="!!post_id" @click="openDrawer('publish')" class="item publish-item">
           {{ !isPageType ? LANG.post.post_publication : LANG.post.page_publication }}
         </div>
-        <div class="item" @click="save()">
+        <div class="item" @click="pushStatus('publish',true)"
+             v-if="status === 'publish' && !isSyncedContent">
+         <i class="fa fa-level-up"></i> {{ LANG.post.sync }}
+        </div>
+        <div class="item" @click="save(null,true)">
           {{ LANG.post.save }}
         </div>
-        <div v-if="!!post_id && post_type==='post'" class="item" @click="openDrawer('category')">
-          {{ LANG.post.category }} {{ category != null ? '(' + category.cat_name + ')' : '' }}
+
+        <div v-if="post_type==='post'" class="item" @click="openDrawer('category')">
+          {{ LANG.post.category }} {{ params.category != null ? '(' + params.category.cat_name + ')' : '' }}
         </div>
         <div class="item" @click="drawerName = 'image-manager'">
           {{ LANG.post.images }}
         </div>
-        <router-link v-if="!!post_id && post_type==='post'"
+        <router-link v-if="!!post_id && post_type==='post' && _module('panel/posts/stats')"
                      :to="{name:'post-stats',params:{post_id:post.post_id}}" class="item">
           {{ LANG.post.stats }}
         </router-link>
@@ -25,6 +30,13 @@
         <div v-if="!!post_id" class="item" @click="drawerName = 'settings'">
           {{ LANG.post.settings }}
         </div>
+        <a v-if="!!post_id && post_type==='post' && !!post.post_key && status === 'publish'"
+           :href="URL.FRONT + 'post/' + post_id +'/'+post.post_key" target="_blank"
+           class="item">{{ LANG.post.post_view }}</a>
+
+        <a v-if="!!post_id && post_type === 'page' && !!post.post_key && status === 'publish'"
+           :href="URL.FRONT + post.post_key" target="_blank"
+           class="item">{{ LANG.post.post_view }}</a>
       </div>
     </div>
     <pulled-drawer v-if="openHistory" @onClose="openHistory=false"></pulled-drawer>
@@ -44,11 +56,11 @@
       </editor>
     </div>
     <publish @onClose="drawerName=null" :open="drawerName==='publish'"></publish>
-    <category v-if="post_type==='post'"
-              :open="drawerName==='category'"
-              :selected="category"
-              @onClose="drawerName=null"
-              @onSelected="setCategory"></category>
+    <category-select v-if="post_type==='post'"
+                     :open="drawerName==='category'"
+                     v-model="params.category"
+                     type="off"
+                     @onClose="drawerName=null"></category-select>
     <image-manager @onClose="drawerName = null" :open="drawerName === 'image-manager'"></image-manager>
     <settings @close="drawerName = null" :open="drawerName === 'settings'"></settings>
     <preview @close="drawerName = null" :values="preview" :open="drawerName === 'preview'"></preview>
@@ -60,15 +72,15 @@
 
 import Editor from "../components/editor.vue";
 import Publish from "../drawers/publish.vue";
-import Category from "../drawers/category.vue";
 import ImageManager from "../drawers/image-manager.vue";
 import Settings from "../drawers/settings.vue";
 import Preview from "../drawers/preview.vue";
 import PulledDrawer from "../components/pulled-drawer.vue";
+import CategorySelect from "../drawers/category-select.vue";
 
 export default {
   name: 'write',
-  components: {Preview, Editor, Category, Publish, ImageManager, Settings, PulledDrawer},
+  components: {CategorySelect, Preview, Editor, Publish, ImageManager, Settings, PulledDrawer},
   beforeRouteLeave(to, from, next) {
     if (this.isSave) {
       next();
@@ -96,6 +108,7 @@ export default {
       countStatus: 0,
       temp_post_id: null,
       preview: {},
+      lockSave: false,
       historyItems: [],
       openHistory: false,
       isSave: true,
@@ -117,8 +130,8 @@ export default {
         schedule_date: null,
         words: 0,
         hook: 'disable',
+        category: null,
       },
-      category: null,
       images: [],
       status: 'draft',
       settings: {
@@ -128,6 +141,7 @@ export default {
       message: null,
       timeSleep: 30,
       time: 0,
+      isImageLoading: false,
     };
   },
   computed: {
@@ -145,7 +159,18 @@ export default {
           set(val) {
             this.temp_post_id = val;
           }
-        }
+        },
+    isSyncedContent() {
+      let post = this.post;
+      let editor = this.params.editor;
+      return JSON.stringify({
+        title: !!post.title ? post.title : '',
+        context: !!post.context ? post.context : '',
+      }) === JSON.stringify({
+        title: !!editor.title ? editor.title : '',
+        context: !!editor.context ? editor.context : '',
+      });
+    },
   },
   created() {
     this.setPostId();
@@ -209,8 +234,9 @@ export default {
         this.uploadFiles(f);
       });
     },
-    selectFile() {
+    selectFile(isImageLoading = true) {
       this.$refs.file.click();
+      this.isImageLoading = isImageLoading;
     },
     handleFileInput(e) {
       let files = e.target.files;
@@ -226,6 +252,9 @@ export default {
       let xhr = this.$http.CancelToken.source();
       this.$http.post(this.URL.API + 'post/imageUpload/', data, {
         cancelToken: xhr.token,
+        params: {
+          isPrimaryLoading: this.isImageLoading,
+        },
         onUploadProgress: (progressEvent) => {
           let percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
         }
@@ -267,6 +296,10 @@ export default {
 
       this.drawerName = drawerName;
     },
+    pushStatus(status,isManual = false) {
+      this.enableHook();
+      this.save(status,isManual);
+    },
     getImages() {
       let hash_id = this.params.hash_id;
       return this.$http.get(this.URL.API + 'post/getImages/' + hash_id).then((json) => {
@@ -292,9 +325,9 @@ export default {
           context: json.data.draft_context,
         });
         this.params.tags = this.createTags(json.data.tags);
-        this.category = json.data.category;
         this.params.summary = !!json.data.summary ? json.data.summary : '';
         this.params.post_key = !!json.data.post_key ? json.data.post_key : '';
+        this.params.category = !!json.data.category ? json.data.category : null;
         this.params.schedule_date = !!json.data.schedule_date ? json.data.schedule_date : null;
         this.status = !!json.data.status ? json.data.status : 'draft';
         this.settings.comment_status = !!json.data.comment_status ? json.data.comment_status : 'open';
@@ -332,7 +365,11 @@ export default {
       this.post.context = this.params.editor.context;
       this.isSynced = true;
     },
-    save(status = null) {
+    save(status = null, isManual = false) {
+      if (this.lockSave)
+        return;
+
+      this.lockSave = true;
       let params = this.getFormData(this.params);
       this.disableHook();
       if (!!status)
@@ -341,6 +378,7 @@ export default {
       this.message = this.LANG.panel.saving;
 
       return this.$http.post(this.URL.API + 'post/save', params, this.offLoading).then((json) => {
+        this.lockSave = false;
         if (json.data.status) {
           this.isSave = true;
           this.replaceUrl(json.data.result);
@@ -348,6 +386,11 @@ export default {
           this.message = this.LANG.panel.saved + ' (' + this._timeNow() + ')';
           this.changeStatus(status);
           this.time = 0;
+
+          if (isManual) {
+            let message = json.data.message;
+            this._notify('success', message, 'app');
+          }
         } else {
           this.message = json.data.message;
           this._notify('error', json.data.message, 'app');
@@ -388,6 +431,10 @@ export default {
 
         if (key === 'tags') {
           this.addFormTags(params[key], formData);
+        }
+        if (key === 'category') {
+          let cat_id = !!value && !!value.cat_id ? value.cat_id : '';
+          formData.append('cat_id', cat_id);
         } else if (key === 'image') {
           let image = !!value.file_id ? value.file_id : '';
           formData.append('image', image);
@@ -404,7 +451,7 @@ export default {
       return formData;
     },
     setCategory(val) {
-      this.category = val;
+      this.params.category = val;
     },
     openFullscreen() {
       let ckBody = $('#write').find('.ck-body-wrapper');

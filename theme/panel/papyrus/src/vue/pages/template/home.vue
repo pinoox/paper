@@ -30,7 +30,7 @@
                             <div v-else class="btn-action" @click="activate(t)">
                                 <i class="fa fa-check"></i>
                             </div>
-                            <div @click="openTemplateConfig(t)" class="btn-action">
+                            <div v-if="_module('panel/setting')" @click="openTemplateConfig(t)" class="btn-action">
                                 <i class="fa fa-cog"></i>
                             </div>
                         </div>

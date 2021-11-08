@@ -13,6 +13,7 @@
 namespace pinoox\app\com_pinoox_paper\controller\api\panel\v1;
 
 use pinoox\app\com_pinoox_paper\component\Helper;
+use pinoox\app\com_pinoox_paper\component\Permission;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\PaperDatabase;
 use pinoox\app\com_pinoox_paper\model\PostModel;
@@ -33,6 +34,9 @@ class PostController extends LoginConfiguration
 {
     public function get($post_id, $post_type = null)
     {
+        if ($post_type == PostModel::post_type)
+            $this->checkByUser();
+
         PostModel::where_post_type($post_type);
         $post = PostModel::post_draft_fetch_by_id($post_id);
         $post = PostModel::getInfoPost($post);
@@ -40,8 +44,22 @@ class PostController extends LoginConfiguration
         Response::json($post);
     }
 
+    private function checkByUser()
+    {
+        $user_id = User::get('user_id');
+        if (!Permission::option('all_posts')) {
+            PostModel::where_user_id($user_id);
+        }
+    }
+
     public function getPostHistory($post_id)
     {
+        $this->checkByUser();
+        $post = PostModel::fetch_by_id($post_id);
+        if (!$post) {
+            $this->error();
+        }
+
         $items = PostModel::fetch_history_by_post_id($post_id, 30);
         $items = array_map(function ($item) {
             $item['approx_insert_date'] = Date::j('l d F Y (H:i)', $item['insert_date']);
@@ -65,7 +83,7 @@ class PostController extends LoginConfiguration
         $posts = PostModel::fetch_all_posts($pagination->getArrayLimit());
 
         $posts = array_map(function ($post) {
-            return $post = PostModel::getInfoPost($post);
+            return PostModel::getInfoPost($post);
         }, $posts);
 
         Response::json(['posts' => $posts, 'pages' => $pagination->getInfoPage()['page']]);
@@ -73,6 +91,9 @@ class PostController extends LoginConfiguration
 
     private function filterSearch($form)
     {
+        if ($form['type'] == PostModel::post_type)
+            $this->checkByUser();
+
         PostModel::where_post_type($form['type']);
         PostModel::search_keyword($form['keyword']);
         PostModel::where_status($form['status']);
@@ -81,6 +102,7 @@ class PostController extends LoginConfiguration
 
     public function getLatestPosts()
     {
+        $this->checkByUser();
         $posts = PostModel::fetch_all(10);
 
         $posts = array_map(function ($post) {
@@ -112,6 +134,7 @@ class PostController extends LoginConfiguration
             'image',
             'hash_id',
             'title',
+            'cat_id',
             'summary',
             '!context',
             'tags',
@@ -139,7 +162,7 @@ class PostController extends LoginConfiguration
         }
 
         if (!empty($input['schedule_date']) && Lang::current() == 'fa') {
-            $input['schedule_date'] = Date::g('Y-m-d H:i:s', $input['schedule_date'], true,date_default_timezone_get(),'Asia/Tehran');
+            $input['schedule_date'] = Date::g('Y-m-d H:i:s', $input['schedule_date'], true, date_default_timezone_get(), 'Asia/Tehran');
         }
 
         // save data

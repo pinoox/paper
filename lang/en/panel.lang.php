@@ -63,7 +63,6 @@ return [
     'users' => 'users',
     'posts' => 'posts',
     'menus' => 'menus',
-    'category' => 'category',
     'settings' => 'settings',
     'theme' => 'template',
     'theme_settings' => 'template settings',
@@ -115,6 +114,7 @@ return [
     'added_successfully' => 'added successfully',
     'edited_successfully' => 'edited successfully',
     'err_empty_name_list' => 'Last name should not be empty',
+    'saved_successfully' => 'saved successfully',
 
     /* contacts */
     'search_in_contacts' => 'search in contacts ...',
@@ -134,5 +134,30 @@ return [
         'fileSize' => 'The file size exceeds the limit',
         'fileType' => 'This file type is not supported.',
         'aspect' => 'Landscape/Portrait',
-    ]
+    ],
+
+    /** category **/
+    'category_info' => 'Select a category',
+    'enter_cat_name' => 'Enter the title',
+    'add_new_category' => 'Add new category',
+    'category' => 'category',
+    'all_categories' => 'All categories',
+    'manage_category' => 'Manage categories',
+    'cat_name_is_duplicated' => 'This title has already been registered',
+    'cat_key_is_duplicated' => 'This keyword is already registered',
+    'add_category_by_click' => 'You can add new categories by tapping the edit button',
+    'edit_category_info' => 'You can specify subcategories by dragging and dropping each category',
+    'return_to_selection' => 'Select a category',
+    'expand_all' => 'Open all',
+    'collapse_all' => 'Close all',
+    'edit_category' => 'Edit category',
+    'add_category' => 'Add new category',
+    'category_name' => 'Category name',
+    'category_image' => 'Category image',
+    'category_key' => 'Category key',
+    'category_parent' => 'Category parent',
+    'back_to_category' => 'Back to category',
+    'unselect' => 'unselect',
+    'tree_view' => 'Tree view',
+    'list_view' => 'List view',
 ];

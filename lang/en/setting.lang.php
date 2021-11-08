@@ -46,4 +46,5 @@ return [
     'header_code' => 'Add code to head',
     'footer_code' => 'Add code to footer',
     'auto_approval_comment' => 'Automatic approval of comments',
+    'count_rows_posts' => 'Number of posts per page',
 ];

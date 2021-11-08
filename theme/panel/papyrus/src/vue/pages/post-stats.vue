@@ -310,10 +310,9 @@
             this.getPost().then(() => {
                 return this.getHasStats();
             }).then((hasStats) => {
-                if (!hasStats) return false;
-
-                this.getMonthly().then(() => {
-                    return this.getStats();
+                this.getStats().then(() => {
+                  if (!hasStats) return false;
+                  return this.getMonthly();
                 });
             });
         },

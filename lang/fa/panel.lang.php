@@ -62,7 +62,6 @@ return [
     'users' => 'کاربران',
     'posts' => 'نوشته ها',
     'pages' => 'برگه ها',
-    'category' => 'دسته بندی',
     'menus' => 'فهرست',
     'settings' => 'تنظیمات',
     'theme' => 'قالب',
@@ -115,6 +114,7 @@ return [
     'added_successfully' => 'با موفقیت اضافه شد',
     'edited_successfully' => 'با موفقیت ویرایش شد',
     'err_empty_name_list' => 'نام لیست نباید خالی باشد',
+    'saved_successfully' => 'با موفقیت ذخیره شد',
 
     /* contacts */
     'search_in_contacts' => 'جست و جو بین تماس ها...',
@@ -134,5 +134,30 @@ return [
         'fileSize' => 'اندازه فایل بیشتر از حد مجاز است',
         'fileType' => 'این نوع فایل پشتیبانی نمی شود',
         'aspect' => 'افقی / عمودی',
-    ]
+    ],
+
+    /** category **/
+    'category_info' => 'یک دسته را انتخاب کنید',
+    'enter_cat_name' => 'عنوان را وارد کنید',
+    'add_new_category' => 'افزودن دسته بندی جدید',
+    'category' => 'دسته بندی',
+    'all_categories' => 'همه دسته ها',
+    'manage_category' => 'دسته بندی ها را مدیریت کنید',
+    'cat_name_is_duplicated' => 'این عنوان قبلا ثبت شده است',
+    'cat_key_is_duplicated' => 'این نام کلیدی قبلا ثبت شده است',
+    'add_category_by_click' => 'با زدن دکمه ویرایش می‌تو‌‌انید دسته های جدید را اضافه کنید',
+    'edit_category_info' => 'با کشیدن و رها کردن هر دسته می‌توانید زیر دسته ها را تعیین کنید',
+    'return_to_selection' => 'انتخاب دسته',
+    'expand_all' => 'باز کردن همه',
+    'collapse_all' => 'بستن همه',
+    'edit_category' => 'ویرایش دسته',
+    'add_category' => 'افزودن دسته جدید',
+    'category_name' => 'نام دسته',
+    'category_image' => 'تصویر دسته',
+    'category_key' => 'نام کلیدی دسته',
+    'category_parent' => 'دسته والد',
+    'back_to_category' => 'بازگشت به دسته بندی',
+    'unselect' => 'لغو انتخاب',
+    'tree_view' => 'نمای درختی',
+    'list_view' => 'نمای لیستی',
 ];

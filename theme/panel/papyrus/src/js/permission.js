@@ -51,7 +51,7 @@ export default {
                                     ],
                                 },
                                 {
-                                    id: 'panel/all_posts',
+                                    id: 'all_posts',
                                     type: 'option',
                                     text: this.LANG.post.access_all_posts,
                                 },

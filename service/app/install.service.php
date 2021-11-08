@@ -12,8 +12,10 @@
 
 namespace pinoox\app\com_pinoox_paper\service\app;
 
+use pinoox\app\com_pinoox_manager\component\Wizard;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\UserModel;
+use pinoox\model\UserModel as UserModelCore;
 use pinoox\component\interfaces\ServiceInterface;
 use pinoox\component\User;
 use pinoox\model\FileModel;
@@ -23,6 +25,20 @@ class InstallService implements ServiceInterface
 
     public function _run()
     {
+        $user = UserModel::fetch_by_app();
+        if (!$user) {
+            $package_name = app('package-name');
+            $user = UserModel::fetch_by_app('com_pinoox_manager');
+            if ($user) {
+                UserModelCore::copy($user['user_id'], $package_name);
+            }
+        }
+
+        UserModel::insert_self([
+            'user_id' => $user['user_id'],
+            'group_key' => 'administrator',
+        ]);
+
         $hash_id = 'bt3a3w';
 
         // add image
@@ -51,7 +67,6 @@ class InstallService implements ServiceInterface
         $characters = rlang('db.welcome_post.characters');
         $status = PostModel::publish_status;
 
-        $user = UserModel::fetch_by_app();
         $data = [
             'title' => $title,
             'context' => $context,
@@ -82,6 +97,7 @@ class InstallService implements ServiceInterface
             'words' => rlang('db.about_page.words'),
             'status' => $status,
             'post_type' => PostModel::page_type,
+            'post_key' => 'about',
             'image' => null,
         ];
 
