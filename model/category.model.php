@@ -188,7 +188,7 @@ class CategoryModel extends PaperDatabase
         return self::build_parent($parent, $path);
     }
 
-    public static function fetch_all_by_children($cat_id)
+    public static function fetch_all_by_parent_id($cat_id)
     {
         self::$db->where('c.parent_id', $cat_id);
         return self::$db->get(self::category . ' c');
@@ -196,7 +196,8 @@ class CategoryModel extends PaperDatabase
 
     public static function fetch_all_ids_children_deeper($cat_id, &$ids = null)
     {
-        $child = self::fetch_all_by_children($cat_id);
+        $child = self::fetch_all_by_parent_id($cat_id);
+
         if (!empty($child)) {
             $cat_ids = array_column($child, 'cat_id');
             foreach ($cat_ids as $c) $ids[] = $c;
@@ -242,7 +243,6 @@ class CategoryModel extends PaperDatabase
         if ($items) {
             self::get_all_by_closet($items, $result);
             $result = array_values(array_filter($result));
-            // $result = CategoryModel::tree($result);
         }
 
         return $result;
@@ -272,5 +272,18 @@ class CategoryModel extends PaperDatabase
     {
         self::$db->where('c.cat_id', $ids, 'IN');
         return self::$db->get(self::category . ' c');
+    }
+
+
+    public static function fetch_all_child_ids($cat_id, &$results)
+    {
+        $results[] = $cat_id;
+        $children= self::fetch_all_by_parent_id($cat_id);
+        $count = count($children);
+        if ($count > 0) {
+            for ($i = 0; $i < $count; $i++) {
+                self::fetch_all_child_ids($children[$i]['cat_id'], $results);
+            }
+        }
     }
 }

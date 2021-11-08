@@ -12,6 +12,7 @@
 namespace pinoox\app\com_pinoox_paper\controller;
 
 use pinoox\app\com_pinoox_paper\component\TemplateHelper;
+use pinoox\app\com_pinoox_paper\model\CategoryModel;
 use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
@@ -87,7 +88,7 @@ class MainController extends MasterConfiguration
         $count = posts('all', [
             'count' => true,
         ]);
-
+ 
         $countRows = PostModel::getCountRows();
         $pagination = new Pagination($count, $countRows);
         $pagination->setCurrentPage($page);
@@ -102,19 +103,27 @@ class MainController extends MasterConfiguration
 
     private function filterSearch($form)
     {
+
         if (isset($form['tag']))
             PostModel::where_tag_name($form['tag']);
         if (isset($form['q']))
             PostModel::where_search($form['q']);
+        if (isset($form['cat'])) {
+            $cat = CategoryModel::fetch_by_key($form['cat']);
+            $ids = [];
+            CategoryModel::fetch_all_child_ids($cat['cat_id'], $ids);
+            PostModel::where_category_ids($ids);
+        }
+
     }
 
     public function search($page = 1)
     {
-        $form = Request::get('q,tag', null, '!empty', true);
+        $form = Request::get('q,tag,cat', null, '!empty', true);
 
         $query = Url::queryString();
-        $query = !empty($query) ? '?' . $query : $query;
 
+        $query = !empty($query) ? '?' . $query : $query;
 
         $data = $this->getPosts($page, $form);
 
@@ -125,7 +134,6 @@ class MainController extends MasterConfiguration
             $title .= " (" . $form['q'] . ")";
 
         TemplateHelper::title($title);
-
 
         self::$template->set('fields', $form);
         self::$template->set('count', $data['count']);

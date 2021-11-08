@@ -530,6 +530,13 @@ class PostModel extends PaperDatabase
 
     }
 
+    public static function where_category_ids($ids)
+    {
+        if (!is_null($ids)) {
+            self::$db->where('p.cat_id', $ids, 'IN');
+        }
+    }
+
     public static function hot_tags($limit = null)
     {
         self::$db->join(self::tag . ' t', 't.tag_id=pt.tag_id', 'INNER');

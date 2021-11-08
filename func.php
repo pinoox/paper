@@ -23,6 +23,7 @@ function paper_footer()
 
 function posts($value, $option = [])
 {
+
     PostModel::where_post_type(PostModel::post_type);
     PostModel::where_status(PostModel::publish_status);
     $posts = PostModel::fetcher($value, $option);
@@ -61,7 +62,7 @@ function category_tree()
 
 function breadcrumb($category_id)
 {
-    return CategoryModel::getBreadcrumb($category_id);
+    return CategoryModel::get_breadcrumb($category_id);
 }
 
 function paper_menu($items = null)
