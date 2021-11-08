@@ -58,10 +58,31 @@
                 </div>
             <?php } ?>
         <?php } ?>
-
     </div>
 </div>
 <div class="mini-menu">
     <?php paper_menu(); ?>
+
+    <div class="drawer-category">
+        <div class="caption"><?php lang('front.categories'); ?></div>
+        <div class="list">
+            <?php if (!empty($tree)) { ?>
+                <?php foreach ($tree as $t) { ?>
+                    <div class="item">
+                        <a href="<?php echo url('search?cat=') . $t['cat_key'] ?>"><?php echo $t['cat_name'] ?></a>
+                        <?php if (!empty($t['children'])) { ?>
+                            <div class="sub">
+                                <?php foreach ($t['children'] as $c) { ?>
+                                    <div class="item"><a href="<?php echo url('search?cat=') . $c['cat_key'] ?>"><?php echo $c['cat_name'] ?></a></div>
+                                <?php } ?>
+                            </div>
+                            <div class="arrow"><i class="fa fa-chevron-down"></i></div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+        </div>
+
+    </div>
 </div>
 <div class="overlay"></div>

@@ -6,7 +6,7 @@ import './components/comment';
 import './components/contact';
 
 $(document).ready(function () {
-    let align  = document.body.className ==='rtl'?'Right':'Left';
+    let align = document.body.className === 'rtl' ? 'Right' : 'Left';
     $('.owl-slider').owlCarousel({
         rtl: true,
         margin: 50,
@@ -44,16 +44,17 @@ $(document).ready(function () {
     function isMenuOpen() {
         return $('.mini-menu').is(':visible');
     }
+
     function showMenu() {
-        $('.mini-menu').addClass('animated faster slideIn'+align).show();
+        $('.mini-menu').addClass('animated faster slideIn' + align).show();
         $('.drawer-menu').find('i').removeClass('fas fa-bars').addClass('fa fa-times');
         $('.overlay').show();
     }
 
     function hideMenu() {
-        $('.mini-menu').removeClass('animated faster slideIn'+align).addClass('animated faster slideOut'+align)
+        $('.mini-menu').removeClass('animated faster slideIn' + align).addClass('animated faster slideOut' + align)
             .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd onAnimation', function () {
-                $('.mini-menu').removeClass('animated faster slideOut'+align).hide();
+                $('.mini-menu').removeClass('animated faster slideOut' + align).hide();
             });
         $('.drawer-menu').find('i').removeClass('fa fa-times').addClass('fas fa-bars');
         $('.overlay').hide();
@@ -75,6 +76,7 @@ $('#close-search').on('click', function () {
         $('.search-modal').removeClass('fadeIn');
     });
 });
+
 function animateCSS(element, animationName, callback) {
     const node = document.querySelector(element);
     node.classList.add('animated', animationName);
@@ -88,3 +90,8 @@ function animateCSS(element, animationName, callback) {
 
     node.addEventListener('animationend', handleAnimationEnd)
 }
+
+$('.drawer-category .item .arrow').on('click', function (e) {
+    $(e.target).closest('.fa').toggleClass('fa-chevron-down fa-chevron-up');
+    $(e.target).closest('.arrow').prev('.sub').slideToggle()
+});
