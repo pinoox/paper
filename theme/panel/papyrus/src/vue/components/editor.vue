@@ -159,6 +159,7 @@ export default {
           toolbar: [
             'linkImage',
             'imageTextAlternative',
+            'toggleImageCaption',
             '|',
             'imageStyle:alignRight',
             'imageStyle:alignCenter',
