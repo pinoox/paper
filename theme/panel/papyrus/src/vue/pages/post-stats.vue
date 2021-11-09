@@ -30,7 +30,7 @@
                         <div class="post-title">
                             <div class="label">{{LANG.post.analysis}}</div>
                             <div class="title">{{_isNull(post.title) ? post.draft_title : post.title}}</div>
-                            <div class="details">{{LANG.post.published}}: {{post.approx_insert_date}}</div>
+                            <div class="details">{{LANG.post.published}}: {{post.approx_date}}</div>
                         </div>
                     </section>
                     <section class="list-box-stat">
