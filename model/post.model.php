@@ -236,7 +236,7 @@ class PostModel extends PaperDatabase
             'schedule_date' => @$data['schedule_date'],
         ];
 
-        if (array_key_exists('cat_id',$data))
+        if (array_key_exists('cat_id', $data))
             $_data['cat_id'] = $data['cat_id'];
 
         return self::$db->update(self::post, $_data);
@@ -261,7 +261,7 @@ class PostModel extends PaperDatabase
             $post['post_key'] = htmlspecialchars_decode($post['title']);
 
         if (!empty($post['post_key'])) {
-            $post['post_key'] = str_replace(['`', '"', "'", '(', ')', ',', '.', '?', '\\', '/', '*', '&', '^', '$', '%', '#', '@', '_', '!', '|', '~', '<', '>', '=', '+', '[', ']', '{', '}'], '', $post['post_key']);
+            $post['post_key'] = str_replace(['`', '"', "'", '(', ':', ')', ',', '.', '?', '\\', '/', '*', '&', '^', '$', '%', '#', '@', '_', '!', '|', '~', '<', '>', '=', '+', '[', ']', '{', '}'], '', $post['post_key']);
             $post['post_key'] = HelperString::replaceSpace($post['post_key']);
         }
 
@@ -395,6 +395,11 @@ class PostModel extends PaperDatabase
         self::delete_tags_by_post_id($post_id);
         if (empty($tags))
             return;
+
+        if (!is_array($tags)) {
+            $tags = explode(',', $tags);
+        }
+
         foreach ($tags as $t) {
             if (is_array($t))
                 $t = $t['tag_name'];
