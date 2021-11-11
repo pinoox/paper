@@ -606,4 +606,18 @@ class PostModel extends PaperDatabase
         $countRows = setting('general.count_rows');
         return !empty($countRows) && is_numeric($countRows) ? intval($countRows) : 1;
     }
+
+    public static function fetch_user_by_id_or_username($username, $notUser = null)
+    {
+        self::$db->where('u.app', app('package-name'));
+        self::$db->where('p.status', self::publish_status);
+        self::$db->where('(u.user_id = ? OR u.username = ?)', [$username, $username]);
+
+        if (!empty($notUser))
+            self::$db->where('u.user_id', $notUser, '!=');
+
+        self::$db->groupBy('u.user_id');
+        self::$db->join(self::post . ' p', 'u.user_id=p.user_id');
+        return self::$db->getOne(self::user . ' u', 'u.user_id, CONCAT_WS(" ", u.fname, u.lname) full_name');
+    }
 }

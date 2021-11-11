@@ -17,6 +17,7 @@ use pinoox\app\com_pinoox_paper\model\CommentModel;
 use pinoox\app\com_pinoox_paper\model\ContactModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\PostStatisticModel;
+use pinoox\app\com_pinoox_paper\model\UserModel;
 use pinoox\component\Dir;
 use pinoox\component\File;
 use pinoox\component\HelperHeader;
@@ -105,21 +106,28 @@ class MainController extends MasterConfiguration
     {
 
         if (isset($form['tag']))
+        {
             PostModel::where_tag_name($form['tag']);
+        }
         if (isset($form['q']))
+        {
             PostModel::where_search($form['q']);
+        }
         if (isset($form['cat'])) {
             $cat = CategoryModel::fetch_by_key($form['cat']);
             $ids = [];
             CategoryModel::fetch_all_child_ids($cat['cat_id'], $ids);
             PostModel::where_category_ids($ids);
         }
+        if (isset($form['user'])) {
+            PostModel::where_user_id($form['user']);
+        }
 
     }
 
     public function search($page = 1)
     {
-        $form = Request::get('q,tag,cat', null, '!empty', true);
+        $form = Request::get('q,tag,cat,user', null, '!empty', true);
 
         $query = Url::queryString();
 
@@ -129,9 +137,23 @@ class MainController extends MasterConfiguration
 
         $title = rlang('front.search');
         if (isset($form['tag']) && !empty($form['tag']))
+        {
             $title .= " (#" . $form['tag'] . ")";
+        }
         else if (isset($form['q']) && !empty($form['q']))
+        {
             $title .= " (" . $form['q'] . ")";
+        }
+        else if (isset($form['cat']) && !empty($form['cat']))
+        {
+            $category = CategoryModel::fetch_by_id_or_key($form['cat']);
+            $title .= " (" . $category['cat_name'] . ")";
+        }
+        else if (isset($form['user']) && !empty($form['user']))
+        {
+            $user = PostModel::fetch_user_by_id_or_username($form['user']);
+            $title .= " (" . $user['full_name'] . ")";
+        }
 
         TemplateHelper::title($title);
 
