@@ -432,7 +432,7 @@ export default {
         if (key === 'tags') {
           this.addFormTags(params[key], formData);
         }
-        if (key === 'category') {
+        else if (key === 'category') {
           let cat_id = !!value && !!value.cat_id ? value.cat_id : '';
           formData.append('cat_id', cat_id);
         } else if (key === 'image') {
