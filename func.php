@@ -89,3 +89,13 @@ function paper_menu($items = null)
         }
     }
 }
+
+function posts_by_category($key,$limit = 10){
+    $cat = CategoryModel::fetch_by_id_or_key($key);
+    $ids = [];
+    CategoryModel::fetch_all_child_ids($cat['cat_id'], $ids);
+    PostModel::where_category_ids($ids);
+    return posts('all', [
+        'limit' => $limit,
+    ]);
+}
