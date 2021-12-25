@@ -54,8 +54,7 @@ class SettingsModel extends PaperDatabase
 
     public static function getView($name)
     {
-        $views = self::getSetting()->view()->get($name);
-        return array_values($views);
+        return self::getSetting()->view()->get($name);
     }
 
     /**

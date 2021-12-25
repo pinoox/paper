@@ -31,6 +31,7 @@ return [
             'key' => 'header_code',
             'label' => rlang('setting.header_code'),
             'type' => 'textarea',
+            'html' => true,
             'attrs' => [
                 'rows' => 8,
                 'class' => 'ltr-text',
@@ -41,6 +42,7 @@ return [
             'key' => 'footer_code',
             'label' => rlang('setting.footer_code'),
             'type' => 'textarea',
+            'html' => true,
             'attrs' => [
                 'rows' => 8,
                 'class' => 'ltr-text',

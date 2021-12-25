@@ -17,6 +17,7 @@ use pinoox\app\com_pinoox_paper\model\LangModel;
 use pinoox\app\com_pinoox_paper\model\PostModel;
 use pinoox\app\com_pinoox_paper\model\SettingsModel;
 use pinoox\component\app\AppProvider;
+use pinoox\component\HelperString;
 use pinoox\component\Lang;
 use pinoox\component\Request;
 use pinoox\component\Response;
@@ -52,9 +53,28 @@ class SettingController extends LoginConfiguration
         Response::json($configs);
     }
 
+    private static function getKeysInput($name)
+    {
+        $view = SettingsModel::getView($name);
+        $settings = @$view['settings'];
+        if (empty($settings) && !is_array($settings))
+            return '*';
+
+        $keys = [];
+        foreach ($settings as $setting) {
+            if (!isset($setting['key']))
+                continue;
+            $isHtml = @$setting['html'];
+            $keys[] = !!$isHtml ? '!' . $setting['key'] : $setting['key'];
+        }
+
+        return implode(',', $keys);
+    }
+
     public function save($name)
     {
-        $inputs = Request::input('*', null, '!empty');
+        $keys = $this->getKeysInput($name);
+        $inputs = Request::input($keys, null, '!empty');
         SettingsModel::save($name, $inputs);
         Response::json(rlang('post.save_successfully'), true);
     }
@@ -127,7 +147,7 @@ class SettingController extends LoginConfiguration
     {
         $posts = Request::inputOne('posts', null, '!empty');
         $posts = PostModel::fetch_by_ids($posts);
-        $posts = !empty($posts)? $posts : [];
+        $posts = !empty($posts) ? $posts : [];
         $posts = array_map(function ($post) {
             return PostModel::getInfoPost($post);
         }, $posts);
