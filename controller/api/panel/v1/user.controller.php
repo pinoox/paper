@@ -193,7 +193,7 @@ class UserController extends LoginConfiguration
                 ->insert('none', 'avatar')->finish(true);
 
             $avatar_id = $up->getInsertId();
-            if ($up->isCommit() && UserModel::update_avatar($user_id, $avatar_id)) {
+            if ($up->isCommit() && UserModelCore::update_avatar($user_id, $avatar_id)) {
                 PinooxDatabase::commit();
                 $up->commit();
                 if (!empty($old_avatar_id)) {
