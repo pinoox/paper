@@ -136,7 +136,7 @@ export default {
       }
       ,
       set(val) {
-        this.params.status = val;
+        this.params.status = !!val? 'active' : 'inactive';
       }
     }
   },
