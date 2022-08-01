@@ -179,7 +179,7 @@ class MainController extends MasterConfiguration
         $post = PostModel::fetch_by_id($post_id);
         if (empty($post)) self::error404();
 
-        $post = PostModel::getInfoPost($post);
+        $post = PostModel::getInfoPost($post,null,true);
 
         if ($post['post_key'] != $title)
             Response::redirect(Url::app() . 'post/' . $post_id . '/' . $post['post_key']);

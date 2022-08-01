@@ -33,7 +33,7 @@ function posts($value, $option = [])
 
     $date_format = isset($option['date_format']) ? $option['date_format'] : null;
     $posts = array_map(function ($post) use ($date_format) {
-        return PostModel::getInfoPost($post, $date_format);
+        return PostModel::getInfoPost($post, $date_format,true);
     }, $posts);
 
     return $posts;

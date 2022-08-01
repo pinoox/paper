@@ -38,7 +38,7 @@ class PostController extends MasterConfiguration
 
         PostModel::where_post_type(PostModel::post_type);
         $post = PostModel::fetch_by_id($form['post_id']);
-        $post = PostModel::getInfoPost($post, $form['date_format']);
+        $post = PostModel::getInfoPost($post, $form['date_format'],true);
 
         if (!$post || $post['post_key'] != $form['post_key'])
             Response::json($post, false);
@@ -144,7 +144,7 @@ class PostController extends MasterConfiguration
 
         if ($isPost) {
             $post = PostModel::fetch_by_id($comment['post_id']);
-            $post = PostModel::getInfoPost($post, $date_format);
+            $post = PostModel::getInfoPost($post, $date_format,true);
             $cm['post'] = $post;
         }
 

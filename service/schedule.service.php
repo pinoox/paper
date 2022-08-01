@@ -25,12 +25,13 @@ class ScheduleService implements ServiceInterface
             return;
 
         $posts = PostModel::fetch_all_schedule_publish();
-       // var_dump($posts);exit;
+
         if (!empty($posts) && !is_array($posts))
             return;
 
         foreach ($posts as $post) {
             PostModel::watch_schedule_publish($post);
+            PostModel::update_publish_date($post);
         }
     }
 

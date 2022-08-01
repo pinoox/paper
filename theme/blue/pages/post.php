@@ -17,7 +17,7 @@
                                  alt="<?php echo $post['title']; ?>">
                             <span><?php echo $post['full_name']; ?></span>
                         </div>
-                        <div class="publish-date"><?php showDate($post['insert_date']); ?></div>
+                        <div class="publish-date"><?php showDate($post['publish_date']); ?></div>
                         <div><?php echo $post['visits']; ?>&nbsp;<?php lang('front.visit') ?></div>
                     </div>
                     <div class="image">

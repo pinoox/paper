@@ -164,6 +164,14 @@ class PostModel extends PaperDatabase
         ]);
     }
 
+    public static function update_publish_date($post)
+    {
+        self::$db->where('post_id', $post['post_id']);
+        return self::$db->update(self::post, [
+            'publish_date' => $post['schedule_date'],
+        ]);
+    }
+
     public static function update_schedule_post($post_id)
     {
         $post = self::post_draft_fetch_by_id($post_id);
@@ -242,7 +250,7 @@ class PostModel extends PaperDatabase
         return self::$db->update(self::post, $_data);
     }
 
-    public static function getInfoPost($post, $date_format = null)
+    public static function getInfoPost($post, $date_format = null,$isFront = false)
     {
         if (empty($post))
             return $post;
@@ -267,7 +275,9 @@ class PostModel extends PaperDatabase
 
         $date_format = !empty($date_format) ? $date_format : 'l d F Y (H:i)';
         $post['approx_date'] = Helper::getLocaleDate($date_format, $post['publish_date']);
-        $post['publish_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['publish_date']);
+
+        if(!$isFront)
+            $post['publish_date'] = Helper::getLocaleDate('Y/m/d H:i', $post['publish_date']);
 
         if (isset($post['schedule_date'])) {
             $post['approx_schedule_date'] = Helper::getLocaleDate($date_format, $post['schedule_date']);
