@@ -145,7 +145,7 @@ class StatisticModel extends PaperDatabase
         }
 
         self::$db->groupBy('date');
-        $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date,COUNT(s.stat_id) value');
+        $result = self::$db->get(self::statistic . ' s', null, 'DATE_FORMAT(s.insert_date, "%Y-%m-%d") AS date,,s.visitors AS value');
         if (empty($result)) return null;
 
         $total = 0;
